@@ -158,14 +158,44 @@ export async function downloadPdf(
 }
 
 /**
+ * The standalone document `printDocx` prints. Word margins move from each
+ * section's padding onto `@page`, so the browser repeats them on every printed
+ * page — including the pages a long section spills onto — without relying on
+ * `box-decoration-break` support. docx-preview's on-screen section layout
+ * (flex + overflow:hidden) is undone for print so nothing can clip a line at
+ * the page edge.
+ */
+export function buildPrintHtml(body: HTMLElement, style: HTMLElement, sections: HTMLElement[]) {
+  const first = sections[0]
+  const css = first ? getComputedStyle(first) : null
+  const size = first ? `${first.offsetWidth}px ${pageHeight(first)}px` : 'auto'
+  const margin = css ? `${css.paddingTop} 0 ${css.paddingBottom} 0` : '0'
+
+  return `<!doctype html><html><head><meta charset="utf-8"><title>${document.title}</title>${style.innerHTML}<style>
+    @page { size: ${size}; margin: ${margin} }
+    html, body { margin: 0; background: #fff }
+    .docx-wrapper { background: none !important; padding: 0 !important; display: block !important }
+    .docx-wrapper > section.docx {
+      display: block !important; overflow: visible !important; min-height: 0 !important;
+      padding-top: 0 !important; padding-bottom: 0 !important;
+      box-shadow: none !important; margin: 0 !important; break-after: page;
+    }
+    .docx-wrapper > section.docx:last-child { break-after: auto }
+    /* Headers/footers sit in the page margin on screen; in print they flow
+       with the content instead of being pulled into the @page margin. */
+    .docx-wrapper > section.docx > header,
+    .docx-wrapper > section.docx > footer { margin: 0 !important; min-height: 0 !important }
+    .docx-wrapper p { orphans: 2; widows: 2 }
+    .docx-wrapper tr, .docx-wrapper img { break-inside: avoid }
+  </style></head><body>${body.innerHTML}</body></html>`
+}
+
+/**
  * Prints the rendered document from an isolated iframe so the browser's own
  * "Save as PDF" produces real, selectable text. Not available in the APK
  * WebView, which has no print dialog.
  */
 export async function printDocx(body: HTMLElement, style: HTMLElement, sections: HTMLElement[]) {
-  const first = sections[0]
-  const size = first ? `${first.offsetWidth}px ${pageHeight(first)}px` : 'auto'
-
   const frame = document.createElement('iframe')
   frame.setAttribute('aria-hidden', 'true')
   frame.style.cssText = 'position:fixed;right:0;bottom:0;width:0;height:0;border:0'
@@ -173,17 +203,7 @@ export async function printDocx(body: HTMLElement, style: HTMLElement, sections:
 
   const doc = frame.contentDocument!
   doc.open()
-  doc.write(`<!doctype html><html><head><title>${document.title}</title>${style.innerHTML}<style>
-    @page { size: ${size}; margin: 0 }
-    html, body { margin: 0; background: #fff }
-    .docx-wrapper { background: none !important; padding: 0 !important; display: block !important }
-    .docx-wrapper > section.docx { box-shadow: none !important; margin: 0 !important; break-after: page;
-      /* A section that overflows one page repeats its Word margins on every page. */
-      -webkit-box-decoration-break: clone; box-decoration-break: clone }
-    .docx-wrapper p, .docx-wrapper li { orphans: 2; widows: 2 }
-    .docx-wrapper tr, .docx-wrapper img { break-inside: avoid }
-    .docx-wrapper > section.docx:last-child { break-after: auto }
-  </style></head><body>${body.innerHTML}</body></html>`)
+  doc.write(buildPrintHtml(body, style, sections))
   doc.close()
 
   await doc.fonts?.ready
