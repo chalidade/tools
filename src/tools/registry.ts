@@ -1,5 +1,5 @@
 import { lazy, type ComponentType, type LazyExoticComponent } from 'react'
-import { FileText, FileType, Images, type LucideIcon } from 'lucide-react'
+import { FileText, FileType, Images, Presentation, type LucideIcon } from 'lucide-react'
 
 export interface Tool {
   /** URL segment: the tool lives at #/<slug>. */
@@ -40,8 +40,16 @@ export const TOOLS: Tool[] = [
     description: 'Gabungkan foto dan gambar jadi satu PDF — atur urutan, putar, dan pilih ukuran kertas.',
     icon: Images,
     formats: 'JPG / PNG → PDF',
-    badge: 'Baru',
     component: lazy(() => import('./image-to-pdf/ImageToPdf')),
+  },
+  {
+    slug: 'ppt-to-pdf',
+    title: 'PowerPoint ke PDF',
+    description: 'Ubah presentasi PowerPoint (.pptx) jadi PDF, satu halaman per slide.',
+    icon: Presentation,
+    formats: 'PPTX → PDF',
+    badge: 'Baru',
+    component: lazy(() => import('./ppt-to-pdf/PptToPdf')),
   },
 ]
 

@@ -101,6 +101,12 @@
     @apply bg-background text-foreground font-sans antialiased;
     font-feature-settings: "ss01", "cv11";
   }
+  /* PowerPoint slides (div.slide from @jvmr/pptx-to-html) are laid out for
+     browser defaults — list bullets, margins, content-box. Undo Tailwind's
+     preflight inside them, or bullets disappear and text shifts. */
+  .slide :where(*) {
+    all: revert-layer;
+  }
 }
 
 /* Brand gradient text, e.g. the second line of the hero title. */

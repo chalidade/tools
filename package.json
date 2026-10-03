@@ -11,10 +11,12 @@
     "og": "bash og/render.sh"
   },
   "dependencies": {
+    "@jvmr/pptx-to-html": "^1.1.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "docx": "^9.8.1",
     "docx-preview": "^0.4.1",
+    "dompurify": "^3.4.16",
     "html2canvas-pro": "^2.5.0",
     "jspdf": "^4.2.1",
     "lucide-react": "^0.469.0",
