@@ -6,7 +6,7 @@
 // lines are just drawings). Rows come from shared baselines; columns come
 // from the vertical gutters that stay empty down a run of rows.
 
-import { readPdfText, type PageText, type TextLine } from '@/lib/pdf-text'
+import { readPdfText, segmentLine as splitLine, type PageText, type TextLine, type TextSegment } from '@/lib/pdf-text'
 
 export type { PageText } from '@/lib/pdf-text'
 
@@ -40,36 +40,14 @@ export interface PdfTables {
 
 export type SheetMode = 'merge' | 'per-page'
 
-interface Segment {
-  text: string
-  x: number
-  right: number
-  bold: boolean
-}
-
 interface SegLine {
-  segments: Segment[]
+  segments: TextSegment[]
   y: number
   size: number
 }
 
-/** Splits a line where the gap between pieces is wider than a word space. */
 function segmentLine(line: TextLine): SegLine {
-  const segments: Segment[] = []
-  for (const p of line.pieces) {
-    const last = segments[segments.length - 1]
-    const gap = last ? p.x - last.right : Infinity
-    if (last && gap < Math.max(p.size * 0.6, 3)) {
-      // Same cell: rebuild the word space pdf.js left out.
-      last.text += (gap > p.size * 0.12 && !/\s$/.test(last.text) ? ' ' : '') + p.text
-      last.right = p.right
-      last.bold = last.bold && p.bold
-    } else {
-      segments.push({ text: p.text, x: p.x, right: p.right, bold: p.bold })
-    }
-  }
-  for (const s of segments) s.text = s.text.replace(/\s+/g, ' ').trim()
-  return { segments: segments.filter((s) => s.text), y: line.y, size: line.size }
+  return { segments: splitLine(line), y: line.y, size: line.size }
 }
 
 /**

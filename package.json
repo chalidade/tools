@@ -25,6 +25,7 @@
     "motion": "^12.42.2",
     "numfmt": "^3.2.6",
     "pdfjs-dist": "^6.3.289",
+    "pptxgenjs": "^4.0.1",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
     "tailwind-merge": "^2.6.0"

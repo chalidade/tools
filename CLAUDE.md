@@ -13,7 +13,10 @@ picture; the rules that matter when editing:
 - Tool UIs reuse `src/components/tool/` (`FileDrop`, `ErrorNote`, `Segmented`) and
   `downloadBlob`/`withExtension` from `src/lib/download.ts`.
   Tools that read a PDF's text layer share `src/lib/pdf-text.ts` (pdf.js
-  loading, text pieces with position/size/bold/italic/font, grouped into lines).
+  loading, text pieces with position/size/bold/italic/font, grouped into lines
+  and split into segments). Render PDF pages with `intent: 'print'` — the
+  default display intent waits on requestAnimationFrame and stalls in a
+  background tab.
 - **Hash routing** (`#/<slug>`, `src/lib/use-hash-route.ts`) — do not switch to
   path routing; it 404s on reload under the Pages sub-path.
 - `App.tsx` only composes sections; each section lives in

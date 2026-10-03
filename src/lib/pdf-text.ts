@@ -38,6 +38,41 @@ export interface PageText {
   height: number
 }
 
+/** A run of a line's text that sits together — one table cell or text block. */
+export interface TextSegment {
+  text: string
+  x: number
+  right: number
+  y: number
+  size: number
+  /** True only when every piece in the segment is bold/italic. */
+  bold: boolean
+  italic: boolean
+  font: string
+}
+
+/**
+ * Splits a line where the gap between pieces is wider than a word space,
+ * rebuilding the word spaces pdf.js leaves out inside each segment.
+ */
+export function segmentLine(line: TextLine): TextSegment[] {
+  const segments: TextSegment[] = []
+  for (const p of line.pieces) {
+    const last = segments[segments.length - 1]
+    const gap = last ? p.x - last.right : Infinity
+    if (last && gap < Math.max(p.size * 0.6, 3)) {
+      last.text += (gap > p.size * 0.12 && !/\s$/.test(last.text) ? ' ' : '') + p.text
+      last.right = p.right
+      last.bold &&= p.bold
+      last.italic &&= p.italic
+    } else {
+      segments.push({ text: p.text, x: p.x, right: p.right, y: line.y, size: p.size, bold: p.bold, italic: p.italic, font: p.font })
+    }
+  }
+  for (const s of segments) s.text = s.text.replace(/\s+/g, ' ').trim()
+  return segments.filter((s) => s.text)
+}
+
 /** Opens the PDF; `destroy()` on the returned task frees it and its worker. */
 export async function loadPdf(file: File) {
   const pdfjs = await import('pdfjs-dist')
