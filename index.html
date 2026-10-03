@@ -2,10 +2,46 @@
 <html lang="id">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Kumpulan tools yang jalan sepenuhnya di browser — file tidak pernah di-upload ke mana pun." />
-    <title>tools</title>
+    <title>Tools — Konversi file langsung di browser</title>
+    <meta name="description" content="Word ke PDF, PDF ke Word, dan tools lain yang berjalan sepenuhnya di browser. File tidak di-upload ke mana pun. Gratis, tanpa akun." />
+    <meta name="theme-color" content="#09090b" />
+
+    <!-- Link preview (WhatsApp, Telegram, Slack, X, LinkedIn…). The image is
+         rendered from og/og.html — see README. URLs must be absolute. -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Tools" />
+    <meta property="og:url" content="https://chalidade.github.io/tools/" />
+    <meta property="og:title" content="Tools — Konversi file langsung di browser" />
+    <meta property="og:description" content="Word ke PDF, PDF ke Word, dan lainnya. Semua diproses di perangkatmu — file tidak di-upload ke mana pun. Gratis, tanpa akun." />
+    <meta property="og:image" content="https://chalidade.github.io/tools/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Tools — konversi file langsung di browser, tanpa upload" />
+    <meta property="og:locale" content="id_ID" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Tools — Konversi file langsung di browser" />
+    <meta name="twitter:description" content="Word ke PDF, PDF ke Word, dan lainnya. Semua diproses di perangkatmu — file tidak di-upload ke mana pun." />
+    <meta name="twitter:image" content="https://chalidade.github.io/tools/og.png" />
+
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Apply the theme before first paint so there is no light/dark flash. -->
+    <script>
+      try {
+        var t = localStorage.getItem('theme')
+        if (t === 'dark' || (!t && matchMedia('(prefers-color-scheme: dark)').matches))
+          document.documentElement.classList.add('dark')
+      } catch (e) {}
+    </script>
   </head>
   <body>
     <div id="root"></div>

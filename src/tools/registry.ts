@@ -7,8 +7,10 @@ export interface Tool {
   title: string
   description: string
   icon: LucideIcon
-  /** Accepted input → produced output, shown as a chip on the card. */
+  /** Accepted input → produced output, shown as chips on the card. */
   formats: string
+  /** Optional short label on the card, e.g. "Baru". */
+  badge?: string
   /** Lazy so each tool's libraries load only when that tool is opened. */
   component: LazyExoticComponent<ComponentType>
 }
@@ -30,6 +32,7 @@ export const TOOLS: Tool[] = [
     description: 'Ambil teks dari PDF jadi dokumen Word (.docx) yang bisa diedit.',
     icon: FileType,
     formats: 'PDF → DOCX',
+    badge: 'Baru',
     component: lazy(() => import('./pdf-to-word/PdfToWord')),
   },
 ]

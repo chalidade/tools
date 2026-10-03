@@ -1,0 +1,60 @@
+<!doctype html>
+<!-- Source of public/og.png (the link-preview image). Re-render with:
+     npm run og -->
+<html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;box-sizing:border-box}
+html,body{width:1200px;height:630px;overflow:hidden}
+body{background:#09090b;color:#fafafa;font-family:Geist,sans-serif;position:relative}
+.bg{position:absolute;inset:0;background:
+  radial-gradient(620px 420px at 100% 0%,rgba(96,165,250,.30),transparent 70%),
+  radial-gradient(560px 400px at 75% 110%,rgba(139,92,246,.30),transparent 70%),
+  radial-gradient(420px 300px at 0% 0%,rgba(139,92,246,.14),transparent 70%)}
+.grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);background-size:48px 48px;mask-image:linear-gradient(90deg,transparent,#000 55%)}
+.c{position:absolute;inset:0;padding:72px 80px;display:flex;flex-direction:column;width:690px}
+.pill{display:inline-flex;align-items:center;gap:10px;font-size:21px;color:#a1a1aa;border:1px solid #27272a;background:#111113;border-radius:999px;padding:8px 20px 8px 14px;align-self:flex-start}
+.pill i{width:12px;height:12px;border-radius:50%;background:#22c55e;box-shadow:0 0 12px #22c55e}
+.logo{height:84px;margin-top:44px;filter:invert(1);align-self:flex-start}
+h2{font-size:58px;font-weight:600;letter-spacing:-.035em;line-height:1.04;margin-top:26px}
+h2 span{background:linear-gradient(90deg,#60a5fa,#a78bfa);-webkit-background-clip:text;color:transparent}
+.foot{margin-top:auto;display:flex;gap:14px;align-items:center;font-family:"Geist Mono",monospace;font-size:21px;color:#a1a1aa}
+.foot b{color:#fafafa;font-weight:500}
+.chip{border:1px solid #27272a;background:#111113;border-radius:10px;padding:6px 12px;color:#e4e4e7}
+/* right: conversion card */
+.card{position:absolute;right:72px;top:150px;width:400px;border:1px solid #27272a;background:rgba(24,24,27,.82);border-radius:28px;padding:26px;box-shadow:0 30px 80px rgba(139,92,246,.18)}
+.card .top{display:flex;justify-content:space-between;font-family:"Geist Mono",monospace;font-size:15px;color:#a1a1aa}
+.card .top span:first-child::before{content:"";display:inline-block;width:9px;height:9px;border-radius:50%;background:#22c55e;margin-right:8px}
+.row{display:flex;align-items:center;gap:12px;margin-top:22px}
+.tile{flex:1;border:1px solid #27272a;background:#09090b;border-radius:18px;padding:12px}
+.doc{position:relative;height:118px;border-radius:12px;padding:14px}
+.doc i{display:block;height:7px;border-radius:9px;background:rgba(255,255,255,.55);margin-bottom:9px}
+.doc i:first-child{width:75%;background:rgba(255,255,255,.85)}.doc i:nth-child(3){width:85%}.doc i:nth-child(4){width:65%}
+.doc b{position:absolute;right:9px;bottom:9px;font:500 13px "Geist Mono",monospace;background:rgba(0,0,0,.28);padding:3px 7px;border-radius:7px}
+.docx{background:linear-gradient(135deg,#0ea5e9,#2563eb)}.pdf{background:linear-gradient(135deg,#8b5cf6,#d946ef)}
+.tile p{font:14px "Geist Mono",monospace;color:#a1a1aa;margin-top:10px}
+.arrow{width:42px;height:42px;border-radius:50%;border:1px solid #27272a;background:#09090b;display:grid;place-items:center;font-size:20px;flex:none}
+.bar{height:8px;border-radius:9px;background:#27272a;margin-top:22px;overflow:hidden}
+.bar i{display:block;height:100%;width:72%;border-radius:9px;background:linear-gradient(90deg,#60a5fa,#a78bfa)}
+.meta{display:flex;justify-content:space-between;margin-top:14px;font-size:15px;color:#a1a1aa}
+.meta b{font:500 15px "Geist Mono",monospace;color:#fafafa}
+</style></head><body>
+<div class="bg"></div><div class="grid"></div>
+<div class="c">
+  <div class="pill"><i></i>100% diproses di browser</div>
+  <img class="logo" src="../public/logo.png" alt="">
+  <h2>Konversi file,<br><span>tanpa upload.</span></h2>
+  <div class="foot"><b>chalidade.github.io/tools</b></div>
+  <div class="foot" style="margin-top:16px"><span class="chip">Word → PDF</span><span class="chip">PDF → Word</span><span>+ lainnya</span></div>
+</div>
+<div class="card">
+  <div class="top"><span>perangkat ini</span><span>lokal</span></div>
+  <div class="row">
+    <div class="tile"><div class="doc docx"><i></i><i></i><i></i><i></i><b>DOCX</b></div><p>laporan.docx</p></div>
+    <div class="arrow">→</div>
+    <div class="tile"><div class="doc pdf"><i></i><i></i><i></i><i></i><b>PDF</b></div><p>laporan.pdf</p></div>
+  </div>
+  <div class="bar"><i></i></div>
+  <div class="meta"><span>Tidak ada yang dikirim ke server</span><b>0 B di-upload</b></div>
+</div>
+</body></html>

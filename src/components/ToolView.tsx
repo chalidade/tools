@@ -1,39 +1,59 @@
-import { Suspense } from 'react'
-import { ArrowLeft, Loader2 } from 'lucide-react'
+import { Suspense, useEffect } from 'react'
+import { ArrowLeft, Loader2, ShieldCheck } from 'lucide-react'
 import type { Tool } from '@/tools/registry'
 
 export function ToolView({ tool }: { tool: Tool }) {
   const Component = tool.component
 
-  return (
-    <section className="mx-auto max-w-5xl px-6 py-10">
-      <a
-        href="#/"
-        className="inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
-      >
-        <ArrowLeft className="size-4" />
-        Semua tools
-      </a>
-      <div className="mt-6 flex items-center gap-3">
-        <span className="grid size-10 place-items-center rounded-lg bg-secondary text-secondary-foreground">
-          <tool.icon className="size-5" />
-        </span>
-        <div>
-          <h1 className="text-2xl font-semibold tracking-tight">{tool.title}</h1>
-          <p className="text-sm text-muted-foreground">{tool.description}</p>
-        </div>
-      </div>
+  useEffect(() => {
+    const previous = document.title
+    document.title = `${tool.title} — Tools`
+    return () => {
+      document.title = previous
+    }
+  }, [tool.title])
 
-      <div className="mt-8">
-        <Suspense
-          fallback={
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <Loader2 className="size-4 animate-spin" /> Memuat tool…
-            </div>
-          }
+  return (
+    <section className="relative isolate">
+      <div aria-hidden className="bg-glow absolute inset-x-0 top-0 -z-10 h-80 opacity-60" />
+      <div aria-hidden className="bg-grid absolute inset-x-0 top-0 -z-10 h-80" />
+
+      <div className="mx-auto max-w-5xl px-5 py-10 sm:px-6 sm:py-14">
+        <a
+          href="#/"
+          className="inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
         >
-          <Component key={tool.slug} />
-        </Suspense>
+          <ArrowLeft className="size-4" />
+          Semua tools
+        </a>
+
+        <div className="mt-8 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+          <div className="flex items-center gap-4">
+            <span className="grid size-14 shrink-0 place-items-center rounded-2xl bg-gradient-brand text-white shadow-lg shadow-brand-2/25">
+              <tool.icon className="size-6" />
+            </span>
+            <div>
+              <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">{tool.title}</h1>
+              <p className="mt-1 text-muted-foreground">{tool.description}</p>
+            </div>
+          </div>
+          <p className="inline-flex items-center gap-1.5 self-start rounded-full border bg-card/70 px-3 py-1 text-xs text-muted-foreground backdrop-blur sm:self-auto">
+            <ShieldCheck className="size-3.5 text-emerald-600 dark:text-emerald-400" />
+            File tidak di-upload
+          </p>
+        </div>
+
+        <div className="mt-10">
+          <Suspense
+            fallback={
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <Loader2 className="size-4 animate-spin" /> Memuat tool…
+              </div>
+            }
+          >
+            <Component key={tool.slug} />
+          </Suspense>
+        </div>
       </div>
     </section>
   )

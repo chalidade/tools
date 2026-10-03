@@ -20,3 +20,10 @@ picture; the rules that matter when editing:
 - UI copy is Indonesian.
 - `npm run build` (tsc -b + vite build) is the correctness gate; there is no
   test runner.
+- Design: Geist font, zinc neutrals, blue→violet brand gradient (`--brand-1`,
+  `--brand-2`; utilities `text-gradient`, `bg-gradient-brand`, `bg-grid`,
+  `bg-glow` in `src/index.css`), light/dark via `.dark` (toggle in Header,
+  pre-paint script in `index.html`). Public assets are referenced with
+  `import.meta.env.BASE_URL` — the site is served under `/tools/`.
+- Link preview: `public/og.png` is rendered from `og/og.html` by
+  `npm run og`; meta tags live in `index.html` with absolute URLs.

@@ -39,7 +39,23 @@ server.
 **Aturan main:** semua pemrosesan wajib di sisi klien. Jangan menambahkan
 backend atau mengirim file pengguna ke layanan pihak ketiga.
 
+## Preview link (Open Graph)
+
+Saat tautan dibagikan (WhatsApp, Telegram, Slack, X, LinkedIn), gambar
+`public/og.png` (1200×630) tampil sebagai kartu. Meta tag-nya ada di
+`index.html`. Gambar itu dirender dari `og/og.html`; setelah mengubah
+templatenya, jalankan:
+
+```bash
+npm run og    # butuh Google Chrome/Chromium terpasang
+```
+
+Jaga ukurannya di bawah ~300 KB agar WhatsApp mau menampilkannya. Aplikasi
+chat menyimpan cache preview, jadi perubahan baru terlihat untuk tautan yang
+belum pernah dibagikan (atau setelah cache-nya kedaluwarsa).
+
 ## Stack
 
 Vite + React 19 + TypeScript, Tailwind CSS v4, shadcn/ui, Motion
-(`motion/react`), ikon lucide-react.
+(`motion/react`), ikon lucide-react, font Geist. Tema terang/gelap mengikuti
+sistem dan bisa dialihkan dari header.
