@@ -185,51 +185,71 @@ function cell(text: string, bold: boolean, decimal: Decimal, convertNumbers: boo
   return num ? { text, bold, ...num } : { text, bold }
 }
 
+export interface TableBlock {
+  /** Line range on the page (indices into PageText.lines), inclusive. */
+  start: number
+  end: number
+  rows: { texts: string[]; bold: boolean[] }[]
+}
+
+/**
+ * The page's tables: runs of lines that share column gutters, with wrapped
+ * cell text folded back into its row. A one-line "table" is usually a
+ * label/value pair.
+ */
+export function tableBlocks(page: PageText): TableBlock[] {
+  const lines = page.lines.map(segmentLine)
+  const { blocks } = findBlocks(lines)
+  return blocks.map((block) => {
+    const blockLines = lines.slice(block.start, block.end + 1)
+    const bounds = columnBounds(blockLines)
+    // Lines much closer together than this block's usual row spacing are
+    // one row whose cell(s) wrapped onto extra lines.
+    const gaps = blockLines.slice(1).map((l, k) => l.y - blockLines[k].y).sort((x, y) => x - y)
+    const pitch = gaps.length ? gaps[Math.floor(gaps.length / 2)] : Infinity
+
+    const rows: TableBlock['rows'] = []
+    let current: { parts: string[][]; bold: boolean[]; y: number } | null = null
+    const flush = () => {
+      if (current) rows.push({ texts: current.parts.map((p) => p.join(' ')), bold: current.bold })
+      current = null
+    }
+    for (const line of blockLines) {
+      if (current && line.y - current.y > pitch * 0.8) flush()
+      current ??= { parts: Array.from({ length: bounds.length + 1 }, () => []), bold: Array(bounds.length + 1).fill(true), y: line.y }
+      for (const s of line.segments) {
+        const c = columnOf(bounds, s.x + 1)
+        current.parts[c].push(s.text)
+        current.bold[c] = current.bold[c] && s.bold
+      }
+      current.y = line.y
+    }
+    flush()
+    return { start: block.start, end: block.end, rows }
+  })
+}
+
 function pageRows(page: PageText, decimal: Decimal, convertNumbers: boolean) {
-  const lines = page.lines.map(segmentLine).filter((l) => l.segments.length)
-  const { blocks, tabular } = findBlocks(lines)
+  const tables = tableBlocks(page)
   const rows: OutRow[] = []
-  let tables = 0
-
-  let b = 0
-  for (let i = 0; i < lines.length; i++) {
-    const block = blocks[b]
-    if (block && i === block.start) {
-      tables++
-      const blockLines = lines.slice(block.start, block.end + 1)
-      const bounds = columnBounds(blockLines)
-      // Lines much closer together than this block's usual row spacing are
-      // one row whose cell(s) wrapped onto extra lines.
-      const gaps = blockLines.slice(1).map((l, k) => l.y - blockLines[k].y).sort((x, y) => x - y)
-      const pitch = gaps.length ? gaps[Math.floor(gaps.length / 2)] : Infinity
-
-      let current: { texts: string[][]; bold: boolean[]; y: number } | null = null
-      const flush = () => {
-        if (!current) return
-        const cells = current.texts.map((parts, c) => (parts.length ? cell(parts.join(' '), current!.bold[c], decimal, convertNumbers) : null))
-        rows.push({ cells, table: true })
-        current = null
-      }
-      for (const line of blockLines) {
-        if (current && line.y - current.y > pitch * 0.8) flush()
-        if (!current) current = { texts: Array.from({ length: bounds.length + 1 }, () => []), bold: Array(bounds.length + 1).fill(true), y: line.y }
-        for (const s of line.segments) {
-          const c = columnOf(bounds, s.x + 1)
-          current.texts[c].push(s.text)
-          current.bold[c] = current.bold[c] && s.bold
-        }
-        current.y = line.y
-      }
-      flush()
-      i = block.end
-      b++
-    } else if (!tabular[i]) {
-      const line = lines[i]
-      const text = line.segments.map((s) => s.text).join(' ')
-      rows.push({ cells: [{ text, bold: line.segments.every((s) => s.bold) }], table: false })
+  let t = 0
+  for (let i = 0; i < page.lines.length; i++) {
+    const table = tables[t]
+    if (table && i === table.start) {
+      for (const row of table.rows)
+        rows.push({
+          cells: row.texts.map((text, c) => (text ? cell(text, row.bold[c], decimal, convertNumbers) : null)),
+          table: true,
+        })
+      i = table.end
+      t++
+    } else {
+      const segments = segmentLine(page.lines[i]).segments
+      if (!segments.length) continue
+      rows.push({ cells: [{ text: segments.map((s) => s.text).join(' '), bold: segments.every((s) => s.bold) }], table: false })
     }
   }
-  return { rows, tables }
+  return { rows, tables: tables.length }
 }
 
 const rowKey = (row: OutRow) => row.cells.map((c) => c?.text ?? '').join('\u0001')

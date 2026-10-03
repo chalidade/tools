@@ -7,7 +7,7 @@
 // keeping size, bold and italic. Layout that has no text equivalent (exact
 // positions, images, drawn table borders) is not carried over.
 
-import { readPdfText, type TextLine } from '@/lib/pdf-text'
+import { readPdfText, type PageText, type TextLine } from '@/lib/pdf-text'
 
 export { LockedPdfError, ScannedPdfError } from '@/lib/pdf-text'
 
@@ -21,6 +21,8 @@ interface Run {
 }
 
 interface Line {
+  /** Index of this line in its page's PageText.lines. */
+  index: number
   runs: Run[]
   x: number
   right: number
@@ -35,6 +37,9 @@ export interface Paragraph {
   /** Left indent relative to the page's text margin, in points. */
   indent: number
   pageBreakBefore: boolean
+  /** Page (0-based) and the index of the paragraph's first line on it. */
+  page: number
+  line: number
 }
 
 export interface PdfConversion {
@@ -45,7 +50,7 @@ export interface PdfConversion {
 }
 
 /** Joins a line's pieces into styled runs, turning wide gaps into tabs. */
-function toRuns(line: TextLine): Line {
+function toRuns(line: TextLine, index: number): Line {
   const runs: Run[] = []
   let prevRight: number | null = null
   for (const p of line.pieces) {
@@ -59,7 +64,7 @@ function toRuns(line: TextLine): Line {
     pushRun(runs, { text, size: p.size, bold: p.bold, italic: p.italic, font: p.font })
     prevRight = p.right
   }
-  return { runs, x: line.x, right: line.right, y: line.y, size: line.size }
+  return { index, runs, x: line.x, right: line.right, y: line.y, size: line.size }
 }
 
 function lastText(runs: Run[]) {
@@ -112,7 +117,7 @@ function linePitches(lines: Line[]) {
 const BULLET = /^\s*([•●▪◦‣∙·\-–*]|\d{1,3}[.)]|[a-zA-Z][.)])\s/
 
 /** Groups a page's lines into paragraphs. */
-function toParagraphs(lines: Line[], pageWidth: number, marginLeft: number, textWidth: number) {
+function toParagraphs(lines: Line[], page: number, pageWidth: number, marginLeft: number, textWidth: number) {
   const pitch = linePitches(lines)
   const paragraphs: (Paragraph & { last: Line })[] = []
 
@@ -156,6 +161,8 @@ function toParagraphs(lines: Line[], pageWidth: number, marginLeft: number, text
         align: centered ? 'center' : 'left',
         indent: centered ? 0 : Math.max(0, line.x - marginLeft),
         pageBreakBefore: false,
+        page,
+        line: line.index,
         last: line,
       })
     }
@@ -165,21 +172,40 @@ function toParagraphs(lines: Line[], pageWidth: number, marginLeft: number, text
 }
 
 export async function convertPdf(file: File, onProgress: (done: number, total: number) => void): Promise<PdfConversion> {
-  const pages = (await readPdfText(file, onProgress)).map((p) => ({ ...p, lines: p.lines.map(toRuns) }))
+  return paragraphsFromPages(await readPdfText(file, onProgress))
+}
+
+/**
+ * Paragraphs from already-read pages. `skip` leaves lines out (e.g. lines
+ * another engine turned into a table); paragraphs never join across them.
+ */
+export function paragraphsFromPages(
+  textPages: PageText[],
+  skip: (page: number, line: number) => boolean = () => false,
+): PdfConversion {
+  const pages = textPages.map((p, n) => ({
+    ...p,
+    lines: p.lines.map(toRuns).filter((l) => !skip(n, l.index)),
+  }))
 
   const allLines = pages.flatMap((p) => p.lines)
+  if (!allLines.length) {
+    const first = textPages[0]
+    return { paragraphs: [], pages: textPages.length, page: { width: first.width, height: first.height, marginLeft: 72, marginRight: 72, marginTop: 72, marginBottom: 72 } }
+  }
 
   // One text margin for the whole document, from where most lines start/end.
   const first = pages[0]
+  const withLines = pages.filter((p) => p.lines.length)
   const marginLeft = Math.max(18, Math.min(...allLines.map((l) => l.x)))
   const marginRight = Math.max(18, first.width - Math.max(...allLines.map((l) => l.right)))
-  const marginTop = Math.max(18, Math.min(...pages.filter((p) => p.lines.length).map((p) => p.lines[0].y - p.lines[0].size)))
-  const marginBottom = Math.max(18, Math.min(...pages.filter((p) => p.lines.length).map((p) => p.height - p.lines[p.lines.length - 1].y)) - 6)
+  const marginTop = Math.max(18, Math.min(...withLines.map((p) => p.lines[0].y - p.lines[0].size)))
+  const marginBottom = Math.max(18, Math.min(...withLines.map((p) => p.height - p.lines[p.lines.length - 1].y)) - 6)
   const textWidth = first.width - marginLeft - marginRight
 
   const paragraphs: Paragraph[] = []
   pages.forEach((page, i) => {
-    const ps = toParagraphs(page.lines, page.width, marginLeft, textWidth)
+    const ps = toParagraphs(page.lines, i, page.width, marginLeft, textWidth)
     if (i > 0 && ps[0]) ps[0].pageBreakBefore = true
     paragraphs.push(...ps)
   })

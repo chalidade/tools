@@ -17,6 +17,12 @@ picture; the rules that matter when editing:
   and split into segments). Render PDF pages with `intent: 'print'` — the
   default display intent waits on requestAnimationFrame and stalls in a
   background tab.
+- PDF writing/encryption goes through `src/lib/qpdf.ts` (qpdf 12 compiled to
+  wasm): one fresh module instance per command, input at `/in`, output at
+  `/out`. This build prints through console.log/error bound at creation, so
+  `runQpdf` captures them to read messages like "invalid password". Use
+  `encryptionInfo` (not `--requires-password`, which fails outright on
+  password-protected files in qpdf 12).
 - **Hash routing** (`#/<slug>`, `src/lib/use-hash-route.ts`) — do not switch to
   path routing; it 404s on reload under the Pages sub-path.
 - `App.tsx` only composes sections; each section lives in
