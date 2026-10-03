@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="id">
+<html lang="id" class="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -34,12 +34,11 @@
       rel="stylesheet"
     />
 
-    <!-- Apply the theme before first paint so there is no light/dark flash. -->
+    <!-- Dark by default; a visitor's own choice (header toggle) wins. Applied
+         before first paint so there is no light/dark flash. -->
     <script>
       try {
-        var t = localStorage.getItem('theme')
-        if (t === 'dark' || (!t && matchMedia('(prefers-color-scheme: dark)').matches))
-          document.documentElement.classList.add('dark')
+        if (localStorage.getItem('theme') === 'light') document.documentElement.classList.remove('dark')
       } catch (e) {}
     </script>
   </head>

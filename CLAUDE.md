@@ -22,7 +22,8 @@ picture; the rules that matter when editing:
   test runner.
 - Design: Geist font, zinc neutrals, blue→violet brand gradient (`--brand-1`,
   `--brand-2`; utilities `text-gradient`, `bg-gradient-brand`, `bg-grid`,
-  `bg-glow` in `src/index.css`), light/dark via `.dark` (toggle in Header,
+  `bg-glow` in `src/index.css`), dark by default (`class="dark"` on `<html>`;
+  a stored "light" choice from the Header toggle wins, applied by the
   pre-paint script in `index.html`). Public assets are referenced with
   `import.meta.env.BASE_URL` — the site is served under `/tools/`.
 - Link preview: `public/og.png` is rendered from `og/og.html` by

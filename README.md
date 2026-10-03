@@ -57,5 +57,5 @@ belum pernah dibagikan (atau setelah cache-nya kedaluwarsa).
 ## Stack
 
 Vite + React 19 + TypeScript, Tailwind CSS v4, shadcn/ui, Motion
-(`motion/react`), ikon lucide-react, font Geist. Tema terang/gelap mengikuti
-sistem dan bisa dialihkan dari header.
+(`motion/react`), ikon lucide-react, font Geist. Tema gelap secara default;
+pengunjung bisa beralih ke terang dari header.
