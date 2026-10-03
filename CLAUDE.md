@@ -10,6 +10,8 @@ picture; the rules that matter when editing:
   component, registered once in `src/tools/registry.ts` (lazy-loaded). Heavy
   libraries are dynamic `import()`s inside the tool, never top-level imports in
   shared code.
+- Tool UIs reuse `src/components/tool/` (`FileDrop`, `ErrorNote`) and
+  `downloadBlob`/`withExtension` from `src/lib/download.ts`.
 - **Hash routing** (`#/<slug>`, `src/lib/use-hash-route.ts`) — do not switch to
   path routing; it 404s on reload under the Pages sub-path.
 - `App.tsx` only composes sections; each section lives in

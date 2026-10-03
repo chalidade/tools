@@ -1,6 +1,9 @@
-import { useRef, useState, type DragEvent } from 'react'
-import { AlertCircle, Download, FileUp, Loader2, Printer, RotateCcw } from 'lucide-react'
+import { useRef, useState } from 'react'
+import { Download, Loader2, Printer, RotateCcw } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { ErrorNote } from '@/components/tool/ErrorNote'
+import { FileDrop } from '@/components/tool/FileDrop'
+import { withExtension } from '@/lib/download'
 import { cn } from '@/lib/utils'
 import { downloadPdf, printDocx, renderDocx } from './convert'
 
@@ -13,16 +16,10 @@ type Status =
 
 const DOCX_MIME = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
 
-function toPdfName(name: string) {
-  return name.replace(/\.[^.]+$/, '') + '.pdf'
-}
-
 export default function DocToPdf() {
   const [status, setStatus] = useState<Status>({ kind: 'idle' })
   const [file, setFile] = useState<File | null>(null)
-  const [dragging, setDragging] = useState(false)
 
-  const inputRef = useRef<HTMLInputElement>(null)
   const bodyRef = useRef<HTMLDivElement>(null)
   const styleRef = useRef<HTMLDivElement>(null)
   const sectionsRef = useRef<HTMLElement[]>([])
@@ -61,7 +58,7 @@ export default function DocToPdf() {
     const total = sectionsRef.current.length
     setStatus({ kind: 'exporting', done: 0, total })
     try {
-      await downloadPdf(sectionsRef.current, toPdfName(file.name), (done) =>
+      await downloadPdf(sectionsRef.current, withExtension(file.name, '.pdf'), (done) =>
         setStatus({ kind: 'exporting', done, total }),
       )
       setStatus({ kind: 'ready' })
@@ -76,63 +73,23 @@ export default function DocToPdf() {
     sectionsRef.current = []
     setFile(null)
     setStatus({ kind: 'idle' })
-    if (inputRef.current) inputRef.current.value = ''
-  }
-
-  function onDrop(e: DragEvent) {
-    e.preventDefault()
-    setDragging(false)
-    const dropped = e.dataTransfer.files[0]
-    if (dropped) void open(dropped)
   }
 
   const hasDoc = status.kind === 'ready' || status.kind === 'exporting'
-  const busy = status.kind === 'rendering' || status.kind === 'exporting'
+  const busy = status.kind === 'exporting'
 
   return (
     <div className="space-y-6">
       {!hasDoc && (
-        <label
-          onDragOver={(e) => {
-            e.preventDefault()
-            setDragging(true)
-          }}
-          onDragLeave={() => setDragging(false)}
-          onDrop={onDrop}
-          className={cn(
-            'flex cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed bg-card px-6 py-16 text-center transition-colors',
-            dragging ? 'border-primary bg-accent' : 'hover:border-primary/40',
-            busy && 'pointer-events-none opacity-70',
-          )}
-        >
-          {status.kind === 'rendering' ? (
-            <Loader2 className="size-8 animate-spin text-muted-foreground" />
-          ) : (
-            <FileUp className="size-8 text-muted-foreground" />
-          )}
-          <p className="mt-4 font-medium">
-            {status.kind === 'rendering' ? `Membaca ${file?.name}…` : 'Tarik file .docx ke sini'}
-          </p>
-          <p className="mt-1 text-sm text-muted-foreground">atau klik untuk memilih dari perangkat</p>
-          <input
-            ref={inputRef}
-            type="file"
-            accept={`.docx,.doc,${DOCX_MIME}`}
-            className="sr-only"
-            onChange={(e) => {
-              const picked = e.target.files?.[0]
-              if (picked) void open(picked)
-            }}
-          />
-        </label>
+        <FileDrop
+          accept={`.docx,.doc,${DOCX_MIME}`}
+          label="Tarik file .docx ke sini"
+          busyLabel={status.kind === 'rendering' ? `Membaca ${file?.name}…` : undefined}
+          onFile={(f) => void open(f)}
+        />
       )}
 
-      {status.kind === 'error' && (
-        <div className="flex items-start gap-3 rounded-xl border border-destructive/40 bg-destructive/5 p-4 text-sm">
-          <AlertCircle className="mt-0.5 size-4 shrink-0 text-destructive" />
-          <p>{status.message}</p>
-        </div>
-      )}
+      {status.kind === 'error' && <ErrorNote message={status.message} />}
 
       {hasDoc && (
         <div className="flex flex-col gap-4 rounded-2xl border bg-card p-4 sm:flex-row sm:items-center sm:justify-between">

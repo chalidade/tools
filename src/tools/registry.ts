@@ -1,5 +1,5 @@
 import { lazy, type ComponentType, type LazyExoticComponent } from 'react'
-import { FileText, type LucideIcon } from 'lucide-react'
+import { FileText, FileType, type LucideIcon } from 'lucide-react'
 
 export interface Tool {
   /** URL segment: the tool lives at #/<slug>. */
@@ -23,6 +23,14 @@ export const TOOLS: Tool[] = [
     icon: FileText,
     formats: 'DOCX → PDF',
     component: lazy(() => import('./doc-to-pdf/DocToPdf')),
+  },
+  {
+    slug: 'pdf-to-word',
+    title: 'PDF ke Word',
+    description: 'Ambil teks dari PDF jadi dokumen Word (.docx) yang bisa diedit.',
+    icon: FileType,
+    formats: 'PDF → DOCX',
+    component: lazy(() => import('./pdf-to-word/PdfToWord')),
   },
 ]
 

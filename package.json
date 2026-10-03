@@ -12,11 +12,13 @@
   "dependencies": {
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "docx": "^9.8.1",
     "docx-preview": "^0.4.1",
     "html2canvas-pro": "^2.5.0",
     "jspdf": "^4.2.1",
     "lucide-react": "^0.469.0",
     "motion": "^12.42.2",
+    "pdfjs-dist": "^6.3.289",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
     "tailwind-merge": "^2.6.0"

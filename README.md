@@ -8,6 +8,7 @@ perangkat pengguna: tidak di-upload ke server dan tidak disimpan di mana pun.
 | Tool | Alamat | Keterangan |
 | --- | --- | --- |
 | Word ke PDF | [`#/doc-to-pdf`](https://chalidade.github.io/tools/#/doc-to-pdf) | `.docx` → PDF (docx-preview + jsPDF). `.doc` lama belum didukung. |
+| PDF ke Word | [`#/pdf-to-word`](https://chalidade.github.io/tools/#/pdf-to-word) | PDF → `.docx` yang bisa diedit (pdf.js + docx). Teks, ukuran, tebal/miring, font, tab, dan pemisah halaman ikut; gambar dan garis tabel tidak. PDF hasil scan belum didukung (butuh OCR). |
 
 ## Menjalankan
 
@@ -26,6 +27,8 @@ Setiap push ke `main` otomatis di-deploy ke GitHub Pages lewat
 1. Buat folder `src/tools/<slug>/` berisi komponen yang di-*export default*.
    Taruh logika berat di file terpisah dan pakai `import()` dinamis, supaya
    library-nya hanya dimuat saat tool itu dibuka.
+   Untuk antarmuka, pakai komponen bersama di `src/components/tool/`
+   (`FileDrop`, `ErrorNote`) dan `downloadBlob` dari `src/lib/download.ts`.
 2. Tambahkan satu entri di `src/tools/registry.ts` (slug, judul, deskripsi,
    ikon lucide, format, `lazy(() => import(...))`).
 
