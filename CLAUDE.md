@@ -7,7 +7,8 @@ picture; the rules that matter when editing:
 - **Everything runs client-side.** No backend, no uploads, no third-party
   processing APIs — the privacy promise on the homepage depends on it.
 - **One tool = one folder** `src/tools/<slug>/` with a default-exported
-  component, registered once in `src/tools/registry.ts` (lazy-loaded). Heavy
+  component, registered once in `src/tools/registry.ts` (lazy-loaded) with a
+  `category` and search `keywords` (`src/tools/search.ts` matches word prefixes). Heavy
   libraries are dynamic `import()`s inside the tool, never top-level imports in
   shared code.
 - Tool UIs reuse `src/components/tool/` (`FileDrop`, `ErrorNote`, `Segmented`, `PasswordInput`, `SizeResult`/`ProgressCard`) and

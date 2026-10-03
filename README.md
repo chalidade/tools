@@ -45,7 +45,9 @@ Setiap push ke `main` otomatis di-deploy ke GitHub Pages lewat
    Untuk antarmuka, pakai komponen bersama di `src/components/tool/`
    (`FileDrop`, `ErrorNote`, `Segmented`, `PasswordInput`, `SizeResult`/`ProgressCard`) dan `downloadBlob` dari `src/lib/download.ts`.
    Tool yang membaca teks PDF memakai `src/lib/pdf-text.ts`.
-2. Tambahkan satu entri di `src/tools/registry.ts` (slug, judul, deskripsi,
+2. Tambahkan satu entri di `src/tools/registry.ts`, lengkap dengan `category`
+   (grup di halaman depan) dan `keywords` (kata yang orang ketik saat mencari,
+   misalnya ekstensi file dan istilah sehari-hari) (slug, judul, deskripsi,
    ikon lucide, format, `lazy(() => import(...))`).
 
 Kartu di halaman depan dan rute `#/<slug>` muncul otomatis. Routing sengaja
