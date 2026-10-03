@@ -12,6 +12,8 @@ picture; the rules that matter when editing:
   shared code.
 - Tool UIs reuse `src/components/tool/` (`FileDrop`, `ErrorNote`, `Segmented`) and
   `downloadBlob`/`withExtension` from `src/lib/download.ts`.
+  Tools that read a PDF's text layer share `src/lib/pdf-text.ts` (pdf.js
+  loading, text pieces with position/size/bold/italic/font, grouped into lines).
 - **Hash routing** (`#/<slug>`, `src/lib/use-hash-route.ts`) — do not switch to
   path routing; it 404s on reload under the Pages sub-path.
 - `App.tsx` only composes sections; each section lives in

@@ -1,5 +1,5 @@
 import { lazy, type ComponentType, type LazyExoticComponent } from 'react'
-import { FileSpreadsheet, FileText, FileType, Images, Presentation, type LucideIcon } from 'lucide-react'
+import { FileSpreadsheet, FileText, FileType, Images, Presentation, Sheet, type LucideIcon } from 'lucide-react'
 
 export interface Tool {
   /** URL segment: the tool lives at #/<slug>. */
@@ -56,8 +56,16 @@ export const TOOLS: Tool[] = [
     description: 'Ubah spreadsheet Excel (.xlsx) atau CSV jadi PDF tabel yang rapi, lengkap dengan warna dan format angka.',
     icon: FileSpreadsheet,
     formats: 'XLSX / CSV → PDF',
-    badge: 'Baru',
     component: lazy(() => import('./excel-to-pdf/ExcelToPdf')),
+  },
+  {
+    slug: 'pdf-to-excel',
+    title: 'PDF ke Excel',
+    description: 'Ambil tabel dari PDF jadi spreadsheet Excel (.xlsx) — angka langsung bisa dihitung.',
+    icon: Sheet,
+    formats: 'PDF → XLSX',
+    badge: 'Baru',
+    component: lazy(() => import('./pdf-to-excel/PdfToExcel')),
   },
 ]
 

@@ -12,6 +12,7 @@ perangkat pengguna: tidak di-upload ke server dan tidak disimpan di mana pun.
 | Gambar ke PDF | [`#/image-to-pdf`](https://chalidade.github.io/tools/#/image-to-pdf) | JPG/PNG/WebP/GIF/BMP → satu PDF (jsPDF). Banyak gambar sekaligus, urutan bisa diatur, putar 90°, ukuran A4/Letter/sesuai gambar, orientasi, margin. Rotasi EXIF foto ponsel ikut. HEIC hanya terbaca di Safari. |
 | PowerPoint ke PDF | [`#/ppt-to-pdf`](https://chalidade.github.io/tools/#/ppt-to-pdf) | `.pptx` → PDF, satu halaman per slide (@jvmr/pptx-to-html + jsPDF, HTML slide disanitasi dengan DOMPurify). Teks, bentuk, tabel, grafik, dan gambar ikut; animasi, transisi, dan video tidak. `.ppt` lama belum didukung. |
 | Excel ke PDF | [`#/excel-to-pdf`](https://chalidade.github.io/tools/#/excel-to-pdf) | `.xlsx`/`.csv` → PDF tabel dengan teks yang bisa diseleksi (ExcelJS + numfmt + jsPDF autotable). Warna (termasuk warna tema), tebal/miring, border, sel gabungan, format angka/tanggal/persen, teks terbungkus; baris/kolom/sheet tersembunyi dilewati. Pilihan kertas, orientasi, muat-ke-lebar atau ukuran asli, garis bantu, dan sheet mana yang dicetak. `.xls`/`.ods` belum didukung; huruf di luar Latin (mis. aksara CJK) belum tampil benar karena PDF memakai font Helvetica bawaan. |
+| PDF ke Excel | [`#/pdf-to-excel`](https://chalidade.github.io/tools/#/pdf-to-excel) | Tabel di PDF → `.xlsx` (pdf.js + ExcelJS). Baris dari garis dasar teks, kolom dari celah vertikal yang kosong; sel yang terbungkus digabung kembali; header yang berulang tiap halaman diambil sekali. Angka (Rp, ribuan, desimal koma/titik, persen, negatif dalam kurung) jadi angka sungguhan dengan format Excel; nomor berawalan 0 tetap teks. Satu sheet gabungan atau satu per halaman. PDF hasil scan belum didukung. |
 
 ## Menjalankan
 
@@ -32,6 +33,7 @@ Setiap push ke `main` otomatis di-deploy ke GitHub Pages lewat
    library-nya hanya dimuat saat tool itu dibuka.
    Untuk antarmuka, pakai komponen bersama di `src/components/tool/`
    (`FileDrop`, `ErrorNote`, `Segmented`) dan `downloadBlob` dari `src/lib/download.ts`.
+   Tool yang membaca teks PDF memakai `src/lib/pdf-text.ts`.
 2. Tambahkan satu entri di `src/tools/registry.ts` (slug, judul, deskripsi,
    ikon lucide, format, `lazy(() => import(...))`).
 
