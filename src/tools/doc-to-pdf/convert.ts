@@ -17,8 +17,30 @@ export async function renderDocx(file: File, body: HTMLElement, style: HTMLEleme
     experimental: true,
     // Data URLs rather than blob: URLs, so nothing outlives the render.
     useBase64URL: true,
+    // A .docx can embed an "altChunk" HTML part that docx-preview would drop
+    // into an un-sandboxed <iframe srcdoc>, running its script in our origin.
+    // We only ever show the document's own text, so never render those.
+    renderAltChunks: false,
   })
+  neutralizeLinks(body)
   return Array.from(body.querySelectorAll<HTMLElement>('section.docx'))
+}
+
+/**
+ * docx-preview copies hyperlink targets from the file verbatim, so a crafted
+ * document can carry a `javascript:` (or `data:`) link that runs on click.
+ * Keep only http(s)/mailto/anchors; turn anything else into inert text.
+ */
+function neutralizeLinks(root: HTMLElement) {
+  for (const a of root.querySelectorAll('a[href]')) {
+    const href = (a.getAttribute('href') ?? '').trim()
+    if (!/^(https?:|mailto:|#)/i.test(href)) {
+      a.removeAttribute('href')
+    } else {
+      a.setAttribute('rel', 'noopener noreferrer nofollow')
+      a.setAttribute('target', '_blank')
+    }
+  }
 }
 
 /** Page height in CSS px — the section's min-height is the Word page size. */
