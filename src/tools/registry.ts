@@ -1,5 +1,5 @@
 import { lazy, type ComponentType, type LazyExoticComponent } from 'react'
-import { FileText, FileType, type LucideIcon } from 'lucide-react'
+import { FileText, FileType, Images, type LucideIcon } from 'lucide-react'
 
 export interface Tool {
   /** URL segment: the tool lives at #/<slug>. */
@@ -32,8 +32,16 @@ export const TOOLS: Tool[] = [
     description: 'Ambil teks dari PDF jadi dokumen Word (.docx) yang bisa diedit.',
     icon: FileType,
     formats: 'PDF → DOCX',
-    badge: 'Baru',
     component: lazy(() => import('./pdf-to-word/PdfToWord')),
+  },
+  {
+    slug: 'image-to-pdf',
+    title: 'Gambar ke PDF',
+    description: 'Gabungkan foto dan gambar jadi satu PDF — atur urutan, putar, dan pilih ukuran kertas.',
+    icon: Images,
+    formats: 'JPG / PNG → PDF',
+    badge: 'Baru',
+    component: lazy(() => import('./image-to-pdf/ImageToPdf')),
   },
 ]
 

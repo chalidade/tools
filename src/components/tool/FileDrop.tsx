@@ -9,18 +9,20 @@ interface FileDropProps {
   label: string
   /** When set, the drop zone shows a spinner with this text and ignores input. */
   busyLabel?: string
-  onFile: (file: File) => void
+  /** Accept several files at once; `onFiles` then receives all of them. */
+  multiple?: boolean
+  onFiles: (files: File[]) => void
 }
 
-/** Drag-and-drop or click-to-pick zone for a single file. Reads nothing itself. */
-export function FileDrop({ accept, label, busyLabel, onFile }: FileDropProps) {
+/** Drag-and-drop or click-to-pick zone for one or more files. Reads nothing itself. */
+export function FileDrop({ accept, label, busyLabel, multiple = false, onFiles }: FileDropProps) {
   const [dragging, setDragging] = useState(false)
 
   function onDrop(e: DragEvent) {
     e.preventDefault()
     setDragging(false)
-    const dropped = e.dataTransfer.files[0]
-    if (dropped) onFile(dropped)
+    const dropped = Array.from(e.dataTransfer.files)
+    if (dropped.length) onFiles(multiple ? dropped : dropped.slice(0, 1))
   }
 
   return (
@@ -54,12 +56,13 @@ export function FileDrop({ accept, label, busyLabel, onFile }: FileDropProps) {
       <input
         type="file"
         accept={accept}
+        multiple={multiple}
         className="sr-only"
         onChange={(e) => {
-          const picked = e.target.files?.[0]
+          const picked = Array.from(e.target.files ?? [])
           // Clear so picking the same file again still fires onChange.
           e.target.value = ''
-          if (picked) onFile(picked)
+          if (picked.length) onFiles(picked)
         }}
       />
     </label>

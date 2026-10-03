@@ -85,7 +85,7 @@ export default function DocToPdf() {
           accept={`.docx,.doc,${DOCX_MIME}`}
           label="Tarik file .docx ke sini"
           busyLabel={status.kind === 'rendering' ? `Membaca ${file?.name}…` : undefined}
-          onFile={(f) => void open(f)}
+          onFiles={([f]) => void open(f)}
         />
       )}
 

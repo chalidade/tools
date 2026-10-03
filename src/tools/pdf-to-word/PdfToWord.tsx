@@ -126,7 +126,7 @@ export default function PdfToWord() {
               : `Membuka ${file?.name}…`
             : undefined
         }
-        onFile={(f) => void open(f)}
+        onFiles={([f]) => void open(f)}
       />
       {status.kind === 'error' && <ErrorNote message={status.message} />}
     </div>

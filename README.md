@@ -9,6 +9,7 @@ perangkat pengguna: tidak di-upload ke server dan tidak disimpan di mana pun.
 | --- | --- | --- |
 | Word ke PDF | [`#/doc-to-pdf`](https://chalidade.github.io/tools/#/doc-to-pdf) | `.docx` → PDF (docx-preview + jsPDF). `.doc` lama belum didukung. |
 | PDF ke Word | [`#/pdf-to-word`](https://chalidade.github.io/tools/#/pdf-to-word) | PDF → `.docx` yang bisa diedit (pdf.js + docx). Teks, ukuran, tebal/miring, font, tab, dan pemisah halaman ikut; gambar dan garis tabel tidak. PDF hasil scan belum didukung (butuh OCR). |
+| Gambar ke PDF | [`#/image-to-pdf`](https://chalidade.github.io/tools/#/image-to-pdf) | JPG/PNG/WebP/GIF/BMP → satu PDF (jsPDF). Banyak gambar sekaligus, urutan bisa diatur, putar 90°, ukuran A4/Letter/sesuai gambar, orientasi, margin. Rotasi EXIF foto ponsel ikut. HEIC hanya terbaca di Safari. |
 
 ## Menjalankan
 
@@ -28,7 +29,7 @@ Setiap push ke `main` otomatis di-deploy ke GitHub Pages lewat
    Taruh logika berat di file terpisah dan pakai `import()` dinamis, supaya
    library-nya hanya dimuat saat tool itu dibuka.
    Untuk antarmuka, pakai komponen bersama di `src/components/tool/`
-   (`FileDrop`, `ErrorNote`) dan `downloadBlob` dari `src/lib/download.ts`.
+   (`FileDrop`, `ErrorNote`, `Segmented`) dan `downloadBlob` dari `src/lib/download.ts`.
 2. Tambahkan satu entri di `src/tools/registry.ts` (slug, judul, deskripsi,
    ikon lucide, format, `lazy(() => import(...))`).
 
