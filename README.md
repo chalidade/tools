@@ -19,6 +19,11 @@ perangkat pengguna: tidak di-upload ke server dan tidak disimpan di mana pun.
 | PDF ke Markdown | [`#/pdf-to-markdown`](https://chalidade.github.io/tools/#/pdf-to-markdown) | Judul dari ukuran huruf, **tebal**/*miring*, daftar, dan tabel Markdown (mesin tabel PDF ke Excel + mesin paragraf PDF ke Word); tabel yang bersambung antar-halaman digabung. |
 | Proteksi PDF | [`#/protect-pdf`](https://chalidade.github.io/tools/#/protect-pdf) | Password buka + izin cetak/salin/ubah, enkripsi AES-256 (qpdf). |
 | Buka Proteksi PDF | [`#/unlock-pdf`](https://chalidade.github.io/tools/#/unlock-pdf) | Hapus password (dengan password yang benar) atau batasan cetak/salin/ubah dari PDF milik sendiri (qpdf). |
+| Kompres Video | [`#/compress-video`](https://chalidade.github.io/tools/#/compress-video) | MP4/MOV/WebM/MKV → MP4 (Mediabunny + WebCodecs, encoder bawaan perangkat — biasanya lebih cepat dari durasi videonya). Kualitas Ringan/Sedang/Kuat (bitrate dari resolusi × fps), resolusi 1080p/720p/480p, audio dipertahankan atau dihapus; perkiraan ukuran sebelum mulai, progress + bisa dibatalkan. Butuh browser dengan WebCodecs. |
+| Kompres Gambar | [`#/compress-image`](https://chalidade.github.io/tools/#/compress-image) | Banyak gambar sekaligus → JPG/WebP (atau format asli), kualitas dan ukuran maksimum diatur; rotasi EXIF diterapkan, metadata (termasuk GPS) dihapus, transparansi terjaga di WebP. Hasil yang tidak lebih kecil disimpan apa adanya. |
+| Kompres Audio | [`#/compress-audio`](https://chalidade.github.io/tools/#/compress-audio) | Audio (atau suara dari video) → MP3 / AAC (M4A) / Opus (OGG), 64–192 kbps, stereo/mono. MP3 dan AAC memakai encoder wasm Mediabunny bila browser tidak punya encoder bawaan. |
+| JSON Beautifier | [`#/json-beautify`](https://chalidade.github.io/tools/#/json-beautify) | Indentasi 2/4/tab, urutkan key, kesalahan sintaks dengan baris:kolom dan lompat ke posisinya. Parser sendiri: angka dan teks disalin persis (tidak ada pembulatan seperti `JSON.parse`). |
+| JSON Minify | [`#/json-minify`](https://chalidade.github.io/tools/#/json-minify) | Hapus semua spasi di luar teks; angka dan teks tidak berubah. |
 
 ## Menjalankan
 
@@ -38,7 +43,7 @@ Setiap push ke `main` otomatis di-deploy ke GitHub Pages lewat
    Taruh logika berat di file terpisah dan pakai `import()` dinamis, supaya
    library-nya hanya dimuat saat tool itu dibuka.
    Untuk antarmuka, pakai komponen bersama di `src/components/tool/`
-   (`FileDrop`, `ErrorNote`, `Segmented`) dan `downloadBlob` dari `src/lib/download.ts`.
+   (`FileDrop`, `ErrorNote`, `Segmented`, `PasswordInput`, `SizeResult`/`ProgressCard`) dan `downloadBlob` dari `src/lib/download.ts`.
    Tool yang membaca teks PDF memakai `src/lib/pdf-text.ts`.
 2. Tambahkan satu entri di `src/tools/registry.ts` (slug, judul, deskripsi,
    ikon lucide, format, `lazy(() => import(...))`).

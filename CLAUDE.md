@@ -10,7 +10,7 @@ picture; the rules that matter when editing:
   component, registered once in `src/tools/registry.ts` (lazy-loaded). Heavy
   libraries are dynamic `import()`s inside the tool, never top-level imports in
   shared code.
-- Tool UIs reuse `src/components/tool/` (`FileDrop`, `ErrorNote`, `Segmented`) and
+- Tool UIs reuse `src/components/tool/` (`FileDrop`, `ErrorNote`, `Segmented`, `PasswordInput`, `SizeResult`/`ProgressCard`) and
   `downloadBlob`/`withExtension` from `src/lib/download.ts`.
   Tools that read a PDF's text layer share `src/lib/pdf-text.ts` (pdf.js
   loading, text pieces with position/size/bold/italic/font, grouped into lines
@@ -23,6 +23,11 @@ picture; the rules that matter when editing:
   `runQpdf` captures them to read messages like "invalid password". Use
   `encryptionInfo` (not `--requires-password`, which fails outright on
   password-protected files in qpdf 12).
+- Audio/video goes through `src/lib/media.ts` (Mediabunny on WebCodecs):
+  `probeMedia`, `convertMedia`, and `ensureAudioEncoder`, which registers the
+  wasm AAC/MP3 encoders only when the browser has no native one (MP3: never
+  native; AAC: missing on Chrome/Linux and Firefox). Gate the UI on
+  `hasWebCodecs()`.
 - **Hash routing** (`#/<slug>`, `src/lib/use-hash-route.ts`) — do not switch to
   path routing; it 404s on reload under the Pages sub-path.
 - `App.tsx` only composes sections; each section lives in
