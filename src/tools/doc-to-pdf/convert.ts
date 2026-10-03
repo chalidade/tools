@@ -26,10 +26,51 @@ function pageHeight(section: HTMLElement) {
   return parseFloat(getComputedStyle(section).minHeight) || section.offsetHeight
 }
 
+/** Vertical extent of every rendered line of text and every image, in section px. */
+function lineBoxes(section: HTMLElement, origin: number) {
+  const boxes: [number, number][] = []
+  const range = document.createRange()
+  const walker = document.createTreeWalker(section, NodeFilter.SHOW_TEXT)
+  for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+    if (!node.textContent?.trim()) continue
+    range.selectNodeContents(node)
+    // One rect per line the text node wraps onto.
+    for (const r of range.getClientRects()) {
+      if (r.height > 0) boxes.push([r.top - origin, r.bottom - origin])
+    }
+  }
+  for (const el of section.querySelectorAll('img, svg, canvas')) {
+    const r = el.getBoundingClientRect()
+    if (r.height > 0) boxes.push([r.top - origin, r.bottom - origin])
+  }
+  return boxes
+}
+
+// Lines whose boxes overlap by less than this still count as separate, so a
+// tight line-height does not drag the cut up through a whole paragraph.
+const OVERLAP_TOLERANCE = 1.5
+
+/** The lowest y in (floor, limit] that does not pass through a line or image. */
+function safeCut(boxes: [number, number][], floor: number, limit: number) {
+  let y = limit
+  for (let moved = true; moved && y > floor; ) {
+    moved = false
+    for (const [top, bottom] of boxes) {
+      if (top < y - OVERLAP_TOLERANCE && bottom > y + OVERLAP_TOLERANCE) {
+        y = top
+        moved = true
+      }
+    }
+  }
+  // Nothing fits (e.g. one image taller than a page): cut hard at the limit.
+  return y > floor + 1 ? y : limit
+}
+
 /**
  * docx-preview only breaks pages where Word recorded a break, so a section can
  * run taller than one page. Splits its content area into page-sized ranges,
- * cutting between paragraphs/table rows rather than through a line of text.
+ * cutting in the gap between two lines of text — never through one, even when
+ * the whole document sits inside a single layout table.
  */
 function contentRanges(section: HTMLElement, pageH: number) {
   const style = getComputedStyle(section)
@@ -40,19 +81,13 @@ function contentRanges(section: HTMLElement, pageH: number) {
 
   if (section.offsetHeight <= pageH + 1 || usable <= 0) return null
 
-  const origin = section.getBoundingClientRect().top
-  const cuts = Array.from(section.querySelectorAll<HTMLElement>('article > *, article tr'))
-    .map((el) => el.getBoundingClientRect().top - origin)
-    .sort((a, b) => a - b)
+  const boxes = lineBoxes(section, section.getBoundingClientRect().top)
 
   const ranges: [number, number][] = []
   let from = padTop
   while (end - from > 1) {
-    let to = Math.min(from + usable, end)
-    if (to < end) {
-      const fit = cuts.filter((c) => c > from + 1 && c <= to)
-      if (fit.length) to = fit[fit.length - 1]
-    }
+    const limit = Math.min(from + usable, end)
+    const to = limit < end ? safeCut(boxes, from, limit) : limit
     ranges.push([from, to])
     from = to
   }
@@ -142,7 +177,11 @@ export async function printDocx(body: HTMLElement, style: HTMLElement, sections:
     @page { size: ${size}; margin: 0 }
     html, body { margin: 0; background: #fff }
     .docx-wrapper { background: none !important; padding: 0 !important; display: block !important }
-    .docx-wrapper > section.docx { box-shadow: none !important; margin: 0 !important; break-after: page }
+    .docx-wrapper > section.docx { box-shadow: none !important; margin: 0 !important; break-after: page;
+      /* A section that overflows one page repeats its Word margins on every page. */
+      -webkit-box-decoration-break: clone; box-decoration-break: clone }
+    .docx-wrapper p, .docx-wrapper li { orphans: 2; widows: 2 }
+    .docx-wrapper tr, .docx-wrapper img { break-inside: avoid }
     .docx-wrapper > section.docx:last-child { break-after: auto }
   </style></head><body>${body.innerHTML}</body></html>`)
   doc.close()
