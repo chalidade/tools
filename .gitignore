@@ -1,0 +1,14 @@
+node_modules/
+dist/
+*.tsbuildinfo
+.vite/
+*.log
+*.local
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/extensions.json
+.env
+.env.*
+android/
+*.apk

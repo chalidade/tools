@@ -1,0 +1,31 @@
+import { lazy, type ComponentType, type LazyExoticComponent } from 'react'
+import { FileText, type LucideIcon } from 'lucide-react'
+
+export interface Tool {
+  /** URL segment: the tool lives at #/<slug>. */
+  slug: string
+  title: string
+  description: string
+  icon: LucideIcon
+  /** Accepted input → produced output, shown as a chip on the card. */
+  formats: string
+  /** Lazy so each tool's libraries load only when that tool is opened. */
+  component: LazyExoticComponent<ComponentType>
+}
+
+// Adding a tool: create src/tools/<slug>/ with a default-exported component,
+// then add one entry here. Nothing else needs to change.
+export const TOOLS: Tool[] = [
+  {
+    slug: 'doc-to-pdf',
+    title: 'Word ke PDF',
+    description: 'Ubah dokumen Word (.docx) jadi PDF, langsung unduh.',
+    icon: FileText,
+    formats: 'DOCX → PDF',
+    component: lazy(() => import('./doc-to-pdf/DocToPdf')),
+  },
+]
+
+export function findTool(slug: string) {
+  return TOOLS.find((t) => t.slug === slug)
+}

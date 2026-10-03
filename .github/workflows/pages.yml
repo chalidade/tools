@@ -1,0 +1,44 @@
+# Builds the site and publishes it to https://chalidade.github.io/tools/.
+# The --base flag makes asset URLs resolve under the /tools/ sub-path; local
+# `npm run build` keeps the default base.
+name: Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      # tsc -b first: the type-check is the correctness gate.
+      - run: npx tsc -b && npx vite build --base=/tools/
+
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: dist
+
+      - id: deployment
+        uses: actions/deploy-pages@v5
