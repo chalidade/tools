@@ -31,6 +31,10 @@ picture; the rules that matter when editing:
   matrix to draw in that space; `pageThumbs` renders previews with pdf.js.
 - Image tools decode with `decodeImage` from `src/lib/image.ts` (EXIF
   rotation applied; SVG via <img>) and encode with `canvasBlob`.
+- QR tools live together in `src/tools/qr/` (generator + reader share
+  `payload.ts`). Reading uses zxing-wasm with `locateFile` pointed at the
+  bundled `zxing_reader.wasm?url` — its default fetches the wasm from a CDN,
+  which this site must not do.
 - Audio/video goes through `src/lib/media.ts` (Mediabunny on WebCodecs):
   `probeMedia`, `convertMedia` (with optional `trim`), `sameContainer`,
   `AUDIO_OUTPUTS`, `videoThumbnails`/`audioPeaks`, and `ensureAudioEncoder`, which registers the
