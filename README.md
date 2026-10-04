@@ -15,6 +15,10 @@ perangkat pengguna: tidak di-upload ke server dan tidak disimpan di mana pun.
 | PDF ke Excel | [`#/pdf-to-excel`](https://chalidade.github.io/tools/#/pdf-to-excel) | Tabel di PDF → `.xlsx` (pdf.js + ExcelJS). Baris dari garis dasar teks, kolom dari celah vertikal yang kosong; sel yang terbungkus digabung kembali; header yang berulang tiap halaman diambil sekali. Angka (Rp, ribuan, desimal koma/titik, persen, negatif dalam kurung) jadi angka sungguhan dengan format Excel; nomor berawalan 0 tetap teks. Satu sheet gabungan atau satu per halaman. PDF hasil scan belum didukung. |
 | PDF ke PowerPoint | [`#/pdf-to-ppt`](https://chalidade.github.io/tools/#/pdf-to-ppt) | Tiap halaman PDF → satu slide `.pptx` seukuran halaman (pdf.js + pptxgenjs). Mode **teks bisa diedit**: latar slide = halaman tanpa teks (bentuk, warna, gambar), teks jadi kotak teks di posisi aslinya dengan ukuran, tebal/miring, font, dan warna (warna dibaca dari selisih piksel render dengan/tanpa teks). Mode **persis seperti PDF**: tiap slide berupa gambar halaman. |
 | PDF ke Gambar | [`#/pdf-to-image`](https://chalidade.github.io/tools/#/pdf-to-image) | Halaman PDF → PNG/JPG pada 72/150/300 dpi (pdf.js). Pilih halaman lewat pratinjau; satu halaman jadi gambar, beberapa jadi ZIP (jszip). |
+| Gabung PDF | [`#/merge-pdf`](https://chalidade.github.io/tools/#/merge-pdf) | Beberapa PDF → satu PDF (pdf-lib). Urutan diatur dengan seret atau tombol kiri/kanan; pratinjau halaman pertama dan jumlah halaman tiap file. |
+| Pisah PDF | [`#/split-pdf`](https://chalidade.github.io/tools/#/split-pdf) | Ambil halaman terpilih jadi satu PDF, pisah per rentang (`1-3, 5, 8-`), atau pecah tiap N halaman (pdf-lib). Lebih dari satu hasil diunduh sebagai ZIP. |
+| Watermark PDF | [`#/watermark-pdf`](https://chalidade.github.io/tools/#/watermark-pdf) | Teks atau gambar/logo di semua halaman (pdf-lib): satu di tengah atau berulang, diagonal/mendatar, ukuran, warna, ketebalan; pratinjau memakai perhitungan tata letak yang sama dengan PDF-nya. Halaman yang diputar ikut benar. Teks memakai Helvetica bawaan, jadi hanya huruf Latin. |
+| Tanda Tangan PDF | [`#/sign-pdf`](https://chalidade.github.io/tools/#/sign-pdf) | Gambar tanda tangan (mouse, jari, atau pena dengan tekanan) atau unggah fotonya — latar kertas dijadikan transparan — lalu tempel, geser, dan ubah ukurannya di halaman mana pun (pdf-lib). Tanda tangan berupa gambar, bukan TTE bersertifikat. |
 | Kompres PDF | [`#/compress-pdf`](https://chalidade.github.io/tools/#/compress-pdf) | Foto JPEG di dalam PDF diperkecil dan dikodekan ulang (Ringan/Sedang/Kuat), lalu struktur PDF dioptimasi dengan qpdf (object stream, rekompresi). Teks tetap teks. Gambar non-JPEG/CMYK tidak disentuh; hasil tidak pernah lebih besar dari aslinya. |
 | PDF ke Markdown | [`#/pdf-to-markdown`](https://chalidade.github.io/tools/#/pdf-to-markdown) | Judul dari ukuran huruf, **tebal**/*miring*, daftar, dan tabel Markdown (mesin tabel PDF ke Excel + mesin paragraf PDF ke Word); tabel yang bersambung antar-halaman digabung. |
 | Proteksi PDF | [`#/protect-pdf`](https://chalidade.github.io/tools/#/protect-pdf) | Password buka + izin cetak/salin/ubah, enkripsi AES-256 (qpdf). |
@@ -43,8 +47,9 @@ Setiap push ke `main` otomatis di-deploy ke GitHub Pages lewat
    Taruh logika berat di file terpisah dan pakai `import()` dinamis, supaya
    library-nya hanya dimuat saat tool itu dibuka.
    Untuk antarmuka, pakai komponen bersama di `src/components/tool/`
-   (`FileDrop`, `ErrorNote`, `Segmented`, `PasswordInput`, `SizeResult`/`ProgressCard`) dan `downloadBlob` dari `src/lib/download.ts`.
-   Tool yang membaca teks PDF memakai `src/lib/pdf-text.ts`.
+   (`FileDrop`, `ErrorNote`, `Segmented`, `PasswordInput`, `IconButton`, `SizeResult`/`ProgressCard`) dan `downloadBlob` dari `src/lib/download.ts`.
+   Tool yang membaca teks PDF memakai `src/lib/pdf-text.ts`; tool yang mengubah
+   PDF yang sudah ada (gabung, pisah, watermark, tanda tangan) memakai `src/lib/pdf-doc.ts`.
 2. Tambahkan satu entri di `src/tools/registry.ts`, lengkap dengan `category`
    (grup di halaman depan) dan `keywords` (kata yang orang ketik saat mencari,
    misalnya ekstensi file dan istilah sehari-hari) (slug, judul, deskripsi,

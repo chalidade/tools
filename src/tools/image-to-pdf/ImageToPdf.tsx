@@ -1,8 +1,9 @@
-import { useRef, useState, type ReactNode } from 'react'
+import { useRef, useState } from 'react'
 import { ChevronLeft, ChevronRight, Download, Loader2, Plus, RotateCw, Trash2, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { ErrorNote } from '@/components/tool/ErrorNote'
 import { FileDrop } from '@/components/tool/FileDrop'
+import { IconButton } from '@/components/tool/IconButton'
 import { Segmented } from '@/components/tool/Segmented'
 import { downloadBlob, withExtension } from '@/lib/download'
 import { cn } from '@/lib/utils'
@@ -302,30 +303,5 @@ export default function ImageToPdf() {
         </li>
       </ol>
     </div>
-  )
-}
-
-function IconButton({
-  label,
-  disabled,
-  onClick,
-  children,
-}: {
-  label: string
-  disabled?: boolean
-  onClick: () => void
-  children: ReactNode
-}) {
-  return (
-    <button
-      type="button"
-      aria-label={label}
-      title={label}
-      disabled={disabled}
-      onClick={onClick}
-      className="grid size-8 place-items-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-foreground disabled:pointer-events-none disabled:opacity-30 [&_svg]:size-4"
-    >
-      {children}
-    </button>
   )
 }
