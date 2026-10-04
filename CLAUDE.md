@@ -32,10 +32,13 @@ picture; the rules that matter when editing:
 - Image tools decode with `decodeImage` from `src/lib/image.ts` (EXIF
   rotation applied; SVG via <img>) and encode with `canvasBlob`.
 - Audio/video goes through `src/lib/media.ts` (Mediabunny on WebCodecs):
-  `probeMedia`, `convertMedia`, and `ensureAudioEncoder`, which registers the
+  `probeMedia`, `convertMedia` (with optional `trim`), `sameContainer`,
+  `AUDIO_OUTPUTS`, `videoThumbnails`/`audioPeaks`, and `ensureAudioEncoder`, which registers the
   wasm AAC/MP3 encoders only when the browser has no native one (MP3: never
   native; AAC: missing on Chrome/Linux and Firefox). Gate the UI on
-  `hasWebCodecs()`.
+  `hasWebCodecs()`. A cut, speed change, or merge re-encodes audio, so call
+  `ensureAudioEncoder` first for MP3/AAC. Trim timelines use
+  `src/components/tool/MediaRange.tsx` (`MediaRange`, `Filmstrip`, `Waveform`).
 - **Hash routing** (`#/<slug>`, `src/lib/use-hash-route.ts`) — do not switch to
   path routing; it 404s on reload under the Pages sub-path.
 - `App.tsx` only composes sections; each section lives in
