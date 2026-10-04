@@ -22,6 +22,8 @@ import {
   ImageDown,
   Images,
   ListMusic,
+  QrCode,
+  ScanLine,
   LockOpen,
   Minimize2,
   MonitorPlay,
@@ -75,7 +77,7 @@ export const CATEGORIES: { id: CategoryId; title: string; description: string }[
   {
     id: 'dev',
     title: 'Developer & Desain',
-    description: 'Rapikan data, buat favicon, ubah gambar ke Base64, dan olah warna.',
+    description: 'QR code, favicon, Base64, warna, dan rapikan data.',
   },
 ]
 
@@ -385,6 +387,28 @@ export const TOOLS: Tool[] = [
     formats: 'Audio / Video → MP3 / M4A / OGG',
     badge: 'Baru',
     component: lazy(() => import('./compress-audio/CompressAudio')),
+  },
+  {
+    slug: 'qr-generator',
+    category: 'dev',
+    keywords: ['qr', 'qr code', 'kode qr', 'barcode', 'wifi', 'whatsapp', 'wa', 'kontak', 'vcard', 'link', 'tautan', 'menu', 'buat'],
+    title: 'Generator QR Code',
+    description: 'Buat QR code untuk tautan, teks, Wi-Fi, WhatsApp, kontak, atau email — bisa pakai logo dan warna.',
+    icon: QrCode,
+    formats: 'Teks → PNG / SVG',
+    badge: 'Baru',
+    component: lazy(() => import('./qr/QrGenerator')),
+  },
+  {
+    slug: 'qr-reader',
+    category: 'dev',
+    keywords: ['qr', 'qr code', 'kode qr', 'barcode', 'kode batang', 'ean', 'scan', 'pindai', 'baca', 'kamera', 'scanner', 'reader', 'wifi'],
+    title: 'Pembaca QR & Barcode',
+    description: 'Pindai QR code atau barcode dari gambar, screenshot, atau kamera — isi Wi-Fi, kontak, dan tautan ditampilkan rapi.',
+    icon: ScanLine,
+    formats: 'Gambar / Kamera → Teks',
+    badge: 'Baru',
+    component: lazy(() => import('./qr/QrReader')),
   },
   {
     slug: 'json-beautify',
