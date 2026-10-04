@@ -29,6 +29,7 @@
     "mediabunny": "^1.61.1",
     "motion": "^12.42.2",
     "numfmt": "^3.2.6",
+    "pdf-lib": "^1.17.1",
     "pdfjs-dist": "^6.3.289",
     "pptxgenjs": "^4.0.1",
     "react": "^19.2.7",

@@ -8,7 +8,7 @@
 // a real text box on top, at its original position, size, style and colour.
 
 import type { PDFPageProxy } from 'pdfjs-dist'
-import { loadPdf, readPageText, segmentLine } from '@/lib/pdf-text'
+import { importPdfjs, loadPdf, readPageText, segmentLine } from '@/lib/pdf-text'
 
 export { LockedPdfError } from '@/lib/pdf-text'
 
@@ -54,7 +54,7 @@ async function render(page: PDFPageProxy, withText: boolean) {
   if (!withText) {
     // Skip the operators that paint text; everything else (shapes, fills,
     // images) still renders. Indices refer to the operator list of the same intent.
-    const { OPS } = await import('pdfjs-dist')
+    const { OPS } = await importPdfjs()
     const textOps = new Set([OPS.showText, OPS.showSpacedText, OPS.nextLineShowText, OPS.nextLineSetSpacingShowText])
     const { fnArray } = await page.getOperatorList({ intent: 'print' })
     operationsFilter = (index) => !textOps.has(fnArray[index])

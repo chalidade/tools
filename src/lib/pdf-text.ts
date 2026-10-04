@@ -73,10 +73,18 @@ export function segmentLine(line: TextLine): TextSegment[] {
   return segments.filter((s) => s.text)
 }
 
+/**
+ * pdf.js itself. The legacy build: pdf.js 6 relies on very new JavaScript
+ * (Map.getOrInsertComputed, Promise.try, Uint8Array.fromBase64,
+ * Math.sumPrecise…) in both the page and the worker, and the legacy build
+ * ships polyfills for them, so PDFs still open in browsers a few versions old.
+ */
+export const importPdfjs = () => import('pdfjs-dist/legacy/build/pdf.mjs')
+
 /** Opens the PDF; `destroy()` on the returned task frees it and its worker. */
 export async function loadPdf(file: File) {
-  const pdfjs = await import('pdfjs-dist')
-  const worker = await import('pdfjs-dist/build/pdf.worker.min.mjs?url')
+  const pdfjs = await importPdfjs()
+  const worker = await import('pdfjs-dist/legacy/build/pdf.worker.min.mjs?url')
   pdfjs.GlobalWorkerOptions.workerSrc = worker.default
   const task = pdfjs.getDocument({ data: new Uint8Array(await file.arrayBuffer()) })
   try {
