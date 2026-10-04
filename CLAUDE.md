@@ -11,7 +11,7 @@ picture; the rules that matter when editing:
   `category` and search `keywords` (`src/tools/search.ts` matches word prefixes). Heavy
   libraries are dynamic `import()`s inside the tool, never top-level imports in
   shared code.
-- Tool UIs reuse `src/components/tool/` (`FileDrop`, `ErrorNote`, `Segmented`, `PasswordInput`, `IconButton`, `SizeResult`/`ProgressCard`) and
+- Tool UIs reuse `src/components/tool/` (`FileDrop`, `ErrorNote`, `Segmented`, `PasswordInput`, `IconButton`, `CopyButton`, `SizeResult`/`ProgressCard`) and
   `downloadBlob`/`withExtension` from `src/lib/download.ts`.
   Tools that read a PDF's text layer share `src/lib/pdf-text.ts` (pdf.js
   loading, text pieces with position/size/bold/italic/font, grouped into lines
@@ -29,6 +29,8 @@ picture; the rules that matter when editing:
   with qpdf first and throws `LockedPdfError` for password-protected ones;
   `uprightPage` gives the page as shown (after /Rotate, crop box) and a
   matrix to draw in that space; `pageThumbs` renders previews with pdf.js.
+- Image tools decode with `decodeImage` from `src/lib/image.ts` (EXIF
+  rotation applied; SVG via <img>) and encode with `canvasBlob`.
 - Audio/video goes through `src/lib/media.ts` (Mediabunny on WebCodecs):
   `probeMedia`, `convertMedia`, and `ensureAudioEncoder`, which registers the
   wasm AAC/MP3 encoders only when the browser has no native one (MP3: never

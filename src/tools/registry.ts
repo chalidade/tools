@@ -1,7 +1,10 @@
 import { lazy, type ComponentType, type LazyExoticComponent } from 'react'
 import {
+  AppWindow,
+  Binary,
   Braces,
   Combine,
+  Crop,
   FileArchive,
   FileAudio,
   FileCode,
@@ -16,6 +19,7 @@ import {
   LockOpen,
   Minimize2,
   MonitorPlay,
+  Palette,
   Presentation,
   Scissors,
   Sheet,
@@ -57,8 +61,16 @@ export const CATEGORIES: { id: CategoryId; title: string; description: string }[
     title: 'Olah & Amankan PDF',
     description: 'Gabung, pisah, beri watermark, tanda tangani, perkecil, kunci, dan buka kunci PDF.',
   },
-  { id: 'media', title: 'Gambar & Media', description: 'Perkecil foto, video, dan audio.' },
-  { id: 'dev', title: 'Developer', description: 'Rapikan dan padatkan data.' },
+  {
+    id: 'media',
+    title: 'Gambar & Media',
+    description: 'Potong, ubah ukuran, dan perkecil foto, video, dan audio.',
+  },
+  {
+    id: 'dev',
+    title: 'Developer & Desain',
+    description: 'Rapikan data, buat favicon, ubah gambar ke Base64, dan olah warna.',
+  },
 ]
 
 // Adding a tool: create src/tools/<slug>/ with a default-exported component,
@@ -241,6 +253,17 @@ export const TOOLS: Tool[] = [
     component: lazy(() => import('./compress-video/CompressVideo')),
   },
   {
+    slug: 'crop-resize-image',
+    category: 'media',
+    keywords: ['crop', 'potong', 'resize', 'ubah ukuran', 'perkecil', 'putar', 'rotate', 'flip', 'balik', 'rasio', 'foto', 'gambar', 'jpg', 'png', 'webp', 'instagram'],
+    title: 'Crop & Resize Gambar',
+    description: 'Potong dengan rasio bebas atau 1:1, 16:9, 4:5; putar, balik, dan ubah ukuran piksel.',
+    icon: Crop,
+    formats: 'JPG / PNG / WebP → JPG / PNG / WebP',
+    badge: 'Baru',
+    component: lazy(() => import('./crop-resize-image/CropResizeImage')),
+  },
+  {
     slug: 'compress-image',
     category: 'media',
     keywords: [
@@ -312,6 +335,39 @@ export const TOOLS: Tool[] = [
     formats: 'JSON → JSON ringkas',
     badge: 'Baru',
     component: lazy(() => import('./json/JsonMinify')),
+  },
+  {
+    slug: 'favicon-generator',
+    category: 'dev',
+    keywords: ['favicon', 'ico', 'icon', 'ikon', 'logo', 'website', 'apple touch', 'manifest', 'pwa', 'emoji'],
+    title: 'Generator Favicon',
+    description: 'Buat favicon.ico, ikon iOS & Android, dan web manifest dari logo, huruf, atau emoji.',
+    icon: AppWindow,
+    formats: 'PNG / SVG / teks → ICO + PNG',
+    badge: 'Baru',
+    component: lazy(() => import('./favicon-generator/FaviconGenerator')),
+  },
+  {
+    slug: 'image-to-base64',
+    category: 'dev',
+    keywords: ['base64', 'data url', 'data uri', 'encode', 'decode', 'gambar', 'css', 'html', 'inline'],
+    title: 'Gambar ⇄ Base64',
+    description: 'Ubah gambar jadi Base64 / data URL siap tempel di HTML, CSS, atau Markdown — dan sebaliknya.',
+    icon: Binary,
+    formats: 'Gambar ⇄ Base64',
+    badge: 'Baru',
+    component: lazy(() => import('./image-to-base64/ImageToBase64')),
+  },
+  {
+    slug: 'color-picker',
+    category: 'dev',
+    keywords: ['warna', 'color', 'colour', 'hex', 'rgb', 'hsl', 'oklch', 'cmyk', 'pipet', 'eyedropper', 'palet', 'palette', 'kontras', 'contrast', 'wcag'],
+    title: 'Color Picker',
+    description: 'Ambil warna dari gambar atau layar, ubah ke HEX/RGB/HSL/OKLCH, cek kontras, dan buat gradasi.',
+    icon: Palette,
+    formats: 'HEX / RGB / HSL / OKLCH',
+    badge: 'Baru',
+    component: lazy(() => import('./color-picker/ColorPicker')),
   },
 ]
 
