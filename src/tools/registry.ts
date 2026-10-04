@@ -5,6 +5,7 @@ import {
   Braces,
   Combine,
   Crop,
+  Eraser,
   FileArchive,
   FileAudio,
   FileCode,
@@ -64,7 +65,7 @@ export const CATEGORIES: { id: CategoryId; title: string; description: string }[
   {
     id: 'media',
     title: 'Gambar & Media',
-    description: 'Potong, ubah ukuran, dan perkecil foto, video, dan audio.',
+    description: 'Potong, ubah ukuran, hapus latar, dan perkecil foto, video, dan audio.',
   },
   {
     id: 'dev',
@@ -262,6 +263,17 @@ export const TOOLS: Tool[] = [
     formats: 'JPG / PNG / WebP → JPG / PNG / WebP',
     badge: 'Baru',
     component: lazy(() => import('./crop-resize-image/CropResizeImage')),
+  },
+  {
+    slug: 'remove-background',
+    category: 'media',
+    keywords: ['hapus latar', 'hapus background', 'remove background', 'remove bg', 'transparan', 'png', 'pas foto', 'latar merah', 'latar biru', 'foto produk', 'magic wand', 'lasso'],
+    title: 'Hapus Latar Gambar',
+    description: 'Hapus latar dengan tongkat ajaib, pilih warna, lasso, atau kuas — lalu jadikan transparan atau ganti warna.',
+    icon: Eraser,
+    formats: 'JPG / PNG / WebP → PNG / JPG',
+    badge: 'Baru',
+    component: lazy(() => import('./remove-background/RemoveBackground')),
   },
   {
     slug: 'compress-image',
