@@ -1,5 +1,5 @@
 import { Header } from '@/components/Header'
-import { Hero } from '@/components/Hero'
+import { Playground } from '@/components/Playground'
 import { ToolGrid } from '@/components/ToolGrid'
 import { HowItWorks } from '@/components/HowItWorks'
 import { ToolView } from '@/components/ToolView'
@@ -18,7 +18,7 @@ function App() {
           <ToolView tool={tool} />
         ) : (
           <>
-            <Hero />
+            <Playground />
             <ToolGrid />
             <HowItWorks />
           </>

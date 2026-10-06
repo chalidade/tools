@@ -45,6 +45,14 @@ picture; the rules that matter when editing:
   `src/components/tool/MediaRange.tsx` (`MediaRange`, `Filmstrip`, `Waveform`).
 - **Hash routing** (`#/<slug>`, `src/lib/use-hash-route.ts`) — do not switch to
   path routing; it 404s on reload under the Pages sub-path.
+- The home page opens with a walkable world (`src/components/Playground.tsx`,
+  world/physics in `src/components/playground/layout.ts`, sprites in
+  `Sprites.tsx`): one district per category, one stall per tool, all laid out
+  from the registry — a new tool appears there automatically. The loop moves
+  sprites by mutating `style.transform` on refs (never React state per frame);
+  `.pg-*` animations live in `src/index.css`. The world is `aria-hidden`; the
+  ToolGrid below stays the accessible way in. Visited stamps persist in
+  localStorage (`tools:visited`).
 - `App.tsx` only composes sections; each section lives in
   `src/components/<Section>.tsx`. Style with the semantic shadcn tokens in
   `src/index.css`, not hard-coded colors. Animation via `motion/react`.

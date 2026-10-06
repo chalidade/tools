@@ -41,6 +41,16 @@ perangkat pengguna: tidak di-upload ke server dan tidak disimpan di mana pun.
 | Gambar ⇄ Base64 | [`#/image-to-base64`](https://chalidade.github.io/tools/#/image-to-base64) | Gambar (atau tempel dari clipboard) → data URL, Base64 saja, `<img>`, CSS, atau Markdown, tanpa encode ulang. Arah sebaliknya menerima data URL atau Base64 biasa/URL-safe, mengenali jenis gambar dari byte-nya, lalu bisa diunduh. |
 | Color Picker | [`#/color-picker`](https://chalidade.github.io/tools/#/color-picker) | Ketik warna (HEX/rgb/hsl/oklch), pakai pemilih warna, ambil dari layar (EyeDropper, Chrome/Edge), atau klik piksel gambar dengan kaca pembesar; warna utama gambar otomatis. Nilai HEX/RGB/HSL/OKLCH/HSV/CMYK siap salin, kontras WCAG terhadap teks putih/hitam, dan gradasi 50–950 (OKLCH). |
 
+## Beranda: kota kecil yang bisa dijelajahi
+
+Halaman depan adalah dunia kecil yang hidup: satu distrik per kategori, satu
+stand per tool, dan file-file berkaki yang jalan-jalan sambil mengobrol.
+Gerakkan robot dengan **WASD / panah**, **Shift** untuk lari, dan **E / Enter**
+di depan stand untuk membuka tool-nya. Di ponsel: ketuk tanah untuk berjalan,
+ketuk stand untuk menuju ke sana dan membukanya. Minimap dan "paspor" (jumlah
+stand yang sudah dikunjungi) ada di pojok kanan atas. Daftar tools biasa tetap
+ada di bawahnya.
+
 ## Menjalankan
 
 ```bash

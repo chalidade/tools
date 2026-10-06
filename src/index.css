@@ -137,3 +137,144 @@
     radial-gradient(40rem 26rem at 85% -10%, oklch(from var(--brand-1) l c h / var(--glow)), transparent 70%),
     radial-gradient(34rem 24rem at 10% 10%, oklch(from var(--brand-2) l c h / calc(var(--glow) * 0.8)), transparent 70%);
 }
+
+/* ---- Playground: the walkable home page (src/components/Playground.tsx) ----
+   Sprites are positioned by the game loop; these rules only animate them.
+   `data-walking` / `data-running` on a sprite switch the step cycle on. */
+.pg-ground {
+  background-color: var(--background);
+  background-image: radial-gradient(var(--grid-line) 1.5px, transparent 1.5px);
+  background-size: 28px 28px;
+}
+.pg-flip,
+.pg-eyes {
+  transition: transform 140ms ease-out;
+}
+.pg-flip {
+  transform-origin: 50% 100%;
+}
+.pg-body {
+  transform-origin: 50% 100%;
+}
+.pg-leg-a,
+.pg-leg-b,
+.pg-eye {
+  transform-box: fill-box;
+  transform-origin: 50% 0;
+}
+.pg-eye {
+  transform-origin: center;
+  animation: pg-blink 4.6s infinite;
+}
+[data-walking] .pg-body {
+  animation: pg-bob 0.36s ease-in-out infinite;
+}
+[data-walking] .pg-leg-a,
+[data-walking] .pg-leg-b {
+  animation: pg-step 0.36s ease-in-out infinite;
+}
+[data-walking] .pg-leg-b {
+  animation-delay: -0.18s;
+}
+[data-running] .pg-body,
+[data-running] .pg-leg-a,
+[data-running] .pg-leg-b {
+  animation-duration: 0.24s;
+}
+[data-running] .pg-leg-b {
+  animation-delay: -0.12s;
+}
+.pg-antenna {
+  animation: pg-pulse 1.8s ease-in-out infinite;
+}
+.pg-bubble {
+  opacity: 0;
+  transform: translateY(4px) scale(0.9);
+  transition:
+    opacity 180ms ease-out,
+    transform 180ms ease-out;
+}
+.pg-bubble[data-show] {
+  opacity: 1;
+  transform: none;
+}
+.pg-sway {
+  transform-origin: 50% 100%;
+  animation: pg-sway 4.2s ease-in-out infinite;
+}
+.pg-float {
+  animation: pg-float 3.6s ease-in-out infinite;
+}
+.pg-hop {
+  animation: pg-hop 0.9s ease-in-out infinite;
+}
+.pg-firefly {
+  animation: pg-drift 8s ease-in-out infinite alternate;
+}
+
+@keyframes pg-bob {
+  50% {
+    transform: translateY(-2px) scaleY(0.97);
+  }
+}
+@keyframes pg-step {
+  25% {
+    transform: translateY(-3px) scaleY(0.75);
+  }
+  50% {
+    transform: none;
+  }
+}
+@keyframes pg-blink {
+  0%,
+  94%,
+  100% {
+    transform: scaleY(1);
+  }
+  97% {
+    transform: scaleY(0.1);
+  }
+}
+@keyframes pg-pulse {
+  50% {
+    opacity: 0.45;
+  }
+}
+@keyframes pg-sway {
+  50% {
+    transform: rotate(2.5deg);
+  }
+}
+@keyframes pg-float {
+  50% {
+    transform: translateY(-8px);
+  }
+}
+@keyframes pg-hop {
+  50% {
+    transform: translateY(-5px);
+  }
+}
+@keyframes pg-drift {
+  0% {
+    transform: translate(0, 0);
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(60px, -40px);
+    opacity: 0.3;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pg-sway,
+  .pg-float,
+  .pg-hop,
+  .pg-firefly,
+  .pg-antenna {
+    animation: none;
+  }
+}
