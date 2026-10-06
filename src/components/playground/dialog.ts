@@ -182,6 +182,11 @@ const DIALOG: Record<string, string[]> = {
     'Pilih mode suara bicara untuk rapat atau kuliah (bising diredam), atau mode asli untuk musik.',
     'Rekamannya tersimpan di browser ini, dan bisa diunduh sebagai MP3, M4A, atau WAV.',
   ],
+  'screen-recorder': [
+    'Layarmu kurekam — seluruh layar, satu jendela, atau satu tab — lengkap dengan suara mikrofon dan suara tab.',
+    'Mau tampil seperti presenter? Nyalakan kamera melayang, wajahmu ikut terekam di pojok layar.',
+    'Rekamannya tersimpan di browser ini dan bisa diunduh sebagai WebM atau diubah ke MP4. Perlu komputer — ponsel belum bisa.',
+  ],
 }
 
 /** Keeper names, in tool order; a tool past the end borrows one by its slug. */

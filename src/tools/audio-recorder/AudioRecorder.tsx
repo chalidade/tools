@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 import { ErrorNote } from '@/components/tool/ErrorNote'
 import { Segmented } from '@/components/tool/Segmented'
 import { downloadBlob } from '@/lib/download'
+import { fixRecordedDuration } from '@/lib/local-store'
 import { formatDuration, formatSize, hasWebCodecs, isCanceled, type AudioOut } from '@/lib/media'
 import {
   canRecord,
@@ -225,8 +226,6 @@ export default function AudioRecorder() {
     setRecordings((list) => [recording, ...list])
     try {
       await saveRecording(recording)
-      // Ask the browser not to evict recordings when space runs low.
-      void navigator.storage?.persist?.()
     } catch {
       setError('Rekaman tidak bisa disimpan di browser ini (penyimpanan penuh atau mode privat). Unduh sekarang agar tidak hilang.')
     }
@@ -462,17 +461,7 @@ function RecordingRow({
         preload="metadata"
         src={url}
         className="mt-3 h-10 w-full"
-        onLoadedMetadata={(e) => {
-          // WebM from MediaRecorder has no duration header: seek to the end once so the player can show and seek it.
-          const a = e.currentTarget
-          if (a.duration === Infinity) {
-            a.currentTime = 1e101
-            a.ontimeupdate = () => {
-              a.ontimeupdate = null
-              a.currentTime = 0
-            }
-          }
-        }}
+        onLoadedMetadata={(e) => fixRecordedDuration(e.currentTarget)}
       />
       <div className="mt-3 flex flex-wrap items-center gap-2">
         <Button size="sm" variant="outline" onClick={() => downloadBlob(recording.blob, `${file}.${ext}`)}>

@@ -2,6 +2,9 @@
 // so recordings survive a reload. Nothing leaves the device.
 
 import { AUDIO_OUTPUTS, convertMedia, ensureAudioEncoder, NoEncoderError, type AudioOut } from '@/lib/media'
+import { localStore, timestampName } from '@/lib/local-store'
+
+export { safeFileName } from '@/lib/local-store'
 
 export interface Recording {
   id: string
@@ -31,37 +34,10 @@ export function extensionOf(mimeType: string) {
 
 // ---------------------------------------------------------------- storage
 
-const DB = 'tools-audio-recorder'
-const STORE = 'recordings'
-
-function openDb(): Promise<IDBDatabase> {
-  return new Promise((resolve, reject) => {
-    const req = indexedDB.open(DB, 1)
-    req.onupgradeneeded = () => req.result.createObjectStore(STORE, { keyPath: 'id' })
-    req.onsuccess = () => resolve(req.result)
-    req.onerror = () => reject(req.error)
-  })
-}
-
-async function run<T>(mode: IDBTransactionMode, fn: (store: IDBObjectStore) => IDBRequest<T>): Promise<T> {
-  const db = await openDb()
-  try {
-    return await new Promise<T>((resolve, reject) => {
-      const req = fn(db.transaction(STORE, mode).objectStore(STORE))
-      req.onsuccess = () => resolve(req.result)
-      req.onerror = () => reject(req.error)
-    })
-  } finally {
-    db.close()
-  }
-}
-
-export async function listRecordings(): Promise<Recording[]> {
-  const all = await run<Recording[]>('readonly', (s) => s.getAll() as IDBRequest<Recording[]>)
-  return all.sort((a, b) => b.createdAt - a.createdAt)
-}
-export const saveRecording = (r: Recording) => run('readwrite', (s) => s.put(r))
-export const deleteRecording = (id: string) => run('readwrite', (s) => s.delete(id))
+const store = localStore<Recording>('tools-audio-recorder')
+export const listRecordings = store.list
+export const saveRecording = store.save
+export const deleteRecording = store.remove
 
 // ---------------------------------------------------------------- export
 
@@ -84,12 +60,4 @@ export async function convertRecording(
   })
 }
 
-/** "Rekaman 7 Okt 14.05" */
-export function defaultName(date = new Date()) {
-  const day = date.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })
-  const time = date.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })
-  return `Rekaman ${day} ${time}`
-}
-
-/** A file name without characters that file systems reject. */
-export const safeFileName = (name: string) => name.replace(/[\\/:*?"<>|]+/g, '-').trim() || 'rekaman'
+export const defaultName = () => timestampName('Rekaman')
