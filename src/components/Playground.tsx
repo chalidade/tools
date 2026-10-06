@@ -7,8 +7,9 @@ import { Dialog } from '@/components/playground/Dialog'
 import { CALLS, TOWN_GREETINGS, TOWN_LINES, nameFor } from '@/components/playground/dialog'
 import { lookFor } from '@/components/playground/Person'
 import { RoomScenery, TownScenery } from '@/components/playground/Scenery'
-import { buildScenes, collide, findPath, type Door, type Point, type SceneId } from '@/components/playground/scenes'
-import { Keeper, Player, Townsperson } from '@/components/playground/Sprites'
+import { GRASS_TILE, buildScenes, collide, findPath, type Door, type Point, type SceneId } from '@/components/playground/scenes'
+import { CHATS, RESIDENTS, homeOf, uniformFor } from '@/components/playground/residents'
+import { Dog, Keeper, Player, Townsperson } from '@/components/playground/Sprites'
 
 /*
  * The home page is a small walkable town. Each category is a house; walk into
@@ -47,12 +48,14 @@ const KEYMAP: Record<string, 'up' | 'down' | 'left' | 'right' | 'run'> = {
   ShiftRight: 'run',
 }
 
-const TOWNSFOLK_SHIRTS = ['#f59e0b', '#06b6d4', '#84cc16', '#f43f5e', '#6366f1', '#14b8a6']
 /** Keeper shirts, in tool order — neighbours in a house never match. */
 const KEEPER_SHIRTS = ['#3b82f6', '#ef4444', '#22c55e', '#f97316', '#a855f7', '#eab308', '#ec4899', '#14b8a6', '#64748b']
-const FACTS = ['Tanpa upload', 'Tanpa akun', 'Gratis', 'Kode di GitHub']
+const FACTS = ['Gratis', 'Tanpa akun', 'Jalan di perangkatmu', 'Kode di GitHub']
 
 const pick = <T,>(list: readonly T[]) => list[Math.floor(Math.random() * list.length)]
+
+/** The intro floats over the map from md up; only there does playing tuck it away (on phones it sits above the map, and hiding it would shift the page). */
+const floatingIntro = () => matchMedia('(min-width: 768px)').matches
 
 /** Where the player stood when a tool was opened — back on the home page, they're still there. */
 let saved: { scene: SceneId; pos: Point } | null = null
@@ -68,6 +71,7 @@ function readVisited() {
 }
 
 interface Walker {
+  home: Point
   x: number
   y: number
   tx: number
@@ -94,14 +98,20 @@ const container = { hidden: {}, show: { transition: { staggerChildren: 0.08, del
 export function Playground() {
   const scenes = useMemo(buildScenes, [])
   const town = scenes.town.kind === 'town' ? scenes.town : null
-  const people = useMemo(
-    () =>
-      new Map(
-        TOOLS.map((t, i) => [t.slug, { name: nameFor(t, i), look: lookFor(t.slug, KEEPER_SHIRTS[i % KEEPER_SHIRTS.length]) }]),
-      ),
-    [],
-  )
-  const townsfolk = useMemo(() => TOWNSFOLK_SHIRTS.map((shirt, i) => lookFor(`warga-${i}`, shirt)), [])
+  // Each keeper: a name, a look, and the uniform of the building it works in.
+  const people = useMemo(() => {
+    const style = new Map(town?.houses.flatMap((h) => h.tools.map((t, i) => [t.slug, uniformFor(h.style, i)] as const)))
+    return new Map(
+      TOOLS.map((t, i) => [
+        t.slug,
+        {
+          name: nameFor(t, i),
+          look: lookFor(t.slug, { shirt: KEEPER_SHIRTS[i % KEEPER_SHIRTS.length], ...style.get(t.slug) }),
+        },
+      ]),
+    )
+  }, [town])
+  const townsfolk = useMemo(() => RESIDENTS.map((r) => lookFor(r.name, r.look)), [])
 
   const viewportRef = useRef<HTMLDivElement>(null)
   const worldRef = useRef<HTMLDivElement>(null)
@@ -112,6 +122,11 @@ export function Playground() {
   const viewRef = useRef<SVGRectElement>(null)
   const walkerEls = useRef<(HTMLDivElement | null)[]>([])
   const walkerBubbles = useRef<(HTMLSpanElement | null)[]>([])
+  const dogEls = useRef(new Map<number, HTMLDivElement | null>())
+  const dogs = useRef(new Map<number, { x: number; y: number; face: number }>())
+  const grassEls = useRef<(HTMLDivElement | null)[]>([])
+  const rustled = useRef('')
+  const chat = useRef({ next: 4, line: 0, reply: -1 })
   const keeperEls = useRef(new Map<string, HTMLDivElement | null>())
   const keeperBubbles = useRef(new Map<string, HTMLSpanElement | null>())
   const keeperState = useRef(new Map(TOOLS.map((t) => [t.slug, { face: 1, next: 1 + Math.random() * 6, talk: 0 }])))
@@ -140,11 +155,28 @@ export function Playground() {
   })
   const walkers = useRef<Walker[]>([])
   if (!walkers.current.length) {
-    walkers.current = townsfolk.map((_, i) => {
-      const t = scenes.town
-      const p = { x: 200 + Math.random() * (t.width - 400), y: 200 + Math.random() * (t.height - 400) }
-      collide(p, NPC_R, t)
-      return { ...p, tx: p.x, ty: p.y, wait: Math.random() * 2, speed: 50 + Math.random() * 35, face: 1, talk: 0, next: 3 + i * 2 + Math.random() * 6, greeted: false, stuck: 0 }
+    const t = scenes.town
+    walkers.current = RESIDENTS.map((r, i) => {
+      const home = t.kind === 'town' ? homeOf(r, t, i) : t.spawn
+      const p =
+        r.mode === 'wander'
+          ? { x: 200 + Math.random() * (t.width - 400), y: 200 + Math.random() * (t.height - 400) }
+          : { ...home }
+      if (r.mode !== 'idle') collide(p, NPC_R, t)
+      if (r.dog) dogs.current.set(i, { x: p.x - 30, y: p.y + 4, face: 1 })
+      return {
+        home,
+        ...p,
+        tx: p.x,
+        ty: p.y,
+        wait: Math.random() * 2,
+        speed: r.speed,
+        face: r.partner !== undefined ? (r.partner > i ? 1 : -1) : 1,
+        talk: 0,
+        next: 3 + i * 2 + Math.random() * 6,
+        greeted: false,
+        stuck: 0,
+      }
     })
   }
 
@@ -152,7 +184,7 @@ export function Playground() {
   const [nearDoor, setNearDoor] = useState<Door | null>(null)
   const [visited, setVisited] = useState(readVisited)
   // Coming back from a tool, the player is mid-game: keep the intro out of the way.
-  const [introOpen, setIntroOpen] = useState(!saved)
+  const [introOpen, setIntroOpen] = useState(() => !saved || !floatingIntro())
   const [talking, setTalking] = useState<string | null>(null)
   talkingRef.current = talking
 
@@ -179,7 +211,7 @@ export function Playground() {
       moving.current = true
       keys.current.clear()
       target.current = null
-      setIntroOpen(false)
+      if (floatingIntro()) setIntroOpen(false)
       const fade = fadeRef.current
       const swap = () => {
         const g = game.current
@@ -212,7 +244,7 @@ export function Playground() {
         keys.current.add(dir)
         if (dir !== 'run') {
           e.preventDefault()
-          setIntroOpen(false)
+          if (floatingIntro()) setIntroOpen(false)
         }
         return
       }
@@ -419,37 +451,80 @@ export function Playground() {
         setTalking(best)
       }
 
-      // --- Townsfolk stroll, greet the player and chat to themselves.
+      // --- Townsfolk: wander, stroll or stand chatting; greet the player and talk to themselves.
       if (scene.kind === 'town') {
-        walkers.current.forEach((n, i) => {
-          const toPlayer = Math.hypot(g.pos.x - n.x, g.pos.y - n.y)
-          const say = (text: string, seconds: number) => {
-            const b = walkerBubbles.current[i]
-            if (!b) return
-            b.textContent = text
-            b.dataset.show = ''
-            n.talk = seconds
+        // Tall grass rustles where the player steps into it.
+        let spot = ''
+        scene.grass.forEach((patch, pi) => {
+          if (g.pos.x < patch.x || g.pos.y < patch.y || g.pos.x >= patch.x + patch.w || g.pos.y >= patch.y + patch.h) return
+          const cols = patch.w / GRASS_TILE
+          spot = `${pi}:${Math.floor((g.pos.y - patch.y) / GRASS_TILE) * cols + Math.floor((g.pos.x - patch.x) / GRASS_TILE)}`
+        })
+        if (spot !== rustled.current) {
+          rustled.current = spot
+          const [pi, ti] = spot.split(':').map(Number)
+          const tile = spot ? grassEls.current[pi]?.children[ti] : undefined
+          tile?.animate(
+            [{ transform: 'none' }, { transform: 'rotate(-12deg) scaleY(0.85)' }, { transform: 'rotate(10deg)' }, { transform: 'none' }],
+            { duration: 380, easing: 'ease-out' },
+          )
+        }
+
+        // The chatting pair take turns.
+        const say = (i: number, text: string, seconds: number) => {
+          const b = walkerBubbles.current[i]
+          const n = walkers.current[i]
+          if (!b || !n) return
+          b.textContent = text
+          b.dataset.show = ''
+          n.talk = seconds
+        }
+        const c = chat.current
+        c.next -= dt
+        const pairA = RESIDENTS.findIndex((r) => r.partner !== undefined)
+        if (pairA >= 0 && c.next <= 0) {
+          const pairB = RESIDENTS[pairA].partner!
+          if (c.reply < 0) {
+            say(pairA, CHATS[c.line % CHATS.length][0], 2.6)
+            c.reply = pairB
+            c.next = 2.4
+          } else {
+            say(c.reply, CHATS[c.line % CHATS.length][1], 2.6)
+            c.reply = -1
+            c.line++
+            c.next = 7 + Math.random() * 6
           }
+        }
+
+        walkers.current.forEach((n, i) => {
+          const r = RESIDENTS[i]
+          const toPlayer = Math.hypot(g.pos.x - n.x, g.pos.y - n.y)
 
           let mx = 0
           if (toPlayer < 80) {
             n.face = Math.sign(g.pos.x - n.x) || n.face
             if (!n.greeted) {
               n.greeted = true
-              say(pick(TOWN_GREETINGS), 2.2)
+              say(i, pick(TOWN_GREETINGS), 2.2)
             }
           } else {
             if (toPlayer > 160) n.greeted = false
-            if (n.wait > 0) n.wait -= dt
+            if (r.mode === 'idle') {
+              const other = r.partner !== undefined ? walkers.current[r.partner] : undefined
+              if (other) n.face = Math.sign(other.x - n.x) || n.face
+            } else if (n.wait > 0) n.wait -= dt
             else {
               const dx = n.tx - n.x
               const dy = n.ty - n.y
               const d = Math.hypot(dx, dy)
               if (d < 4 || n.stuck > 0.8) {
-                n.wait = 1 + Math.random() * 3
+                // Children barely stop; everyone else pauses to look around.
+                n.wait = r.speed > 100 ? Math.random() * 0.6 : 1 + Math.random() * 3
                 n.stuck = 0
-                n.tx = Math.min(Math.max(n.x + (Math.random() - 0.5) * 520, 60), scene.width - 60)
-                n.ty = Math.min(Math.max(n.y + (Math.random() - 0.5) * 420, 80), scene.height - 60)
+                const from = r.mode === 'stroll' ? n.home : n
+                const reach = r.mode === 'stroll' ? 180 : 520
+                n.tx = Math.min(Math.max(from.x + (Math.random() - 0.5) * reach * 2, 60), scene.width - 60)
+                n.ty = Math.min(Math.max(from.y + (Math.random() - 0.5) * reach * 1.4, 80), scene.height - 60)
               } else {
                 const ox = n.x
                 const oy = n.y
@@ -464,9 +539,9 @@ export function Playground() {
           }
 
           n.next -= dt
-          if (n.next <= 0) {
+          if (n.next <= 0 && r.mode !== 'idle') {
             n.next = 8 + Math.random() * 12
-            if (toPlayer < 700) say(pick(TOWN_LINES), 3)
+            if (toPlayer < 700) say(i, pick(r.lines ?? TOWN_LINES), 3)
           }
           if (n.talk > 0) {
             n.talk -= dt
@@ -476,11 +551,34 @@ export function Playground() {
           const el = walkerEls.current[i]
           if (!el) return
           el.style.transform = `translate3d(${n.x - 22}px, ${n.y - 60}px, 0)`
-          el.style.zIndex = String(Math.round(n.y) + (n.talk > 0 ? 3000 : 0))
+          el.style.zIndex = String(Math.round(n.y))
           if (mx > 0.1) el.dataset.walking = ''
           else delete el.dataset.walking
           const flip = el.querySelector<HTMLElement>('.pg-flip')
           if (flip) flip.style.transform = `scaleX(${n.face})`
+
+          // A dog trots a step behind its owner.
+          const dog = dogs.current.get(i)
+          const dogEl = dogEls.current.get(i)
+          if (dog && dogEl) {
+            const tx = n.x - n.face * 30
+            const ty = n.y + 6
+            const dd = Math.hypot(tx - dog.x, ty - dog.y)
+            let moving = false
+            if (dd > 10) {
+              const step = Math.min(dd, Math.max(n.speed * 1.3, 90) * dt)
+              dog.x += ((tx - dog.x) / dd) * step
+              dog.y += ((ty - dog.y) / dd) * step
+              moving = true
+              if (Math.abs(tx - dog.x) > 2) dog.face = Math.sign(tx - dog.x)
+            } else dog.face = n.face
+            dogEl.style.transform = `translate3d(${dog.x - 20}px, ${dog.y - 30}px, 0)`
+            dogEl.style.zIndex = String(Math.round(dog.y))
+            if (moving) dogEl.dataset.walking = ''
+            else delete dogEl.dataset.walking
+            const dogFlip = dogEl.querySelector<HTMLElement>('.pg-flip')
+            if (dogFlip) dogFlip.style.transform = `scaleX(${dog.face})`
+          }
         })
       }
 
@@ -531,7 +629,7 @@ export function Playground() {
     const path = findPath(sceneRef.current, game.current.pos, point, PLAYER_R)
     if (!path) return
     target.current = { path, ...intent, stuck: 0 }
-    setIntroOpen(false)
+    if (floatingIntro()) setIntroOpen(false)
     const m = markerRef.current
     if (!m) return
     m.style.left = `${point.x - 12}px`
@@ -549,16 +647,6 @@ export function Playground() {
   const nearTool = near ? TOOLS.find((t) => t.slug === near) : undefined
   const talkTool = talking ? TOOLS.find((t) => t.slug === talking) : undefined
   const talkPerson = talking ? people.get(talking) : undefined
-  const fireflies = useMemo(
-    () =>
-      Array.from({ length: 22 }, (_, i) => ({
-        x: ((i * 7919) % 1000) / 1000,
-        y: ((i * 104729) % 1000) / 1000,
-        delay: -((i * 37) % 90) / 10,
-        duration: 6 + ((i * 13) % 6),
-      })),
-    [],
-  )
 
   return (
     <section aria-label="Beranda" className="relative isolate">
@@ -569,14 +657,14 @@ export function Playground() {
         animate="show"
         className={cn(
           'relative px-5 pt-10 pb-7 sm:px-6 md:absolute md:top-6 md:left-6 md:z-20 md:w-[27rem] md:rounded-3xl md:border md:bg-card/85 md:p-7 md:shadow-2xl md:shadow-brand-2/10 md:backdrop-blur-xl',
-          !introOpen && 'md:hidden',
+          !introOpen && 'hidden',
         )}
       >
         <button
           type="button"
           onClick={() => setIntroOpen(false)}
           aria-label="Sembunyikan"
-          className="absolute top-4 right-4 hidden size-8 place-items-center rounded-lg text-muted-foreground hover:bg-accent hover:text-foreground md:grid"
+          className="absolute top-6 right-4 grid size-8 place-items-center rounded-lg text-muted-foreground hover:bg-accent hover:text-foreground md:top-4"
         >
           <X className="size-4" />
         </button>
@@ -593,13 +681,13 @@ export function Playground() {
           variants={fadeUp}
           className="mt-5 text-[2.4rem] leading-[1.04] font-semibold tracking-[-0.035em] text-balance sm:text-5xl md:text-[2.7rem]"
         >
-          Konversi file,
+          Semua tools,
           <br />
-          <span className="text-gradient">tanpa upload.</span>
+          <span className="text-gradient">langsung di browser.</span>
         </motion.h1>
         <motion.p variants={fadeUp} className="mt-4 leading-relaxed text-muted-foreground text-pretty">
-          Kumpulan tools kecil yang bekerja langsung di perangkatmu. Masuki rumah-rumahnya dan tanya penjaganya
-          bisa bantu apa — file tidak pernah meninggalkan browser.
+          Kumpulan tools gratis untuk dokumen, PDF, gambar, video, audio, sampai data developer — semuanya jalan
+          di perangkatmu. Masuki tiap bangunan dan tanya penjaganya bisa bantu apa.
         </motion.p>
         <motion.div variants={fadeUp} className="mt-6 flex flex-wrap items-center gap-3">
           <button
@@ -648,7 +736,7 @@ export function Playground() {
         )}
       >
         <p className="sr-only">
-          Peta interaktif berisi semua tools: tiap kategori adalah rumah, dan di dalamnya tiap tool dijaga
+          Peta interaktif berisi semua tools: tiap kategori adalah bangunan, dan di dalamnya tiap tool dijaga
           seorang tokoh. Gerakkan karakter dengan tombol panah atau WASD, masuk lewat pintu, dan tekan E di dekat
           tokoh untuk mengobrol. Daftar biasa ada di bawah.
         </p>
@@ -662,6 +750,9 @@ export function Playground() {
           {scene.kind === 'town' && town ? (
             <TownScenery
               town={town}
+              grassRef={(i, el) => {
+                grassEls.current[i] = el
+              }}
               visited={visited}
               nearHouse={nearDoor?.to ?? null}
               onHouse={(id) => {
@@ -702,6 +793,7 @@ export function Playground() {
             townsfolk.map((look, i) => (
               <Townsperson
                 key={i}
+                scale={RESIDENTS[i].scale}
                 ref={(el) => {
                   walkerEls.current[i] = el
                 }}
@@ -712,6 +804,20 @@ export function Playground() {
               />
             ))}
 
+          {scene.kind === 'town' &&
+            RESIDENTS.map(
+              (r, i) =>
+                r.dog && (
+                  <Dog
+                    key={`dog-${i}`}
+                    coat={r.dog}
+                    ref={(el) => {
+                      dogEls.current.set(i, el)
+                    }}
+                  />
+                ),
+            )}
+
           <Player ref={playerRef} />
 
           <div
@@ -720,20 +826,6 @@ export function Playground() {
             style={{ zIndex: 1 }}
           />
 
-          {scene.kind === 'town' &&
-            fireflies.map((f, i) => (
-              <span
-                key={i}
-                className="pg-firefly pointer-events-none absolute size-1.5 rounded-full bg-white/60 dark:bg-amber-200 dark:shadow-[0_0_10px_3px] dark:shadow-amber-200/60"
-                style={{
-                  left: f.x * scene.width,
-                  top: f.y * scene.height,
-                  zIndex: 9000,
-                  animationDelay: `${f.delay}s`,
-                  animationDuration: `${f.duration}s`,
-                }}
-              />
-            ))}
         </div>
 
         {/* Soft fade at the edges of the view, and the black of a doorway transition. */}
@@ -749,9 +841,10 @@ export function Playground() {
           {scene.kind === 'town' && town ? (
             <svg viewBox={`0 0 ${town.width} ${town.height}`} className="mb-2 block w-full">
               <rect width={town.width} height={town.height} rx={60} className="fill-[#8cc66d] dark:fill-[#1d3324]" />
-              {town.paths.map((p, i) => (
-                <rect key={i} x={p.x} y={p.y} width={p.w} height={p.h} className="fill-[#e8d7a8] dark:fill-[#4a4234]" />
+              {town.paths.map((d, i) => (
+                <path key={i} d={d} strokeWidth={60} strokeLinecap="round" fill="none" className="stroke-[#e8d7a8] dark:stroke-[#4a4234]" />
               ))}
+              <ellipse cx={town.pond.x} cy={town.pond.y} rx={town.pond.rx} ry={town.pond.ry} className="fill-[#5fb3e0] dark:fill-[#183f5c]" />
               {town.houses.map((h) => (
                 <rect
                   key={h.id}
@@ -760,7 +853,7 @@ export function Playground() {
                   width={h.rect.w}
                   height={h.rect.h}
                   rx={30}
-                  style={{ fill: h.roof }}
+                  style={{ fill: h.accent }}
                 />
               ))}
               <rect ref={viewRef} rx={30} className="fill-none stroke-white/70" strokeWidth={14} />
@@ -768,8 +861,8 @@ export function Playground() {
             </svg>
           ) : scene.kind === 'room' ? (
             <p className="mb-2 flex items-center gap-1.5 px-0.5 text-xs font-medium">
-              <span className="size-2.5 rounded-full" style={{ background: scene.house.roof }} />
-              Rumah {scene.house.title}
+              <span className="size-2.5 rounded-full" style={{ background: scene.house.accent }} />
+              {scene.house.place} {scene.house.title}
             </p>
           ) : null}
           <div className="flex items-center justify-between gap-2 px-0.5 text-xs">
@@ -796,12 +889,12 @@ export function Playground() {
               e.stopPropagation()
               setIntroOpen(true)
             }}
-            className="absolute top-4 left-4 hidden items-center gap-2 rounded-full border bg-card/85 py-1.5 pr-3.5 pl-2 text-sm shadow-lg backdrop-blur md:flex"
+            className="absolute top-3 left-3 z-20 flex max-w-[calc(100%-1.5rem)] items-center gap-2 rounded-full border bg-card/85 py-1.5 pr-3.5 pl-2 text-xs shadow-lg backdrop-blur sm:top-4 sm:left-4 sm:text-sm"
           >
             <span className="grid size-6 place-items-center rounded-full bg-gradient-brand text-white">
               <ShieldCheck className="size-3.5" />
             </span>
-            Konversi file, <span className="text-gradient font-medium">tanpa upload.</span>
+            Semua tools, <span className="text-gradient font-medium">langsung di browser.</span>
           </button>
         )}
 
@@ -846,7 +939,7 @@ export function Playground() {
                 <Key>E</Key> {scene.kind === 'town' ? 'masuk / ngobrol' : 'ngobrol'}
               </span>
               <span className="pointer-fine:hidden">
-                {scene.kind === 'town' ? 'Ketuk tanah untuk jalan, ketuk rumah untuk masuk' : 'Ketuk tokoh untuk ngobrol'}
+                {scene.kind === 'town' ? 'Ketuk tanah untuk jalan, ketuk bangunan untuk masuk' : 'Ketuk tokoh untuk ngobrol'}
               </span>
               {scene.kind === 'room' && <span>· injak keset di bawah untuk keluar</span>}
             </p>

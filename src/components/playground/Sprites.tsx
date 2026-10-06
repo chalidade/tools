@@ -1,9 +1,8 @@
 import { forwardRef } from 'react'
-import { Braces, Check, Clapperboard, FileInput, FileLock, FileOutput, Home, type LucideIcon } from 'lucide-react'
+import { Check } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import type { CategoryId } from '@/tools/registry'
 import { PLAYER_LOOK, Person, type Look } from './Person'
-import type { House as HouseSpot, Keeper as KeeperSpot, Tree } from './scenes'
+import type { Keeper as KeeperSpot, Tree } from './scenes'
 
 /*
  * Everything here is drawn at a fixed world size and positioned by the game
@@ -29,14 +28,45 @@ export const Player = forwardRef<HTMLDivElement>(function Player(_, ref) {
 /** Someone strolling around town. The loop fills in its speech bubble. */
 export const Townsperson = forwardRef<
   HTMLDivElement,
-  { look: Look; bubbleRef: (el: HTMLSpanElement | null) => void }
->(function Townsperson({ look, bubbleRef }, ref) {
+  { look: Look; scale?: number; bubbleRef: (el: HTMLSpanElement | null) => void }
+>(function Townsperson({ look, scale = 1, bubbleRef }, ref) {
   return (
     <div ref={ref} className="pg-sprite absolute top-0 left-0 will-change-transform" style={{ width: 44, height: 62 }}>
-      <span ref={bubbleRef} className={cn(BUBBLE, 'mb-1')} />
+      <span ref={bubbleRef} className={cn(BUBBLE, 'mb-1')} style={{ marginBottom: 4 - 62 * (1 - scale) }} />
       <span className="absolute -bottom-1 left-1/2 h-2.5 w-9 -translate-x-1/2 rounded-full bg-black/25 blur-[2px]" />
       <div className="pg-flip absolute inset-0">
-        <Person look={look} />
+        <div className="absolute inset-0 origin-bottom" style={{ transform: `scale(${scale})` }}>
+          <Person look={look} />
+        </div>
+      </div>
+    </div>
+  )
+})
+
+/** A dog that trots after its owner. 40×30, feet at the bottom. */
+export const Dog = forwardRef<HTMLDivElement, { coat: string }>(function Dog({ coat }, ref) {
+  return (
+    <div ref={ref} className="pg-sprite absolute top-0 left-0 will-change-transform" style={{ width: 40, height: 30 }}>
+      <span className="absolute -bottom-0.5 left-1/2 h-2 w-8 -translate-x-1/2 rounded-full bg-black/25 blur-[2px]" />
+      <div className="pg-flip absolute inset-0">
+        <svg viewBox="0 0 40 30" width={40} height={30} className="pg-body overflow-visible">
+          <path className="pg-tail" d="M7 14q-6-4-4-10" stroke={coat} strokeWidth="3.5" strokeLinecap="round" fill="none" />
+          <g className="pg-leg-a">
+            <rect x="9" y="19" width="4" height="10" rx="2" style={{ fill: coat }} />
+            <rect x="24" y="19" width="4" height="10" rx="2" style={{ fill: coat }} />
+          </g>
+          <g className="pg-leg-b">
+            <rect x="14" y="19" width="4" height="10" rx="2" style={{ fill: coat }} />
+            <rect x="28" y="19" width="4" height="10" rx="2" style={{ fill: coat }} />
+          </g>
+          <ellipse cx="19" cy="17" rx="13" ry="7.5" style={{ fill: coat }} />
+          <circle cx="31" cy="10" r="7" style={{ fill: coat }} />
+          <path d="M27 5q-1 7 3 9" style={{ fill: coat }} stroke="black" strokeOpacity="0.25" strokeWidth="2" />
+          <ellipse cx="37" cy="12" rx="3" ry="2.4" fill="white" opacity="0.6" />
+          <circle cx="39" cy="11.5" r="1.4" fill="#1c1917" />
+          <circle className="pg-eye" cx="33" cy="9" r="1.3" fill="#1c1917" />
+          <path d="M14 13q5 3 10 0" stroke="#ef4444" strokeWidth="2" fill="none" />
+        </svg>
       </div>
     </div>
   )
@@ -108,130 +138,96 @@ export const Keeper = forwardRef<
   )
 })
 
-export const CATEGORY_ICONS: Record<CategoryId, LucideIcon> = {
-  'to-pdf': FileInput,
-  'from-pdf': FileOutput,
-  pdf: FileLock,
-  media: Clapperboard,
-  dev: Braces,
-}
+const FLOWER_COLORS = ['#f43f5e', '#facc15', '#f8fafc', '#fb923c', '#c084fc', '#38bdf8']
 
-/** A category's house in town. Its door is where the player walks in. */
-export function House({
-  house,
-  visited,
-  near,
-  onClick,
-}: {
-  house: HouseSpot
-  visited: number
-  near: boolean
-  onClick: () => void
-}) {
-  const { rect, roof } = house
-  const Icon = CATEGORY_ICONS[house.id] ?? Home
-  return (
-    <div
-      onClick={(e) => {
-        e.stopPropagation()
-        onClick()
-      }}
-      className="absolute cursor-pointer"
-      style={{ left: rect.x, top: rect.y, width: rect.w, height: rect.h, zIndex: Math.round(rect.y + rect.h) }}
-    >
-      <span className="absolute -bottom-3 left-3 h-6 w-[calc(100%-1.5rem)] rounded-[50%] bg-black/25 blur-sm" />
-      <svg viewBox="0 0 300 240" width={rect.w} height={rect.h} className="relative overflow-visible">
-        <rect x="214" y="18" width="28" height="56" rx="3" className="fill-[#8b7d72] dark:fill-[#4b433d]" />
-        <rect x="16" y="104" width="268" height="136" className="fill-[#f6eee2] dark:fill-[#3a3442]" />
-        <rect x="16" y="104" width="268" height="136" fill="url(#pg-bricks)" opacity="0.5" />
-        {/* Windows: daylight blue, lamp-lit at night. */}
-        {[40, 210].map((x) => (
-          <g key={x}>
-            <rect x={x} y="134" width="50" height="44" rx="5" className="fill-[#bfe3f5] dark:fill-[#fcd77a]" />
-            <path d={`M${x + 25} 134v44M${x} 156h50`} stroke="white" strokeWidth="3" opacity="0.8" />
-            <rect x={x - 4} y="176" width="58" height="7" rx="2" className="fill-[#c8b8a6] dark:fill-[#4b433d]" />
-          </g>
-        ))}
-        <rect x="122" y="156" width="56" height="84" rx="8" style={{ fill: roof }} />
-        <rect x="122" y="156" width="56" height="84" rx="8" fill="black" opacity="0.28" />
-        <circle cx="168" cy="200" r="3.5" fill="#fde68a" />
-        <rect x="112" y="234" width="76" height="8" rx="3" className="fill-[#a8a29e] dark:fill-[#57534e]" />
-        <polygon points="-6,112 42,14 258,14 306,112" style={{ fill: roof }} />
-        <polygon points="-6,112 42,14 258,14 306,112" fill="url(#pg-shingles)" />
-        <rect x="-8" y="106" width="316" height="10" rx="3" style={{ fill: roof }} />
-        <rect x="-8" y="106" width="316" height="10" rx="3" fill="black" opacity="0.25" />
-        <circle cx="150" cy="62" r="27" fill="white" opacity="0.92" />
-        <defs>
-          <pattern id="pg-shingles" width="24" height="14" patternUnits="userSpaceOnUse">
-            <path d="M0 13.5h24M12 0v14" stroke="black" strokeOpacity="0.14" strokeWidth="2" />
-          </pattern>
-          <pattern id="pg-bricks" width="30" height="16" patternUnits="userSpaceOnUse">
-            <path d="M0 15.5h30M15 0v8M0 8h30M30 8v8" stroke="#a8927e" strokeOpacity="0.35" strokeWidth="1" />
-          </pattern>
-        </defs>
-      </svg>
-      <span className="absolute top-[35px] left-1/2 grid size-11 -translate-x-1/2 place-items-center" style={{ color: roof }}>
-        <Icon className="size-6" />
-      </span>
-      {/* Name board over the door. */}
-      <span className="absolute top-[118px] left-1/2 flex -translate-x-1/2 items-center gap-1.5 rounded-md border border-black/10 bg-[#fffaf0] px-2 py-0.5 text-[11px] font-semibold whitespace-nowrap text-[#3f3a36] shadow-sm dark:bg-[#2a2530] dark:text-[#f3eee8]">
-        {house.title}
-        <span className="font-mono text-[10px] font-normal opacity-60">
-          {visited}/{house.tools.length}
-        </span>
-      </span>
-      {near && (
-        <span className="pg-hop absolute top-[124px] left-1/2 mt-6 grid h-7 min-w-7 -translate-x-1/2 place-items-center rounded-md border border-b-[3px] bg-card px-1.5 font-mono text-xs font-semibold shadow-md">
-          E
-        </span>
-      )}
-    </div>
-  )
-}
-
-/** Greenery. Trees are solid (see layout.ts), bushes and flowers are not. */
+/** Greenery. Trees and pines are solid (see scenes.ts); bushes and flowers are not. */
 export function Plant({ tree, index }: { tree: Tree; index: number }) {
   const s = tree.size
   const delay = `${-(index % 7) * 0.6}s`
+  const z = Math.round(tree.y)
   if (tree.kind === 'flower') {
+    const a = FLOWER_COLORS[index % FLOWER_COLORS.length]
+    const b = FLOWER_COLORS[(index * 3 + 1) % FLOWER_COLORS.length]
     return (
-      <div className="absolute" style={{ left: tree.x - 10, top: tree.y - 12, zIndex: Math.round(tree.y) }}>
-        <div className="pg-sway flex gap-1" style={{ animationDelay: delay }}>
-          {[0, 1, 2].map((i) => (
-            <span
-              key={i}
-              className={cn('size-2 rounded-full', i === 1 ? 'mt-0 bg-brand-2/80' : 'mt-1.5 bg-brand-1/70')}
-            />
-          ))}
-        </div>
-      </div>
+      <svg className="pg-sway absolute overflow-visible" width={30} height={22} viewBox="0 0 30 22" style={{ left: tree.x - 15, top: tree.y - 18, zIndex: z, animationDelay: delay }}>
+        <path d="M6 22v-9M15 22V7M24 22v-8" stroke="#3f8f3a" strokeWidth="1.6" />
+        {[
+          [6, 12, a],
+          [15, 6, b],
+          [24, 13, a],
+        ].map(([x, y, c]) => (
+          <g key={`${x}`}>
+            {[0, 72, 144, 216, 288].map((deg) => (
+              <circle key={deg} cx={(x as number) + Math.cos((deg * Math.PI) / 180) * 2.6} cy={(y as number) + Math.sin((deg * Math.PI) / 180) * 2.6} r={2.2} fill={c as string} />
+            ))}
+            <circle cx={x as number} cy={y as number} r={1.6} fill="#fde047" />
+          </g>
+        ))}
+      </svg>
     )
   }
   if (tree.kind === 'bush') {
     return (
-      <div
-        className="absolute"
-        style={{ left: tree.x - 22 * s, top: tree.y - 22 * s, width: 44 * s, height: 24 * s, zIndex: Math.round(tree.y) }}
-      >
-        <span className="absolute inset-0 rounded-[50%] bg-emerald-600/70 dark:bg-emerald-800/80" />
-        <span className="absolute top-0.5 left-1.5 h-1/2 w-1/2 rounded-full bg-emerald-400/50 dark:bg-emerald-600/50" />
-      </div>
+      <svg className="absolute overflow-visible" width={56 * s} height={34 * s} viewBox="0 0 56 34" style={{ left: tree.x - 28 * s, top: tree.y - 30 * s, zIndex: z }}>
+        <ellipse cx="28" cy="31" rx="24" ry="4" fill="black" opacity="0.18" />
+        <g className="fill-[#3f9b4a] dark:fill-[#1f5130]">
+          <circle cx="16" cy="20" r="12" />
+          <circle cx="30" cy="15" r="14" />
+          <circle cx="42" cy="21" r="11" />
+        </g>
+        <g className="fill-[#6cc46a] dark:fill-[#2d6b3e]" opacity="0.7">
+          <circle cx="26" cy="9" r="6" />
+          <circle cx="13" cy="15" r="4" />
+        </g>
+        {index % 3 === 0 && (
+          <g fill="#ef4444">
+            <circle cx="20" cy="22" r="1.8" />
+            <circle cx="34" cy="18" r="1.8" />
+            <circle cx="41" cy="24" r="1.8" />
+          </g>
+        )}
+      </svg>
+    )
+  }
+  if (tree.kind === 'pine') {
+    return (
+      <svg className="absolute overflow-visible" width={56 * s} height={92 * s} viewBox="0 0 56 92" style={{ left: tree.x - 28 * s, top: tree.y - 88 * s, zIndex: z }}>
+        <ellipse cx="28" cy="88" rx="20" ry="5" fill="black" opacity="0.2" />
+        <rect x="24" y="70" width="8" height="18" rx="2" className="fill-[#7c4a2a] dark:fill-[#3b2414]" />
+        <g className="pg-sway" style={{ animationDelay: delay }}>
+          <path d="M28 2 46 34H10Z" className="fill-[#2f7d4f] dark:fill-[#174a2e]" />
+          <path d="M28 18 50 54H6Z" className="fill-[#2a7046] dark:fill-[#143f27]" />
+          <path d="M28 36 54 76H2Z" className="fill-[#256340] dark:fill-[#113623]" />
+          <path d="M28 4 34 16 28 14Z M28 20l8 14-8-3Z M28 38l9 16-9-3Z" fill="white" opacity="0.15" />
+        </g>
+      </svg>
     )
   }
   return (
-    <div
-      className="absolute"
-      style={{ left: tree.x - 30 * s, top: tree.y - 78 * s, width: 60 * s, height: 84 * s, zIndex: Math.round(tree.y) }}
-    >
-      <span className="absolute bottom-0 left-1/2 h-3 w-12 -translate-x-1/2 rounded-full bg-black/20 blur-[2px]" />
-      <span
-        className="absolute bottom-1 left-1/2 w-2.5 -translate-x-1/2 rounded-sm bg-amber-800 dark:bg-amber-950"
-        style={{ height: 26 * s }}
-      />
-      <div className="pg-sway absolute inset-x-0 top-0 origin-bottom" style={{ height: 62 * s, animationDelay: delay }}>
-        <span className="absolute inset-0 rounded-full bg-emerald-600 dark:bg-emerald-800" />
-        <span className="absolute top-1.5 left-2 h-1/2 w-1/2 rounded-full bg-emerald-400/60 dark:bg-emerald-600/60" />
-      </div>
-    </div>
+    <svg className="absolute overflow-visible" width={70 * s} height={90 * s} viewBox="0 0 70 90" style={{ left: tree.x - 35 * s, top: tree.y - 86 * s, zIndex: z }}>
+      <ellipse cx="35" cy="86" rx="24" ry="5.5" fill="black" opacity="0.2" />
+      <path d="M31 86V52h8v34Z" className="fill-[#8b5a2b] dark:fill-[#3b2414]" />
+      <path d="M35 60l-9-8M35 64l8-7" stroke="#8b5a2b" strokeWidth="3" strokeLinecap="round" />
+      <g className="pg-sway" style={{ animationDelay: delay }}>
+        <g className="fill-[#3c9a4e] dark:fill-[#1c5232]">
+          <circle cx="35" cy="28" r="22" />
+          <circle cx="18" cy="42" r="15" />
+          <circle cx="52" cy="42" r="15" />
+          <circle cx="35" cy="50" r="15" />
+        </g>
+        <g className="fill-[#5fbf63] dark:fill-[#2a6b42]" opacity="0.75">
+          <circle cx="28" cy="20" r="10" />
+          <circle cx="15" cy="37" r="6" />
+          <circle cx="44" cy="30" r="6" />
+        </g>
+        {index % 4 === 0 && (
+          <g fill="#f87171">
+            <circle cx="24" cy="38" r="2.6" />
+            <circle cx="46" cy="44" r="2.6" />
+            <circle cx="36" cy="30" r="2.6" />
+          </g>
+        )}
+      </g>
+    </svg>
   )
 }

@@ -53,12 +53,32 @@ interface SceneBase {
   doors: Door[]
 }
 
+/** Each category gets its own kind of building, in category order (wrapping). */
+export type BuildingStyle = 'shop' | 'library' | 'vault' | 'studio' | 'lab'
+const STYLE_ORDER: BuildingStyle[] = ['shop', 'library', 'vault', 'studio', 'lab']
+
+/**
+ * Size of each building, the height `base` from its top where the solid walls
+ * begin (above that is roof the player can walk behind), and its name.
+ */
+export const BUILDINGS: Record<BuildingStyle, { w: number; h: number; base: number; place: string }> = {
+  shop: { w: 300, h: 236, base: 104, place: 'Percetakan' },
+  library: { w: 340, h: 256, base: 124, place: 'Perpustakaan' },
+  vault: { w: 290, h: 236, base: 104, place: 'Brankas' },
+  studio: { w: 320, h: 244, base: 118, place: 'Studio' },
+  lab: { w: 340, h: 236, base: 84, place: 'Lab' },
+}
+
 export interface House {
   id: CategoryId
   title: string
   description: string
+  style: BuildingStyle
+  /** What kind of place it is: "Perpustakaan", "Lab"… */
+  place: string
   rect: Rect
-  roof: string
+  /** The category's colour: roofs, awnings, trims, the room's banner. */
+  accent: string
   door: Point
   tools: Tool[]
 }
@@ -67,14 +87,29 @@ export interface Tree {
   x: number
   y: number
   size: number
-  kind: 'tree' | 'bush' | 'flower'
+  kind: 'tree' | 'pine' | 'bush' | 'flower'
+}
+
+export interface Ellipse {
+  x: number
+  y: number
+  rx: number
+  ry: number
 }
 
 export interface Town extends SceneBase {
   kind: 'town'
   houses: House[]
-  paths: Rect[]
-  plaza: Circle
+  /** Dirt paths as SVG path data, drawn with a round stroke. */
+  paths: string[]
+  plaza: Ellipse
+  pond: Ellipse
+  /** Tall grass patches, aligned to GRASS_TILE. */
+  grass: Rect[]
+  benches: Rect[]
+  lamps: Point[]
+  signs: { at: Point; house: House }[]
+  beds: Rect[]
   trees: Tree[]
 }
 
@@ -89,11 +124,12 @@ export interface Room extends SceneBase {
 export type Scene = Town | Room
 
 export const KEEPER_R = 17
-export const HOUSE_W = 300
-export const HOUSE_H = 240
+export const GRASS_TILE = 26
+export const PATH_WIDTH = 58
 
-const TOWN_W = 1900
-const ROW_GAP = 520
+const TOWN_W = 2000
+const ROW_H = 260
+const ROW_GAP = 540
 const HOUSE_SPACING = 600
 
 const ROOM_CELL_W = 210
@@ -103,10 +139,10 @@ const ROOM_WALL = 150
 const ROOM_BOTTOM = 150
 const WALL_T = 24
 
-/** Roof colour per category, in category order (wraps for more categories). */
-const ROOFS = ['#e05a4f', '#3f7fd9', '#8b5cf6', '#e0599b', '#2f9e6b', '#e0a43a']
+/** Category colours, in category order (wraps for more categories). */
+const ACCENTS = ['#e05a4f', '#3f7fd9', '#7c5cd6', '#e0599b', '#2f9e6b', '#e0a43a']
 
-/** Small deterministic PRNG, so the trees grow in the same place every visit. */
+/** Small deterministic PRNG, so the town grows the same way every visit. */
 function rng(seed: number) {
   return () => {
     seed = (seed * 1664525 + 1013904223) >>> 0
@@ -116,54 +152,188 @@ function rng(seed: number) {
 
 const inRect = (p: Point, r: Rect, pad = 0) =>
   p.x > r.x - pad && p.x < r.x + r.w + pad && p.y > r.y - pad && p.y < r.y + r.h + pad
+const inEllipse = (p: Point, e: Ellipse, pad = 0) =>
+  ((p.x - e.x) / (e.rx + pad)) ** 2 + ((p.y - e.y) / (e.ry + pad)) ** 2 < 1
+
+/**
+ * A smooth curve through `points` (Catmull-Rom as cubic Béziers): the SVG path
+ * data, plus points sampled along it so nothing gets planted on the path.
+ */
+function curve(points: Point[]) {
+  let d = `M${points[0].x} ${points[0].y}`
+  const samples: Point[] = []
+  for (let i = 0; i < points.length - 1; i++) {
+    const p0 = points[i - 1] ?? points[i]
+    const p1 = points[i]
+    const p2 = points[i + 1]
+    const p3 = points[i + 2] ?? p2
+    const c1 = { x: p1.x + (p2.x - p0.x) / 6, y: p1.y + (p2.y - p0.y) / 6 }
+    const c2 = { x: p2.x - (p3.x - p1.x) / 6, y: p2.y - (p3.y - p1.y) / 6 }
+    d += ` C${c1.x} ${c1.y} ${c2.x} ${c2.y} ${p2.x} ${p2.y}`
+    for (let t = 0; t <= 1; t += 0.05) {
+      const u = 1 - t
+      samples.push({
+        x: u ** 3 * p1.x + 3 * u * u * t * c1.x + 3 * u * t * t * c2.x + t ** 3 * p2.x,
+        y: u ** 3 * p1.y + 3 * u * u * t * c1.y + 3 * u * t * t * c2.y + t ** 3 * p2.y,
+      })
+    }
+  }
+  return { d, samples }
+}
 
 export function buildScenes(): Record<SceneId, Scene> {
   const groups = CATEGORIES.map((c) => ({ ...c, tools: TOOLS.filter((t) => t.category === c.id) })).filter(
     (g) => g.tools.length > 0,
   )
+  const random = rng(20261007)
+  const jitter = (n: number) => (random() - 0.5) * n
 
-  // --- Town: houses in rows of three, the plaza between the first two rows.
+  // --- Buildings in rows of three, bottom-aligned so their doors line up; the plaza between the first two rows.
   const rows: (typeof groups)[] = []
   for (let i = 0; i < groups.length; i += 3) rows.push(groups.slice(i, i + 3))
-  const rowY = (r: number) => 150 + r * (HOUSE_H + ROW_GAP)
-  const height = rowY(rows.length - 1) + HOUSE_H + 220
-  const plaza = { x: TOWN_W / 2, y: rowY(0) + HOUSE_H + ROW_GAP / 2, r: 150 }
+  const rowY = (r: number) => 190 + r * (ROW_H + ROW_GAP)
+  const height = rowY(rows.length - 1) + ROW_H + 250
+  const plaza = { x: TOWN_W / 2, y: rowY(0) + ROW_H + ROW_GAP / 2, rx: 175, ry: 125 }
 
   const houses: House[] = rows.flatMap((row, r) =>
     row.map((g, i) => {
+      const index = groups.indexOf(g)
+      const style = STYLE_ORDER[index % STYLE_ORDER.length]
+      const { w, h, place } = BUILDINGS[style]
       const cx = TOWN_W / 2 + (i - (row.length - 1) / 2) * HOUSE_SPACING
-      const rect = { x: cx - HOUSE_W / 2, y: rowY(r), w: HOUSE_W, h: HOUSE_H }
+      const rect = { x: cx - w / 2, y: rowY(r) + ROW_H - h, w, h }
       return {
         id: g.id,
         title: g.title,
         description: g.description,
+        style,
+        place,
         rect,
-        roof: ROOFS[groups.indexOf(g) % ROOFS.length],
+        accent: ACCENTS[index % ACCENTS.length],
         door: { x: cx, y: rect.y + rect.h + 14 },
         tools: g.tools,
       }
     }),
   )
 
-  // Sand paths: one from each door to the plaza's row, and the row itself.
-  const paths: Rect[] = houses.map((h) => {
-    const top = Math.min(h.door.y - 20, plaza.y)
-    const bottom = Math.max(h.door.y - 20, plaza.y)
-    return { x: h.door.x - 34, y: top, w: 68, h: bottom - top }
+  // --- Dirt paths, winding from every door to the plaza.
+  const onPlaza = (toward: Point, shrink = 0.86) => {
+    const a = Math.atan2(toward.y - plaza.y, toward.x - plaza.x)
+    return { x: plaza.x + Math.cos(a) * plaza.rx * shrink, y: plaza.y + Math.sin(a) * plaza.ry * shrink }
+  }
+  const curves = houses.map((h) => {
+    const { door } = h
+    if (door.y < plaza.y) {
+      const end = onPlaza(door)
+      return curve([
+        door,
+        { x: door.x + jitter(20), y: door.y + 70 },
+        { x: (door.x + end.x) / 2 + jitter(60), y: (door.y + end.y) / 2 + 30 + jitter(30) },
+        end,
+      ])
+    }
+    // Doors face down, away from the plaza: wind over to the road south and join it.
+    const side = Math.sign(plaza.x - door.x) || 1
+    return curve([
+      door,
+      { x: door.x + side * 16 + jitter(10), y: door.y + 56 },
+      { x: (door.x + plaza.x) / 2 + jitter(30), y: door.y + 74 + jitter(16) },
+      { x: plaza.x - side * 6, y: door.y + 40 },
+    ])
   })
-  const xs = houses.map((h) => h.door.x)
-  paths.push({ x: Math.min(...xs) - 34, y: plaza.y - 34, w: Math.max(...xs) - Math.min(...xs) + 68, h: 68 })
 
-  const random = rng(20261007)
+  const pond = { x: 260, y: plaza.y + 40, rx: 130, ry: 72 }
+  curves.push(
+    curve([onPlaza({ x: 0, y: plaza.y + 60 }), { x: plaza.x - 420, y: plaza.y + 70 }, { x: pond.x + pond.rx + 10, y: pond.y }]),
+  )
+  // The road out of town, south.
+  curves.push(curve([onPlaza({ x: plaza.x, y: height }), { x: plaza.x + 30, y: plaza.y + 330 }, { x: plaza.x - 10, y: height + 40 }]))
+  const pathSamples = curves.flatMap((c) => c.samples)
+  const nearPath = (p: Point, pad: number) => pathSamples.some((s) => Math.hypot(s.x - p.x, s.y - p.y) < PATH_WIDTH / 2 + pad)
+
+  const blockedAt = (p: Point, pad: number) =>
+    houses.some((h) => inRect(p, h.rect, pad) || Math.hypot(p.x - h.door.x, p.y - h.door.y) < 70 + pad) ||
+    nearPath(p, pad) ||
+    inEllipse(p, plaza, pad + 55) ||
+    inEllipse(p, pond, pad + 10)
+
+  // --- Plaza furniture: benches and lamp posts on its rim, wherever no path arrives.
+  const benches: Rect[] = []
+  for (const deg of [200, -20, 160, 20, 250, -70]) {
+    if (benches.length === 2) break
+    const a = (deg * Math.PI) / 180
+    const c = { x: plaza.x + Math.cos(a) * (plaza.rx + 52), y: plaza.y + Math.sin(a) * (plaza.ry + 40) }
+    if (nearPath(c, 30)) continue
+    benches.push({ x: c.x - 32, y: c.y - 10, w: 64, h: 20 })
+  }
+  const lamps: Point[] = []
+  for (let deg = 0; deg < 360; deg += 30) {
+    if (lamps.length === 4) break
+    const a = ((deg + 15) * Math.PI) / 180
+    const c = { x: plaza.x + Math.cos(a) * (plaza.rx + 24), y: plaza.y + Math.sin(a) * (plaza.ry + 18) }
+    if (nearPath(c, 14) || benches.some((b) => inRect(c, b, 40)) || lamps.some((l) => Math.hypot(l.x - c.x, l.y - c.y) < 160))
+      continue
+    lamps.push(c)
+  }
+
+  // --- A signpost by every door, and flower beds against the walls.
+  const signs = houses.map((h) => ({ at: { x: h.rect.x + h.rect.w + 34, y: h.door.y - 4 }, house: h }))
+  const beds: Rect[] = houses.flatMap((h) => [
+    { x: h.rect.x + 14, y: h.rect.y + h.rect.h - 4, w: 64, h: 18 },
+    { x: h.rect.x + h.rect.w - 78, y: h.rect.y + h.rect.h - 4, w: 64, h: 18 },
+  ])
+
+  // --- Tall grass, the kind you rustle through.
+  const grass: Rect[] = []
+  const T = GRASS_TILE
+  for (const c of [
+    { x: TOWN_W - 360, y: plaza.y - 90, w: 9, h: 6 },
+    { x: plaza.x + 110, y: height - 250, w: 7, h: 5 },
+    { x: 120, y: rowY(0) + ROW_H + 30, w: 7, h: 4 },
+    { x: plaza.x - 300, y: height - 220, w: 6, h: 4 },
+    { x: TOWN_W - 300, y: height - 240, w: 7, h: 5 },
+  ]) {
+    const r = { x: Math.round(c.x / T) * T, y: Math.round(c.y / T) * T, w: c.w * T, h: c.h * T }
+    const corners = [
+      { x: r.x, y: r.y },
+      { x: r.x + r.w, y: r.y },
+      { x: r.x, y: r.y + r.h },
+      { x: r.x + r.w, y: r.y + r.h },
+      { x: r.x + r.w / 2, y: r.y + r.h / 2 },
+    ]
+    if (r.x < 60 || r.y < 80 || r.x + r.w > TOWN_W - 60 || r.y + r.h > height - 60) continue
+    if (corners.some((p) => blockedAt(p, 6))) continue
+    if (pathSamples.some((s) => inRect(s, r, PATH_WIDTH / 2))) continue
+    grass.push(r)
+  }
+
+  // --- Trees: a dense border around town, then scattered woods, bushes and flowers.
   const trees: Tree[] = []
-  for (let n = 0; n < 1500 && trees.length < 80; n++) {
-    const p = { x: 30 + random() * (TOWN_W - 60), y: 50 + random() * (height - 80) }
-    if (houses.some((h) => inRect(p, h.rect, 50) || Math.hypot(p.x - h.door.x, p.y - h.door.y) < 110)) continue
-    if (paths.some((r) => inRect(p, r, 34))) continue
-    if (Math.hypot(p.x - plaza.x, p.y - plaza.y) < plaza.r + 100) continue
-    if (trees.some((t) => Math.hypot(t.x - p.x, t.y - p.y) < 66)) continue
+  const occupied = (p: Point, pad: number) =>
+    blockedAt(p, pad) ||
+    grass.some((g) => inRect(p, g, 24)) ||
+    // Canopies are tall: keep trees well clear of what they could hide.
+    benches.some((b) => inRect(p, b, 70)) ||
+    lamps.some((l) => Math.hypot(l.x - p.x, l.y - p.y) < 70) ||
+    signs.some((s) => Math.hypot(s.at.x - p.x, s.at.y - p.y) < 80)
+  const plant = (p: Point, kind: Tree['kind'], size: number, gap: number) => {
+    if (occupied(p, kind === 'flower' ? 8 : 26)) return
+    if (trees.some((t) => Math.hypot(t.x - p.x, t.y - p.y) < gap)) return
+    trees.push({ ...p, kind, size })
+  }
+  for (let x = 30; x < TOWN_W; x += 62) {
+    plant({ x: x + jitter(14), y: 60 + jitter(16) }, random() < 0.4 ? 'pine' : 'tree', 1 + random() * 0.3, 50)
+    plant({ x: x + jitter(14), y: height - 26 + jitter(10) }, random() < 0.4 ? 'pine' : 'tree', 1 + random() * 0.3, 50)
+  }
+  for (let y = 120; y < height - 60; y += 62) {
+    plant({ x: 34 + jitter(12), y: y + jitter(14) }, random() < 0.4 ? 'pine' : 'tree', 1 + random() * 0.3, 50)
+    plant({ x: TOWN_W - 34 + jitter(12), y: y + jitter(14) }, random() < 0.4 ? 'pine' : 'tree', 1 + random() * 0.3, 50)
+  }
+  for (let n = 0; n < 2500 && trees.length < 230; n++) {
+    const p = { x: 90 + random() * (TOWN_W - 180), y: 130 + random() * (height - 220) }
     const roll = random()
-    trees.push({ ...p, kind: roll < 0.5 ? 'tree' : roll < 0.75 ? 'bush' : 'flower', size: 0.8 + random() * 0.5 })
+    const kind = roll < 0.3 ? 'tree' : roll < 0.45 ? 'pine' : roll < 0.65 ? 'bush' : 'flower'
+    plant(p, kind, 0.8 + random() * 0.5, kind === 'flower' ? 40 : 70)
   }
 
   const fountain = { x: plaza.x, y: plaza.y - 10, r: 58 }
@@ -174,17 +344,38 @@ export function buildScenes(): Record<SceneId, Scene> {
     height,
     spawn: { x: plaza.x, y: plaza.y + 70 },
     houses,
-    paths,
+    paths: curves.map((c) => c.d),
     plaza,
+    pond,
+    grass,
+    benches,
+    lamps,
+    signs,
+    beds,
     trees,
-    // The roof's top edge is behind the house: the player can walk up to it.
-    rects: houses.map((h) => ({ x: h.rect.x + 8, y: h.rect.y + 90, w: h.rect.w - 16, h: h.rect.h - 90 })),
-    circles: [fountain, ...trees.filter((t) => t.kind === 'tree').map((t) => ({ x: t.x, y: t.y, r: 13 * t.size }))],
+    // The roof is behind the building: the player can walk up to the walls.
+    rects: [
+      ...houses.map((h) => {
+        const base = BUILDINGS[h.style].base
+        return { x: h.rect.x + 8, y: h.rect.y + base, w: h.rect.w - 16, h: h.rect.h - base }
+      }),
+      ...benches,
+    ],
+    circles: [
+      fountain,
+      // The pond as a row of overlapping circles.
+      ...[-0.55, -0.2, 0.2, 0.55].map((f) => ({ x: pond.x + f * pond.rx * 1.2, y: pond.y, r: pond.ry * (1 - Math.abs(f) * 0.6) })),
+      ...lamps.map((l) => ({ ...l, r: 8 })),
+      ...signs.map((s) => ({ ...s.at, r: 8 })),
+      ...trees
+        .filter((t) => t.kind === 'tree' || t.kind === 'pine')
+        .map((t) => ({ x: t.x, y: t.y, r: 13 * t.size })),
+    ],
     keepers: [],
     doors: [],
   }
 
-  // --- One room per house.
+  // --- One room per building.
   const scenes = { town } as Record<SceneId, Scene>
   for (const house of houses) {
     const n = house.tools.length
@@ -231,7 +422,7 @@ export function buildScenes(): Record<SceneId, Scene> {
       dir: 'up',
       to: house.id,
       spawn: { x: mat.x, y: mat.y - 40 },
-      label: `Masuk Rumah ${house.title}`,
+      label: `Masuk ${house.place} · ${house.title}`,
     })
   }
   return scenes

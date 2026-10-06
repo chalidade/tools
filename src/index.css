@@ -166,14 +166,53 @@
   background-color: #4a4232;
   box-shadow: inset 0 0 0 3px #3d3628;
 }
-.pg-floor {
+.pg-floor-wood {
   background-color: #e2c79c;
   background-image:
     repeating-linear-gradient(0deg, rgb(0 0 0 / 0.09) 0 2px, transparent 2px 38px),
     repeating-linear-gradient(90deg, rgb(0 0 0 / 0.05) 0 2px, transparent 2px 120px);
 }
-.dark .pg-floor {
+.dark .pg-floor-wood {
   background-color: #3a2f27;
+}
+.pg-floor-carpet {
+  background-color: #9f3b3b;
+  background-image:
+    radial-gradient(circle at 50% 50%, rgb(255 220 150 / 0.22) 3px, transparent 4px),
+    linear-gradient(45deg, rgb(0 0 0 / 0.08) 25%, transparent 25% 75%, rgb(0 0 0 / 0.08) 75%);
+  background-size:
+    32px 32px,
+    32px 32px;
+}
+.dark .pg-floor-carpet {
+  background-color: #4a1f24;
+}
+.pg-floor-stone {
+  background-color: #b8b2aa;
+  background-image: conic-gradient(rgb(0 0 0 / 0.1) 25%, transparent 0 50%, rgb(0 0 0 / 0.1) 0 75%, transparent 0);
+  background-size: 64px 64px;
+}
+.dark .pg-floor-stone {
+  background-color: #44403c;
+}
+.pg-floor-check {
+  background-color: #fbe7f1;
+  background-image: conic-gradient(#f5c2da 25%, transparent 0 50%, #f5c2da 0 75%, transparent 0);
+  background-size: 56px 56px;
+}
+.dark .pg-floor-check {
+  background-color: #3a2a35;
+  background-image: conic-gradient(#4b3546 25%, transparent 0 50%, #4b3546 0 75%, transparent 0);
+}
+.pg-floor-tile {
+  background-color: #eef2f6;
+  background-image:
+    linear-gradient(rgb(100 116 139 / 0.18) 2px, transparent 2px),
+    linear-gradient(90deg, rgb(100 116 139 / 0.18) 2px, transparent 2px);
+  background-size: 48px 48px;
+}
+.dark .pg-floor-tile {
+  background-color: #1e293b;
 }
 .pg-wallpaper {
   background-color: #f3e9da;
@@ -275,6 +314,182 @@
   animation: pg-drift 8s ease-in-out infinite alternate;
 }
 
+/* Town life: chimney smoke, flags, marquee bulbs, LEDs, the vault wheel, the
+   lab dish, water ripples, tall grass, cloud shadows, butterflies, dog tails. */
+.pg-smoke {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: pg-smoke 3.6s ease-out infinite;
+}
+.pg-flag {
+  transform-box: fill-box;
+  transform-origin: 0 50%;
+  animation: pg-flag 1.4s ease-in-out infinite alternate;
+}
+.pg-bulb {
+  animation: pg-bulb 1.2s steps(1) infinite;
+}
+.pg-led {
+  animation: pg-bulb 1.7s steps(1) infinite;
+}
+.pg-flicker {
+  animation: pg-flicker 2.3s ease-in-out infinite;
+}
+.pg-wheel {
+  animation: pg-turn 14s linear infinite;
+}
+.pg-dish {
+  animation: pg-dish 5s ease-in-out infinite alternate;
+}
+.pg-ripple {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: pg-ripple 3.9s ease-out infinite;
+}
+.pg-ripple-css {
+  animation: pg-ripple 2.6s ease-out infinite;
+}
+.pg-blades {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: pg-sway 2.8s ease-in-out infinite;
+}
+.pg-cloud {
+  animation: pg-cloud 80s linear infinite;
+}
+.pg-flutter {
+  animation: pg-flutter 12s ease-in-out infinite;
+}
+.pg-wing {
+  transform-origin: 100% 50%;
+  animation: pg-wing 0.24s ease-in-out infinite alternate;
+}
+.pg-wing + .pg-wing {
+  transform-origin: 0 50%;
+}
+.pg-tail {
+  transform-box: fill-box;
+  transform-origin: 100% 100%;
+  animation: pg-wag 0.35s ease-in-out infinite alternate;
+}
+
+@keyframes pg-smoke {
+  0% {
+    transform: translate(0, 0) scale(0.5);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate(14px, -46px) scale(1.7);
+    opacity: 0;
+  }
+}
+@keyframes pg-flag {
+  from {
+    transform: skewY(-6deg) scaleX(0.92);
+  }
+  to {
+    transform: skewY(6deg) scaleX(1);
+  }
+}
+@keyframes pg-bulb {
+  50% {
+    opacity: 0.25;
+  }
+}
+@keyframes pg-flicker {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  40% {
+    opacity: 0.65;
+  }
+  45% {
+    opacity: 0.95;
+  }
+  70% {
+    opacity: 0.75;
+  }
+}
+@keyframes pg-turn {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes pg-dish {
+  from {
+    transform: rotate(-24deg);
+  }
+  to {
+    transform: rotate(18deg);
+  }
+}
+@keyframes pg-ripple {
+  0% {
+    transform: scale(0.3);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1.8);
+    opacity: 0;
+  }
+}
+@keyframes pg-cloud {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(var(--travel, 3000px));
+  }
+}
+@keyframes pg-flutter {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  20% {
+    transform: translate(60px, -30px);
+  }
+  45% {
+    transform: translate(110px, 20px);
+  }
+  70% {
+    transform: translate(40px, 50px);
+  }
+  85% {
+    transform: translate(-20px, 15px);
+  }
+}
+@keyframes pg-wing {
+  from {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(0.25);
+  }
+}
+@keyframes pg-wag {
+  from {
+    transform: rotate(-18deg);
+  }
+  to {
+    transform: rotate(18deg);
+  }
+}
+/* Rustle: played on a tall-grass tile when the player walks into it. */
+@keyframes pg-rustle {
+  0%,
+  100% {
+    transform: none;
+  }
+  25% {
+    transform: rotate(-12deg) scaleY(0.85);
+  }
+  60% {
+    transform: rotate(10deg);
+  }
+}
+
 @keyframes pg-bob {
   50% {
     transform: translateY(-2px) scaleY(0.97);
@@ -339,7 +554,18 @@
   .pg-sway,
   .pg-float,
   .pg-hop,
-  .pg-firefly {
+  .pg-firefly,
+  .pg-smoke,
+  .pg-flag,
+  .pg-wheel,
+  .pg-dish,
+  .pg-ripple,
+  .pg-ripple-css,
+  .pg-blades,
+  .pg-cloud,
+  .pg-flutter,
+  .pg-wing,
+  .pg-tail {
     animation: none;
   }
 }

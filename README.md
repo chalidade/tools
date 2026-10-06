@@ -1,6 +1,6 @@
 # tools
 
-Kumpulan tools kecil yang jalan **sepenuhnya di browser**. File diproses di
+Kumpulan tools gratis yang jalan **sepenuhnya di browser**. File diproses di
 perangkat pengguna: tidak di-upload ke server dan tidak disimpan di mana pun.
 
 **Live:** https://chalidade.github.io/tools/
@@ -43,22 +43,26 @@ perangkat pengguna: tidak di-upload ke server dan tidak disimpan di mana pun.
 
 ## Beranda: kota kecil yang bisa dijelajahi
 
-Halaman depan adalah kota kecil bergaya game RPG. Setiap kategori adalah
-sebuah rumah; masuk lewat pintunya, dan di dalam setiap tool dijaga seorang
-tokoh kartun yang memperkenalkan diri, menjelaskan guna dan batasan tool-nya,
-lalu menawarkan "Buka" atau "Nanti saja". Warga kota berkeliaran dan
-mengobrol di luar.
+Halaman depan adalah kota kecil bergaya game RPG. Setiap kategori punya
+bangunannya sendiri — Percetakan, Perpustakaan, Brankas, Studio, dan Lab —
+dan di dalamnya setiap tool dijaga seorang tokoh kartun berseragam yang
+memperkenalkan diri, menjelaskan guna dan batasan tool-nya, lalu menawarkan
+"Buka" atau "Nanti saja". Di luar, warga kota berkeliaran: ada yang
+mengobrol, mengajak anjingnya jalan-jalan, atau berkebun; jalan setapak
+berkelok, kolam beriak, rumput tinggi bergoyang saat dilewati, dan malamnya
+lampu taman serta kunang-kunang menyala (mode gelap).
 
 - **WASD / panah** untuk jalan, **Shift** untuk lari.
-- Jalan ke pintu rumah (atau tekan **E**) untuk masuk; injak keset
+- Jalan ke pintu bangunan (atau tekan **E**) untuk masuk; injak keset
   "KELUAR" di dalam untuk kembali ke kota.
 - **E / Enter** di dekat penjaga untuk mengobrol, panah untuk memilih
   jawaban, **Esc** untuk pergi.
-- Mouse / ponsel: klik atau ketuk tanah, rumah, atau tokoh — karakter
+- Mouse / ponsel: klik atau ketuk tanah, bangunan, atau tokoh — karakter
   mencari jalannya sendiri ke sana.
 
 Minimap kota dan "paspor" (jumlah tool yang sudah dikunjungi) ada di pojok
-kanan atas. Daftar tools biasa tetap ada di bawahnya.
+kanan atas. Kartu pembuka bisa disembunyikan (tombol ×). Daftar tools biasa
+tetap ada di bawahnya.
 
 ## Menjalankan
 

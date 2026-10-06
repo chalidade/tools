@@ -113,7 +113,7 @@ export function dialogFor(tool: Tool, name: string): string[] {
     `Formatnya ${tool.formats}.`,
     'Semuanya kuproses di browser-mu — tidak ada yang di-upload.',
   ]
-  return [`Halo! Aku ${name}, penjaga ${tool.title} di rumah ini. ${first}`, ...rest]
+  return [`Halo! Aku ${name}, penjaga ${tool.title} di sini. ${first}`, ...rest]
 }
 
 /** Short calls a keeper makes when the player wanders close. */

@@ -46,17 +46,21 @@ picture; the rules that matter when editing:
 - **Hash routing** (`#/<slug>`, `src/lib/use-hash-route.ts`) — do not switch to
   path routing; it 404s on reload under the Pages sub-path.
 - The home page opens with a walkable RPG town (`src/components/Playground.tsx`):
-  one house per category; walking into a door enters that house, where each
-  tool is a cartoon keeper (`playground/Person.tsx`) who explains the tool in
-  a dialog (`playground/Dialog.tsx`) and offers to open it. Scenes, collision
-  and A* click-to-walk pathing live in `playground/scenes.ts`, all laid out
-  from the registry — a new tool appears automatically. What a keeper says
-  lives in `playground/dialog.ts` (add lines for a new tool there; without
-  them it explains itself from its registry description). The loop moves
-  sprites by mutating `style.transform` on refs (never React state per frame);
-  `.pg-*` styles and animations live in `src/index.css`. The world is
-  `aria-hidden`; the ToolGrid below stays the accessible way in. Visited
-  stamps persist in localStorage (`tools:visited`).
+  one building per category, each in its own style (`playground/Buildings.tsx`:
+  print shop, library, vault, studio, lab — assigned in category order).
+  Walking into a door enters it; inside, each tool is a cartoon keeper
+  (`playground/Person.tsx`) in that building's uniform who explains the tool
+  in a dialog (`playground/Dialog.tsx`) and offers to open it. Town layout
+  (winding paths, plaza, pond, tall grass, benches, lamps, trees), collision
+  and A* click-to-walk live in `playground/scenes.ts`, all laid out from the
+  registry — a new tool appears automatically. Townsfolk, their dog and their
+  chatter are in `playground/residents.ts`; what a keeper says is in
+  `playground/dialog.ts` (add lines for a new tool there; without them it
+  explains itself from its registry description). The loop moves sprites by
+  mutating `style.transform` on refs (never React state per frame); `.pg-*`
+  styles and animations live in `src/index.css`. The world is `aria-hidden`;
+  the ToolGrid below stays the accessible way in. Visited stamps persist in
+  localStorage (`tools:visited`).
 - `App.tsx` only composes sections; each section lives in
   `src/components/<Section>.tsx`. Style with the semantic shadcn tokens in
   `src/index.css`, not hard-coded colors. Animation via `motion/react`.
