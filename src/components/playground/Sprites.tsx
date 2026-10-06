@@ -1,173 +1,193 @@
-import { forwardRef, useId } from 'react'
-import { Check } from 'lucide-react'
+import { forwardRef } from 'react'
+import { Braces, Check, Clapperboard, FileInput, FileLock, FileOutput, Home, type LucideIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import type { Keeper as KeeperSpot, Tree } from './layout'
+import type { CategoryId } from '@/tools/registry'
+import { PLAYER_LOOK, Person, type Look } from './Person'
+import type { House as HouseSpot, Keeper as KeeperSpot, Tree } from './scenes'
 
 /*
  * Everything here is drawn at a fixed world size and positioned by the game
- * loop through `style.transform` — the loop never re-renders React. The
- * walking/blinking motion is plain CSS (`.pg-*` in index.css), switched on by
- * `data-walking` on the sprite.
+ * loop through `style.transform` — the loop never re-renders React. Walking,
+ * blinking and swaying are plain CSS (`.pg-*` in index.css).
  */
 
-/** The player: a small robot in the brand gradient. Anchored at its feet. */
+const BUBBLE =
+  'pg-bubble pointer-events-none absolute bottom-full left-1/2 w-max max-w-44 -translate-x-1/2 rounded-xl border bg-popover px-2.5 py-1.5 text-center text-[11px] leading-snug font-medium text-popover-foreground shadow-lg'
+
+/** The player: a young trainer in the brand colours. Anchored at its feet. */
 export const Player = forwardRef<HTMLDivElement>(function Player(_, ref) {
-  const id = useId()
   return (
-    <div ref={ref} className="pg-sprite absolute top-0 left-0 will-change-transform" style={{ width: 44, height: 54 }}>
+    <div ref={ref} className="pg-sprite absolute top-0 left-0 will-change-transform" style={{ width: 44, height: 62 }}>
       <span className="absolute -bottom-1 left-1/2 h-2.5 w-9 -translate-x-1/2 rounded-full bg-black/25 blur-[2px]" />
       <div className="pg-flip absolute inset-0">
-        <svg viewBox="0 0 44 54" width={44} height={54} className="pg-body overflow-visible">
-          <defs>
-            <linearGradient id={id} x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0" style={{ stopColor: 'var(--brand-1)' }} />
-              <stop offset="1" style={{ stopColor: 'var(--brand-2)' }} />
-            </linearGradient>
-          </defs>
-          <rect className="pg-leg-a" x="12" y="40" width="8" height="12" rx="4" fill="#3f3f46" />
-          <rect className="pg-leg-b" x="24" y="40" width="8" height="12" rx="4" fill="#3f3f46" />
-          <line x1="22" y1="9" x2="22" y2="2" stroke="#71717a" strokeWidth="2" strokeLinecap="round" />
-          <circle className="pg-antenna" cx="22" cy="2" r="3" style={{ fill: 'var(--brand-2)' }} />
-          <rect x="4" y="8" width="36" height="36" rx="13" fill={`url(#${id})`} />
-          <rect x="4" y="8" width="36" height="36" rx="13" fill="white" opacity="0.12" />
-          <rect x="9" y="16" width="26" height="16" rx="8" fill="#18181b" />
-          <g className="pg-eyes">
-            <rect className="pg-eye" x="15" y="20" width="4" height="8" rx="2" fill="#a5f3fc" />
-            <rect className="pg-eye" x="25" y="20" width="4" height="8" rx="2" fill="#a5f3fc" />
-          </g>
-          <circle cx="11" cy="36" r="2.4" fill="white" opacity="0.35" />
-        </svg>
+        <Person look={PLAYER_LOOK} />
       </div>
     </div>
   )
 })
 
-export const NPC_TYPES = [
-  { label: 'PDF', fill: '#ef4444' },
-  { label: 'DOCX', fill: '#3b82f6' },
-  { label: 'XLSX', fill: '#22c55e' },
-  { label: 'PPTX', fill: '#f97316' },
-  { label: 'MP3', fill: '#a855f7' },
-  { label: 'PNG', fill: '#14b8a6' },
-  { label: 'MP4', fill: '#ec4899' },
-  { label: 'JSON', fill: '#eab308' },
-] as const
-
-/** A wandering file with legs. Its speech bubble is filled in by the loop. */
-export const Npc = forwardRef<
+/** Someone strolling around town. The loop fills in its speech bubble. */
+export const Townsperson = forwardRef<
   HTMLDivElement,
-  { label: string; fill: string; bubbleRef: (el: HTMLSpanElement | null) => void }
->(function Npc({ label, fill, bubbleRef }, ref) {
+  { look: Look; bubbleRef: (el: HTMLSpanElement | null) => void }
+>(function Townsperson({ look, bubbleRef }, ref) {
   return (
-    <div ref={ref} className="pg-sprite absolute top-0 left-0 will-change-transform" style={{ width: 34, height: 46 }}>
-      <span
-        ref={bubbleRef}
-        className="pg-bubble pointer-events-none absolute bottom-full left-1/2 mb-2 w-max max-w-44 -translate-x-1/2 rounded-xl border bg-popover px-2.5 py-1.5 text-center text-[11px] leading-snug font-medium text-popover-foreground shadow-lg"
-      />
-      <span className="absolute -bottom-0.5 left-1/2 h-2 w-7 -translate-x-1/2 rounded-full bg-black/25 blur-[2px]" />
+    <div ref={ref} className="pg-sprite absolute top-0 left-0 will-change-transform" style={{ width: 44, height: 62 }}>
+      <span ref={bubbleRef} className={cn(BUBBLE, 'mb-1')} />
+      <span className="absolute -bottom-1 left-1/2 h-2.5 w-9 -translate-x-1/2 rounded-full bg-black/25 blur-[2px]" />
       <div className="pg-flip absolute inset-0">
-        <svg viewBox="0 0 34 46" width={34} height={46} className="pg-body overflow-visible">
-          <rect className="pg-leg-a" x="9" y="34" width="5" height="10" rx="2.5" fill="#3f3f46" />
-          <rect className="pg-leg-b" x="20" y="34" width="5" height="10" rx="2.5" fill="#3f3f46" />
-          <path d="M5 4a3 3 0 0 1 3-3h13l9 9v24a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3Z" fill={fill} />
-          <path d="M21 1v6a3 3 0 0 0 3 3h6Z" fill="white" opacity="0.45" />
-          <g className="pg-eyes">
-            <circle className="pg-eye" cx="13" cy="15" r="2" fill="white" />
-            <circle className="pg-eye" cx="21" cy="15" r="2" fill="white" />
-          </g>
-          <text
-            x="17.5"
-            y="30"
-            textAnchor="middle"
-            fontSize={label.length > 3 ? 6.5 : 8}
-            fontWeight="700"
-            fill="white"
-            fontFamily="Geist Mono, monospace"
-          >
-            {label}
-          </text>
-        </svg>
+        <Person look={look} />
       </div>
     </div>
   )
 })
 
-/**
- * A tool as a character standing in its district: file-shaped, coloured by the
- * file type it handles, with its icon on its belly and its name above. The
- * loop turns it toward the player and fills its speech bubble.
- */
+/** A tool's keeper, standing on its own rug with its name and tool above it. */
 export const Keeper = forwardRef<
   HTMLDivElement,
   {
     keeper: KeeperSpot
-    color: string
+    name: string
+    look: Look
     near: boolean
     talking: boolean
     visited: boolean
     onClick: () => void
     bubbleRef: (el: HTMLSpanElement | null) => void
   }
->(function Keeper({ keeper, color, near, talking, visited, onClick, bubbleRef }, ref) {
+>(function Keeper({ keeper, name, look, near, talking, visited, onClick, bubbleRef }, ref) {
   const { tool, home } = keeper
   return (
+    <>
+      {/* Rug, drawn on the floor under everything. */}
+      <span
+        className="absolute rounded-[50%] border-2 border-dashed border-white/30 opacity-80"
+        style={{ left: home.x - 46, top: home.y - 16, width: 92, height: 34, background: `${look.shirt}40`, zIndex: 1 }}
+      />
+      <div
+        ref={ref}
+        onClick={(e) => {
+          e.stopPropagation()
+          onClick()
+        }}
+        className="pg-idle pg-sprite absolute cursor-pointer"
+        style={{ left: home.x - 22, top: home.y - 62, width: 44, height: 62, zIndex: Math.round(home.y) }}
+      >
+        <span ref={bubbleRef} className={cn(BUBBLE, 'mb-14')} />
+        <span
+          className={cn(
+            'absolute bottom-full left-1/2 mb-2 flex -translate-x-1/2 items-center gap-1.5 rounded-full border bg-card/95 py-0.5 pr-2.5 pl-1 text-[11px] whitespace-nowrap shadow-sm transition-all',
+            (near || talking) && 'ring-2 ring-brand-2',
+          )}
+        >
+          <span className="grid size-5 place-items-center rounded-full text-white" style={{ background: look.shirt }}>
+            <tool.icon className="size-3" />
+          </span>
+          <span className="font-semibold">{name}</span>
+          <span className="text-muted-foreground">· {tool.title}</span>
+          {visited && (
+            <span title="Sudah dikunjungi" className="grid size-3.5 place-items-center rounded-full bg-emerald-500 text-white">
+              <Check className="size-2.5" strokeWidth={3.5} />
+            </span>
+          )}
+          {near && !talking && (
+            <kbd className="rounded border border-b-2 bg-muted px-1 font-mono text-[10px] leading-4">E</kbd>
+          )}
+        </span>
+        {(near || talking) && (
+          <span className="absolute -bottom-2 left-1/2 h-4 w-14 -translate-x-1/2 animate-pulse rounded-[50%] border-2 border-brand-2" />
+        )}
+        <span className="absolute -bottom-1 left-1/2 h-2.5 w-9 -translate-x-1/2 rounded-full bg-black/25 blur-[2px]" />
+        <div className={cn('absolute inset-0', near && !talking && 'pg-hop')}>
+          <div className="pg-flip absolute inset-0">
+            <Person look={look} />
+          </div>
+        </div>
+      </div>
+    </>
+  )
+})
+
+export const CATEGORY_ICONS: Record<CategoryId, LucideIcon> = {
+  'to-pdf': FileInput,
+  'from-pdf': FileOutput,
+  pdf: FileLock,
+  media: Clapperboard,
+  dev: Braces,
+}
+
+/** A category's house in town. Its door is where the player walks in. */
+export function House({
+  house,
+  visited,
+  near,
+  onClick,
+}: {
+  house: HouseSpot
+  visited: number
+  near: boolean
+  onClick: () => void
+}) {
+  const { rect, roof } = house
+  const Icon = CATEGORY_ICONS[house.id] ?? Home
+  return (
     <div
-      ref={ref}
       onClick={(e) => {
         e.stopPropagation()
         onClick()
       }}
-      className="pg-idle absolute cursor-pointer"
-      style={{ left: home.x - 30, top: home.y - 70, width: 60, height: 74, zIndex: Math.round(home.y) }}
+      className="absolute cursor-pointer"
+      style={{ left: rect.x, top: rect.y, width: rect.w, height: rect.h, zIndex: Math.round(rect.y + rect.h) }}
     >
-      <span
-        ref={bubbleRef}
-        className="pg-bubble pointer-events-none absolute bottom-full left-1/2 mb-9 w-max max-w-44 -translate-x-1/2 rounded-xl border bg-popover px-2.5 py-1.5 text-center text-[11px] leading-snug font-medium text-popover-foreground shadow-lg"
-      />
-      <span
-        className={cn(
-          'absolute bottom-full left-1/2 mb-1.5 flex -translate-x-1/2 items-center gap-1.5 rounded-full border bg-card/95 py-0.5 text-[11px] font-semibold whitespace-nowrap shadow-sm transition-all',
-          near || talking ? 'pr-1 pl-2.5 ring-2 ring-brand-2' : 'px-2.5',
-        )}
-      >
-        {visited && (
-          <span title="Sudah dikunjungi" className="grid size-3.5 place-items-center rounded-full bg-emerald-500 text-white">
-            <Check className="size-2.5" strokeWidth={3.5} />
-          </span>
-        )}
-        {tool.title}
-        {near && !talking && (
-          <kbd className="rounded border border-b-2 bg-muted px-1 font-mono text-[10px] leading-4">E</kbd>
-        )}
+      <span className="absolute -bottom-3 left-3 h-6 w-[calc(100%-1.5rem)] rounded-[50%] bg-black/25 blur-sm" />
+      <svg viewBox="0 0 300 240" width={rect.w} height={rect.h} className="relative overflow-visible">
+        <rect x="214" y="18" width="28" height="56" rx="3" className="fill-[#8b7d72] dark:fill-[#4b433d]" />
+        <rect x="16" y="104" width="268" height="136" className="fill-[#f6eee2] dark:fill-[#3a3442]" />
+        <rect x="16" y="104" width="268" height="136" fill="url(#pg-bricks)" opacity="0.5" />
+        {/* Windows: daylight blue, lamp-lit at night. */}
+        {[40, 210].map((x) => (
+          <g key={x}>
+            <rect x={x} y="134" width="50" height="44" rx="5" className="fill-[#bfe3f5] dark:fill-[#fcd77a]" />
+            <path d={`M${x + 25} 134v44M${x} 156h50`} stroke="white" strokeWidth="3" opacity="0.8" />
+            <rect x={x - 4} y="176" width="58" height="7" rx="2" className="fill-[#c8b8a6] dark:fill-[#4b433d]" />
+          </g>
+        ))}
+        <rect x="122" y="156" width="56" height="84" rx="8" style={{ fill: roof }} />
+        <rect x="122" y="156" width="56" height="84" rx="8" fill="black" opacity="0.28" />
+        <circle cx="168" cy="200" r="3.5" fill="#fde68a" />
+        <rect x="112" y="234" width="76" height="8" rx="3" className="fill-[#a8a29e] dark:fill-[#57534e]" />
+        <polygon points="-6,112 42,14 258,14 306,112" style={{ fill: roof }} />
+        <polygon points="-6,112 42,14 258,14 306,112" fill="url(#pg-shingles)" />
+        <rect x="-8" y="106" width="316" height="10" rx="3" style={{ fill: roof }} />
+        <rect x="-8" y="106" width="316" height="10" rx="3" fill="black" opacity="0.25" />
+        <circle cx="150" cy="62" r="27" fill="white" opacity="0.92" />
+        <defs>
+          <pattern id="pg-shingles" width="24" height="14" patternUnits="userSpaceOnUse">
+            <path d="M0 13.5h24M12 0v14" stroke="black" strokeOpacity="0.14" strokeWidth="2" />
+          </pattern>
+          <pattern id="pg-bricks" width="30" height="16" patternUnits="userSpaceOnUse">
+            <path d="M0 15.5h30M15 0v8M0 8h30M30 8v8" stroke="#a8927e" strokeOpacity="0.35" strokeWidth="1" />
+          </pattern>
+        </defs>
+      </svg>
+      <span className="absolute top-[35px] left-1/2 grid size-11 -translate-x-1/2 place-items-center" style={{ color: roof }}>
+        <Icon className="size-6" />
       </span>
-
-      {(near || talking) && (
-        <span className="absolute -bottom-2 left-1/2 h-4 w-16 -translate-x-1/2 animate-pulse rounded-[50%] border-2 border-brand-2" />
-      )}
-      <span className="absolute -bottom-1 left-1/2 h-3 w-11 -translate-x-1/2 rounded-full bg-black/25 blur-[2px]" />
-      <div className={cn('absolute inset-0', near && !talking && 'pg-hop')}>
-        <div className="pg-flip absolute inset-0">
-          <svg viewBox="0 0 60 74" width={60} height={74} className="pg-body overflow-visible">
-            <rect x="19" y="60" width="8" height="13" rx="4" fill="#3f3f46" />
-            <rect x="33" y="60" width="8" height="13" rx="4" fill="#3f3f46" />
-            <path d="M8 9a5 5 0 0 1 5-5h22l15 15v38a5 5 0 0 1-5 5H13a5 5 0 0 1-5-5Z" fill={color} />
-            <path d="M8 9a5 5 0 0 1 5-5h22l15 15v38a5 5 0 0 1-5 5H13a5 5 0 0 1-5-5Z" fill="white" opacity="0.1" />
-            <path d="M35 4v10a5 5 0 0 0 5 5h10Z" fill="white" opacity="0.45" />
-            <g className="pg-eyes">
-              <circle className="pg-eye" cx="22" cy="24" r="2.8" fill="white" />
-              <circle className="pg-eye" cx="35" cy="24" r="2.8" fill="white" />
-            </g>
-            <path d="M25 30q3.5 3 7 0" stroke="white" strokeWidth="2" strokeLinecap="round" fill="none" />
-          </svg>
-        </div>
-        {/* Outside the flip, so the icon never shows mirrored. */}
-        <span className="absolute top-[37px] left-1/2 grid size-7 -translate-x-1/2 place-items-center rounded-lg bg-black/20 text-white">
-          <tool.icon className="size-4" />
+      {/* Name board over the door. */}
+      <span className="absolute top-[118px] left-1/2 flex -translate-x-1/2 items-center gap-1.5 rounded-md border border-black/10 bg-[#fffaf0] px-2 py-0.5 text-[11px] font-semibold whitespace-nowrap text-[#3f3a36] shadow-sm dark:bg-[#2a2530] dark:text-[#f3eee8]">
+        {house.title}
+        <span className="font-mono text-[10px] font-normal opacity-60">
+          {visited}/{house.tools.length}
         </span>
-      </div>
+      </span>
+      {near && (
+        <span className="pg-hop absolute top-[124px] left-1/2 mt-6 grid h-7 min-w-7 -translate-x-1/2 place-items-center rounded-md border border-b-[3px] bg-card px-1.5 font-mono text-xs font-semibold shadow-md">
+          E
+        </span>
+      )}
     </div>
   )
-})
+}
 
 /** Greenery. Trees are solid (see layout.ts), bushes and flowers are not. */
 export function Plant({ tree, index }: { tree: Tree; index: number }) {

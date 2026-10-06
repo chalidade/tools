@@ -141,10 +141,52 @@
 /* ---- Playground: the walkable home page (src/components/Playground.tsx) ----
    Sprites are positioned by the game loop; these rules only animate them.
    `data-walking` / `data-running` on a sprite switch the step cycle on. */
-.pg-ground {
-  background-color: var(--background);
-  background-image: radial-gradient(var(--grid-line) 1.5px, transparent 1.5px);
-  background-size: 28px 28px;
+/* Town grass and sand paths; house floors and walls. Light by day, dusk in dark mode. */
+.pg-grass {
+  background-color: #9bcf7c;
+  background-image:
+    radial-gradient(#84bd64 1.8px, transparent 2px), radial-gradient(#b3dd96 1.6px, transparent 1.8px);
+  background-size:
+    36px 36px,
+    50px 50px;
+  background-position:
+    0 0,
+    18px 25px;
+}
+.dark .pg-grass {
+  background-color: #1b3022;
+  background-image:
+    radial-gradient(#234030 1.8px, transparent 2px), radial-gradient(#16271c 1.6px, transparent 1.8px);
+}
+.pg-path {
+  background-color: #ead9a8;
+  box-shadow: inset 0 0 0 3px #d9c38a;
+}
+.dark .pg-path {
+  background-color: #4a4232;
+  box-shadow: inset 0 0 0 3px #3d3628;
+}
+.pg-floor {
+  background-color: #e2c79c;
+  background-image:
+    repeating-linear-gradient(0deg, rgb(0 0 0 / 0.09) 0 2px, transparent 2px 38px),
+    repeating-linear-gradient(90deg, rgb(0 0 0 / 0.05) 0 2px, transparent 2px 120px);
+}
+.dark .pg-floor {
+  background-color: #3a2f27;
+}
+.pg-wallpaper {
+  background-color: #f3e9da;
+  background-image: repeating-linear-gradient(90deg, rgb(0 0 0 / 0.045) 0 14px, transparent 14px 28px);
+}
+.dark .pg-wallpaper {
+  background-color: #2c2633;
+}
+.pg-wall-edge {
+  background-color: #6d5444;
+}
+.dark .pg-wall-edge {
+  background-color: #1f1a17;
 }
 .pg-flip,
 .pg-eyes {
@@ -176,16 +218,37 @@
 [data-walking] .pg-leg-b {
   animation-delay: -0.18s;
 }
+.pg-arm-a,
+.pg-arm-b {
+  transform-box: fill-box;
+  transform-origin: 50% 0;
+}
+[data-walking] .pg-arm-a,
+[data-walking] .pg-arm-b {
+  animation: pg-swing 0.36s ease-in-out infinite alternate;
+}
+[data-walking] .pg-arm-b {
+  animation-direction: alternate-reverse;
+}
+/* Facing away (walking up): the back of the head instead of the face. */
+.pg-back {
+  display: none;
+}
+[data-dir='up'] .pg-back {
+  display: inline;
+}
+[data-dir='up'] .pg-face {
+  display: none;
+}
 [data-running] .pg-body,
 [data-running] .pg-leg-a,
-[data-running] .pg-leg-b {
+[data-running] .pg-leg-b,
+[data-running] .pg-arm-a,
+[data-running] .pg-arm-b {
   animation-duration: 0.24s;
 }
 [data-running] .pg-leg-b {
   animation-delay: -0.12s;
-}
-.pg-antenna {
-  animation: pg-pulse 1.8s ease-in-out infinite;
 }
 .pg-bubble {
   opacity: 0;
@@ -235,9 +298,12 @@
     transform: scaleY(0.1);
   }
 }
-@keyframes pg-pulse {
-  50% {
-    opacity: 0.45;
+@keyframes pg-swing {
+  from {
+    transform: rotate(-16deg);
+  }
+  to {
+    transform: rotate(16deg);
   }
 }
 @keyframes pg-sway {
@@ -273,13 +339,12 @@
   .pg-sway,
   .pg-float,
   .pg-hop,
-  .pg-firefly,
-  .pg-antenna {
+  .pg-firefly {
     animation: none;
   }
 }
 
-/* Tool characters breathe while they wait. */
+/* Tool keepers breathe while they wait. */
 .pg-idle .pg-body {
   animation: pg-breathe 2.6s ease-in-out infinite;
 }

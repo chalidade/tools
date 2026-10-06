@@ -1,32 +1,38 @@
-import { useCallback, useEffect, useMemo, useRef, useState, type MouseEvent } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState, type MouseEvent, type ReactNode } from 'react'
 import { motion } from 'motion/react'
-import { ArrowDown, Gamepad2, ShieldCheck, Stamp, X } from 'lucide-react'
+import { ArrowDown, DoorOpen, Gamepad2, ShieldCheck, Stamp, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { TOOLS } from '@/tools/registry'
 import { Dialog } from '@/components/playground/Dialog'
-import { CALLS, colorFor } from '@/components/playground/dialog'
-import { buildWorld, collide, type Point } from '@/components/playground/layout'
-import { Keeper, NPC_TYPES, Npc, Plant, Player } from '@/components/playground/Sprites'
+import { CALLS, TOWN_GREETINGS, TOWN_LINES, nameFor } from '@/components/playground/dialog'
+import { lookFor } from '@/components/playground/Person'
+import { RoomScenery, TownScenery } from '@/components/playground/Scenery'
+import { buildScenes, collide, findPath, type Door, type Point, type SceneId } from '@/components/playground/scenes'
+import { Keeper, Player, Townsperson } from '@/components/playground/Sprites'
 
 /*
- * The home page is a small walkable town: one district per category, one stall
- * character per tool, laid out from the registry (so a new tool shows up here
- * with no extra work). Walk with WASD/arrows, Shift to run, E/Enter next to a
- * tool to talk to it: it explains what it does and offers to open itself. On
- * touch, tap the ground to walk or a character to go talk to it.
+ * The home page is a small walkable town. Each category is a house; walk into
+ * its door and inside, every tool of that category is a person (its keeper)
+ * who explains what the tool does and offers to open it. Everything is laid
+ * out from the registry, so a new tool shows up here with no extra work.
+ *
+ * Keys: WASD/arrows walk, Shift runs, E/Enter talks or goes through a door;
+ * walking into a door (up into a house, down onto the mat) does too. On touch,
+ * tap the ground to walk, a house to go in, a keeper to go talk to it.
  *
  * The loop mutates transforms on refs every frame and only touches React state
- * when something the UI shows changes (who is in reach, the dialog, stamps).
- * The plain ToolGrid below stays the accessible way in — the world is
+ * when something the UI shows changes (scene, who is in reach, the dialog,
+ * stamps). The plain ToolGrid below stays the accessible way in — the world is
  * aria-hidden and has no tab stops.
  */
 
 const WALK = 230
 const RUN = 410
 const PLAYER_R = 15
-const NPC_R = 12
-const REACH = 64
-const CALL_RANGE = 260
+const NPC_R = 13
+const REACH = 66
+const DOOR_REACH = 36
+const CALL_RANGE = 240
 
 const KEYMAP: Record<string, 'up' | 'down' | 'left' | 'right' | 'run'> = {
   ArrowUp: 'up',
@@ -41,24 +47,15 @@ const KEYMAP: Record<string, 'up' | 'down' | 'left' | 'right' | 'run'> = {
   ShiftRight: 'run',
 }
 
-const LINES = [
-  'Aku nggak pernah di-upload.',
-  'Psst… semua diproses di sini.',
-  'Kompres aku dong, berat nih.',
-  'Pengin jadi PDF!',
-  'Server? Nggak kenal.',
-  '0 byte keluar. Mantap.',
-  'Tutup tab, aku ikut hilang.',
-  'Jalan-jalan dulu ah.',
-]
-const GREETINGS = ['Halo! 👋', 'Hai! Mau konversi apa?', 'Selamat datang!', 'Eh, ada tamu!']
-
+const TOWNSFOLK_SHIRTS = ['#f59e0b', '#06b6d4', '#84cc16', '#f43f5e', '#6366f1', '#14b8a6']
+/** Keeper shirts, in tool order — neighbours in a house never match. */
+const KEEPER_SHIRTS = ['#3b82f6', '#ef4444', '#22c55e', '#f97316', '#a855f7', '#eab308', '#ec4899', '#14b8a6', '#64748b']
 const FACTS = ['Tanpa upload', 'Tanpa akun', 'Gratis', 'Kode di GitHub']
 
 const pick = <T,>(list: readonly T[]) => list[Math.floor(Math.random() * list.length)]
 
 /** Where the player stood when a tool was opened — back on the home page, they're still there. */
-let savedPosition: Point | null = null
+let saved: { scene: SceneId; pos: Point } | null = null
 
 const VISITED_KEY = 'tools:visited'
 function readVisited() {
@@ -70,7 +67,7 @@ function readVisited() {
   }
 }
 
-interface NpcState {
+interface Walker {
   x: number
   y: number
   tx: number
@@ -95,61 +92,115 @@ const fadeUp = {
 const container = { hidden: {}, show: { transition: { staggerChildren: 0.08, delayChildren: 0.05 } } }
 
 export function Playground() {
-  const world = useMemo(buildWorld, [])
+  const scenes = useMemo(buildScenes, [])
+  const town = scenes.town.kind === 'town' ? scenes.town : null
+  const people = useMemo(
+    () =>
+      new Map(
+        TOOLS.map((t, i) => [t.slug, { name: nameFor(t, i), look: lookFor(t.slug, KEEPER_SHIRTS[i % KEEPER_SHIRTS.length]) }]),
+      ),
+    [],
+  )
+  const townsfolk = useMemo(() => TOWNSFOLK_SHIRTS.map((shirt, i) => lookFor(`warga-${i}`, shirt)), [])
 
   const viewportRef = useRef<HTMLDivElement>(null)
   const worldRef = useRef<HTMLDivElement>(null)
   const playerRef = useRef<HTMLDivElement>(null)
   const markerRef = useRef<HTMLDivElement>(null)
+  const fadeRef = useRef<HTMLDivElement>(null)
   const dotRef = useRef<SVGCircleElement>(null)
   const viewRef = useRef<SVGRectElement>(null)
-  const npcEls = useRef<(HTMLDivElement | null)[]>([])
-  const bubbleEls = useRef<(HTMLSpanElement | null)[]>([])
-  const keeperEls = useRef<(HTMLDivElement | null)[]>([])
-  const keeperBubbles = useRef<(HTMLSpanElement | null)[]>([])
-  const keeperState = useRef(world.keepers.map(() => ({ face: 1, next: 1 + Math.random() * 6, talk: 0 })))
+  const walkerEls = useRef<(HTMLDivElement | null)[]>([])
+  const walkerBubbles = useRef<(HTMLSpanElement | null)[]>([])
+  const keeperEls = useRef(new Map<string, HTMLDivElement | null>())
+  const keeperBubbles = useRef(new Map<string, HTMLSpanElement | null>())
+  const keeperState = useRef(new Map(TOOLS.map((t) => [t.slug, { face: 1, next: 1 + Math.random() * 6, talk: 0 }])))
+
+  const start = saved ?? { scene: 'town' as SceneId, pos: scenes.town.spawn }
+  const [sceneId, setSceneId] = useState<SceneId>(start.scene)
+  const sceneRef = useRef(scenes[start.scene])
+  const scene = scenes[sceneId]
 
   const keys = useRef(new Set<string>())
   const active = useRef(false)
-  const target = useRef<{ point: Point; talk?: string; stuck: number } | null>(null)
-  const talkingRef = useRef<string | null>(null)
+  const moving = useRef(false)
+  const target = useRef<{ path: Point[]; talk?: string; door?: Door; stuck: number } | null>(null)
   const nearRef = useRef<string | null>(null)
+  const doorRef = useRef<Door | null>(null)
+  const talkingRef = useRef<string | null>(null)
   const game = useRef({
-    pos: { ...(savedPosition ?? world.spawn) },
+    pos: { ...start.pos },
     vel: { x: 0, y: 0 },
     face: 1,
+    dir: 'down' as 'up' | 'down' | 'side',
     cam: { x: 0, y: 0 },
+    snap: true,
     scale: 1,
     puff: 0,
   })
-  const npcs = useRef<NpcState[]>([])
-  if (!npcs.current.length) {
-    npcs.current = NPC_TYPES.map((_, i) => {
-      const zone = world.zones[i % world.zones.length].rect
-      const p = { x: zone.x + 40 + Math.random() * (zone.w - 80), y: zone.y + zone.h - 30 }
-      collide(p, NPC_R, world)
-      return { ...p, tx: p.x, ty: p.y, wait: Math.random() * 2, speed: 55 + Math.random() * 40, face: 1, talk: 0, next: 2 + Math.random() * 10, greeted: false, stuck: 0 }
+  const walkers = useRef<Walker[]>([])
+  if (!walkers.current.length) {
+    walkers.current = townsfolk.map((_, i) => {
+      const t = scenes.town
+      const p = { x: 200 + Math.random() * (t.width - 400), y: 200 + Math.random() * (t.height - 400) }
+      collide(p, NPC_R, t)
+      return { ...p, tx: p.x, ty: p.y, wait: Math.random() * 2, speed: 50 + Math.random() * 35, face: 1, talk: 0, next: 3 + i * 2 + Math.random() * 6, greeted: false, stuck: 0 }
     })
   }
 
   const [near, setNear] = useState<string | null>(null)
+  const [nearDoor, setNearDoor] = useState<Door | null>(null)
   const [visited, setVisited] = useState(readVisited)
-  const [introOpen, setIntroOpen] = useState(true)
+  // Coming back from a tool, the player is mid-game: keep the intro out of the way.
+  const [introOpen, setIntroOpen] = useState(!saved)
   const [talking, setTalking] = useState<string | null>(null)
   talkingRef.current = talking
 
-  const open = useCallback((slug: string) => {
-    savedPosition = { ...game.current.pos }
-    // Written straight away: the hash change unmounts this page before a state update would land.
-    const next = readVisited().add(slug)
-    try {
-      localStorage.setItem(VISITED_KEY, JSON.stringify([...next]))
-    } catch {
-      // Private mode: stamps just won't persist.
-    }
-    setVisited(next)
-    window.location.hash = `#/${slug}`
-  }, [])
+  const open = useCallback(
+    (slug: string) => {
+      saved = { scene: sceneRef.current.id, pos: { ...game.current.pos } }
+      // Written straight away: the hash change unmounts this page before a state update would land.
+      const next = readVisited().add(slug)
+      try {
+        localStorage.setItem(VISITED_KEY, JSON.stringify([...next]))
+      } catch {
+        // Private mode: stamps just won't persist.
+      }
+      setVisited(next)
+      window.location.hash = `#/${slug}`
+    },
+    [],
+  )
+
+  /** Fade out, move the player through `door` into its scene, fade back in. */
+  const go = useCallback(
+    (door: Door) => {
+      if (moving.current) return
+      moving.current = true
+      keys.current.clear()
+      target.current = null
+      setIntroOpen(false)
+      const fade = fadeRef.current
+      const swap = () => {
+        const g = game.current
+        sceneRef.current = scenes[door.to]
+        g.pos = { ...door.spawn }
+        g.vel = { x: 0, y: 0 }
+        g.dir = door.dir
+        g.snap = true
+        nearRef.current = null
+        doorRef.current = null
+        setNear(null)
+        setNearDoor(null)
+        setSceneId(door.to)
+        fade?.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 280, fill: 'forwards' })
+        moving.current = false
+      }
+      if (!fade || matchMedia('(prefers-reduced-motion: reduce)').matches) swap()
+      else fade.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 220, fill: 'forwards' }).onfinish = swap
+    },
+    [scenes],
+  )
 
   // Keyboard. Only while the world is on screen, so arrows still scroll the rest of the page.
   useEffect(() => {
@@ -159,14 +210,21 @@ export function Playground() {
       const dir = KEYMAP[e.code]
       if (dir) {
         keys.current.add(dir)
-        if (dir !== 'run') e.preventDefault()
-        if (dir !== 'run') setIntroOpen(false)
+        if (dir !== 'run') {
+          e.preventDefault()
+          setIntroOpen(false)
+        }
         return
       }
-      if ((e.code === 'KeyE' || e.key === 'Enter' || e.code === 'Space') && nearRef.current && !isControl(e.target)) {
-        e.preventDefault()
-        keys.current.clear()
-        setTalking(nearRef.current)
+      if ((e.code === 'KeyE' || e.key === 'Enter' || e.code === 'Space') && !isControl(e.target)) {
+        if (nearRef.current) {
+          e.preventDefault()
+          keys.current.clear()
+          setTalking(nearRef.current)
+        } else if (doorRef.current) {
+          e.preventDefault()
+          go(doorRef.current)
+        }
       }
     }
     const up = (e: KeyboardEvent) => {
@@ -182,7 +240,7 @@ export function Playground() {
       window.removeEventListener('keyup', up)
       window.removeEventListener('blur', clear)
     }
-  }, [])
+  }, [go])
 
   useEffect(() => {
     const el = viewportRef.current
@@ -205,13 +263,12 @@ export function Playground() {
     const playerEl = playerRef.current
     if (!vp || !worldEl || !playerEl) return
     const flipEl = playerEl.querySelector<HTMLElement>('.pg-flip')
-    const eyesEl = playerEl.querySelector<SVGGElement>('.pg-eyes')
     const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches
     const g = game.current
 
     const puff = (x: number, y: number) => {
       const el = document.createElement('span')
-      el.className = 'pointer-events-none absolute size-3 rounded-full bg-muted-foreground/40'
+      el.className = 'pointer-events-none absolute size-3 rounded-full bg-white/50'
       el.style.left = `${x - 6 + (Math.random() - 0.5) * 8}px`
       el.style.top = `${y - 6}px`
       el.style.zIndex = String(Math.round(y) - 1)
@@ -234,31 +291,36 @@ export function Playground() {
       const dt = Math.min(0.05, (now - last) / 1000)
       last = now
       if (!active.current && !first) return
+      const scene = sceneRef.current
 
-      g.scale = vp.clientWidth < 640 ? 0.78 : 1
+      g.scale = vp.clientWidth < 640 ? 0.8 : 1
       const vw = vp.clientWidth / g.scale
       const vh = vp.clientHeight / g.scale
 
-      // --- Player input: keys win over a click target.
+      // --- Player input: keys win over a click target; nothing moves mid-dialog or mid-door.
       const k = keys.current
       let ix = (k.has('right') ? 1 : 0) - (k.has('left') ? 1 : 0)
       let iy = (k.has('down') ? 1 : 0) - (k.has('up') ? 1 : 0)
       let speed = k.has('run') ? RUN : WALK
-      if (talkingRef.current) {
+      if (talkingRef.current || moving.current) {
         ix = iy = 0
         target.current = null
       }
       const t = target.current
       if (ix || iy) target.current = null
       else if (t) {
-        const dx = t.point.x - g.pos.x
-        const dy = t.point.y - g.pos.y
+        // Follow the waypoints; the last one is the destination.
+        let p = t.path[0]
+        while (t.path.length > 1 && Math.hypot(p.x - g.pos.x, p.y - g.pos.y) < 12) p = (t.path.shift(), t.path[0])
+        const dx = p.x - g.pos.x
+        const dy = p.y - g.pos.y
         const d = Math.hypot(dx, dy)
-        if (d < 6) target.current = null
-        else {
+        const left = t.path.reduce((sum, q, i) => sum + (i ? Math.hypot(q.x - t.path[i - 1].x, q.y - t.path[i - 1].y) : d), 0)
+        if (d < 6 && t.path.length === 1 && !t.door) target.current = null
+        else if (d >= 6) {
           ix = dx / d
           iy = dy / d
-          speed = d > 280 ? RUN : WALK
+          speed = left > 280 ? RUN : WALK
         }
       }
       const len = Math.hypot(ix, iy)
@@ -273,27 +335,30 @@ export function Playground() {
       const before = { ...g.pos }
       g.pos.x += g.vel.x * dt
       g.pos.y += g.vel.y * dt
-      collide(g.pos, PLAYER_R, world)
-      for (const n of npcs.current) {
-        const dx = g.pos.x - n.x
-        const dy = g.pos.y - n.y
-        const d = Math.hypot(dx, dy) || 0.001
-        if (d < PLAYER_R + NPC_R) {
-          g.pos.x = n.x + (dx / d) * (PLAYER_R + NPC_R)
-          g.pos.y = n.y + (dy / d) * (PLAYER_R + NPC_R)
+      collide(g.pos, PLAYER_R, scene)
+      if (scene.kind === 'town') {
+        for (const n of walkers.current) {
+          const dx = g.pos.x - n.x
+          const dy = g.pos.y - n.y
+          const d = Math.hypot(dx, dy) || 0.001
+          if (d < PLAYER_R + NPC_R) {
+            g.pos.x = n.x + (dx / d) * (PLAYER_R + NPC_R)
+            g.pos.y = n.y + (dy / d) * (PLAYER_R + NPC_R)
+          }
         }
       }
 
       // A click target that can't be reached (a tree in the way) is given up.
       const moved = Math.hypot(g.pos.x - before.x, g.pos.y - before.y)
       if (target.current) {
-        target.current.stuck = moved < 0.4 && dt > 0 ? target.current.stuck + dt : 0
+        target.current.stuck = moved < 0.4 ? target.current.stuck + dt : 0
         if (target.current.stuck > 0.5) target.current = null
       }
 
       const vel = Math.hypot(g.vel.x, g.vel.y)
       const walking = vel > 25 && moved > 0.2
       if (Math.abs(g.vel.x) > 20) g.face = Math.sign(g.vel.x)
+      if (walking) g.dir = Math.abs(g.vel.y) > Math.abs(g.vel.x) * 1.1 ? (g.vel.y < 0 ? 'up' : 'down') : 'side'
 
       if (walking && vel > RUN * 0.8) {
         g.puff -= dt
@@ -303,22 +368,34 @@ export function Playground() {
         }
       }
 
-      // --- Which tool is within reach; tool characters turn to watch the player.
+      // --- Doors: walk into one (or arrive at a clicked house) to go through.
+      let door: Door | null = null
+      for (const d of scene.doors) if (Math.hypot(g.pos.x - d.at.x, g.pos.y - d.at.y) < DOOR_REACH) door = d
+      if (door !== doorRef.current) {
+        doorRef.current = door
+        setNearDoor(door)
+      }
+      if (door && !moving.current && !talkingRef.current) {
+        const pushing = door.dir === 'up' ? iy < -0.5 : iy > 0.5
+        if (pushing || target.current?.door === door) go(door)
+      }
+
+      // --- Keepers: who is within reach; they turn to watch the player and call out.
       let best: string | null = null
       let bestD = REACH
-      world.keepers.forEach((keeper, i) => {
-        const ks = keeperState.current[i]
+      for (const keeper of scene.keepers) {
+        const slug = keeper.tool.slug
+        const ks = keeperState.current.get(slug)!
         const d = Math.hypot(g.pos.x - keeper.home.x, g.pos.y - keeper.home.y)
         if (d < bestD) {
           bestD = d
-          best = keeper.tool.slug
+          best = slug
         }
-        if (d < CALL_RANGE * 1.4 && Math.abs(g.pos.x - keeper.home.x) > 6) ks.face = Math.sign(g.pos.x - keeper.home.x)
-        const bubble = keeperBubbles.current[i]
-        // Call out to a player passing by, now and then.
+        if (Math.abs(g.pos.x - keeper.home.x) > 6) ks.face = Math.sign(g.pos.x - keeper.home.x)
+        const bubble = keeperBubbles.current.get(slug)
         ks.next -= dt
         if (bubble && ks.next <= 0 && d > REACH && d < CALL_RANGE && !talkingRef.current) {
-          ks.next = 9 + Math.random() * 10
+          ks.next = 8 + Math.random() * 10
           ks.talk = 2
           bubble.textContent = pick(CALLS)
           bubble.dataset.show = ''
@@ -330,9 +407,9 @@ export function Playground() {
             if (bubble) delete bubble.dataset.show
           }
         }
-        const flip = keeperEls.current[i]?.querySelector<HTMLElement>('.pg-flip')
+        const flip = keeperEls.current.get(slug)?.querySelector<HTMLElement>('.pg-flip')
         if (flip) flip.style.transform = `scaleX(${ks.face})`
-      })
+      }
       if (best !== nearRef.current) {
         nearRef.current = best
         setNear(best)
@@ -342,89 +419,91 @@ export function Playground() {
         setTalking(best)
       }
 
-      // --- Wandering files.
-      npcs.current.forEach((n, i) => {
-        const toPlayer = Math.hypot(g.pos.x - n.x, g.pos.y - n.y)
-        const say = (text: string, seconds: number) => {
-          const b = bubbleEls.current[i]
-          if (!b) return
-          b.textContent = text
-          b.dataset.show = ''
-          n.talk = seconds
-        }
-
-        let mx = 0
-        if (toPlayer < 80) {
-          // Stop and look at the visitor.
-          n.face = Math.sign(g.pos.x - n.x) || n.face
-          if (!n.greeted) {
-            n.greeted = true
-            say(pick(GREETINGS), 2.2)
+      // --- Townsfolk stroll, greet the player and chat to themselves.
+      if (scene.kind === 'town') {
+        walkers.current.forEach((n, i) => {
+          const toPlayer = Math.hypot(g.pos.x - n.x, g.pos.y - n.y)
+          const say = (text: string, seconds: number) => {
+            const b = walkerBubbles.current[i]
+            if (!b) return
+            b.textContent = text
+            b.dataset.show = ''
+            n.talk = seconds
           }
-        } else {
-          if (toPlayer > 160) n.greeted = false
-          if (n.wait > 0) n.wait -= dt
-          else {
-            const dx = n.tx - n.x
-            const dy = n.ty - n.y
-            const d = Math.hypot(dx, dy)
-            if (d < 4 || n.stuck > 0.8) {
-              n.wait = 0.8 + Math.random() * 2.6
-              n.stuck = 0
-              n.tx = Math.min(Math.max(n.x + (Math.random() - 0.5) * 520, 40), world.width - 40)
-              n.ty = Math.min(Math.max(n.y + (Math.random() - 0.5) * 420, 60), world.height - 40)
-            } else {
-              const ox = n.x
-              const oy = n.y
-              n.x += (dx / d) * n.speed * dt
-              n.y += (dy / d) * n.speed * dt
-              collide(n, NPC_R, world)
-              mx = Math.hypot(n.x - ox, n.y - oy)
-              n.stuck = mx < n.speed * dt * 0.3 ? n.stuck + dt : 0
-              if (Math.abs(dx) > 2) n.face = Math.sign(dx)
+
+          let mx = 0
+          if (toPlayer < 80) {
+            n.face = Math.sign(g.pos.x - n.x) || n.face
+            if (!n.greeted) {
+              n.greeted = true
+              say(pick(TOWN_GREETINGS), 2.2)
+            }
+          } else {
+            if (toPlayer > 160) n.greeted = false
+            if (n.wait > 0) n.wait -= dt
+            else {
+              const dx = n.tx - n.x
+              const dy = n.ty - n.y
+              const d = Math.hypot(dx, dy)
+              if (d < 4 || n.stuck > 0.8) {
+                n.wait = 1 + Math.random() * 3
+                n.stuck = 0
+                n.tx = Math.min(Math.max(n.x + (Math.random() - 0.5) * 520, 60), scene.width - 60)
+                n.ty = Math.min(Math.max(n.y + (Math.random() - 0.5) * 420, 80), scene.height - 60)
+              } else {
+                const ox = n.x
+                const oy = n.y
+                n.x += (dx / d) * n.speed * dt
+                n.y += (dy / d) * n.speed * dt
+                collide(n, NPC_R, scene)
+                mx = Math.hypot(n.x - ox, n.y - oy)
+                n.stuck = mx < n.speed * dt * 0.3 ? n.stuck + dt : 0
+                if (Math.abs(dx) > 2) n.face = Math.sign(dx)
+              }
             }
           }
-        }
 
-        n.next -= dt
-        if (n.next <= 0) {
-          n.next = 7 + Math.random() * 12
-          if (toPlayer < 700) say(pick(LINES), 2.8)
-        }
-        if (n.talk > 0) {
-          n.talk -= dt
-          if (n.talk <= 0) delete bubbleEls.current[i]?.dataset.show
-        }
+          n.next -= dt
+          if (n.next <= 0) {
+            n.next = 8 + Math.random() * 12
+            if (toPlayer < 700) say(pick(TOWN_LINES), 3)
+          }
+          if (n.talk > 0) {
+            n.talk -= dt
+            if (n.talk <= 0) delete walkerBubbles.current[i]?.dataset.show
+          }
 
-        const el = npcEls.current[i]
-        if (!el) return
-        el.style.transform = `translate3d(${n.x - 17}px, ${n.y - 44}px, 0)`
-        el.style.zIndex = String(Math.round(n.y) + (n.talk > 0 ? 3000 : 0))
-        if (mx > 0.1) el.dataset.walking = ''
-        else delete el.dataset.walking
-        const flip = el.querySelector<HTMLElement>('.pg-flip')
-        if (flip) flip.style.transform = `scaleX(${n.face})`
-      })
+          const el = walkerEls.current[i]
+          if (!el) return
+          el.style.transform = `translate3d(${n.x - 22}px, ${n.y - 60}px, 0)`
+          el.style.zIndex = String(Math.round(n.y) + (n.talk > 0 ? 3000 : 0))
+          if (mx > 0.1) el.dataset.walking = ''
+          else delete el.dataset.walking
+          const flip = el.querySelector<HTMLElement>('.pg-flip')
+          if (flip) flip.style.transform = `scaleX(${n.face})`
+        })
+      }
 
-      // --- Camera follows, clamped to the world (centred when the world is smaller).
+      // --- Camera follows, clamped to the scene (centred when the scene is smaller).
       const fit = (pos: number, view: number, size: number) =>
         size <= view ? (size - view) / 2 : Math.min(Math.max(pos - view / 2, 0), size - view)
-      const cx = fit(g.pos.x, vw, world.width)
-      const cy = fit(g.pos.y - 20, vh, world.height)
-      const follow = first || reduceMotion ? 1 : 1 - Math.exp(-dt * 6)
+      const cx = fit(g.pos.x, vw, scene.width)
+      const cy = fit(g.pos.y - 20, vh, scene.height)
+      const follow = g.snap || first || reduceMotion ? 1 : 1 - Math.exp(-dt * 6)
+      g.snap = false
       g.cam.x += (cx - g.cam.x) * follow
       g.cam.y += (cy - g.cam.y) * follow
       worldEl.style.transform = `translate3d(${-g.cam.x * g.scale}px, ${-g.cam.y * g.scale}px, 0) scale(${g.scale})`
 
       // --- Player sprite.
-      playerEl.style.transform = `translate3d(${g.pos.x - 22}px, ${g.pos.y - 52}px, 0)`
+      playerEl.style.transform = `translate3d(${g.pos.x - 22}px, ${g.pos.y - 60}px, 0)`
       playerEl.style.zIndex = String(Math.round(g.pos.y))
+      playerEl.dataset.dir = g.dir
       if (walking) playerEl.dataset.walking = ''
       else delete playerEl.dataset.walking
       if (walking && vel > RUN * 0.8) playerEl.dataset.running = ''
       else delete playerEl.dataset.running
-      if (flipEl) flipEl.style.transform = `scaleX(${g.face})`
-      if (eyesEl) eyesEl.style.transform = `translate(${(Math.abs(g.vel.x) / RUN) * 2}px, ${(g.vel.y / RUN) * 3}px)`
+      if (flipEl) flipEl.style.transform = `scaleX(${g.dir === 'side' ? g.face : 1})`
 
       dotRef.current?.setAttribute('cx', String(g.pos.x))
       dotRef.current?.setAttribute('cy', String(g.pos.y))
@@ -432,14 +511,14 @@ export function Playground() {
       if (view) {
         view.setAttribute('x', String(Math.max(0, g.cam.x)))
         view.setAttribute('y', String(Math.max(0, g.cam.y)))
-        view.setAttribute('width', String(Math.min(vw, world.width)))
-        view.setAttribute('height', String(Math.min(vh, world.height)))
+        view.setAttribute('width', String(Math.min(vw, scene.width)))
+        view.setAttribute('height', String(Math.min(vh, scene.height)))
       }
       first = false
     }
     raf = requestAnimationFrame(frame)
     return () => cancelAnimationFrame(raf)
-  }, [world])
+  }, [go])
 
   const toWorld = (e: MouseEvent) => {
     const r = viewportRef.current!.getBoundingClientRect()
@@ -447,9 +526,11 @@ export function Playground() {
     return { x: (e.clientX - r.left) / scale + cam.x, y: (e.clientY - r.top) / scale + cam.y }
   }
 
-  const walkTo = (point: Point, slug?: string) => {
-    if (talkingRef.current) return
-    target.current = { point, talk: slug, stuck: 0 }
+  const walkTo = (point: Point, intent: { talk?: string; door?: Door } = {}) => {
+    if (talkingRef.current || moving.current) return
+    const path = findPath(sceneRef.current, game.current.pos, point, PLAYER_R)
+    if (!path) return
+    target.current = { path, ...intent, stuck: 0 }
     setIntroOpen(false)
     const m = markerRef.current
     if (!m) return
@@ -467,6 +548,7 @@ export function Playground() {
   const visitedCount = TOOLS.filter((t) => visited.has(t.slug)).length
   const nearTool = near ? TOOLS.find((t) => t.slug === near) : undefined
   const talkTool = talking ? TOOLS.find((t) => t.slug === talking) : undefined
+  const talkPerson = talking ? people.get(talking) : undefined
   const fireflies = useMemo(
     () =>
       Array.from({ length: 22 }, (_, i) => ({
@@ -516,8 +598,8 @@ export function Playground() {
           <span className="text-gradient">tanpa upload.</span>
         </motion.h1>
         <motion.p variants={fadeUp} className="mt-4 leading-relaxed text-muted-foreground text-pretty">
-          Kumpulan tools kecil yang bekerja langsung di perangkatmu. Sapa tiap tool, tanya bisa bantu apa — file
-          tidak pernah meninggalkan browser.
+          Kumpulan tools kecil yang bekerja langsung di perangkatmu. Masuki rumah-rumahnya dan tanya penjaganya
+          bisa bantu apa — file tidak pernah meninggalkan browser.
         </motion.p>
         <motion.div variants={fadeUp} className="mt-6 flex flex-wrap items-center gap-3">
           <button
@@ -560,156 +642,137 @@ export function Playground() {
       <div
         ref={viewportRef}
         onClick={(e) => walkTo(toWorld(e))}
-        className="relative h-[62vh] min-h-[400px] touch-pan-y overflow-clip border-y select-none md:h-[calc(100dvh-4rem)] md:max-h-[880px] md:min-h-[560px]"
+        className={cn(
+          'relative h-[62vh] min-h-[400px] touch-pan-y overflow-clip border-y select-none md:h-[calc(100dvh-4rem)] md:max-h-[880px] md:min-h-[560px]',
+          scene.kind === 'room' ? 'bg-[#0b0a0f]' : 'pg-grass',
+        )}
       >
         <p className="sr-only">
-          Peta interaktif berisi semua tools: gerakkan karakter dengan tombol panah atau WASD dan tekan E di
-          dekat sebuah tool untuk mengobrol dengannya. Daftar biasa ada di bawah.
+          Peta interaktif berisi semua tools: tiap kategori adalah rumah, dan di dalamnya tiap tool dijaga
+          seorang tokoh. Gerakkan karakter dengan tombol panah atau WASD, masuk lewat pintu, dan tekan E di dekat
+          tokoh untuk mengobrol. Daftar biasa ada di bawah.
         </p>
 
         <div
           ref={worldRef}
           aria-hidden
-          className="pg-ground absolute top-0 left-0 origin-top-left will-change-transform"
-          style={{ width: world.width, height: world.height }}
+          className="absolute top-0 left-0 origin-top-left will-change-transform"
+          style={{ width: scene.width, height: scene.height }}
         >
-          {world.zones.map((zone) => (
-            <div
-              key={zone.id}
-              className="absolute rounded-[2rem] border-2 border-dashed border-brand-2/25 bg-card/45 dark:bg-card/35"
-              style={{ left: zone.rect.x, top: zone.rect.y, width: zone.rect.w, height: zone.rect.h }}
-            >
-              <div className="absolute top-4 left-6 flex items-baseline gap-3">
-                <span className="text-xl font-semibold tracking-tight">{zone.title}</span>
-                <span className="font-mono text-xs text-muted-foreground">{zone.keepers.length} tools</span>
-              </div>
-              <span className="absolute top-11 left-6 text-xs text-muted-foreground">{zone.description}</span>
-            </div>
-          ))}
-
-          {/* Plaza with the monument the player spawns under. */}
-          <div
-            className="absolute rounded-[3rem] border bg-muted/50"
-            style={{ left: world.plaza.x, top: world.plaza.y, width: world.plaza.w, height: world.plaza.h }}
-          >
-            <span className="absolute inset-6 rounded-[2.4rem] border border-dashed" />
-            <span className="absolute inset-x-0 bottom-7 text-center font-mono text-xs text-muted-foreground">
-              Selamat datang · {TOOLS.length} tools · 0 byte di-upload
-            </span>
-          </div>
-          <div
-            className="absolute"
-            style={{
-              left: world.monument.x - world.monument.r,
-              top: world.monument.y - world.monument.r * 1.9,
-              width: world.monument.r * 2,
-              height: world.monument.r * 2.4,
-              zIndex: Math.round(world.monument.y + world.monument.r),
-            }}
-          >
-            <span className="absolute inset-x-0 bottom-0 h-1/3 rounded-[50%] bg-black/15" />
-            <span className="absolute inset-x-3 bottom-[12%] h-1/4 rounded-[50%] border bg-card" />
-            <div className="pg-float absolute inset-x-4 top-0 aspect-square">
-              <span className="absolute -inset-3 rounded-full bg-gradient-brand opacity-30 blur-xl" />
-              <span className="relative grid size-full place-items-center rounded-full bg-gradient-brand text-white shadow-xl shadow-brand-2/30">
-                <ShieldCheck className="size-9" />
-              </span>
-            </div>
-          </div>
-
-          {world.trees.map((tree, i) => (
-            <Plant key={i} tree={tree} index={i} />
-          ))}
-
-          {world.keepers.map((keeper, i) => (
-            <Keeper
-              key={keeper.tool.slug}
-              ref={(el) => {
-                keeperEls.current[i] = el
+          {scene.kind === 'town' && town ? (
+            <TownScenery
+              town={town}
+              visited={visited}
+              nearHouse={nearDoor?.to ?? null}
+              onHouse={(id) => {
+                const door = town.doors.find((d) => d.to === id)
+                if (!door) return
+                if (nearDoor === door) go(door)
+                else walkTo(door.at, { door })
               }}
-              bubbleRef={(el) => {
-                keeperBubbles.current[i] = el
-              }}
-              keeper={keeper}
-              color={colorFor(keeper.tool)}
-              near={near === keeper.tool.slug}
-              talking={talking === keeper.tool.slug}
-              visited={visited.has(keeper.tool.slug)}
-              onClick={() =>
-                near === keeper.tool.slug ? setTalking(keeper.tool.slug) : walkTo(keeper.front, keeper.tool.slug)
-              }
             />
-          ))}
+          ) : scene.kind === 'room' ? (
+            <RoomScenery room={scene} />
+          ) : null}
 
-          {NPC_TYPES.map((npc, i) => (
-            <Npc
-              key={npc.label}
-              ref={(el) => {
-                npcEls.current[i] = el
-              }}
-              bubbleRef={(el) => {
-                bubbleEls.current[i] = el
-              }}
-              label={npc.label}
-              fill={npc.fill}
-            />
-          ))}
+          {scene.keepers.map((keeper) => {
+            const slug = keeper.tool.slug
+            const person = people.get(slug)!
+            return (
+              <Keeper
+                key={slug}
+                ref={(el) => {
+                  keeperEls.current.set(slug, el)
+                }}
+                bubbleRef={(el) => {
+                  keeperBubbles.current.set(slug, el)
+                }}
+                keeper={keeper}
+                name={person.name}
+                look={person.look}
+                near={near === slug}
+                talking={talking === slug}
+                visited={visited.has(slug)}
+                onClick={() => (near === slug ? setTalking(slug) : walkTo(keeper.front, { talk: slug }))}
+              />
+            )
+          })}
+
+          {scene.kind === 'town' &&
+            townsfolk.map((look, i) => (
+              <Townsperson
+                key={i}
+                ref={(el) => {
+                  walkerEls.current[i] = el
+                }}
+                bubbleRef={(el) => {
+                  walkerBubbles.current[i] = el
+                }}
+                look={look}
+              />
+            ))}
 
           <Player ref={playerRef} />
 
           <div
             ref={markerRef}
-            className="pointer-events-none absolute size-6 rounded-full border-2 border-brand-2 opacity-0"
+            className="pointer-events-none absolute size-6 rounded-full border-2 border-white opacity-0"
             style={{ zIndex: 1 }}
           />
 
-          {fireflies.map((f, i) => (
-            <span
-              key={i}
-              className="pg-firefly pointer-events-none absolute size-1.5 rounded-full bg-brand-2/50 dark:bg-amber-200 dark:shadow-[0_0_10px_3px] dark:shadow-amber-200/60"
-              style={{
-                left: f.x * world.width,
-                top: f.y * world.height,
-                zIndex: 9000,
-                animationDelay: `${f.delay}s`,
-                animationDuration: `${f.duration}s`,
-              }}
-            />
-          ))}
+          {scene.kind === 'town' &&
+            fireflies.map((f, i) => (
+              <span
+                key={i}
+                className="pg-firefly pointer-events-none absolute size-1.5 rounded-full bg-white/60 dark:bg-amber-200 dark:shadow-[0_0_10px_3px] dark:shadow-amber-200/60"
+                style={{
+                  left: f.x * scene.width,
+                  top: f.y * scene.height,
+                  zIndex: 9000,
+                  animationDelay: `${f.delay}s`,
+                  animationDuration: `${f.duration}s`,
+                }}
+              />
+            ))}
         </div>
 
-        {/* Soft fade at the edges of the view. */}
-        <div aria-hidden className="pointer-events-none absolute inset-0 shadow-[inset_0_0_80px_20px_var(--background)]" />
+        {/* Soft fade at the edges of the view, and the black of a doorway transition. */}
+        <div aria-hidden className="pointer-events-none absolute inset-0 shadow-[inset_0_0_80px_20px_rgb(0_0_0/0.35)]" />
+        <div ref={fadeRef} aria-hidden className="pointer-events-none absolute inset-0 z-30 bg-black opacity-0" />
 
-        {/* HUD: minimap + stamp count. */}
+        {/* HUD: minimap (town) + stamp count. */}
         <div
           aria-hidden
           className="absolute top-4 right-4 hidden w-44 rounded-2xl border bg-card/85 p-2.5 shadow-lg backdrop-blur sm:block"
           onClick={(e) => e.stopPropagation()}
         >
-          <svg viewBox={`0 0 ${world.width} ${world.height}`} className="block w-full">
-            <rect width={world.width} height={world.height} rx={60} className="fill-muted" />
-            <rect
-              x={world.plaza.x}
-              y={world.plaza.y}
-              width={world.plaza.w}
-              height={world.plaza.h}
-              rx={60}
-              className="fill-border"
-            />
-            {world.keepers.map((k) => (
-              <circle
-                key={k.tool.slug}
-                cx={k.home.x}
-                cy={k.home.y - 20}
-                r={42}
-                className={visited.has(k.tool.slug) ? 'fill-emerald-500' : 'fill-brand-2/60'}
-              />
-            ))}
-            <rect ref={viewRef} rx={30} className="fill-none stroke-foreground/40" strokeWidth={14} />
-            <circle ref={dotRef} r={38} className="fill-foreground stroke-card" strokeWidth={14} />
-          </svg>
-          <div className="mt-2 flex items-center justify-between gap-2 px-0.5 text-xs">
+          {scene.kind === 'town' && town ? (
+            <svg viewBox={`0 0 ${town.width} ${town.height}`} className="mb-2 block w-full">
+              <rect width={town.width} height={town.height} rx={60} className="fill-[#8cc66d] dark:fill-[#1d3324]" />
+              {town.paths.map((p, i) => (
+                <rect key={i} x={p.x} y={p.y} width={p.w} height={p.h} className="fill-[#e8d7a8] dark:fill-[#4a4234]" />
+              ))}
+              {town.houses.map((h) => (
+                <rect
+                  key={h.id}
+                  x={h.rect.x}
+                  y={h.rect.y}
+                  width={h.rect.w}
+                  height={h.rect.h}
+                  rx={30}
+                  style={{ fill: h.roof }}
+                />
+              ))}
+              <rect ref={viewRef} rx={30} className="fill-none stroke-white/70" strokeWidth={14} />
+              <circle ref={dotRef} r={40} className="fill-white stroke-black/60" strokeWidth={12} />
+            </svg>
+          ) : scene.kind === 'room' ? (
+            <p className="mb-2 flex items-center gap-1.5 px-0.5 text-xs font-medium">
+              <span className="size-2.5 rounded-full" style={{ background: scene.house.roof }} />
+              Rumah {scene.house.title}
+            </p>
+          ) : null}
+          <div className="flex items-center justify-between gap-2 px-0.5 text-xs">
             <span className="flex items-center gap-1.5 text-muted-foreground">
               <Stamp className="size-3.5" />
               Paspor
@@ -742,36 +805,31 @@ export function Playground() {
           </button>
         )}
 
-        {/* Bottom bar: the conversation, the tool in reach, or how to play. */}
-        <div className="pointer-events-none absolute inset-x-0 bottom-4 flex justify-center px-4">
-          {talkTool ? (
+        {/* Bottom bar: the conversation, what's in reach, or how to play. */}
+        <div className="pointer-events-none absolute inset-x-0 bottom-4 z-20 flex justify-center px-4">
+          {talkTool && talkPerson ? (
             <Dialog
               key={talkTool.slug}
               tool={talkTool}
-              color={colorFor(talkTool)}
+              name={talkPerson.name}
+              look={talkPerson.look}
               onOpen={() => open(talkTool.slug)}
               onClose={() => setTalking(null)}
             />
           ) : nearTool ? (
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation()
-                setTalking(nearTool.slug)
-              }}
-              className="pointer-events-auto flex items-center gap-3 rounded-2xl border bg-card/95 py-2 pr-4 pl-2 shadow-xl shadow-brand-2/15 backdrop-blur"
-            >
-              <span className="grid size-9 place-items-center rounded-xl bg-gradient-brand text-white">
-                <nearTool.icon className="size-[18px]" />
-              </span>
-              <span className="text-left">
-                <span className="block text-sm font-semibold">Ngobrol dengan {nearTool.title}</span>
-                <span className="block text-xs text-muted-foreground">Tanya dia bisa bantu apa</span>
-              </span>
-              <kbd className="ml-1 hidden rounded-md border border-b-[3px] bg-muted px-2 py-0.5 font-mono text-xs pointer-fine:block">
-                E
-              </kbd>
-            </button>
+            <Prompt
+              onClick={() => setTalking(nearTool.slug)}
+              icon={<nearTool.icon className="size-[18px]" />}
+              title={`Ngobrol dengan ${people.get(nearTool.slug)?.name}`}
+              subtitle={`Penjaga ${nearTool.title}`}
+            />
+          ) : nearDoor ? (
+            <Prompt
+              onClick={() => go(nearDoor)}
+              icon={<DoorOpen className="size-[18px]" />}
+              title={nearDoor.label}
+              subtitle={nearDoor.dir === 'up' ? 'Lihat siapa saja yang ada di dalam' : 'Kembali ke kota'}
+            />
           ) : (
             <p className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 rounded-full border bg-card/85 px-4 py-2 text-xs text-muted-foreground shadow-lg backdrop-blur">
               <span className="hidden items-center gap-1.5 pointer-fine:flex">
@@ -785,14 +843,49 @@ export function Playground() {
                 <Key>Shift</Key> lari
               </span>
               <span className="hidden items-center gap-1.5 pointer-fine:flex">
-                <Key>E</Key> ngobrol
+                <Key>E</Key> {scene.kind === 'town' ? 'masuk / ngobrol' : 'ngobrol'}
               </span>
-              <span className="pointer-fine:hidden">Ketuk tanah untuk jalan, ketuk tokoh untuk ngobrol</span>
+              <span className="pointer-fine:hidden">
+                {scene.kind === 'town' ? 'Ketuk tanah untuk jalan, ketuk rumah untuk masuk' : 'Ketuk tokoh untuk ngobrol'}
+              </span>
+              {scene.kind === 'room' && <span>· injak keset di bawah untuk keluar</span>}
             </p>
           )}
         </div>
       </div>
     </section>
+  )
+}
+
+function Prompt({
+  onClick,
+  icon,
+  title,
+  subtitle,
+}: {
+  onClick: () => void
+  icon: ReactNode
+  title: string
+  subtitle: string
+}) {
+  return (
+    <button
+      type="button"
+      onClick={(e) => {
+        e.stopPropagation()
+        onClick()
+      }}
+      className="pointer-events-auto flex items-center gap-3 rounded-2xl border bg-card/95 py-2 pr-4 pl-2 shadow-xl shadow-brand-2/15 backdrop-blur"
+    >
+      <span className="grid size-9 place-items-center rounded-xl bg-gradient-brand text-white">{icon}</span>
+      <span className="text-left">
+        <span className="block text-sm font-semibold">{title}</span>
+        <span className="block text-xs text-muted-foreground">{subtitle}</span>
+      </span>
+      <kbd className="ml-1 hidden rounded-md border border-b-[3px] bg-muted px-2 py-0.5 font-mono text-xs pointer-fine:block">
+        E
+      </kbd>
+    </button>
   )
 }
 

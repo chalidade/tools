@@ -43,16 +43,22 @@ perangkat pengguna: tidak di-upload ke server dan tidak disimpan di mana pun.
 
 ## Beranda: kota kecil yang bisa dijelajahi
 
-Halaman depan adalah dunia kecil yang hidup: satu distrik per kategori, dan
-setiap tool adalah tokoh yang berdiri di distriknya, ditambah file-file berkaki
-yang jalan-jalan sambil mengobrol. Gerakkan robot dengan **WASD / panah**,
-**Shift** untuk lari, dan tekan **E / Enter** di dekat sebuah tool untuk
-mengobrol: ia memperkenalkan diri, menjelaskan gunanya dan batasannya, lalu
-menawarkan "Buka" atau "Nanti saja" (panah untuk memilih, **Esc** untuk pergi).
-Di ponsel: ketuk tanah untuk berjalan, ketuk tokoh untuk menghampiri dan
-mengobrol dengannya. Minimap dan "paspor" (jumlah
-stand yang sudah dikunjungi) ada di pojok kanan atas. Daftar tools biasa tetap
-ada di bawahnya.
+Halaman depan adalah kota kecil bergaya game RPG. Setiap kategori adalah
+sebuah rumah; masuk lewat pintunya, dan di dalam setiap tool dijaga seorang
+tokoh kartun yang memperkenalkan diri, menjelaskan guna dan batasan tool-nya,
+lalu menawarkan "Buka" atau "Nanti saja". Warga kota berkeliaran dan
+mengobrol di luar.
+
+- **WASD / panah** untuk jalan, **Shift** untuk lari.
+- Jalan ke pintu rumah (atau tekan **E**) untuk masuk; injak keset
+  "KELUAR" di dalam untuk kembali ke kota.
+- **E / Enter** di dekat penjaga untuk mengobrol, panah untuk memilih
+  jawaban, **Esc** untuk pergi.
+- Mouse / ponsel: klik atau ketuk tanah, rumah, atau tokoh — karakter
+  mencari jalannya sendiri ke sana.
+
+Minimap kota dan "paspor" (jumlah tool yang sudah dikunjungi) ada di pojok
+kanan atas. Daftar tools biasa tetap ada di bawahnya.
 
 ## Menjalankan
 

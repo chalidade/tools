@@ -3,27 +3,30 @@ import { ArrowRight, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import type { Tool } from '@/tools/registry'
 import { dialogFor } from './dialog'
+import { Person, type Look } from './Person'
 
 const CHARS_PER_TICK = 2
 const TICK_MS = 18
 
 /**
- * RPG-style conversation with a tool's character. Owns the keyboard while
+ * RPG-style conversation with a tool's keeper. Owns the keyboard while
  * open (the world ignores keys meanwhile): E / Enter / Space finishes the line
  * or goes on, arrows pick an answer on the last page, Esc walks away.
  */
 export function Dialog({
   tool,
-  color,
+  name,
+  look,
   onOpen,
   onClose,
 }: {
   tool: Tool
-  color: string
+  name: string
+  look: Look
   onOpen: () => void
   onClose: () => void
 }) {
-  const pages = dialogFor(tool)
+  const pages = dialogFor(tool, name)
   const [page, setPage] = useState(0)
   const [shown, setShown] = useState(0)
   const [choice, setChoice] = useState<0 | 1>(0)
@@ -74,7 +77,7 @@ export function Dialog({
   return (
     <div
       role="dialog"
-      aria-label={`Percakapan dengan ${tool.title}`}
+      aria-label={`Percakapan dengan ${name}, penjaga ${tool.title}`}
       onClick={(e) => {
         e.stopPropagation()
         if (!asking) advance()
@@ -94,17 +97,21 @@ export function Dialog({
       </button>
 
       <div className="flex gap-4">
+        {/* Portrait: the keeper's head and shoulders, framed in its shirt colour. */}
         <span
-          className="grid size-12 shrink-0 place-items-center rounded-2xl text-white shadow-md sm:size-14"
-          style={{ backgroundColor: color }}
+          className="relative size-14 shrink-0 overflow-hidden rounded-2xl border-2 shadow-md sm:size-16"
+          style={{ borderColor: look.shirt, background: `${look.shirt}30` }}
         >
-          <tool.icon className="size-6" />
+          <span className="absolute -top-0.5 left-1/2 -translate-x-1/2">
+            <Person look={look} size={1.45} />
+          </span>
         </span>
         <div className="min-w-0 flex-1 pr-6">
           <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
-            <span className="font-semibold tracking-tight">{tool.title}</span>
-            <span className="rounded-md border bg-muted px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">
-              {tool.formats}
+            <span className="font-semibold tracking-tight">{name}</span>
+            <span className="flex items-center gap-1 rounded-md border bg-muted px-1.5 py-0.5 text-[11px] text-muted-foreground">
+              <tool.icon className="size-3" />
+              {tool.title}
             </span>
           </div>
           {/* The full line sits invisibly underneath, so the box never grows while typing. */}
