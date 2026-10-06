@@ -92,12 +92,94 @@ const DIALOG: Record<string, string[]> = {
     'Angka dan teks tidak berubah sedikit pun.',
     'Pas sebelum ditempel ke konfigurasi atau dikirim lewat API.',
   ],
+  'merge-pdf': [
+    'Beberapa PDF kusatukan jadi satu file.',
+    'Urutannya tinggal kamu atur dengan seret, sebelum kugabung.',
+    'Pas untuk menyatukan lampiran, scan, atau bab-bab laporan.',
+  ],
+  'split-pdf': [
+    'PDF yang tebal kupecah jadi beberapa file.',
+    'Ambil halaman tertentu, pisah per rentang, atau pecah tiap N halaman.',
+    'File aslimu tidak berubah — hasilnya file-file baru.',
+  ],
+  'watermark-pdf': [
+    'Kupasang watermark teks atau logo di semua halaman PDF-mu.',
+    'Bisa di tengah atau berulang, dengan transparansi yang kamu atur.',
+    'Cocok untuk menandai draf, dokumen rahasia, atau milik perusahaan.',
+  ],
+  'sign-pdf': [
+    'Tanda tanganmu kutempel ke halaman PDF mana pun.',
+    'Gambar langsung di layar, atau unggah foto tanda tanganmu.',
+    'Posisi dan ukurannya bebas kamu geser — tanpa cetak, tanpa scan.',
+  ],
+  'crop-resize-image': [
+    'Gambarmu kupotong dan kuubah ukurannya.',
+    'Rasio bebas atau 1:1, 16:9, 4:5 — bisa juga diputar dan dibalik.',
+    'Pas untuk foto profil, thumbnail, atau postingan media sosial.',
+  ],
+  'remove-background': [
+    'Latar foto kuhapus — tanpa AI, kamu yang pegang kendali.',
+    'Pakai tongkat ajaib, pilih warna, lasso, atau kuas untuk menandainya.',
+    'Hasilnya transparan, atau latarnya kuganti dengan warna pilihanmu.',
+  ],
+  'trim-media': [
+    'Video atau lagu kupotong, ambil bagian yang kamu mau saja.',
+    'Geser penanda awal dan akhir, lalu simpan potongannya.',
+    'Format dan kualitasnya tetap seperti aslinya.',
+  ],
+  'gif-mp4': [
+    'GIF kuubah jadi MP4, atau potongan video jadi GIF.',
+    'MP4 dari GIF biasanya jauh lebih kecil, tapi tampilannya sama.',
+    'Pas untuk meme, demo singkat, atau stiker.',
+  ],
+  'extract-frames': [
+    'Frame video kuambil sebagai gambar beresolusi asli.',
+    'Pilih satu per satu, atau otomatis setiap N detik.',
+    'Cocok untuk thumbnail atau mengambil momen yang pas.',
+  ],
+  'change-speed': [
+    'Video dan audio kupercepat atau kuperlambat, dari 0,25× sampai 4×.',
+    'Nada suaranya tetap normal — tidak jadi cempreng atau berat.',
+    'Pas untuk rekaman kuliah, tutorial, atau slow motion.',
+  ],
+  'merge-audio': [
+    'Beberapa file audio kusatukan jadi satu.',
+    'Formatnya boleh beda; urutan dan jeda di antaranya bisa kamu atur.',
+    'Cocok untuk menyambung rekaman atau membuat playlist.',
+  ],
+  'qr-generator': [
+    'Kubuatkan QR code untuk tautan, teks, Wi-Fi, WhatsApp, kontak, atau email.',
+    'Warnanya bisa kamu ganti, dan logomu bisa ditaruh di tengah.',
+    'Simpan sebagai gambar dan siap dicetak atau dibagikan.',
+  ],
+  'qr-reader': [
+    'QR code dan barcode kubaca dari gambar, screenshot, atau kamera.',
+    'Isi Wi-Fi, kontak, dan tautan kutampilkan dengan rapi.',
+    'Semuanya dipindai di perangkatmu — tidak ada yang dikirim.',
+  ],
+  'favicon-generator': [
+    'Kubuatkan favicon.ico, ikon iOS dan Android, plus web manifest.',
+    'Sumbernya bisa logo, huruf, atau emoji.',
+    'Semua ukuran yang dibutuhkan situs web, sekali unduh.',
+  ],
+  'image-to-base64': [
+    'Gambar kuubah jadi Base64 atau data URL — dan sebaliknya.',
+    'Siap tempel di HTML, CSS, atau Markdown.',
+    'Pas untuk ikon kecil yang mau disematkan langsung ke kode.',
+  ],
+  'color-picker': [
+    'Warna kuambil dari gambar atau dari layar.',
+    'Kuubah ke HEX, RGB, HSL, atau OKLCH, dan kontrasnya kucek.',
+    'Bisa juga membuat gradasi dari warna-warna pilihanmu.',
+  ],
 }
 
 /** Keeper names, in tool order; a tool past the end borrows one by its slug. */
 const NAMES = [
   'Raka', 'Sinta', 'Bayu', 'Putri', 'Dimas', 'Ayu', 'Fajar', 'Nadia', 'Rizky',
   'Laras', 'Yoga', 'Citra', 'Andi', 'Maya', 'Galih', 'Intan', 'Bima', 'Wulan',
+  'Arif', 'Dewi', 'Hendra', 'Lestari', 'Joko', 'Ratna', 'Eko', 'Fitri', 'Gilang',
+  'Kartika', 'Lukman', 'Melati', 'Nanda', 'Okta', 'Pandu', 'Rini', 'Satria', 'Tiara',
 ]
 
 export function nameFor(tool: Tool, index: number) {
