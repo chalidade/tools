@@ -177,6 +177,11 @@ const DIALOG: Record<string, string[]> = {
     'Ada pena yang mengikuti tekanan stylus, stabilo, penghapus, garis, panah, kotak, lingkaran, dan teks. Bisa banyak halaman.',
     'Papanmu tersimpan otomatis di browser ini, dan bisa diunduh sebagai PNG atau PDF.',
   ],
+  'audio-recorder': [
+    'Suaramu kurekam langsung dari mikrofon — bisa dijeda dan dilanjutkan kapan saja.',
+    'Pilih mode suara bicara untuk rapat atau kuliah (bising diredam), atau mode asli untuk musik.',
+    'Rekamannya tersimpan di browser ini, dan bisa diunduh sebagai MP3, M4A, atau WAV.',
+  ],
 }
 
 /** Keeper names, in tool order; a tool past the end borrows one by its slug. */
