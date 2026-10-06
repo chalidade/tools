@@ -172,6 +172,11 @@ const DIALOG: Record<string, string[]> = {
     'Kuubah ke HEX, RGB, HSL, atau OKLCH, dan kontrasnya kucek.',
     'Bisa juga membuat gradasi dari warna-warna pilihanmu.',
   ],
+  whiteboard: [
+    'Kamu bisa menulis dan menggambar bebas, di papan putih atau papan kapur.',
+    'Ada pena yang mengikuti tekanan stylus, stabilo, penghapus, garis, panah, kotak, lingkaran, dan teks. Bisa banyak halaman.',
+    'Papanmu tersimpan otomatis di browser ini, dan bisa diunduh sebagai PNG atau PDF.',
+  ],
 }
 
 /** Keeper names, in tool order; a tool past the end borrows one by its slug. */
