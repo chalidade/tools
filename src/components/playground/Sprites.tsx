@@ -1,7 +1,7 @@
 import { forwardRef, useId } from 'react'
 import { Check } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import type { Kiosk, Tree } from './layout'
+import type { Keeper as KeeperSpot, Tree } from './layout'
 
 /*
  * Everything here is drawn at a fixed world size and positioned by the game
@@ -92,66 +92,82 @@ export const Npc = forwardRef<
   )
 })
 
-/** A tool's stall. Lights up when the player stands in front of it. */
-export function Stall({
-  kiosk,
-  near,
-  visited,
-  onClick,
-}: {
-  kiosk: Kiosk
-  near: boolean
-  visited: boolean
-  onClick: () => void
-}) {
-  const { tool, rect } = kiosk
+/**
+ * A tool as a character standing in its district: file-shaped, coloured by the
+ * file type it handles, with its icon on its belly and its name above. The
+ * loop turns it toward the player and fills its speech bubble.
+ */
+export const Keeper = forwardRef<
+  HTMLDivElement,
+  {
+    keeper: KeeperSpot
+    color: string
+    near: boolean
+    talking: boolean
+    visited: boolean
+    onClick: () => void
+    bubbleRef: (el: HTMLSpanElement | null) => void
+  }
+>(function Keeper({ keeper, color, near, talking, visited, onClick, bubbleRef }, ref) {
+  const { tool, home } = keeper
   return (
     <div
+      ref={ref}
       onClick={(e) => {
         e.stopPropagation()
         onClick()
       }}
-      className="absolute cursor-pointer"
-      style={{ left: rect.x, top: rect.y, width: rect.w, height: rect.h, zIndex: Math.round(rect.y + rect.h) }}
+      className="pg-idle absolute cursor-pointer"
+      style={{ left: home.x - 30, top: home.y - 70, width: 60, height: 74, zIndex: Math.round(home.y) }}
     >
-      {near && (
-        <span className="pg-hop absolute -top-9 left-1/2 grid h-7 min-w-7 -translate-x-1/2 place-items-center rounded-md border border-b-[3px] bg-card px-1.5 font-mono text-xs font-semibold shadow-md">
-          E
-        </span>
-      )}
-      <div
+      <span
+        ref={bubbleRef}
+        className="pg-bubble pointer-events-none absolute bottom-full left-1/2 mb-9 w-max max-w-44 -translate-x-1/2 rounded-xl border bg-popover px-2.5 py-1.5 text-center text-[11px] leading-snug font-medium text-popover-foreground shadow-lg"
+      />
+      <span
         className={cn(
-          'relative flex h-full flex-col overflow-hidden rounded-2xl border bg-card shadow-md transition-all duration-200',
-          near ? '-translate-y-1.5 shadow-xl shadow-brand-2/25 ring-2 ring-brand-2' : 'hover:-translate-y-0.5',
+          'absolute bottom-full left-1/2 mb-1.5 flex -translate-x-1/2 items-center gap-1.5 rounded-full border bg-card/95 py-0.5 text-[11px] font-semibold whitespace-nowrap shadow-sm transition-all',
+          near || talking ? 'pr-1 pl-2.5 ring-2 ring-brand-2' : 'px-2.5',
         )}
       >
-        {/* Awning */}
-        <div className="flex h-3.5 shrink-0">
-          {Array.from({ length: 8 }, (_, i) => (
-            <span key={i} className={cn('flex-1', i % 2 ? 'bg-card' : 'bg-gradient-brand')} />
-          ))}
-        </div>
-        <div className="flex flex-1 flex-col items-center justify-center gap-2 px-2.5 pb-2 text-center">
-          <span className="grid size-10 place-items-center rounded-xl bg-gradient-brand text-white shadow-md shadow-brand-2/25">
-            <tool.icon className="size-5" />
-          </span>
-          <span className="text-[13px] leading-tight font-semibold tracking-tight">{tool.title}</span>
-          <span className="rounded-md border bg-muted px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">
-            {tool.formats}
-          </span>
-        </div>
         {visited && (
-          <span
-            title="Sudah dikunjungi"
-            className="absolute top-5 right-2 grid size-5 place-items-center rounded-full bg-emerald-500 text-white"
-          >
-            <Check className="size-3" strokeWidth={3} />
+          <span title="Sudah dikunjungi" className="grid size-3.5 place-items-center rounded-full bg-emerald-500 text-white">
+            <Check className="size-2.5" strokeWidth={3.5} />
           </span>
         )}
+        {tool.title}
+        {near && !talking && (
+          <kbd className="rounded border border-b-2 bg-muted px-1 font-mono text-[10px] leading-4">E</kbd>
+        )}
+      </span>
+
+      {(near || talking) && (
+        <span className="absolute -bottom-2 left-1/2 h-4 w-16 -translate-x-1/2 animate-pulse rounded-[50%] border-2 border-brand-2" />
+      )}
+      <span className="absolute -bottom-1 left-1/2 h-3 w-11 -translate-x-1/2 rounded-full bg-black/25 blur-[2px]" />
+      <div className={cn('absolute inset-0', near && !talking && 'pg-hop')}>
+        <div className="pg-flip absolute inset-0">
+          <svg viewBox="0 0 60 74" width={60} height={74} className="pg-body overflow-visible">
+            <rect x="19" y="60" width="8" height="13" rx="4" fill="#3f3f46" />
+            <rect x="33" y="60" width="8" height="13" rx="4" fill="#3f3f46" />
+            <path d="M8 9a5 5 0 0 1 5-5h22l15 15v38a5 5 0 0 1-5 5H13a5 5 0 0 1-5-5Z" fill={color} />
+            <path d="M8 9a5 5 0 0 1 5-5h22l15 15v38a5 5 0 0 1-5 5H13a5 5 0 0 1-5-5Z" fill="white" opacity="0.1" />
+            <path d="M35 4v10a5 5 0 0 0 5 5h10Z" fill="white" opacity="0.45" />
+            <g className="pg-eyes">
+              <circle className="pg-eye" cx="22" cy="24" r="2.8" fill="white" />
+              <circle className="pg-eye" cx="35" cy="24" r="2.8" fill="white" />
+            </g>
+            <path d="M25 30q3.5 3 7 0" stroke="white" strokeWidth="2" strokeLinecap="round" fill="none" />
+          </svg>
+        </div>
+        {/* Outside the flip, so the icon never shows mirrored. */}
+        <span className="absolute top-[37px] left-1/2 grid size-7 -translate-x-1/2 place-items-center rounded-lg bg-black/20 text-white">
+          <tool.icon className="size-4" />
+        </span>
       </div>
     </div>
   )
-}
+})
 
 /** Greenery. Trees are solid (see layout.ts), bushes and flowers are not. */
 export function Plant({ tree, index }: { tree: Tree; index: number }) {

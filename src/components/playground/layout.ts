@@ -16,13 +16,12 @@ export interface Circle {
   r: number
 }
 
-export interface Kiosk {
+/** A tool, standing in its district as a character the player can talk to. */
+export interface Keeper {
   tool: Tool
-  /** What is drawn: the stall standing up, seen from the front. */
-  rect: Rect
-  /** What blocks walking: the bottom strip the stall stands on. */
-  footprint: Rect
-  /** Where a click on the stall walks the player to. */
+  /** Where its feet are. It is solid within KEEPER_R of this point. */
+  home: Point
+  /** Where a click on it walks the player to. */
   front: Point
 }
 
@@ -31,7 +30,7 @@ export interface Zone {
   title: string
   description: string
   rect: Rect
-  kiosks: Kiosk[]
+  keepers: Keeper[]
 }
 
 export interface Tree {
@@ -45,19 +44,20 @@ export interface World {
   width: number
   height: number
   zones: Zone[]
-  kiosks: Kiosk[]
+  keepers: Keeper[]
   plaza: Rect
   monument: Circle
   spawn: Point
   trees: Tree[]
-  rects: Rect[]
   circles: Circle[]
 }
 
-export const KIOSK_W = 156
-export const KIOSK_H = 124
-const GAP_X = 36
-const GAP_Y = 70
+export const KEEPER_R = 18
+/** One character's patch of ground: room for its name tag and to walk around it. */
+const CELL_W = 150
+const CELL_H = 120
+const GAP_X = 30
+const GAP_Y = 46
 const PAD = 44
 const HEADER = 76
 const ROAD = 170
@@ -107,8 +107,8 @@ export function buildWorld(): World {
       cols,
       row,
       col,
-      w: cols * KIOSK_W + (cols - 1) * GAP_X + PAD * 2,
-      h: HEADER + rows * KIOSK_H + (rows - 1) * GAP_Y + PAD,
+      w: cols * CELL_W + (cols - 1) * GAP_X + PAD * 2,
+      h: HEADER + rows * CELL_H + (rows - 1) * GAP_Y + PAD,
     }
   })
 
@@ -122,21 +122,17 @@ export function buildWorld(): World {
 
   const zones: Zone[] = sized.map((s) => {
     const rect = { x: colX[s.col] + (colW[s.col] - s.w) / 2, y: rowY[s.row], w: s.w, h: s.h }
-    const kiosks = s.tools.map((tool, i) => {
+    const keepers = s.tools.map((tool, i) => {
       const row = Math.floor(i / s.cols)
       const inRow = Math.min(s.cols, s.tools.length - row * s.cols)
       // A short last row is centred rather than left-aligned.
-      const rowW = inRow * KIOSK_W + (inRow - 1) * GAP_X
-      const x = rect.x + (rect.w - rowW) / 2 + (i % s.cols) * (KIOSK_W + GAP_X)
-      const y = rect.y + HEADER + row * (KIOSK_H + GAP_Y)
-      return {
-        tool,
-        rect: { x, y, w: KIOSK_W, h: KIOSK_H },
-        footprint: { x: x + 6, y: y + KIOSK_H - 46, w: KIOSK_W - 12, h: 44 },
-        front: { x: x + KIOSK_W / 2, y: y + KIOSK_H + 28 },
-      }
+      const rowW = inRow * CELL_W + (inRow - 1) * GAP_X
+      const x = rect.x + (rect.w - rowW) / 2 + (i % s.cols) * (CELL_W + GAP_X)
+      const y = rect.y + HEADER + row * (CELL_H + GAP_Y)
+      const home = { x: x + CELL_W / 2, y: y + CELL_H - 22 }
+      return { tool, home, front: { x: home.x, y: home.y + 46 } }
     })
-    return { id: s.id, title: s.title, description: s.description, rect, kiosks }
+    return { id: s.id, title: s.title, description: s.description, rect, keepers }
   })
 
   const width = colX[2] + colW[2] + MARGIN
@@ -160,50 +156,26 @@ export function buildWorld(): World {
     })
   }
 
-  const kiosks = zones.flatMap((z) => z.kiosks)
+  const keepers = zones.flatMap((z) => z.keepers)
   return {
     width,
     height,
     zones,
-    kiosks,
+    keepers,
     plaza,
     monument,
     spawn,
     trees,
-    rects: kiosks.map((k) => k.footprint),
-    circles: [monument, ...trees.filter((t) => t.kind === 'tree').map((t) => ({ x: t.x, y: t.y, r: 13 * t.size }))],
+    circles: [
+      monument,
+      ...keepers.map((k) => ({ ...k.home, r: KEEPER_R })),
+      ...trees.filter((t) => t.kind === 'tree').map((t) => ({ x: t.x, y: t.y, r: 13 * t.size })),
+    ],
   }
-}
-
-/** Distance from a point to the nearest edge of a rectangle (0 inside it). */
-export function distToRect(p: Point, r: Rect) {
-  const dx = Math.max(r.x - p.x, 0, p.x - (r.x + r.w))
-  const dy = Math.max(r.y - p.y, 0, p.y - (r.y + r.h))
-  return Math.hypot(dx, dy)
 }
 
 /** Push a round body of radius `r` out of every solid and back inside the world. */
 export function collide(p: Point, r: number, world: World) {
-  for (const s of world.rects) {
-    const cx = Math.min(Math.max(p.x, s.x), s.x + s.w)
-    const cy = Math.min(Math.max(p.y, s.y), s.y + s.h)
-    const dx = p.x - cx
-    const dy = p.y - cy
-    const d = Math.hypot(dx, dy)
-    if (d >= r) continue
-    if (d > 0) {
-      p.x += (dx / d) * (r - d)
-      p.y += (dy / d) * (r - d)
-    } else {
-      // Centre is inside the rectangle: leave by the shortest side.
-      const out = [p.x - s.x, s.x + s.w - p.x, p.y - s.y, s.y + s.h - p.y]
-      const i = out.indexOf(Math.min(...out))
-      if (i === 0) p.x = s.x - r
-      else if (i === 1) p.x = s.x + s.w + r
-      else if (i === 2) p.y = s.y - r
-      else p.y = s.y + s.h + r
-    }
-  }
   for (const c of world.circles) {
     const dx = p.x - c.x
     const dy = p.y - c.y

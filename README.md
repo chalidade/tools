@@ -43,11 +43,14 @@ perangkat pengguna: tidak di-upload ke server dan tidak disimpan di mana pun.
 
 ## Beranda: kota kecil yang bisa dijelajahi
 
-Halaman depan adalah dunia kecil yang hidup: satu distrik per kategori, satu
-stand per tool, dan file-file berkaki yang jalan-jalan sambil mengobrol.
-Gerakkan robot dengan **WASD / panah**, **Shift** untuk lari, dan **E / Enter**
-di depan stand untuk membuka tool-nya. Di ponsel: ketuk tanah untuk berjalan,
-ketuk stand untuk menuju ke sana dan membukanya. Minimap dan "paspor" (jumlah
+Halaman depan adalah dunia kecil yang hidup: satu distrik per kategori, dan
+setiap tool adalah tokoh yang berdiri di distriknya, ditambah file-file berkaki
+yang jalan-jalan sambil mengobrol. Gerakkan robot dengan **WASD / panah**,
+**Shift** untuk lari, dan tekan **E / Enter** di dekat sebuah tool untuk
+mengobrol: ia memperkenalkan diri, menjelaskan gunanya dan batasannya, lalu
+menawarkan "Buka" atau "Nanti saja" (panah untuk memilih, **Esc** untuk pergi).
+Di ponsel: ketuk tanah untuk berjalan, ketuk tokoh untuk menghampiri dan
+mengobrol dengannya. Minimap dan "paspor" (jumlah
 stand yang sudah dikunjungi) ada di pojok kanan atas. Daftar tools biasa tetap
 ada di bawahnya.
 

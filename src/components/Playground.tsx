@@ -3,17 +3,20 @@ import { motion } from 'motion/react'
 import { ArrowDown, Gamepad2, ShieldCheck, Stamp, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { TOOLS } from '@/tools/registry'
-import { buildWorld, collide, distToRect, type Point } from '@/components/playground/layout'
-import { NPC_TYPES, Npc, Plant, Player, Stall } from '@/components/playground/Sprites'
+import { Dialog } from '@/components/playground/Dialog'
+import { CALLS, colorFor } from '@/components/playground/dialog'
+import { buildWorld, collide, type Point } from '@/components/playground/layout'
+import { Keeper, NPC_TYPES, Npc, Plant, Player } from '@/components/playground/Sprites'
 
 /*
  * The home page is a small walkable town: one district per category, one stall
- * per tool, laid out from the registry (so a new tool shows up here with no
- * extra work). Walk with WASD/arrows, Shift to run, E/Enter at a stall to
- * open the tool; on touch, tap the ground to walk or a stall to go open it.
+ * character per tool, laid out from the registry (so a new tool shows up here
+ * with no extra work). Walk with WASD/arrows, Shift to run, E/Enter next to a
+ * tool to talk to it: it explains what it does and offers to open itself. On
+ * touch, tap the ground to walk or a character to go talk to it.
  *
  * The loop mutates transforms on refs every frame and only touches React state
- * when something the UI shows changes (the nearby stall, visited stamps).
+ * when something the UI shows changes (who is in reach, the dialog, stamps).
  * The plain ToolGrid below stays the accessible way in — the world is
  * aria-hidden and has no tab stops.
  */
@@ -22,7 +25,8 @@ const WALK = 230
 const RUN = 410
 const PLAYER_R = 15
 const NPC_R = 12
-const REACH = 56
+const REACH = 64
+const CALL_RANGE = 260
 
 const KEYMAP: Record<string, 'up' | 'down' | 'left' | 'right' | 'run'> = {
   ArrowUp: 'up',
@@ -101,10 +105,14 @@ export function Playground() {
   const viewRef = useRef<SVGRectElement>(null)
   const npcEls = useRef<(HTMLDivElement | null)[]>([])
   const bubbleEls = useRef<(HTMLSpanElement | null)[]>([])
+  const keeperEls = useRef<(HTMLDivElement | null)[]>([])
+  const keeperBubbles = useRef<(HTMLSpanElement | null)[]>([])
+  const keeperState = useRef(world.keepers.map(() => ({ face: 1, next: 1 + Math.random() * 6, talk: 0 })))
 
   const keys = useRef(new Set<string>())
   const active = useRef(false)
-  const target = useRef<{ point: Point; open?: string; stuck: number } | null>(null)
+  const target = useRef<{ point: Point; talk?: string; stuck: number } | null>(null)
+  const talkingRef = useRef<string | null>(null)
   const nearRef = useRef<string | null>(null)
   const game = useRef({
     pos: { ...(savedPosition ?? world.spawn) },
@@ -127,6 +135,8 @@ export function Playground() {
   const [near, setNear] = useState<string | null>(null)
   const [visited, setVisited] = useState(readVisited)
   const [introOpen, setIntroOpen] = useState(true)
+  const [talking, setTalking] = useState<string | null>(null)
+  talkingRef.current = talking
 
   const open = useCallback((slug: string) => {
     savedPosition = { ...game.current.pos }
@@ -144,7 +154,8 @@ export function Playground() {
   // Keyboard. Only while the world is on screen, so arrows still scroll the rest of the page.
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
-      if (!active.current || e.ctrlKey || e.metaKey || e.altKey || isTyping(e.target)) return
+      // While a conversation is open the Dialog owns the keyboard.
+      if (!active.current || talkingRef.current || e.ctrlKey || e.metaKey || e.altKey || isTyping(e.target)) return
       const dir = KEYMAP[e.code]
       if (dir) {
         keys.current.add(dir)
@@ -154,7 +165,8 @@ export function Playground() {
       }
       if ((e.code === 'KeyE' || e.key === 'Enter' || e.code === 'Space') && nearRef.current && !isControl(e.target)) {
         e.preventDefault()
-        open(nearRef.current)
+        keys.current.clear()
+        setTalking(nearRef.current)
       }
     }
     const up = (e: KeyboardEvent) => {
@@ -170,7 +182,7 @@ export function Playground() {
       window.removeEventListener('keyup', up)
       window.removeEventListener('blur', clear)
     }
-  }, [open])
+  }, [])
 
   useEffect(() => {
     const el = viewportRef.current
@@ -232,6 +244,10 @@ export function Playground() {
       let ix = (k.has('right') ? 1 : 0) - (k.has('left') ? 1 : 0)
       let iy = (k.has('down') ? 1 : 0) - (k.has('up') ? 1 : 0)
       let speed = k.has('run') ? RUN : WALK
+      if (talkingRef.current) {
+        ix = iy = 0
+        target.current = null
+      }
       const t = target.current
       if (ix || iy) target.current = null
       else if (t) {
@@ -287,24 +303,43 @@ export function Playground() {
         }
       }
 
-      // --- Which stall is within reach.
+      // --- Which tool is within reach; tool characters turn to watch the player.
       let best: string | null = null
       let bestD = REACH
-      for (const kiosk of world.kiosks) {
-        const d = distToRect(g.pos, kiosk.footprint)
+      world.keepers.forEach((keeper, i) => {
+        const ks = keeperState.current[i]
+        const d = Math.hypot(g.pos.x - keeper.home.x, g.pos.y - keeper.home.y)
         if (d < bestD) {
           bestD = d
-          best = kiosk.tool.slug
+          best = keeper.tool.slug
         }
-      }
+        if (d < CALL_RANGE * 1.4 && Math.abs(g.pos.x - keeper.home.x) > 6) ks.face = Math.sign(g.pos.x - keeper.home.x)
+        const bubble = keeperBubbles.current[i]
+        // Call out to a player passing by, now and then.
+        ks.next -= dt
+        if (bubble && ks.next <= 0 && d > REACH && d < CALL_RANGE && !talkingRef.current) {
+          ks.next = 9 + Math.random() * 10
+          ks.talk = 2
+          bubble.textContent = pick(CALLS)
+          bubble.dataset.show = ''
+        }
+        if (ks.talk > 0) {
+          ks.talk -= dt
+          if (ks.talk <= 0 || d < REACH) {
+            ks.talk = 0
+            if (bubble) delete bubble.dataset.show
+          }
+        }
+        const flip = keeperEls.current[i]?.querySelector<HTMLElement>('.pg-flip')
+        if (flip) flip.style.transform = `scaleX(${ks.face})`
+      })
       if (best !== nearRef.current) {
         nearRef.current = best
         setNear(best)
       }
-      if (best && target.current?.open === best) {
+      if (best && target.current?.talk === best) {
         target.current = null
-        open(best)
-        return
+        setTalking(best)
       }
 
       // --- Wandering files.
@@ -404,7 +439,7 @@ export function Playground() {
     }
     raf = requestAnimationFrame(frame)
     return () => cancelAnimationFrame(raf)
-  }, [world, open])
+  }, [world])
 
   const toWorld = (e: MouseEvent) => {
     const r = viewportRef.current!.getBoundingClientRect()
@@ -413,7 +448,9 @@ export function Playground() {
   }
 
   const walkTo = (point: Point, slug?: string) => {
-    target.current = { point, open: slug, stuck: 0 }
+    if (talkingRef.current) return
+    target.current = { point, talk: slug, stuck: 0 }
+    setIntroOpen(false)
     const m = markerRef.current
     if (!m) return
     m.style.left = `${point.x - 12}px`
@@ -429,6 +466,7 @@ export function Playground() {
 
   const visitedCount = TOOLS.filter((t) => visited.has(t.slug)).length
   const nearTool = near ? TOOLS.find((t) => t.slug === near) : undefined
+  const talkTool = talking ? TOOLS.find((t) => t.slug === talking) : undefined
   const fireflies = useMemo(
     () =>
       Array.from({ length: 22 }, (_, i) => ({
@@ -478,7 +516,7 @@ export function Playground() {
           <span className="text-gradient">tanpa upload.</span>
         </motion.h1>
         <motion.p variants={fadeUp} className="mt-4 leading-relaxed text-muted-foreground text-pretty">
-          Kumpulan tools kecil yang bekerja langsung di perangkatmu. Jalan-jalan ke stand-nya dan buka — file
+          Kumpulan tools kecil yang bekerja langsung di perangkatmu. Sapa tiap tool, tanya bisa bantu apa — file
           tidak pernah meninggalkan browser.
         </motion.p>
         <motion.div variants={fadeUp} className="mt-6 flex flex-wrap items-center gap-3">
@@ -522,11 +560,11 @@ export function Playground() {
       <div
         ref={viewportRef}
         onClick={(e) => walkTo(toWorld(e))}
-        className="relative h-[62vh] min-h-[400px] touch-pan-y overflow-hidden border-y select-none md:h-[calc(100dvh-4rem)] md:max-h-[880px] md:min-h-[560px]"
+        className="relative h-[62vh] min-h-[400px] touch-pan-y overflow-clip border-y select-none md:h-[calc(100dvh-4rem)] md:max-h-[880px] md:min-h-[560px]"
       >
         <p className="sr-only">
           Peta interaktif berisi semua tools: gerakkan karakter dengan tombol panah atau WASD dan tekan E di
-          depan stand untuk membukanya. Daftar biasa ada di bawah.
+          dekat sebuah tool untuk mengobrol dengannya. Daftar biasa ada di bawah.
         </p>
 
         <div
@@ -543,7 +581,7 @@ export function Playground() {
             >
               <div className="absolute top-4 left-6 flex items-baseline gap-3">
                 <span className="text-xl font-semibold tracking-tight">{zone.title}</span>
-                <span className="font-mono text-xs text-muted-foreground">{zone.kiosks.length} tools</span>
+                <span className="font-mono text-xs text-muted-foreground">{zone.keepers.length} tools</span>
               </div>
               <span className="absolute top-11 left-6 text-xs text-muted-foreground">{zone.description}</span>
             </div>
@@ -583,13 +621,23 @@ export function Playground() {
             <Plant key={i} tree={tree} index={i} />
           ))}
 
-          {world.kiosks.map((kiosk) => (
-            <Stall
-              key={kiosk.tool.slug}
-              kiosk={kiosk}
-              near={near === kiosk.tool.slug}
-              visited={visited.has(kiosk.tool.slug)}
-              onClick={() => (near === kiosk.tool.slug ? open(kiosk.tool.slug) : walkTo(kiosk.front, kiosk.tool.slug))}
+          {world.keepers.map((keeper, i) => (
+            <Keeper
+              key={keeper.tool.slug}
+              ref={(el) => {
+                keeperEls.current[i] = el
+              }}
+              bubbleRef={(el) => {
+                keeperBubbles.current[i] = el
+              }}
+              keeper={keeper}
+              color={colorFor(keeper.tool)}
+              near={near === keeper.tool.slug}
+              talking={talking === keeper.tool.slug}
+              visited={visited.has(keeper.tool.slug)}
+              onClick={() =>
+                near === keeper.tool.slug ? setTalking(keeper.tool.slug) : walkTo(keeper.front, keeper.tool.slug)
+              }
             />
           ))}
 
@@ -649,14 +697,12 @@ export function Playground() {
               rx={60}
               className="fill-border"
             />
-            {world.kiosks.map((k) => (
-              <rect
+            {world.keepers.map((k) => (
+              <circle
                 key={k.tool.slug}
-                x={k.rect.x}
-                y={k.rect.y}
-                width={k.rect.w}
-                height={k.rect.h}
-                rx={24}
+                cx={k.home.x}
+                cy={k.home.y - 20}
+                r={42}
                 className={visited.has(k.tool.slug) ? 'fill-emerald-500' : 'fill-brand-2/60'}
               />
             ))}
@@ -696,14 +742,22 @@ export function Playground() {
           </button>
         )}
 
-        {/* Bottom bar: the stall in reach, or how to play. */}
+        {/* Bottom bar: the conversation, the tool in reach, or how to play. */}
         <div className="pointer-events-none absolute inset-x-0 bottom-4 flex justify-center px-4">
-          {nearTool ? (
+          {talkTool ? (
+            <Dialog
+              key={talkTool.slug}
+              tool={talkTool}
+              color={colorFor(talkTool)}
+              onOpen={() => open(talkTool.slug)}
+              onClose={() => setTalking(null)}
+            />
+          ) : nearTool ? (
             <button
               type="button"
               onClick={(e) => {
                 e.stopPropagation()
-                open(nearTool.slug)
+                setTalking(nearTool.slug)
               }}
               className="pointer-events-auto flex items-center gap-3 rounded-2xl border bg-card/95 py-2 pr-4 pl-2 shadow-xl shadow-brand-2/15 backdrop-blur"
             >
@@ -711,8 +765,8 @@ export function Playground() {
                 <nearTool.icon className="size-[18px]" />
               </span>
               <span className="text-left">
-                <span className="block text-sm font-semibold">Buka {nearTool.title}</span>
-                <span className="block text-xs text-muted-foreground">{nearTool.description}</span>
+                <span className="block text-sm font-semibold">Ngobrol dengan {nearTool.title}</span>
+                <span className="block text-xs text-muted-foreground">Tanya dia bisa bantu apa</span>
               </span>
               <kbd className="ml-1 hidden rounded-md border border-b-[3px] bg-muted px-2 py-0.5 font-mono text-xs pointer-fine:block">
                 E
@@ -731,9 +785,9 @@ export function Playground() {
                 <Key>Shift</Key> lari
               </span>
               <span className="hidden items-center gap-1.5 pointer-fine:flex">
-                <Key>E</Key> buka
+                <Key>E</Key> ngobrol
               </span>
-              <span className="pointer-fine:hidden">Ketuk tanah untuk jalan, ketuk stand untuk membuka</span>
+              <span className="pointer-fine:hidden">Ketuk tanah untuk jalan, ketuk tokoh untuk ngobrol</span>
             </p>
           )}
         </div>

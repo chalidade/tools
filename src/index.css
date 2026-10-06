@@ -278,3 +278,18 @@
     animation: none;
   }
 }
+
+/* Tool characters breathe while they wait. */
+.pg-idle .pg-body {
+  animation: pg-breathe 2.6s ease-in-out infinite;
+}
+@keyframes pg-breathe {
+  50% {
+    transform: scaleY(0.96) scaleX(1.02);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pg-idle .pg-body {
+    animation: none;
+  }
+}

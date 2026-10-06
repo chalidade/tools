@@ -47,8 +47,11 @@ picture; the rules that matter when editing:
   path routing; it 404s on reload under the Pages sub-path.
 - The home page opens with a walkable world (`src/components/Playground.tsx`,
   world/physics in `src/components/playground/layout.ts`, sprites in
-  `Sprites.tsx`): one district per category, one stall per tool, all laid out
-  from the registry — a new tool appears there automatically. The loop moves
+  `Sprites.tsx`): one district per category, one talking character per tool, all
+  laid out from the registry — a new tool appears there automatically. What a
+  tool's character says lives in `src/components/playground/dialog.ts` (add
+  lines for a new tool there; without them it introduces itself from its
+  registry description). The loop moves
   sprites by mutating `style.transform` on refs (never React state per frame);
   `.pg-*` animations live in `src/index.css`. The world is `aria-hidden`; the
   ToolGrid below stays the accessible way in. Visited stamps persist in
