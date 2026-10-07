@@ -3,6 +3,7 @@
 // microphone. Recordings are kept in IndexedDB on this device.
 
 import { convertMedia, ensureAudioEncoder, NoEncoderError } from '@/lib/media'
+import { tr } from '@/lib/i18n'
 import { localStore, timestampName } from '@/lib/local-store'
 
 export interface ScreenRecording {
@@ -217,7 +218,7 @@ const store = localStore<ScreenRecording>('tools-screen-recorder')
 export const listScreenRecordings = store.list
 export const saveScreenRecording = store.save
 export const deleteScreenRecording = store.remove
-export const defaultScreenName = () => timestampName('Rekaman layar')
+export const defaultScreenName = () => timestampName(tr('Rekaman layar', 'Screen recording'))
 
 /** Re-encodes a recording to MP4 (H.264 when the browser can, AAC audio) — the format every player and app accepts. */
 export async function toMp4(

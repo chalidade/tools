@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import { Delete, History, Trash2 } from 'lucide-react'
+import { useLang, useT } from '@/lib/i18n'
 import { cn } from '@/lib/utils'
 import { CopyButton } from '@/components/tool/CopyButton'
 import { Segmented } from '@/components/tool/Segmented'
-import { CalcError, evaluate, formatNumber, plainNumber, type AngleMode } from './engine'
+import { CalcError, decimalPoint, evaluate, formatNumber, plainNumber, type AngleMode } from './engine'
 
 type Mode = 'basic' | 'scientific'
 interface Entry {
@@ -29,12 +30,18 @@ interface Key {
   insert?: string
   action?: 'clear' | 'back' | 'equals' | 'paren' | 'negate'
   kind?: 'digit' | 'op' | 'fn' | 'accent'
-  title?: string
+  /** Tooltip as [Indonesian, English]. */
+  title?: readonly [string, string]
 }
 
 const BASIC: Key[] = [
-  { label: 'AC', action: 'clear', kind: 'fn', title: 'Hapus semua (Esc)' },
-  { label: <Delete className="size-5" />, action: 'back', kind: 'fn', title: 'Hapus satu (Backspace)' },
+  { label: 'AC', action: 'clear', kind: 'fn', title: ['Hapus semua (Esc)', 'Clear all (Esc)'] },
+  {
+    label: <Delete className="size-5" />,
+    action: 'back',
+    kind: 'fn',
+    title: ['Hapus satu (Backspace)', 'Delete one (Backspace)'],
+  },
   { label: '%', insert: '%', kind: 'fn' },
   { label: '÷', insert: '÷', kind: 'op' },
   { label: '7', insert: '7', kind: 'digit' },
@@ -49,10 +56,11 @@ const BASIC: Key[] = [
   { label: '2', insert: '2', kind: 'digit' },
   { label: '3', insert: '3', kind: 'digit' },
   { label: '+', insert: '+', kind: 'op' },
-  { label: '( )', action: 'paren', kind: 'fn', title: 'Kurung buka / tutup' },
+  { label: '( )', action: 'paren', kind: 'fn', title: ['Kurung buka / tutup', 'Open / close bracket'] },
   { label: '0', insert: '0', kind: 'digit' },
-  { label: ',', insert: ',', kind: 'digit', title: 'Koma desimal' },
-  { label: '=', action: 'equals', kind: 'accent', title: 'Hitung (Enter)' },
+  // Label and insert follow the language's decimal point at render time.
+  { label: ',', insert: ',', kind: 'digit', title: ['Koma desimal', 'Decimal point'] },
+  { label: '=', action: 'equals', kind: 'accent', title: ['Hitung (Enter)', 'Calculate (Enter)'] },
 ]
 
 const SCIENTIFIC: Key[] = [
@@ -73,12 +81,14 @@ const SCIENTIFIC: Key[] = [
   { label: 'x!', insert: '!' },
   { label: '1/x', insert: '^(−1)' },
   { label: '|x|', insert: 'abs(' },
-  { label: '±', action: 'negate', title: 'Ganti tanda' },
-  { label: 'Ans', insert: 'Ans', title: 'Hasil terakhir' },
-  { label: 'EE', insert: '×10^', title: '×10 pangkat' },
+  { label: '±', action: 'negate', title: ['Ganti tanda', 'Change sign'] },
+  { label: 'Ans', insert: 'Ans', title: ['Hasil terakhir', 'Last result'] },
+  { label: 'EE', insert: '×10^', title: ['×10 pangkat', '×10 to the power'] },
 ]
 
 export default function Calculator() {
+  const t = useT()
+  const lang = useLang()
   const [expr, setExpr] = useState('')
   const [mode, setMode] = useState<Mode>('basic')
   const [angle, setAngle] = useState<AngleMode>('deg')
@@ -115,7 +125,7 @@ export default function Calculator() {
     let start = el?.selectionStart ?? base.length
     let end = el?.selectionEnd ?? base.length
     if (shown && expr === shown.expr) {
-      base = /^[\d,(π√∛a-z]/i.test(text) ? '' : plainNumber(shown.result)
+      base = /^[\d.,(π√∛a-z]/i.test(text) ? '' : plainNumber(shown.result)
       start = end = base.length
     }
     const next = base.slice(0, start) + text + base.slice(end)
@@ -137,7 +147,7 @@ export default function Calculator() {
       setShown({ expr, result })
       setError('')
     } catch (e) {
-      setError(e instanceof CalcError ? e.message : 'Ekspresi tidak valid')
+      setError(e instanceof CalcError ? e.message : t('Ekspresi tidak valid', 'Invalid expression'))
     }
   }
 
@@ -179,6 +189,10 @@ export default function Calculator() {
     }
   }
 
+  // The decimal key shows and types the language's decimal point.
+  const dec = lang === 'en' ? '.' : ','
+  const basic = BASIC.map((k) => (k.insert === ',' ? { ...k, label: dec, insert: dec } : k))
+
   const resultText = shown ? formatNumber(shown.result) : preview !== null ? formatNumber(preview) : ''
 
   return (
@@ -189,7 +203,7 @@ export default function Calculator() {
           <div className="rounded-2xl bg-muted/60 px-4 pt-3 pb-4">
             <div className="flex items-center justify-between text-xs text-muted-foreground">
               <span className="font-mono">{mode === 'scientific' ? angle.toUpperCase() : ' '}</span>
-              {resultText && <CopyButton text={plainNumber(shown?.result ?? preview ?? 0)} label="Salin hasil" />}
+              {resultText && <CopyButton text={plainNumber(shown?.result ?? preview ?? 0)} label={t('Salin hasil', 'Copy result')} />}
             </div>
             <input
               ref={inputRef}
@@ -197,7 +211,7 @@ export default function Calculator() {
               autoFocus
               inputMode="decimal"
               spellCheck={false}
-              aria-label="Ekspresi"
+              aria-label={t('Ekspresi', 'Expression')}
               placeholder="0"
               onChange={(e) => {
                 // Pasted or typed * and / show as × and ÷, like the keys.
@@ -224,7 +238,7 @@ export default function Calculator() {
                 } else if (shown && expr === shown.expr && e.key.length === 1 && !e.ctrlKey && !e.metaKey) {
                   // Typing after "=": route through insert() so it continues or starts fresh.
                   e.preventDefault()
-                  insert(e.key === '.' ? ',' : e.key)
+                  insert(e.key === '.' || e.key === ',' ? decimalPoint() : e.key)
                 }
               }}
               className={cn(
@@ -249,18 +263,18 @@ export default function Calculator() {
               label="Mode"
               value={mode}
               options={[
-                { value: 'basic', label: 'Biasa' },
-                { value: 'scientific', label: 'Ilmiah' },
+                { value: 'basic', label: t('Biasa', 'Basic') },
+                { value: 'scientific', label: t('Ilmiah', 'Scientific') },
               ]}
               onChange={setMode}
             />
             {mode === 'scientific' && (
               <Segmented
-                label="Sudut"
+                label={t('Sudut', 'Angle')}
                 value={angle}
                 options={[
-                  { value: 'deg', label: 'Derajat' },
-                  { value: 'rad', label: 'Radian' },
+                  { value: 'deg', label: t('Derajat', 'Degrees') },
+                  { value: 'rad', label: t('Radian', 'Radians') },
                 ]}
                 onChange={setAngle}
               />
@@ -275,14 +289,16 @@ export default function Calculator() {
             </div>
           )}
           <div className="mt-4 grid grid-cols-4 gap-2">
-            {BASIC.map((k, i) => (
+            {basic.map((k, i) => (
               <Pad key={i} k={k} onPress={press} />
             ))}
           </div>
         </div>
         <p className="mt-3 text-center text-xs text-muted-foreground">
-          Bisa diketik langsung: angka, + − × ÷ ^ ( ) % !, Enter untuk menghitung, Esc untuk menghapus. Koma atau titik
-          sama-sama desimal. 200 + 10% = 220.
+          {t(
+            'Bisa diketik langsung: angka, + − × ÷ ^ ( ) % !, Enter untuk menghitung, Esc untuk menghapus. Koma atau titik sama-sama desimal. 200 + 10% = 220.',
+            'Type directly: digits, + − × ÷ ^ ( ) % !, Enter to calculate, Esc to clear. 200 + 10% = 220.',
+          )}
         </p>
       </div>
 
@@ -290,7 +306,7 @@ export default function Calculator() {
       <aside className="rounded-3xl border bg-card p-4 shadow-xs">
         <div className="flex items-center justify-between">
           <h2 className="flex items-center gap-2 text-sm font-semibold">
-            <History className="size-4" /> Riwayat
+            <History className="size-4" /> {t('Riwayat', 'History')}
           </h2>
           {history.length > 0 && (
             <button
@@ -298,12 +314,14 @@ export default function Calculator() {
               onClick={() => setHistory([])}
               className="flex items-center gap-1 rounded-md px-2 py-1 text-xs text-muted-foreground hover:bg-accent hover:text-foreground"
             >
-              <Trash2 className="size-3.5" /> Bersihkan
+              <Trash2 className="size-3.5" /> {t('Bersihkan', 'Clear')}
             </button>
           )}
         </div>
         {history.length === 0 ? (
-          <p className="mt-4 text-sm text-muted-foreground">Hasil hitungan muncul di sini. Klik untuk memakainya lagi.</p>
+          <p className="mt-4 text-sm text-muted-foreground">
+            {t('Hasil hitungan muncul di sini. Klik untuk memakainya lagi.', 'Your results show up here. Click one to use it again.')}
+          </p>
         ) : (
           <ul className="mt-3 max-h-[28rem] space-y-1 overflow-y-auto">
             {history.map((h, i) => (
@@ -316,7 +334,7 @@ export default function Calculator() {
                     setError('')
                     inputRef.current?.focus()
                   }}
-                  title="Pakai lagi ekspresi ini"
+                  title={t('Pakai lagi ekspresi ini', 'Use this expression again')}
                   className="w-full rounded-xl px-3 py-2 text-right transition-colors hover:bg-accent"
                 >
                   <span className="block truncate font-mono text-xs text-muted-foreground">{h.expr}</span>
@@ -334,10 +352,11 @@ export default function Calculator() {
 }
 
 function Pad({ k, onPress, small }: { k: Key; onPress: (k: Key) => void; small?: boolean }) {
+  const t = useT()
   return (
     <button
       type="button"
-      title={k.title}
+      title={k.title && t(...k.title)}
       // Keep focus in the input so the cursor position survives a tap.
       onMouseDown={(e) => e.preventDefault()}
       onClick={() => onPress(k)}

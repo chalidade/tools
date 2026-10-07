@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button'
 import { ErrorNote } from '@/components/tool/ErrorNote'
 import { FileDrop } from '@/components/tool/FileDrop'
 import { downloadBlob, withExtension } from '@/lib/download'
+import { tr, useT } from '@/lib/i18n'
 import { cn } from '@/lib/utils'
 import { buildDocx, convertPdf, LockedPdfError, ScannedPdfError, type PdfConversion } from './convert'
 
@@ -18,18 +19,26 @@ const PREVIEW_LIMIT = 60
 
 function errorMessage(e: unknown) {
   if (e instanceof ScannedPdfError)
-    return 'PDF ini tidak berisi teks. Biasanya karena hasil scan atau foto, dan butuh OCR yang belum didukung tool ini.'
-  if (e instanceof LockedPdfError) return 'PDF ini dikunci password. Buka kuncinya dulu, lalu coba lagi.'
-  return 'PDF tidak bisa dibaca. Pastikan filenya tidak rusak.'
+    return tr(
+      'PDF ini tidak berisi teks. Biasanya karena hasil scan atau foto, dan butuh OCR yang belum didukung tool ini.',
+      "This PDF has no text. It's usually a scan or photo, which needs OCR — not supported by this tool yet.",
+    )
+  if (e instanceof LockedPdfError)
+    return tr(
+      'PDF ini dikunci password. Buka kuncinya dulu, lalu coba lagi.',
+      'This PDF is password-protected. Unlock it first, then try again.',
+    )
+  return tr('PDF tidak bisa dibaca. Pastikan filenya tidak rusak.', "The PDF couldn't be read. Make sure the file isn't damaged.")
 }
 
 export default function PdfToWord() {
+  const t = useT()
   const [status, setStatus] = useState<Status>({ kind: 'idle' })
   const [file, setFile] = useState<File | null>(null)
 
   async function open(next: File) {
     if (!/\.pdf$/i.test(next.name) && next.type !== 'application/pdf') {
-      setStatus({ kind: 'error', message: 'Pilih file berformat .pdf.' })
+      setStatus({ kind: 'error', message: t('Pilih file berformat .pdf.', 'Choose a file in .pdf format.') })
       return
     }
     setFile(next)
@@ -58,37 +67,43 @@ export default function PdfToWord() {
           <div className="min-w-0">
             <p className="truncate font-medium">{file.name}</p>
             <p className="text-sm text-muted-foreground">
-              {result.pages} halaman · {result.paragraphs.length} paragraf
+              {t(
+                `${result.pages} halaman · ${result.paragraphs.length} paragraf`,
+                `${result.pages} pages · ${result.paragraphs.length} paragraphs`,
+              )}
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
             <Button onClick={() => downloadBlob(docx, withExtension(file.name, '.docx'))}>
               <Download />
-              Unduh Word
+              {t('Unduh Word', 'Download Word')}
             </Button>
             <Button variant="ghost" onClick={reset}>
               <RotateCcw />
-              File lain
+              {t('File lain', 'Another file')}
             </Button>
           </div>
         </div>
 
         <p className="text-xs text-muted-foreground">
-          Teks, ukuran huruf, tebal/miring, dan pemisah halaman ikut terbawa dan bisa diedit di Word.
-          Gambar, garis tabel, dan posisi yang persis tidak ikut. Periksa hasilnya sebelum dipakai.
+          {t(
+            'Teks, ukuran huruf, tebal/miring, dan pemisah halaman ikut terbawa dan bisa diedit di Word. Gambar, garis tabel, dan posisi yang persis tidak ikut. Periksa hasilnya sebelum dipakai.',
+            "Text, font sizes, bold/italic and page breaks carry over and can be edited in Word. Images, table borders and exact positioning don't. Check the result before using it.",
+          )}
         </p>
 
         <div className="overflow-hidden rounded-2xl border">
           <div className="border-b bg-muted px-4 py-2 text-xs text-muted-foreground">
-            Pratinjau teks
-            {result.paragraphs.length > PREVIEW_LIMIT && ` (${PREVIEW_LIMIT} paragraf pertama)`}
+            {t('Pratinjau teks', 'Text preview')}
+            {result.paragraphs.length > PREVIEW_LIMIT &&
+              t(` (${PREVIEW_LIMIT} paragraf pertama)`, ` (first ${PREVIEW_LIMIT} paragraphs)`)}
           </div>
           <div className="max-h-[32rem] space-y-3 overflow-auto bg-card p-6 text-sm">
             {shown.map((p, i) => (
               <div key={i}>
                 {p.pageBreakBefore && (
                   <div className="my-4 border-t border-dashed pt-1 text-center text-[10px] tracking-wide text-muted-foreground uppercase">
-                    halaman baru
+                    {t('halaman baru', 'new page')}
                   </div>
                 )}
                 <p
@@ -118,12 +133,12 @@ export default function PdfToWord() {
     <div className="space-y-6">
       <FileDrop
         accept=".pdf,application/pdf"
-        label="Tarik file .pdf ke sini"
+        label={t('Tarik file .pdf ke sini', 'Drag a .pdf file here')}
         busyLabel={
           status.kind === 'reading'
             ? status.total
-              ? `Membaca halaman ${status.done}/${status.total}…`
-              : `Membuka ${file?.name}…`
+              ? t(`Membaca halaman ${status.done}/${status.total}…`, `Reading page ${status.done}/${status.total}…`)
+              : t(`Membuka ${file?.name}…`, `Opening ${file?.name}…`)
             : undefined
         }
         onFiles={([f]) => void open(f)}

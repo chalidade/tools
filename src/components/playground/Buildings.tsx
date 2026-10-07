@@ -1,7 +1,8 @@
 import type { ReactNode } from 'react'
 import { Braces, Briefcase, Clapperboard, FileInput, FileLock, FileOutput, Home, type LucideIcon } from 'lucide-react'
 import type { CategoryId } from '@/tools/registry'
-import type { BuildingStyle, House } from './scenes'
+import { placeName, type BuildingStyle, type House } from './scenes'
+import { useLang } from '@/lib/i18n'
 
 export const CATEGORY_ICONS: Record<CategoryId, LucideIcon> = {
   'to-pdf': FileInput,
@@ -340,6 +341,7 @@ const ART: Record<BuildingStyle, (w: number, h: number, accent: string) => Art> 
 
 /** A category's building in town. Its door is where the player walks in. */
 export function Building({ house, near, onClick }: { house: House; near: boolean; onClick: () => void }) {
+  const lang = useLang()
   const { rect, accent } = house
   const art = ART[house.style](rect.w, rect.h, accent)
   const Icon = CATEGORY_ICONS[house.id] ?? Home
@@ -368,7 +370,7 @@ export function Building({ house, near, onClick }: { house: House; near: boolean
         className={`absolute left-1/2 -translate-x-1/2 rounded-md border px-2 py-0.5 font-bold whitespace-nowrap uppercase shadow-sm ${art.nameClass ?? ''}`}
         style={{ top: art.name, borderColor: art.nameClass?.includes('border-2') ? accent : undefined }}
       >
-        {house.place}
+        {placeName(house.style, lang)}
       </span>
       {near && (
         <span className="pg-hop absolute left-1/2 grid h-7 min-w-7 -translate-x-1/2 place-items-center rounded-md border border-b-[3px] bg-card px-1.5 font-mono text-xs font-semibold shadow-md" style={{ bottom: 96 }}>

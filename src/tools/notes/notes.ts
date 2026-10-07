@@ -4,6 +4,7 @@
 
 import DOMPurify from 'dompurify'
 import { marked } from 'marked'
+import { tr } from '@/lib/i18n'
 import { localStore } from '@/lib/local-store'
 
 export interface Note {
@@ -17,13 +18,14 @@ export interface Note {
 }
 
 export type NoteColor = 'none' | 'yellow' | 'green' | 'blue' | 'pink' | 'purple'
-export const NOTE_COLORS: { id: NoteColor; label: string; swatch: string }[] = [
-  { id: 'none', label: 'Tanpa warna', swatch: 'transparent' },
-  { id: 'yellow', label: 'Kuning', swatch: '#facc15' },
-  { id: 'green', label: 'Hijau', swatch: '#22c55e' },
-  { id: 'blue', label: 'Biru', swatch: '#3b82f6' },
-  { id: 'pink', label: 'Merah muda', swatch: '#ec4899' },
-  { id: 'purple', label: 'Ungu', swatch: '#a855f7' },
+/** label is [Indonesian, English]; render it with t(...label). */
+export const NOTE_COLORS: { id: NoteColor; label: readonly [string, string]; swatch: string }[] = [
+  { id: 'none', label: ['Tanpa warna', 'No color'], swatch: 'transparent' },
+  { id: 'yellow', label: ['Kuning', 'Yellow'], swatch: '#facc15' },
+  { id: 'green', label: ['Hijau', 'Green'], swatch: '#22c55e' },
+  { id: 'blue', label: ['Biru', 'Blue'], swatch: '#3b82f6' },
+  { id: 'pink', label: ['Merah muda', 'Pink'], swatch: '#ec4899' },
+  { id: 'purple', label: ['Ungu', 'Purple'], swatch: '#a855f7' },
 ]
 
 const store = localStore<Note>('tools-notes')
@@ -35,7 +37,8 @@ export const deleteNote = store.remove
 export function displayTitle(n: Note) {
   if (n.title.trim()) return n.title.trim()
   const line = n.body.split('\n').find((l) => l.trim())
-  return line ? line.replace(/^\s*(#+|[-*+]|\d+[.)]|>)\s*(\[[ xX]\]\s*)?/, '').trim() || 'Tanpa judul' : 'Tanpa judul'
+  const untitled = tr('Tanpa judul', 'Untitled')
+  return line ? line.replace(/^\s*(#+|[-*+]|\d+[.)]|>)\s*(\[[ xX]\]\s*)?/, '').trim() || untitled : untitled
 }
 
 /** A short plain-text preview for the list. */
@@ -146,7 +149,12 @@ export function isNoteList(value: unknown): value is Note[] {
   )
 }
 
-export const WELCOME_BODY = `Catatan tersimpan otomatis di browser ini — tidak dikirim ke mana pun.
+/** The note a first visit starts with, in the language of that moment. */
+export function welcomeNote() {
+  return {
+    title: tr('Selamat datang di Catatan', 'Welcome to Notes'),
+    body: tr(
+      `Catatan tersimpan otomatis di browser ini — tidak dikirim ke mana pun.
 
 ## Bisa pakai Markdown
 **Tebal**, _miring_, \`kode\`, dan [tautan](https://chalidade.github.io/tools/).
@@ -155,4 +163,17 @@ export const WELCOME_BODY = `Catatan tersimpan otomatis di browser ini — tidak
 - [ ] Centang kotak ini di tampilan Pratinjau
 - [ ] Coba tekan Enter di ujung daftar — butirnya berlanjut sendiri
 
-> Tips: Ctrl+B tebal, Ctrl+I miring, Ctrl+K tautan.`
+> Tips: Ctrl+B tebal, Ctrl+I miring, Ctrl+K tautan.`,
+      `Notes are saved automatically in this browser — never sent anywhere.
+
+## Markdown works
+**Bold**, _italic_, \`code\`, and [links](https://chalidade.github.io/tools/).
+
+- [x] Open the Notes tool
+- [ ] Tick this box in the Preview view
+- [ ] Try pressing Enter at the end of a list — the next item starts by itself
+
+> Tips: Ctrl+B bold, Ctrl+I italic, Ctrl+K link.`,
+    ),
+  }
+}

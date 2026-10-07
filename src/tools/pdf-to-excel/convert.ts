@@ -6,6 +6,7 @@
 // lines are just drawings). Rows come from shared baselines; columns come
 // from the vertical gutters that stay empty down a run of rows.
 
+import { tr } from '@/lib/i18n'
 import { readPdfText, segmentLine as splitLine, type PageText, type TextLine, type TextSegment } from '@/lib/pdf-text'
 
 export type { PageText } from '@/lib/pdf-text'
@@ -274,7 +275,7 @@ export function assemble(pages: PageText[], opts: AssembleOptions): PdfTables {
 
   let sheets: OutSheet[]
   if (opts.mode === 'per-page') {
-    sheets = perPage.map((rows, i) => ({ name: `Halaman ${i + 1}`, rows, columns: 0 }))
+    sheets = perPage.map((rows, i) => ({ name: tr(`Halaman ${i + 1}`, `Page ${i + 1}`), rows, columns: 0 }))
   } else {
     // One sheet; a table header repeated at the top of every page is kept once.
     const firstHeader = perPage.flat().find((r) => r.table)

@@ -7,6 +7,7 @@
 // page's CSS can't break it and its CSS can't leak out.
 
 import { createRoot, type Root } from 'react-dom/client'
+import { setLang } from '@/lib/i18n'
 import ScreenRecorder from '@/tools/screen-recorder/ScreenRecorder'
 import type { RecordingResult } from '@/tools/screen-recorder/screen'
 import css from './element.css?inline'
@@ -30,7 +31,7 @@ function hoistProperties() {
 type Theme = 'light' | 'dark' | 'auto'
 
 export class ScreenRecorderElement extends HTMLElement {
-  static observedAttributes = ['theme', 'persist', 'title-indicator']
+  static observedAttributes = ['theme', 'persist', 'title-indicator', 'lang']
 
   #root: Root | null = null
   #frame: HTMLDivElement | null = null
@@ -79,6 +80,9 @@ export class ScreenRecorderElement extends HTMLElement {
   #render() {
     if (!this.#root) return
     this.#paint()
+    // lang="en" / "id" picks the UI language; without it, the visitor's browser language decides.
+    const lang = this.getAttribute('lang')
+    if (lang === 'en' || lang === 'id') setLang(lang, { page: false })
     this.#root.render(
       <ScreenRecorder
         persist={this.getAttribute('persist') !== 'false'}

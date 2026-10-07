@@ -5,30 +5,32 @@ import { CopyButton } from '@/components/tool/CopyButton'
 import { ErrorNote } from '@/components/tool/ErrorNote'
 import { Segmented } from '@/components/tool/Segmented'
 import { downloadBlob } from '@/lib/download'
+import { tr, useT } from '@/lib/i18n'
 import { decodeImage, type DecodedImage } from '@/lib/image'
 import { buildFaviconZip, drawIcon, HTML_SNIPPET, type FaviconOptions, type Fit, type Shape } from './favicon'
 
 type Source = 'image' | 'text'
-const SOURCE_OPTIONS: { value: Source; label: string }[] = [
-  { value: 'text', label: 'Teks / emoji' },
-  { value: 'image', label: 'Gambar / logo' },
-]
-const SHAPE_OPTIONS: { value: Shape; label: string }[] = [
-  { value: 'square', label: 'Persegi' },
-  { value: 'rounded', label: 'Membulat' },
-  { value: 'circle', label: 'Lingkaran' },
-]
-const FIT_OPTIONS: { value: Fit; label: string }[] = [
-  { value: 'contain', label: 'Utuh' },
-  { value: 'cover', label: 'Penuh' },
-]
-const PADDING_OPTIONS: { value: number; label: string }[] = [
-  { value: 0, label: 'Tanpa' },
-  { value: 0.08, label: 'Kecil' },
-  { value: 0.16, label: 'Sedang' },
-]
 
 export default function FaviconGenerator() {
+  const t = useT()
+  const SOURCE_OPTIONS: { value: Source; label: string }[] = [
+    { value: 'text', label: t('Teks / emoji', 'Text / emoji') },
+    { value: 'image', label: t('Gambar / logo', 'Image / logo') },
+  ]
+  const SHAPE_OPTIONS: { value: Shape; label: string }[] = [
+    { value: 'square', label: t('Persegi', 'Square') },
+    { value: 'rounded', label: t('Membulat', 'Rounded') },
+    { value: 'circle', label: t('Lingkaran', 'Circle') },
+  ]
+  const FIT_OPTIONS: { value: Fit; label: string }[] = [
+    { value: 'contain', label: t('Utuh', 'Fit') },
+    { value: 'cover', label: t('Penuh', 'Fill') },
+  ]
+  const PADDING_OPTIONS: { value: number; label: string }[] = [
+    { value: 0, label: t('Tanpa', 'None') },
+    { value: 0.08, label: t('Kecil', 'Small') },
+    { value: 0.16, label: t('Sedang', 'Medium') },
+  ]
   const [source, setSource] = useState<Source>('text')
   const [image, setImage] = useState<DecodedImage | null>(null)
   const [imageName, setImageName] = useState('')
@@ -39,7 +41,7 @@ export default function FaviconGenerator() {
   const [shape, setShape] = useState<Shape>('rounded')
   const [fit, setFit] = useState<Fit>('contain')
   const [padding, setPadding] = useState(0.08)
-  const [appName, setAppName] = useState('Situs Saya')
+  const [appName, setAppName] = useState(() => tr('Situs Saya', 'My Site'))
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const pickRef = useRef<HTMLInputElement>(null)
@@ -76,7 +78,7 @@ export default function FaviconGenerator() {
       setImageName(file.name)
       setSource('image')
     } catch {
-      setError('Gambar tidak bisa dibaca. Pakai PNG, JPG, WebP, atau SVG.')
+      setError(t('Gambar tidak bisa dibaca. Pakai PNG, JPG, WebP, atau SVG.', "Couldn't read the image. Use PNG, JPG, WebP, or SVG."))
     }
   }
 
@@ -84,10 +86,10 @@ export default function FaviconGenerator() {
     setSaving(true)
     setError(null)
     try {
-      const blob = await buildFaviconZip(opts, appName.trim() || 'Situs Saya', solid)
+      const blob = await buildFaviconZip(opts, appName.trim() || t('Situs Saya', 'My Site'), solid)
       downloadBlob(blob, 'favicon.zip')
     } catch {
-      setError('Gagal membuat favicon.')
+      setError(t('Gagal membuat favicon.', "Couldn't create the favicon."))
     } finally {
       setSaving(false)
     }
@@ -97,12 +99,14 @@ export default function FaviconGenerator() {
     <div className="space-y-6">
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
         <div className="space-y-5 rounded-2xl border bg-card p-5">
-          <Segmented label="Sumber" value={source} options={SOURCE_OPTIONS} onChange={setSource} />
+          <Segmented label={t('Sumber', 'Source')} value={source} options={SOURCE_OPTIONS} onChange={setSource} />
 
           {source === 'text' ? (
             <div className="flex flex-wrap items-end gap-3">
               <label className="block min-w-40 flex-1 space-y-2">
-                <span className="text-xs font-medium text-muted-foreground">Huruf atau emoji (1–3 karakter)</span>
+                <span className="text-xs font-medium text-muted-foreground">
+                  {t('Huruf atau emoji (1–3 karakter)', 'Letter or emoji (1–3 characters)')}
+                </span>
                 <input
                   value={text}
                   onChange={(e) => setText(e.target.value)}
@@ -111,20 +115,22 @@ export default function FaviconGenerator() {
                   className="h-11 w-full rounded-xl border bg-background px-3 text-lg outline-none focus:border-brand-2/60"
                 />
               </label>
-              <ColorField label="Warna teks" value={textColor} onChange={setTextColor} />
+              <ColorField label={t('Warna teks', 'Text color')} value={textColor} onChange={setTextColor} />
             </div>
           ) : (
             <div className="space-y-2">
-              <p className="text-xs font-medium text-muted-foreground">Gambar (persegi, minimal 512 px paling bagus)</p>
+              <p className="text-xs font-medium text-muted-foreground">
+                {t('Gambar (persegi, minimal 512 px paling bagus)', 'Image (square, 512 px or larger works best)')}
+              </p>
               <div className="flex items-center gap-2">
                 <Button variant="outline" onClick={() => pickRef.current?.click()}>
                   <ImagePlus />
-                  {image ? 'Ganti gambar' : 'Pilih gambar'}
+                  {image ? t('Ganti gambar', 'Change image') : t('Pilih gambar', 'Choose image')}
                 </Button>
                 {image && (
                   <span className="flex min-w-0 items-center gap-1 text-sm text-muted-foreground">
                     <span className="truncate">{imageName}</span>
-                    <button type="button" aria-label="Hapus gambar" onClick={() => setImage(null)} className="hover:text-foreground">
+                    <button type="button" aria-label={t('Hapus gambar', 'Remove image')} onClick={() => setImage(null)} className="hover:text-foreground">
                       <X className="size-4" />
                     </button>
                   </span>
@@ -141,20 +147,20 @@ export default function FaviconGenerator() {
                   if (f) void pick(f)
                 }}
               />
-              {image && <Segmented label="Penempatan" value={fit} options={FIT_OPTIONS} onChange={setFit} />}
+              {image && <Segmented label={t('Penempatan', 'Placement')} value={fit} options={FIT_OPTIONS} onChange={setFit} />}
             </div>
           )}
 
           <div className="flex flex-wrap items-end gap-x-6 gap-y-4">
             <div className="space-y-2">
-              <p className="text-xs font-medium text-muted-foreground">Latar</p>
+              <p className="text-xs font-medium text-muted-foreground">{t('Latar', 'Background')}</p>
               <div className="flex items-center gap-3">
                 <input
                   type="color"
                   value={background}
                   disabled={transparent}
                   onChange={(e) => setBackground(e.target.value)}
-                  aria-label="Warna latar"
+                  aria-label={t('Warna latar', 'Background color')}
                   className="h-10 w-14 cursor-pointer rounded-lg border bg-background p-1 disabled:opacity-40"
                 />
                 <label className="flex items-center gap-2 text-sm">
@@ -164,16 +170,18 @@ export default function FaviconGenerator() {
                     onChange={(e) => setTransparent(e.target.checked)}
                     className="size-4 accent-[var(--brand-2)]"
                   />
-                  Transparan
+                  {t('Transparan', 'Transparent')}
                 </label>
               </div>
             </div>
-            <Segmented label="Bentuk" value={shape} options={SHAPE_OPTIONS} onChange={setShape} />
-            <Segmented label="Jarak tepi" value={padding} options={PADDING_OPTIONS} onChange={setPadding} />
+            <Segmented label={t('Bentuk', 'Shape')} value={shape} options={SHAPE_OPTIONS} onChange={setShape} />
+            <Segmented label={t('Jarak tepi', 'Padding')} value={padding} options={PADDING_OPTIONS} onChange={setPadding} />
           </div>
 
           <label className="block space-y-2">
-            <span className="text-xs font-medium text-muted-foreground">Nama situs (untuk site.webmanifest)</span>
+            <span className="text-xs font-medium text-muted-foreground">
+              {t('Nama situs (untuk site.webmanifest)', 'Site name (for site.webmanifest)')}
+            </span>
             <input
               value={appName}
               onChange={(e) => setAppName(e.target.value)}
@@ -184,7 +192,7 @@ export default function FaviconGenerator() {
 
         <div className="space-y-4">
           <div className="rounded-2xl border bg-card p-5">
-            <p className="text-xs font-medium text-muted-foreground">Pratinjau</p>
+            <p className="text-xs font-medium text-muted-foreground">{t('Pratinjau', 'Preview')}</p>
             {previews ? (
               <div className="mt-4 space-y-6">
                 {/* Browser tab mock-up at real size. */}
@@ -192,11 +200,11 @@ export default function FaviconGenerator() {
                   <div className="flex items-end gap-1 px-2 pt-2">
                     <div className="flex w-56 items-center gap-2 rounded-t-lg bg-background px-3 py-2 text-xs">
                       <img src={previews[16]} alt="" width={16} height={16} />
-                      <span className="truncate">{appName || 'Situs Saya'}</span>
+                      <span className="truncate">{appName || t('Situs Saya', 'My Site')}</span>
                     </div>
                     <div className="flex w-40 items-center gap-2 px-3 py-2 text-xs text-muted-foreground">
                       <span className="size-4 rounded-full bg-muted-foreground/30" />
-                      Tab lain
+                      {t('Tab lain', 'Other tab')}
                     </div>
                   </div>
                   <div className="h-6 bg-background" />
@@ -221,25 +229,34 @@ export default function FaviconGenerator() {
               </div>
             ) : (
               <p className="mt-4 text-sm text-muted-foreground">
-                {source === 'image' ? 'Pilih gambar untuk melihat pratinjau.' : 'Tulis satu huruf atau emoji.'}
+                {source === 'image'
+                  ? t('Pilih gambar untuk melihat pratinjau.', 'Choose an image to see a preview.')
+                  : t('Tulis satu huruf atau emoji.', 'Type a letter or an emoji.')}
               </p>
             )}
           </div>
 
           <Button size="lg" onClick={() => void save()} disabled={!ready || saving}>
             {saving ? <Loader2 className="animate-spin" /> : <Download />}
-            Unduh favicon (.zip)
+            {t('Unduh favicon (.zip)', 'Download favicon (.zip)')}
           </Button>
           <p className="text-xs text-muted-foreground">
-            Isi: favicon.ico (16/32/48), PNG 16 &amp; 32, apple-touch-icon 180, android-chrome 192 &amp; 512, dan
-            site.webmanifest.
+            {t(
+              'Isi: favicon.ico (16/32/48), PNG 16 & 32, apple-touch-icon 180, android-chrome 192 & 512, dan site.webmanifest.',
+              'Contains: favicon.ico (16/32/48), PNG 16 & 32, apple-touch-icon 180, android-chrome 192 & 512, and site.webmanifest.',
+            )}
           </p>
         </div>
       </div>
 
       <div className="overflow-hidden rounded-2xl border bg-card">
         <div className="flex items-center justify-between border-b px-4 py-1.5 text-xs text-muted-foreground">
-          <span>Taruh file di folder root situs, lalu tempel ini di &lt;head&gt;</span>
+          <span>
+            {t(
+              'Taruh file di folder root situs, lalu tempel ini di <head>',
+              "Put the files in your site's root folder, then paste this into <head>",
+            )}
+          </span>
           <CopyButton text={HTML_SNIPPET} />
         </div>
         <pre className="overflow-x-auto p-4 font-mono text-[13px] leading-5">{HTML_SNIPPET}</pre>

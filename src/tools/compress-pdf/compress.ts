@@ -8,6 +8,7 @@
 //
 // Other image kinds (PNG-style Flate images, CMYK JPEGs) are left as they are.
 
+import { tr } from '@/lib/i18n'
 import { runQpdf } from '@/lib/qpdf'
 
 export type Level = 'light' | 'medium' | 'strong'
@@ -86,7 +87,7 @@ export async function compressPdf(
 ): Promise<CompressResult> {
   const { maxSide, quality } = LEVELS[level]
 
-  onProgress('Membaca struktur PDF…')
+  onProgress(tr('Membaca struktur PDF…', 'Reading the PDF structure…'))
   const dump = await runQpdf(input, (i, o) => [i, '--json-output=2', '--json-stream-data=inline', '--decode-level=none', o])
   if (dump.code === 2 || !dump.output) throw new Error('read')
   const json = JSON.parse(new TextDecoder().decode(dump.output)) as { qpdf: [unknown, Record<string, JsonObject>] }
@@ -102,7 +103,7 @@ export async function compressPdf(
 
   let shrunk = 0
   for (const [i, obj] of candidates.entries()) {
-    onProgress(`Mengecilkan gambar ${i + 1}/${candidates.length}…`)
+    onProgress(tr(`Mengecilkan gambar ${i + 1}/${candidates.length}…`, `Shrinking image ${i + 1}/${candidates.length}…`))
     const stream = obj.stream!
     const original = fromBase64(stream.data!)
     try {
@@ -122,7 +123,7 @@ export async function compressPdf(
     }
   }
 
-  onProgress('Menyusun ulang PDF…')
+  onProgress(tr('Menyusun ulang PDF…', 'Rebuilding the PDF…'))
   const rebuilt = shrunk
     ? await runQpdf(new TextEncoder().encode(JSON.stringify(json)), (i, o) => ['--json-input', i, ...OPTIMIZE, o])
     : await runQpdf(input, (i, o) => [i, ...OPTIMIZE, o])

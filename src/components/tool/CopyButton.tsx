@@ -1,11 +1,12 @@
 import { useState } from 'react'
 import { Check, Copy } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { useT } from '@/lib/i18n'
 
-/** "Salin" button that flips to "Tersalin" for a moment after copying `text`. */
+/** "Copy" button that flips to "Copied" for a moment after copying `text`. */
 export function CopyButton({
   text,
-  label = 'Salin',
+  label,
   variant = 'ghost',
   disabled,
 }: {
@@ -14,6 +15,7 @@ export function CopyButton({
   variant?: 'ghost' | 'outline'
   disabled?: boolean
 }) {
+  const t = useT()
   const [copied, setCopied] = useState(false)
 
   async function copy() {
@@ -29,7 +31,7 @@ export function CopyButton({
   return (
     <Button variant={variant} size="sm" disabled={disabled || !text} onClick={() => void copy()}>
       {copied ? <Check /> : <Copy />}
-      {copied ? 'Tersalin' : label}
+      {copied ? t('Tersalin', 'Copied') : (label ?? t('Salin', 'Copy'))}
     </Button>
   )
 }

@@ -6,37 +6,38 @@ import { FileDrop } from '@/components/tool/FileDrop'
 import { IconButton } from '@/components/tool/IconButton'
 import { Segmented } from '@/components/tool/Segmented'
 import { downloadBlob } from '@/lib/download'
+import { useT } from '@/lib/i18n'
 import { decodeImage, formatBytes, type DecodedImage } from '@/lib/image'
 import { cn } from '@/lib/utils'
 import { dragRect, exportImage, fitRect, orient, type Handle, type Orientation, type OutFormat, type Rect } from './crop'
 
 const RATIOS = [
-  { value: 'free', label: 'Bebas', ratio: null },
-  { value: 'original', label: 'Asli', ratio: null },
-  { value: '1:1', label: '1:1', ratio: 1 },
-  { value: '4:3', label: '4:3', ratio: 4 / 3 },
-  { value: '3:2', label: '3:2', ratio: 3 / 2 },
-  { value: '16:9', label: '16:9', ratio: 16 / 9 },
-  { value: '4:5', label: '4:5', ratio: 4 / 5 },
-  { value: '9:16', label: '9:16', ratio: 9 / 16 },
+  { value: 'free', label: ['Bebas', 'Free'], ratio: null },
+  { value: 'original', label: ['Asli', 'Original'], ratio: null },
+  { value: '1:1', label: ['1:1', '1:1'], ratio: 1 },
+  { value: '4:3', label: ['4:3', '4:3'], ratio: 4 / 3 },
+  { value: '3:2', label: ['3:2', '3:2'], ratio: 3 / 2 },
+  { value: '16:9', label: ['16:9', '16:9'], ratio: 16 / 9 },
+  { value: '4:5', label: ['4:5', '4:5'], ratio: 4 / 5 },
+  { value: '9:16', label: ['9:16', '9:16'], ratio: 9 / 16 },
 ] as const
 type RatioKey = (typeof RATIOS)[number]['value']
 
 type Resize = { mode: 'scale'; pct: number } | { mode: 'custom'; w: number; h: number; lock: boolean }
-const SCALE_OPTIONS: { value: string; label: string }[] = [
-  { value: '1', label: '100%' },
-  { value: '0.75', label: '75%' },
-  { value: '0.5', label: '50%' },
-  { value: '0.25', label: '25%' },
-  { value: 'custom', label: 'Kustom' },
+const SCALE_OPTIONS: { value: string; label: readonly [string, string] }[] = [
+  { value: '1', label: ['100%', '100%'] },
+  { value: '0.75', label: ['75%', '75%'] },
+  { value: '0.5', label: ['50%', '50%'] },
+  { value: '0.25', label: ['25%', '25%'] },
+  { value: 'custom', label: ['Kustom', 'Custom'] },
 ]
 
 type FormatChoice = 'same' | OutFormat
-const FORMAT_OPTIONS: { value: FormatChoice; label: string }[] = [
-  { value: 'same', label: 'Sama' },
-  { value: 'jpeg', label: 'JPG' },
-  { value: 'png', label: 'PNG' },
-  { value: 'webp', label: 'WebP' },
+const FORMAT_OPTIONS: { value: FormatChoice; label: readonly [string, string] }[] = [
+  { value: 'same', label: ['Sama', 'Same'] },
+  { value: 'jpeg', label: ['JPG', 'JPG'] },
+  { value: 'png', label: ['PNG', 'PNG'] },
+  { value: 'webp', label: ['WebP', 'WebP'] },
 ]
 const EXT: Record<OutFormat, string> = { jpeg: 'jpg', png: 'png', webp: 'webp' }
 
@@ -64,6 +65,7 @@ const sameFormat = (file: File): OutFormat =>
   file.type === 'image/jpeg' ? 'jpeg' : file.type === 'image/webp' ? 'webp' : 'png'
 
 export default function CropResizeImage() {
+  const t = useT()
   const [file, setFile] = useState<File | null>(null)
   const [image, setImage] = useState<DecodedImage | null>(null)
   const [orientation, setOrientation] = useState<Orientation>({ rotation: 0, flipX: false, flipY: false })
@@ -94,7 +96,7 @@ export default function CropResizeImage() {
       setRatioKey('free')
       setResize({ mode: 'scale', pct: 1 })
     } catch {
-      setError('Gambar tidak bisa dibaca browser ini. Coba JPG, PNG, atau WebP.')
+      setError(t('Gambar tidak bisa dibaca browser ini. Coba JPG, PNG, atau WebP.', "This browser can't read the image. Try JPG, PNG, or WebP."))
     } finally {
       setLoading(false)
     }
@@ -160,7 +162,7 @@ export default function CropResizeImage() {
       const blob = await exportImage(view.canvas, crop, out, outFormat, quality)
       downloadBlob(blob, `${file.name.replace(/\.[^.]+$/, '')}-${out.w}x${out.h}.${EXT[outFormat]}`)
     } catch {
-      setError('Gagal menyimpan gambar. Coba ukuran yang lebih kecil.')
+      setError(t('Gagal menyimpan gambar. Coba ukuran yang lebih kecil.', "Couldn't save the image. Try a smaller size."))
     } finally {
       setSaving(false)
     }
@@ -178,8 +180,8 @@ export default function CropResizeImage() {
       <div className="space-y-6">
         <FileDrop
           accept="image/*"
-          label="Tarik gambar ke sini"
-          busyLabel={loading ? 'Membuka gambar…' : undefined}
+          label={t('Tarik gambar ke sini', 'Drop an image here')}
+          busyLabel={loading ? t('Membuka gambar…', 'Opening image…') : undefined}
           onFiles={([f]) => void open(f)}
         />
         <p className="text-center text-xs text-muted-foreground">JPG, PNG, WebP, GIF, BMP, SVG.</p>
@@ -199,7 +201,7 @@ export default function CropResizeImage() {
         <div className="min-w-0">
           <p className="truncate font-medium">{file.name}</p>
           <p className="text-sm text-muted-foreground">
-            {W} × {H} px · {formatBytes(file.size)} → potong {Math.round(crop.w)} × {Math.round(crop.h)} → hasil{' '}
+            {W} × {H} px · {formatBytes(file.size)} → {t('potong', 'crop')} {Math.round(crop.w)} × {Math.round(crop.h)} → {t('hasil', 'output')}{' '}
             <span className="font-medium text-foreground">
               {out.w} × {out.h} px
             </span>
@@ -208,11 +210,11 @@ export default function CropResizeImage() {
         <div className="flex flex-wrap gap-2">
           <Button onClick={() => void save()} disabled={saving || !out.w || !out.h}>
             {saving ? <Loader2 className="animate-spin" /> : <Download />}
-            Unduh {EXT[outFormat].toUpperCase()}
+            {t('Unduh', 'Download')} {EXT[outFormat].toUpperCase()}
           </Button>
           <Button variant="ghost" disabled={saving} onClick={reset}>
             <RotateCcw />
-            Gambar lain
+            {t('Gambar lain', 'Another image')}
           </Button>
         </div>
       </div>
@@ -222,21 +224,21 @@ export default function CropResizeImage() {
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div className="flex">
               <IconButton
-                label="Putar ke kiri"
+                label={t('Putar ke kiri', 'Rotate left')}
                 onClick={() => setOrientation((o) => ({ ...o, rotation: ((o.rotation + 270) % 360) as Orientation['rotation'] }))}
               >
                 <Undo2 />
               </IconButton>
               <IconButton
-                label="Putar ke kanan"
+                label={t('Putar ke kanan', 'Rotate right')}
                 onClick={() => setOrientation((o) => ({ ...o, rotation: ((o.rotation + 90) % 360) as Orientation['rotation'] }))}
               >
                 <RotateCw />
               </IconButton>
-              <IconButton label="Balik mendatar" onClick={() => setOrientation((o) => ({ ...o, flipX: !o.flipX }))}>
+              <IconButton label={t('Balik mendatar', 'Flip horizontally')} onClick={() => setOrientation((o) => ({ ...o, flipX: !o.flipX }))}>
                 <FlipHorizontal2 />
               </IconButton>
-              <IconButton label="Balik tegak" onClick={() => setOrientation((o) => ({ ...o, flipY: !o.flipY }))}>
+              <IconButton label={t('Balik tegak', 'Flip vertically')} onClick={() => setOrientation((o) => ({ ...o, flipY: !o.flipY }))}>
                 <FlipVertical2 />
               </IconButton>
             </div>
@@ -245,7 +247,7 @@ export default function CropResizeImage() {
               onClick={() => setCrop(fitRect(W, H, ratio))}
               className="text-xs font-medium text-brand-2 hover:underline"
             >
-              Reset potongan
+              {t('Reset potongan', 'Reset crop')}
             </button>
           </div>
 
@@ -294,17 +296,27 @@ export default function CropResizeImage() {
               )}
             </div>
           </div>
-          <p className="text-xs text-muted-foreground">Seret kotak untuk memindah, tarik titik putihnya untuk mengubah potongan.</p>
+          <p className="text-xs text-muted-foreground">
+            {t(
+              'Seret kotak untuk memindah, tarik titik putihnya untuk mengubah potongan.',
+              'Drag the box to move it, pull its white handles to change the crop.',
+            )}
+          </p>
         </div>
 
         <div className="space-y-5 rounded-2xl border bg-card p-5">
-          <Segmented label="Rasio potongan" value={ratioKey} options={[...RATIOS]} onChange={setRatioKey} />
+          <Segmented
+            label={t('Rasio potongan', 'Crop ratio')}
+            value={ratioKey}
+            options={RATIOS.map((r) => ({ value: r.value, label: t(r.label[0], r.label[1]) }))}
+            onChange={setRatioKey}
+          />
 
           <div className="space-y-3">
             <Segmented
-              label="Ukuran hasil"
+              label={t('Ukuran hasil', 'Output size')}
               value={resize.mode === 'custom' ? 'custom' : String(resize.pct)}
-              options={SCALE_OPTIONS}
+              options={SCALE_OPTIONS.map((o) => ({ value: o.value, label: t(...o.label) }))}
               onChange={(v) =>
                 setResize(v === 'custom' ? { mode: 'custom', w: out.w, h: out.h, lock: true } : { mode: 'scale', pct: Number(v) })
               }
@@ -312,14 +324,14 @@ export default function CropResizeImage() {
             {resize.mode === 'custom' && (
               <div className="flex items-end gap-2">
                 <NumberField
-                  label="Lebar (px)"
+                  label={t('Lebar (px)', 'Width (px)')}
                   value={customW}
                   onChange={(w) => setResize({ ...resize, w })}
                 />
                 <button
                   type="button"
-                  aria-label={resize.lock ? 'Lepas kunci rasio' : 'Kunci rasio'}
-                  title={resize.lock ? 'Rasio terkunci' : 'Rasio bebas'}
+                  aria-label={resize.lock ? t('Lepas kunci rasio', 'Unlock ratio') : t('Kunci rasio', 'Lock ratio')}
+                  title={resize.lock ? t('Rasio terkunci', 'Ratio locked') : t('Rasio bebas', 'Ratio free')}
                   onClick={() => setResize({ ...resize, lock: !resize.lock, h: out.h })}
                   className={cn(
                     'grid size-10 shrink-0 place-items-center rounded-xl border',
@@ -329,7 +341,7 @@ export default function CropResizeImage() {
                   {resize.lock ? <Link2 className="size-4" /> : <Link2Off className="size-4" />}
                 </button>
                 <NumberField
-                  label="Tinggi (px)"
+                  label={t('Tinggi (px)', 'Height (px)')}
                   value={out.h}
                   disabled={resize.lock}
                   onChange={(h) => setResize({ ...resize, h })}
@@ -338,11 +350,16 @@ export default function CropResizeImage() {
             )}
           </div>
 
-          <Segmented label="Format" value={format} options={FORMAT_OPTIONS} onChange={setFormat} />
+          <Segmented
+            label="Format"
+            value={format}
+            options={FORMAT_OPTIONS.map((o) => ({ value: o.value, label: t(...o.label) }))}
+            onChange={setFormat}
+          />
           {lossy && (
             <label className="block space-y-2">
               <span className="flex justify-between text-xs font-medium text-muted-foreground">
-                Kualitas <span className="font-mono text-foreground">{Math.round(quality * 100)}</span>
+                {t('Kualitas', 'Quality')} <span className="font-mono text-foreground">{Math.round(quality * 100)}</span>
               </span>
               <input
                 type="range"
@@ -356,7 +373,12 @@ export default function CropResizeImage() {
             </label>
           )}
           {outFormat === 'jpeg' && (
-            <p className="text-xs text-muted-foreground">JPG tidak punya transparansi — area transparan jadi putih.</p>
+            <p className="text-xs text-muted-foreground">
+              {t(
+                'JPG tidak punya transparansi — area transparan jadi putih.',
+                'JPG has no transparency — transparent areas turn white.',
+              )}
+            </p>
           )}
         </div>
       </div>

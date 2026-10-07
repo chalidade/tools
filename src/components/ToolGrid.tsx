@@ -2,8 +2,9 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { motion } from 'motion/react'
 import { ArrowUpRight, Search, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { CATEGORIES, TOOLS, type CategoryId, type Tool } from '@/tools/registry'
+import { CATEGORIES, TOOLS, categoryText, toolText, type CategoryId, type Tool } from '@/tools/registry'
 import { searchTools } from '@/tools/search'
+import { useLang, useT } from '@/lib/i18n'
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -12,6 +13,8 @@ const fadeUp = {
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } }
 
 export function ToolGrid() {
+  const t = useT()
+  const lang = useLang()
   const [query, setQuery] = useState('')
   const [category, setCategory] = useState<CategoryId | 'all'>('all')
   const searchRef = useRef<HTMLInputElement>(null)
@@ -45,11 +48,13 @@ export function ToolGrid() {
       <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
         <div>
           <p className="font-mono text-xs tracking-widest text-muted-foreground uppercase">Tools</p>
-          <h2 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">Pilih yang kamu butuhkan</h2>
+          <h2 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">
+            {t('Pilih yang kamu butuhkan', 'Pick what you need')}
+          </h2>
         </div>
 
         <label className="group relative block w-full lg:max-w-sm">
-          <span className="sr-only">Cari tool</span>
+          <span className="sr-only">{t('Cari tool', 'Search tools')}</span>
           <Search className="pointer-events-none absolute top-1/2 left-3.5 size-4 -translate-y-1/2 text-muted-foreground" />
           <input
             ref={searchRef}
@@ -62,13 +67,13 @@ export function ToolGrid() {
                 e.currentTarget.blur()
               }
             }}
-            placeholder={`Cari ${TOOLS.length} tools… (mp3, password, excel)`}
+            placeholder={t(`Cari ${TOOLS.length} tools… (mp3, password, excel)`, `Search ${TOOLS.length} tools… (mp3, password, excel)`)}
             className="h-11 w-full rounded-xl border bg-card pr-10 pl-10 text-sm shadow-xs transition-colors outline-none placeholder:text-muted-foreground focus:border-brand-2/50 [&::-webkit-search-cancel-button]:hidden"
           />
           {searching ? (
             <button
               type="button"
-              aria-label="Hapus pencarian"
+              aria-label={t('Hapus pencarian', 'Clear search')}
               onClick={() => {
                 setQuery('')
                 searchRef.current?.focus()
@@ -85,11 +90,11 @@ export function ToolGrid() {
         </label>
       </div>
 
-      <div className="mt-6 flex flex-wrap gap-2" role="tablist" aria-label="Kategori">
+      <div className="mt-6 flex flex-wrap gap-2" role="tablist" aria-label={t('Kategori', 'Categories')}>
         <CategoryChip
           active={category === 'all'}
           onClick={() => setCategory('all')}
-          label="Semua"
+          label={t('Semua', 'All')}
           count={searchTools(query).length}
         />
         {CATEGORIES.map((c) => (
@@ -97,7 +102,7 @@ export function ToolGrid() {
             key={c.id}
             active={category === c.id}
             onClick={() => setCategory(c.id)}
-            label={c.title}
+            label={categoryText(c.id, lang).title}
             count={counts[c.id]}
           />
         ))}
@@ -105,9 +110,9 @@ export function ToolGrid() {
 
       {results.length === 0 ? (
         <div className="mt-10 rounded-2xl border border-dashed p-10 text-center">
-          <p className="font-medium">Tidak ada tool untuk “{query}”</p>
+          <p className="font-medium">{t(`Tidak ada tool untuk “${query}”`, `No tools match “${query}”`)}</p>
           <p className="mt-1 text-sm text-muted-foreground">
-            Coba kata lain — misalnya “kompres”, “word”, atau “gambar”.
+            {t('Coba kata lain — misalnya “kompres”, “word”, atau “gambar”.', 'Try another word — say “compress”, “word” or “image”.')}
           </p>
           <button
             type="button"
@@ -117,7 +122,7 @@ export function ToolGrid() {
             }}
             className="mt-4 text-sm font-medium text-brand-2 hover:underline"
           >
-            Lihat semua tools
+            {t('Lihat semua tools', 'See all tools')}
           </button>
         </div>
       ) : searching || category !== 'all' ? (
@@ -141,8 +146,8 @@ export function ToolGrid() {
             return (
               <div key={c.id}>
                 <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-                  <h3 className="text-lg font-semibold tracking-tight">{c.title}</h3>
-                  <p className="text-sm text-muted-foreground">{c.description}</p>
+                  <h3 className="text-lg font-semibold tracking-tight">{categoryText(c.id, lang).title}</h3>
+                  <p className="text-sm text-muted-foreground">{categoryText(c.id, lang).description}</p>
                 </div>
                 <motion.div
                   initial="hidden"
@@ -196,6 +201,8 @@ function CategoryChip({
 }
 
 function ToolCard({ tool }: { tool: Tool }) {
+  const lang = useLang()
+  const text = toolText(tool, lang)
   return (
     <motion.a
       variants={fadeUp}
@@ -219,18 +226,18 @@ function ToolCard({ tool }: { tool: Tool }) {
         <div className="flex items-center gap-2">
           {tool.badge && (
             <span className="rounded-full border border-brand-2/30 bg-brand-2/10 px-2 py-0.5 text-[11px] font-medium text-brand-2">
-              {tool.badge}
+              {tool.badge === 'Baru' && lang === 'en' ? 'New' : tool.badge}
             </span>
           )}
           <ArrowUpRight className="size-4 text-muted-foreground transition-all group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-foreground" />
         </div>
       </div>
 
-      <h4 className="mt-6 text-lg font-semibold tracking-tight">{tool.title}</h4>
-      <p className="mt-1.5 flex-1 text-sm leading-relaxed text-muted-foreground">{tool.description}</p>
+      <h4 className="mt-6 text-lg font-semibold tracking-tight">{text.title}</h4>
+      <p className="mt-1.5 flex-1 text-sm leading-relaxed text-muted-foreground">{text.description}</p>
 
       <div className="mt-6 flex flex-wrap items-center gap-2 font-mono text-[11px] text-muted-foreground">
-        {tool.formats.split('→').map((part, i) => (
+        {text.formats.split('→').map((part, i) => (
           <span key={i} className="flex items-center gap-2">
             {i > 0 && <span aria-hidden>→</span>}
             <span className="rounded-md border bg-muted px-1.5 py-0.5 text-foreground/80">{part.trim()}</span>

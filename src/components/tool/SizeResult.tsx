@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { ArrowRight } from 'lucide-react'
+import { useT } from '@/lib/i18n'
 
 function formatSize(n: number) {
   if (n < 1024) return `${n} B`
@@ -52,6 +53,7 @@ export function ProgressCard({
   startedAt: number
   action?: ReactNode
 }) {
+  const t = useT()
   const elapsed = (Date.now() - startedAt) / 1000
   const left = progress > 0.02 ? (elapsed / progress) * (1 - progress) : null
   return (
@@ -61,7 +63,7 @@ export function ProgressCard({
         <span className="font-mono text-muted-foreground">
           {Math.round(progress * 100)}%
           {left !== null &&
-            ` · sisa ~${left < 60 ? `${Math.max(1, Math.round(left))} dtk` : `${Math.round(left / 60)} mnt`}`}
+            ` · ${t('sisa', 'about')} ~${left < 60 ? `${Math.max(1, Math.round(left))} ${t('dtk', 's')}` : `${Math.round(left / 60)} ${t('mnt', 'min')}`}${t('', ' left')}`}
         </span>
       </div>
       <div className="h-2 overflow-hidden rounded-full bg-muted">

@@ -2,12 +2,22 @@ import { useCallback, useEffect, useMemo, useRef, useState, type MouseEvent, typ
 import { motion } from 'motion/react'
 import { ArrowDown, DoorOpen, Gamepad2, ShieldCheck, Stamp, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { TOOLS } from '@/tools/registry'
+import { TOOLS, categoryText, toolText } from '@/tools/registry'
+import { getLang, useLang, useT } from '@/lib/i18n'
 import { Dialog } from '@/components/playground/Dialog'
 import { CALLS, TOWN_GREETINGS, TOWN_LINES, nameFor } from '@/components/playground/dialog'
 import { lookFor } from '@/components/playground/Person'
 import { RoomScenery, TownScenery } from '@/components/playground/Scenery'
-import { GRASS_TILE, buildScenes, collide, findPath, type Door, type Point, type SceneId } from '@/components/playground/scenes'
+import {
+  GRASS_TILE,
+  buildScenes,
+  collide,
+  findPath,
+  placeName,
+  type Door,
+  type Point,
+  type SceneId,
+} from '@/components/playground/scenes'
 import { CHATS, RESIDENTS, homeOf, uniformFor } from '@/components/playground/residents'
 import { Dog, Keeper, Player, Townsperson } from '@/components/playground/Sprites'
 
@@ -50,7 +60,12 @@ const KEYMAP: Record<string, 'up' | 'down' | 'left' | 'right' | 'run'> = {
 
 /** Keeper shirts, in tool order — neighbours in a house never match. */
 const KEEPER_SHIRTS = ['#3b82f6', '#ef4444', '#22c55e', '#f97316', '#a855f7', '#eab308', '#ec4899', '#14b8a6', '#64748b']
-const FACTS = ['Gratis', 'Tanpa akun', 'Jalan di perangkatmu', 'Kode di GitHub']
+const FACTS = [
+  ['Gratis', 'Free'],
+  ['Tanpa akun', 'No account'],
+  ['Jalan di perangkatmu', 'Runs on your device'],
+  ['Kode di GitHub', 'Code on GitHub'],
+] as const
 
 const pick = <T,>(list: readonly T[]) => list[Math.floor(Math.random() * list.length)]
 
@@ -100,6 +115,15 @@ const container = { hidden: {}, show: { transition: { staggerChildren: 0.08, del
 export function Playground() {
   const scenes = useMemo(buildScenes, [])
   const town = scenes.town.kind === 'town' ? scenes.town : null
+  const t = useT()
+  const lang = useLang()
+  /** "Masuk Perpustakaan · Dari PDF" / "Enter Library · From PDF", or "Exit". */
+  const doorLabel = (door: Door) => {
+    if (door.dir === 'down') return t('Keluar', 'Exit')
+    const house = town?.houses.find((h) => h.id === door.to)
+    if (!house) return door.label
+    return `${t('Masuk', 'Enter')} ${placeName(house.style, lang)} · ${categoryText(house.id, lang).title}`
+  }
   // Each keeper: a name, a look, and the uniform of the building it works in.
   const people = useMemo(() => {
     const style = new Map(town?.houses.flatMap((h) => h.tools.map((t, i) => [t.slug, uniformFor(h.style, i)] as const)))
@@ -432,7 +456,7 @@ export function Playground() {
         if (bubble && ks.next <= 0 && d > REACH && d < CALL_RANGE && !talkingRef.current) {
           ks.next = 8 + Math.random() * 10
           ks.talk = 2
-          bubble.textContent = pick(CALLS)
+          bubble.textContent = pick(CALLS[getLang()])
           bubble.dataset.show = ''
         }
         if (ks.talk > 0) {
@@ -488,11 +512,13 @@ export function Playground() {
         if (pairA >= 0 && c.next <= 0) {
           const pairB = RESIDENTS[pairA].partner!
           if (c.reply < 0) {
-            say(pairA, CHATS[c.line % CHATS.length][0], 2.6)
+            const chats = CHATS[getLang()]
+            say(pairA, chats[c.line % chats.length][0], 2.6)
             c.reply = pairB
             c.next = 2.4
           } else {
-            say(c.reply, CHATS[c.line % CHATS.length][1], 2.6)
+            const chats = CHATS[getLang()]
+            say(c.reply, chats[c.line % chats.length][1], 2.6)
             c.reply = -1
             c.line++
             c.next = 7 + Math.random() * 6
@@ -510,7 +536,7 @@ export function Playground() {
             n.dir = 'down'
             if (!n.greeted) {
               n.greeted = true
-              say(i, pick(TOWN_GREETINGS), 2.2)
+              say(i, pick(TOWN_GREETINGS[getLang()]), 2.2)
             }
           } else {
             if (toPlayer > 160) n.greeted = false
@@ -548,7 +574,7 @@ export function Playground() {
           n.next -= dt
           if (n.next <= 0 && r.mode !== 'idle') {
             n.next = 8 + Math.random() * 12
-            if (toPlayer < 700) say(i, pick(r.lines ?? TOWN_LINES), 3)
+            if (toPlayer < 700) say(i, pick((r.lines ?? TOWN_LINES)[getLang()]), 3)
           }
           if (n.talk > 0) {
             n.talk -= dt
@@ -672,7 +698,7 @@ export function Playground() {
         <button
           type="button"
           onClick={() => setIntroOpen(false)}
-          aria-label="Sembunyikan"
+          aria-label={t('Sembunyikan', 'Hide')}
           className="absolute top-6 right-4 grid size-8 place-items-center rounded-lg text-muted-foreground hover:bg-accent hover:text-foreground md:top-4"
         >
           <X className="size-4" />
@@ -684,19 +710,21 @@ export function Playground() {
           <span className="grid size-5 place-items-center rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400">
             <ShieldCheck className="size-3.5" />
           </span>
-          100% diproses di browser
+          {t('100% diproses di browser', '100% processed in your browser')}
         </motion.p>
         <motion.h1
           variants={fadeUp}
           className="mt-5 text-[2.4rem] leading-[1.04] font-semibold tracking-[-0.035em] text-balance sm:text-5xl md:text-[2.7rem]"
         >
-          Semua tools,
+          {t('Semua tools,', 'Every tool,')}
           <br />
-          <span className="text-gradient">langsung di browser.</span>
+          <span className="text-gradient">{t('langsung di browser.', 'right in your browser.')}</span>
         </motion.h1>
         <motion.p variants={fadeUp} className="mt-4 leading-relaxed text-muted-foreground text-pretty">
-          Kumpulan tools gratis untuk dokumen, PDF, gambar, video, audio, sampai data developer — semuanya jalan
-          di perangkatmu. Masuki tiap bangunan dan tanya penjaganya bisa bantu apa.
+          {t(
+            'Kumpulan tools gratis untuk dokumen, PDF, gambar, video, audio, sampai data developer — semuanya jalan di perangkatmu. Masuki tiap bangunan dan tanya penjaganya bisa bantu apa.',
+            'Free tools for documents, PDFs, images, video, audio and developer data — all running on your device. Step into each building and ask its keepers what they can do.',
+          )}
         </motion.p>
         <motion.div variants={fadeUp} className="mt-6 flex flex-wrap items-center gap-3">
           <button
@@ -708,7 +736,7 @@ export function Playground() {
             className="group hidden h-11 items-center gap-2 rounded-xl bg-primary px-5 text-sm font-medium text-primary-foreground shadow-sm transition-transform hover:-translate-y-0.5 md:inline-flex"
           >
             <Gamepad2 className="size-4" />
-            Mulai jalan
+            {t('Mulai jalan', 'Start exploring')}
           </button>
           <a
             href="#/"
@@ -719,7 +747,7 @@ export function Playground() {
             }}
             className="inline-flex h-11 items-center gap-2 rounded-xl border bg-card px-4 text-sm font-medium shadow-xs transition-transform hover:-translate-y-0.5 max-md:bg-primary max-md:text-primary-foreground"
           >
-            Lihat daftar {TOOLS.length} tools
+            {t(`Lihat daftar ${TOOLS.length} tools`, `See all ${TOOLS.length} tools`)}
             <ArrowDown className="size-4" />
           </a>
         </motion.div>
@@ -728,9 +756,9 @@ export function Playground() {
           className="mt-5 flex flex-wrap gap-x-4 gap-y-1 font-mono text-xs text-muted-foreground"
         >
           {FACTS.map((fact) => (
-            <li key={fact} className="flex items-center gap-1.5">
+            <li key={fact[0]} className="flex items-center gap-1.5">
               <span className="size-1 rounded-full bg-gradient-brand" />
-              {fact}
+              {t(fact[0], fact[1])}
             </li>
           ))}
         </motion.ul>
@@ -745,9 +773,10 @@ export function Playground() {
         )}
       >
         <p className="sr-only">
-          Peta interaktif berisi semua tools: tiap kategori adalah bangunan, dan di dalamnya tiap tool dijaga
-          seorang tokoh. Gerakkan karakter dengan tombol panah atau WASD, masuk lewat pintu, dan tekan E di dekat
-          tokoh untuk mengobrol. Daftar biasa ada di bawah.
+          {t(
+            'Peta interaktif berisi semua tools: tiap kategori adalah bangunan, dan di dalamnya tiap tool dijaga seorang tokoh. Gerakkan karakter dengan tombol panah atau WASD, masuk lewat pintu, dan tekan E di dekat tokoh untuk mengobrol. Daftar biasa ada di bawah.',
+            'An interactive map of every tool: each category is a building, and inside each tool has a keeper. Move with the arrow keys or WASD, walk through doors, and press E next to someone to talk. The plain list is below.',
+          )}
         </p>
 
         <div
@@ -871,13 +900,13 @@ export function Playground() {
           ) : scene.kind === 'room' ? (
             <p className="mb-2 flex items-center gap-1.5 px-0.5 text-xs font-medium">
               <span className="size-2.5 rounded-full" style={{ background: scene.house.accent }} />
-              {scene.house.place} {scene.house.title}
+              {placeName(scene.house.style, lang)} · {categoryText(scene.house.id, lang).title}
             </p>
           ) : null}
           <div className="flex items-center justify-between gap-2 px-0.5 text-xs">
             <span className="flex items-center gap-1.5 text-muted-foreground">
               <Stamp className="size-3.5" />
-              Paspor
+              {t('Paspor', 'Passport')}
             </span>
             <span className="font-mono font-medium">
               {visitedCount}/{TOOLS.length}
@@ -903,7 +932,8 @@ export function Playground() {
             <span className="grid size-6 place-items-center rounded-full bg-gradient-brand text-white">
               <ShieldCheck className="size-3.5" />
             </span>
-            Semua tools, <span className="text-gradient font-medium">langsung di browser.</span>
+            {t('Semua tools,', 'Every tool,')}{' '}
+            <span className="text-gradient font-medium">{t('langsung di browser.', 'right in your browser.')}</span>
           </button>
         )}
 
@@ -922,15 +952,19 @@ export function Playground() {
             <Prompt
               onClick={() => setTalking(nearTool.slug)}
               icon={<nearTool.icon className="size-[18px]" />}
-              title={`Ngobrol dengan ${people.get(nearTool.slug)?.name}`}
-              subtitle={`Penjaga ${nearTool.title}`}
+              title={t(`Ngobrol dengan ${people.get(nearTool.slug)?.name}`, `Talk to ${people.get(nearTool.slug)?.name}`)}
+              subtitle={t(`Penjaga ${toolText(nearTool, lang).title}`, `Keeper of ${toolText(nearTool, lang).title}`)}
             />
           ) : nearDoor ? (
             <Prompt
               onClick={() => go(nearDoor)}
               icon={<DoorOpen className="size-[18px]" />}
-              title={nearDoor.label}
-              subtitle={nearDoor.dir === 'up' ? 'Lihat siapa saja yang ada di dalam' : 'Kembali ke kota'}
+              title={doorLabel(nearDoor)}
+              subtitle={
+                nearDoor.dir === 'up'
+                  ? t('Lihat siapa saja yang ada di dalam', "See who's inside")
+                  : t('Kembali ke kota', 'Back to town')
+              }
             />
           ) : (
             <p className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 rounded-full border bg-card/85 px-4 py-2 text-xs text-muted-foreground shadow-lg backdrop-blur">
@@ -939,18 +973,20 @@ export function Playground() {
                 <Key>A</Key>
                 <Key>S</Key>
                 <Key>D</Key>
-                atau panah untuk jalan
+                {t('atau panah untuk jalan', 'or arrows to walk')}
               </span>
               <span className="hidden items-center gap-1.5 pointer-fine:flex">
-                <Key>Shift</Key> lari
+                <Key>Shift</Key> {t('lari', 'run')}
               </span>
               <span className="hidden items-center gap-1.5 pointer-fine:flex">
-                <Key>E</Key> {scene.kind === 'town' ? 'masuk / ngobrol' : 'ngobrol'}
+                <Key>E</Key> {scene.kind === 'town' ? t('masuk / ngobrol', 'enter / talk') : t('ngobrol', 'talk')}
               </span>
               <span className="pointer-fine:hidden">
-                {scene.kind === 'town' ? 'Ketuk tanah untuk jalan, ketuk bangunan untuk masuk' : 'Ketuk tokoh untuk ngobrol'}
+                {scene.kind === 'town'
+                  ? t('Ketuk tanah untuk jalan, ketuk bangunan untuk masuk', 'Tap the ground to walk, tap a building to go in')
+                  : t('Ketuk tokoh untuk ngobrol', 'Tap someone to talk')}
               </span>
-              {scene.kind === 'room' && <span>· injak keset di bawah untuk keluar</span>}
+              {scene.kind === 'room' && <span>· {t('injak keset di bawah untuk keluar', 'step on the mat below to leave')}</span>}
             </p>
           )}
         </div>

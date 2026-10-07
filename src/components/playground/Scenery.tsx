@@ -2,8 +2,10 @@ import { useMemo, type CSSProperties } from 'react'
 import { ShieldCheck } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Building, CATEGORY_ICONS } from './Buildings'
-import { GRASS_TILE, PATH_WIDTH, type BuildingStyle, type Room, type Town } from './scenes'
+import { GRASS_TILE, PATH_WIDTH, placeName, type BuildingStyle, type Room, type Town } from './scenes'
+import { categoryText } from '@/tools/registry'
 import { Plant } from './Sprites'
+import { useLang, useT } from '@/lib/i18n'
 
 /*
  * Everything in a scene that the game loop does not move. Ambient motion —
@@ -25,6 +27,8 @@ export function TownScenery({
   grassRef: (index: number, el: HTMLDivElement | null) => void
 }) {
   const { plaza, pond } = town
+  const t = useT()
+  const lang = useLang()
   const flyers = useMemo(
     () =>
       Array.from({ length: 16 }, (_, i) => ({
@@ -234,10 +238,10 @@ export function TownScenery({
             <div className="absolute inset-x-0 top-0 flex h-9 flex-col items-center justify-center rounded-md border-2 border-[#6b3f22] bg-[#c48a55] px-1 text-[#3b2414] shadow-md dark:bg-[#8a5a33] dark:text-[#fdf2e3]">
               <span className="flex items-center gap-1 text-[10px] leading-none font-bold">
                 {Icon && <Icon className="size-3" />}
-                <span className="max-w-[92px] truncate">{house.title}</span>
+                <span className="max-w-[92px] truncate">{categoryText(house.id, lang).title}</span>
               </span>
               <span className="mt-0.5 font-mono text-[9px] leading-none opacity-75">
-                {seen}/{house.tools.length} dikunjungi
+                {seen}/{house.tools.length} {t('dikunjungi', 'visited')}
               </span>
             </div>
           </div>
@@ -321,6 +325,9 @@ const FLOORS: Record<BuildingStyle, string> = {
 export function RoomScenery({ room }: { room: Room }) {
   const { width, height, wall, mat, house } = room
   const Icon = CATEGORY_ICONS[house.id]
+  const t = useT()
+  const lang = useLang()
+  const category = categoryText(house.id, lang)
   return (
     <>
       <div className="absolute inset-0 overflow-hidden rounded-2xl shadow-2xl ring-1 ring-black/40">
@@ -333,9 +340,9 @@ export function RoomScenery({ room }: { room: Room }) {
           >
             <span className="flex items-center gap-2 text-base font-semibold tracking-tight">
               {Icon && <Icon className="size-4" />}
-              {house.place} {house.title}
+              {placeName(house.style, lang)} · {category.title}
             </span>
-            <span className="mt-0.5 text-[11px] leading-snug opacity-85">{house.description}</span>
+            <span className="mt-0.5 text-[11px] leading-snug opacity-85">{category.description}</span>
           </div>
           <span className="absolute inset-x-0 bottom-0 h-3" style={{ background: house.accent }} />
           <span className="absolute inset-x-0 bottom-0 h-3 bg-black/30" />
@@ -357,7 +364,7 @@ export function RoomScenery({ room }: { room: Room }) {
         className="absolute flex items-center justify-center rounded-lg border-2 border-black/15 font-mono text-[10px] font-semibold tracking-widest text-white/90"
         style={{ left: mat.x - 50, top: mat.y - 16, width: 100, height: 34, background: house.accent, zIndex: 2 }}
       >
-        KELUAR ↓
+        {t('KELUAR', 'EXIT')} ↓
       </span>
 
       {room.plants.map((p, i) => (

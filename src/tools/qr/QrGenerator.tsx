@@ -5,6 +5,7 @@ import { CopyButton } from '@/components/tool/CopyButton'
 import { Segmented } from '@/components/tool/Segmented'
 import { canvasBlob, decodeImage, newCanvas } from '@/lib/image'
 import { downloadBlob } from '@/lib/download'
+import { useT } from '@/lib/i18n'
 import { cn } from '@/lib/utils'
 import {
   buildContact,
@@ -21,14 +22,17 @@ import {
 import { qrMatrix, toCanvas, toSvg, type ErrorLevel, type ModuleStyle, type QrMatrix, type RenderOptions } from './render'
 import { scanPixels } from './scan'
 
-const KINDS: { value: QrKind; label: string }[] = [
-  { value: 'url', label: 'Tautan' },
-  { value: 'text', label: 'Teks' },
-  { value: 'wifi', label: 'Wi-Fi' },
-  { value: 'whatsapp', label: 'WhatsApp' },
-  { value: 'contact', label: 'Kontak' },
-  { value: 'email', label: 'Email' },
-  { value: 'phone', label: 'Telepon' },
+// Labels are [Indonesian, English]; the component picks one with t(...label).
+type Label = readonly [string, string]
+
+const KINDS: { value: QrKind; label: Label }[] = [
+  { value: 'url', label: ['Tautan', 'Link'] },
+  { value: 'text', label: ['Teks', 'Text'] },
+  { value: 'wifi', label: ['Wi-Fi', 'Wi-Fi'] },
+  { value: 'whatsapp', label: ['WhatsApp', 'WhatsApp'] },
+  { value: 'contact', label: ['Kontak', 'Contact'] },
+  { value: 'email', label: ['Email', 'Email'] },
+  { value: 'phone', label: ['Telepon', 'Phone'] },
 ]
 const LEVEL_OPTIONS: { value: ErrorLevel; label: string }[] = [
   { value: 'L', label: 'L 7%' },
@@ -36,15 +40,15 @@ const LEVEL_OPTIONS: { value: ErrorLevel; label: string }[] = [
   { value: 'Q', label: 'Q 25%' },
   { value: 'H', label: 'H 30%' },
 ]
-const STYLE_OPTIONS: { value: ModuleStyle; label: string }[] = [
-  { value: 'square', label: 'Kotak' },
-  { value: 'rounded', label: 'Membulat' },
-  { value: 'dots', label: 'Titik' },
+const STYLE_OPTIONS: { value: ModuleStyle; label: Label }[] = [
+  { value: 'square', label: ['Kotak', 'Square'] },
+  { value: 'rounded', label: ['Membulat', 'Rounded'] },
+  { value: 'dots', label: ['Titik', 'Dots'] },
 ]
-const MARGIN_OPTIONS: { value: number; label: string }[] = [
-  { value: 1, label: 'Tipis' },
-  { value: 2, label: 'Sedang' },
-  { value: 4, label: 'Standar' },
+const MARGIN_OPTIONS: { value: number; label: Label }[] = [
+  { value: 1, label: ['Tipis', 'Thin'] },
+  { value: 2, label: ['Sedang', 'Medium'] },
+  { value: 4, label: ['Standar', 'Standard'] },
 ]
 const SIZE_OPTIONS: { value: number; label: string }[] = [
   { value: 512, label: '512 px' },
@@ -62,6 +66,7 @@ function luminance(hex: string) {
 }
 
 export default function QrGenerator() {
+  const t = useT()
   const [kind, setKind] = useState<QrKind>('url')
   const [url, setUrl] = useState('')
   const [text, setText] = useState('')
@@ -135,7 +140,7 @@ export default function QrGenerator() {
     }
     let current = true
     setReadable('checking')
-    const t = setTimeout(async () => {
+    const timer = setTimeout(async () => {
       const canvas = await toCanvas(matrix, { ...opts, bg: opts.bg ?? '#ffffff' }, 480)
       const data = canvas.getContext('2d')!.getImageData(0, 0, canvas.width, canvas.height).data
       const read = await scanPixels(data, canvas.width, canvas.height, true)
@@ -143,7 +148,7 @@ export default function QrGenerator() {
     }, 250)
     return () => {
       current = false
-      clearTimeout(t)
+      clearTimeout(timer)
     }
   }, [matrix, opts, payload])
 
@@ -169,7 +174,7 @@ export default function QrGenerator() {
   return (
     <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_22rem]">
       <div className="space-y-5">
-        <div role="radiogroup" aria-label="Jenis isi" className="flex flex-wrap gap-1 rounded-xl border bg-muted/60 p-1">
+        <div role="radiogroup" aria-label={t('Jenis isi', 'Content type')} className="flex flex-wrap gap-1 rounded-xl border bg-muted/60 p-1">
           {KINDS.map((k) => (
             <button
               key={k.value}
@@ -182,79 +187,124 @@ export default function QrGenerator() {
                 kind === k.value ? 'bg-background font-medium shadow-sm' : 'text-muted-foreground hover:text-foreground',
               )}
             >
-              {k.label}
+              {t(...k.label)}
             </button>
           ))}
         </div>
 
         <div className="space-y-4 rounded-2xl border bg-card p-5">
-          {kind === 'url' && <Field label="Alamat tautan" value={url} onChange={setUrl} placeholder="https://contoh.com" autoFocus />}
-          {kind === 'text' && <Field label="Teks" value={text} onChange={setText} multiline placeholder="Tulis apa saja…" autoFocus />}
+          {kind === 'url' && (
+            <Field
+              label={t('Alamat tautan', 'Link address')}
+              value={url}
+              onChange={setUrl}
+              placeholder={t('https://contoh.com', 'https://example.com')}
+              autoFocus
+            />
+          )}
+          {kind === 'text' && (
+            <Field
+              label={t('Teks', 'Text')}
+              value={text}
+              onChange={setText}
+              multiline
+              placeholder={t('Tulis apa saja…', 'Write anything…')}
+              autoFocus
+            />
+          )}
           {kind === 'wifi' && (
             <>
-              <Field label="Nama jaringan (SSID)" value={wifi.ssid} onChange={(v) => setWifi({ ...wifi, ssid: v })} autoFocus />
+              <Field
+                label={t('Nama jaringan (SSID)', 'Network name (SSID)')}
+                value={wifi.ssid}
+                onChange={(v) => setWifi({ ...wifi, ssid: v })}
+                autoFocus
+              />
               <Segmented
-                label="Keamanan"
+                label={t('Keamanan', 'Security')}
                 value={wifi.security}
                 options={[
                   { value: 'WPA', label: 'WPA/WPA2/WPA3' },
                   { value: 'WEP', label: 'WEP' },
-                  { value: 'nopass', label: 'Tanpa password' },
+                  { value: 'nopass', label: t('Tanpa password', 'No password') },
                 ]}
                 onChange={(security) => setWifi({ ...wifi, security })}
               />
               {wifi.security !== 'nopass' && (
                 <Field label="Password" value={wifi.password} onChange={(v) => setWifi({ ...wifi, password: v })} />
               )}
-              <Check label="Jaringan tersembunyi" checked={wifi.hidden} onChange={(hidden) => setWifi({ ...wifi, hidden })} />
-              <p className="text-xs text-muted-foreground">Dipindai dengan kamera ponsel, ponsel langsung tersambung tanpa mengetik password.</p>
+              <Check label={t('Jaringan tersembunyi', 'Hidden network')} checked={wifi.hidden} onChange={(hidden) => setWifi({ ...wifi, hidden })} />
+              <p className="text-xs text-muted-foreground">
+                {t(
+                  'Dipindai dengan kamera ponsel, ponsel langsung tersambung tanpa mengetik password.',
+                  'Scan it with a phone camera and the phone connects right away — no typing the password.',
+                )}
+              </p>
             </>
           )}
           {kind === 'whatsapp' && (
             <>
-              <Field label="Nomor WhatsApp" value={wa.to} onChange={(v) => setWa({ ...wa, to: v })} placeholder="0812 3456 7890" autoFocus />
-              <Field label="Pesan awal (opsional)" value={wa.body} onChange={(v) => setWa({ ...wa, body: v })} multiline />
-              <p className="text-xs text-muted-foreground">Nomor berawalan 0 dianggap nomor Indonesia (+62).</p>
+              <Field label={t('Nomor WhatsApp', 'WhatsApp number')} value={wa.to} onChange={(v) => setWa({ ...wa, to: v })} placeholder="0812 3456 7890" autoFocus />
+              <Field label={t('Pesan awal (opsional)', 'Opening message (optional)')} value={wa.body} onChange={(v) => setWa({ ...wa, body: v })} multiline />
+              <p className="text-xs text-muted-foreground">
+                {t('Nomor berawalan 0 dianggap nomor Indonesia (+62).', 'Numbers starting with 0 are treated as Indonesian (+62).')}
+              </p>
             </>
           )}
           {kind === 'contact' && (
             <>
-              <Field label="Nama" value={contact.name} onChange={(v) => setContact({ ...contact, name: v })} autoFocus />
-              <Field label="Telepon" value={contact.phone} onChange={(v) => setContact({ ...contact, phone: v })} />
+              <Field label={t('Nama', 'Name')} value={contact.name} onChange={(v) => setContact({ ...contact, name: v })} autoFocus />
+              <Field label={t('Telepon', 'Phone')} value={contact.phone} onChange={(v) => setContact({ ...contact, phone: v })} />
               <Field label="Email" value={contact.email} onChange={(v) => setContact({ ...contact, email: v })} />
-              <Field label="Organisasi" value={contact.org} onChange={(v) => setContact({ ...contact, org: v })} />
-              <Field label="Situs" value={contact.url} onChange={(v) => setContact({ ...contact, url: v })} />
+              <Field label={t('Organisasi', 'Organization')} value={contact.org} onChange={(v) => setContact({ ...contact, org: v })} />
+              <Field label={t('Situs', 'Website')} value={contact.url} onChange={(v) => setContact({ ...contact, url: v })} />
             </>
           )}
           {kind === 'email' && (
             <>
-              <Field label="Kepada" value={email.to} onChange={(v) => setEmail({ ...email, to: v })} placeholder="nama@contoh.com" autoFocus />
-              <Field label="Subjek" value={email.subject} onChange={(v) => setEmail({ ...email, subject: v })} />
-              <Field label="Isi" value={email.body} onChange={(v) => setEmail({ ...email, body: v })} multiline />
+              <Field
+                label={t('Kepada', 'To')}
+                value={email.to}
+                onChange={(v) => setEmail({ ...email, to: v })}
+                placeholder={t('nama@contoh.com', 'name@example.com')}
+                autoFocus
+              />
+              <Field label={t('Subjek', 'Subject')} value={email.subject} onChange={(v) => setEmail({ ...email, subject: v })} />
+              <Field label={t('Isi', 'Message')} value={email.body} onChange={(v) => setEmail({ ...email, body: v })} multiline />
             </>
           )}
-          {kind === 'phone' && <Field label="Nomor telepon" value={phone} onChange={setPhone} placeholder="0812 3456 7890" autoFocus />}
+          {kind === 'phone' && <Field label={t('Nomor telepon', 'Phone number')} value={phone} onChange={setPhone} placeholder="0812 3456 7890" autoFocus />}
         </div>
 
         <div className="space-y-4 rounded-2xl border bg-card p-5">
           <div className="flex flex-wrap gap-x-6 gap-y-4">
-            <Segmented label="Bentuk" value={style} options={STYLE_OPTIONS} onChange={setStyle} />
-            <Segmented label="Tepi kosong" value={margin} options={MARGIN_OPTIONS} onChange={setMargin} />
+            <Segmented
+              label={t('Bentuk', 'Shape')}
+              value={style}
+              options={STYLE_OPTIONS.map((o) => ({ value: o.value, label: t(...o.label) }))}
+              onChange={setStyle}
+            />
+            <Segmented
+              label={t('Tepi kosong', 'Margin')}
+              value={margin}
+              options={MARGIN_OPTIONS.map((o) => ({ value: o.value, label: t(...o.label) }))}
+              onChange={setMargin}
+            />
           </div>
           <div className="flex flex-wrap items-end gap-x-6 gap-y-4">
-            <ColorField label="Warna kode" value={fg} onChange={setFg} />
+            <ColorField label={t('Warna kode', 'Code color')} value={fg} onChange={setFg} />
             <div className="space-y-2">
-              <ColorField label="Latar" value={bg} onChange={setBg} disabled={transparent} />
+              <ColorField label={t('Latar', 'Background')} value={bg} onChange={setBg} disabled={transparent} />
             </div>
-            <Check label="Latar transparan" checked={transparent} onChange={setTransparent} />
+            <Check label={t('Latar transparan', 'Transparent background')} checked={transparent} onChange={setTransparent} />
           </div>
           <div className="space-y-2">
-            <p className="text-xs font-medium text-muted-foreground">Logo di tengah (opsional)</p>
+            <p className="text-xs font-medium text-muted-foreground">{t('Logo di tengah (opsional)', 'Logo in the middle (optional)')}</p>
             <div className="flex items-center gap-3">
               {logo && <img src={logo} alt="" className="size-10 rounded-md border bg-white object-contain p-0.5" />}
               <label className="inline-flex cursor-pointer items-center gap-2 rounded-md border px-3 py-1.5 text-sm hover:bg-accent">
                 <ImagePlus className="size-4" />
-                {logo ? 'Ganti logo' : 'Pilih logo'}
+                {logo ? t('Ganti logo', 'Change logo') : t('Pilih logo', 'Choose logo')}
                 <input
                   type="file"
                   accept="image/*"
@@ -267,14 +317,18 @@ export default function QrGenerator() {
                 />
               </label>
               {logo && (
-                <button type="button" onClick={() => setLogo(null)} className="text-muted-foreground hover:text-foreground" aria-label="Hapus logo">
+                <button type="button" onClick={() => setLogo(null)} className="text-muted-foreground hover:text-foreground" aria-label={t('Hapus logo', 'Remove logo')}>
                   <X className="size-4" />
                 </button>
               )}
             </div>
           </div>
           <Segmented
-            label={logo ? 'Koreksi kesalahan (H otomatis karena ada logo)' : 'Koreksi kesalahan'}
+            label={
+              logo
+                ? t('Koreksi kesalahan (H otomatis karena ada logo)', 'Error correction (H automatically, because of the logo)')
+                : t('Koreksi kesalahan', 'Error correction')
+            }
             value={effectiveLevel}
             options={LEVEL_OPTIONS}
             disabled={!!logo}
@@ -294,7 +348,12 @@ export default function QrGenerator() {
             <img src={`data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`} alt="QR code" className="size-full" />
           ) : (
             <p className="px-6 text-center text-sm text-muted-foreground">
-              {tooLong ? 'Isinya terlalu panjang untuk satu QR code. Perpendek teksnya.' : 'Isi formulir di samping — QR code muncul di sini.'}
+              {tooLong
+                ? t(
+                    'Isinya terlalu panjang untuk satu QR code. Perpendek teksnya.',
+                    'The content is too long for one QR code. Shorten the text.',
+                  )
+                : t('Isi formulir di samping — QR code muncul di sini.', 'Fill in the form — the QR code appears here.')}
             </p>
           )}
         </div>
@@ -305,24 +364,30 @@ export default function QrGenerator() {
             {(inverted || lowContrast) && (
               <Note>
                 {inverted
-                  ? 'Kode lebih terang dari latarnya. Sebagian pemindai gagal membaca warna terbalik.'
-                  : 'Kontras warna rendah; QR bisa sulit dipindai, apalagi saat dicetak.'}
+                  ? t(
+                      'Kode lebih terang dari latarnya. Sebagian pemindai gagal membaca warna terbalik.',
+                      'The code is lighter than its background. Some scanners can’t read inverted colors.',
+                    )
+                  : t(
+                      'Kontras warna rendah; QR bisa sulit dipindai, apalagi saat dicetak.',
+                      'Low color contrast; the QR may be hard to scan, especially when printed.',
+                    )}
               </Note>
             )}
-            <Segmented label="Ukuran PNG" value={size} options={SIZE_OPTIONS} onChange={setSize} />
+            <Segmented label={t('Ukuran PNG', 'PNG size')} value={size} options={SIZE_OPTIONS} onChange={setSize} />
             <div className="flex flex-wrap gap-2">
               <Button onClick={() => void downloadPng()}>
                 <Download />
-                Unduh PNG
+                {t('Unduh PNG', 'Download PNG')}
               </Button>
               <Button variant="outline" onClick={() => downloadBlob(new Blob([svg], { type: 'image/svg+xml' }), `qr-${kind}.svg`)}>
                 <Download />
-                Unduh SVG
+                {t('Unduh SVG', 'Download SVG')}
               </Button>
             </div>
             <div className="overflow-hidden rounded-xl border">
               <div className="flex items-center justify-between border-b px-3 py-1 text-xs text-muted-foreground">
-                <span>Isi QR code</span>
+                <span>{t('Isi QR code', 'QR code content')}</span>
                 <CopyButton text={payload} />
               </div>
               <pre className="max-h-32 overflow-auto p-3 font-mono text-xs break-all whitespace-pre-wrap">{payload}</pre>
@@ -335,22 +400,30 @@ export default function QrGenerator() {
 }
 
 function Status({ readable }: { readable: 'checking' | 'ok' | 'fail' | null }) {
+  const t = useT()
   if (readable === 'checking')
     return (
       <p className="flex items-center gap-2 text-xs text-muted-foreground">
         <Loader2 className="size-3.5 animate-spin" />
-        Memeriksa apakah terbaca…
+        {t('Memeriksa apakah terbaca…', 'Checking that it scans…')}
       </p>
     )
   if (readable === 'ok')
     return (
       <p className="flex items-center gap-2 text-xs font-medium text-emerald-600 dark:text-emerald-400">
         <CheckCircle2 className="size-3.5" />
-        Terbaca dengan benar oleh pemindai
+        {t('Terbaca dengan benar oleh pemindai', 'Read correctly by the scanner')}
       </p>
     )
   if (readable === 'fail')
-    return <Note>Pemindai uji gagal membaca kode ini. Perbesar kontras, kecilkan logo, atau pilih bentuk Kotak.</Note>
+    return (
+      <Note>
+        {t(
+          'Pemindai uji gagal membaca kode ini. Perbesar kontras, kecilkan logo, atau pilih bentuk Kotak.',
+          'The test scanner couldn’t read this code. Increase the contrast, shrink the logo, or pick the Square shape.',
+        )}
+      </Note>
+    )
   return null
 }
 

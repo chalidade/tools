@@ -4,6 +4,7 @@
 
 import type { PDFPageProxy } from 'pdfjs-dist'
 import { loadPdf } from '@/lib/pdf-text'
+import { tr } from '@/lib/i18n'
 
 export { LockedPdfError } from '@/lib/pdf-text'
 
@@ -89,5 +90,5 @@ export async function exportImages(
   const zip = new JSZip()
   // Images are already compressed; storing them is as small and much faster.
   for (const f of files) zip.file(f.name, f.blob, { compression: 'STORE' })
-  return { blob: await zip.generateAsync({ type: 'blob' }), fileName: `${opts.baseName}-gambar.zip` }
+  return { blob: await zip.generateAsync({ type: 'blob' }), fileName: tr(`${opts.baseName}-gambar.zip`, `${opts.baseName}-images.zip`) }
 }

@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 import { ErrorNote } from '@/components/tool/ErrorNote'
 import { Segmented } from '@/components/tool/Segmented'
 import { downloadBlob } from '@/lib/download'
+import { tr, useT } from '@/lib/i18n'
 import { fixRecordedDuration, newId, safeFileName } from '@/lib/local-store'
 import { formatDuration, formatSize, hasWebCodecs, isCanceled } from '@/lib/media'
 import {
@@ -33,15 +34,25 @@ const FPS_OPTIONS: { value: Fps; label: string }[] = [
 function captureError(e: unknown) {
   const name = (e as DOMException)?.name
   if (name === 'NotAllowedError') return null // the visitor closed the picker: not an error
-  if (name === 'NotFoundError') return 'Tidak ada layar atau jendela yang bisa direkam.'
-  if (name === 'NotReadableError') return 'Layar tidak bisa direkam — mungkin sedang direkam aplikasi lain.'
-  return 'Perekaman layar tidak bisa dimulai di browser ini.'
+  if (name === 'NotFoundError')
+    return tr('Tidak ada layar atau jendela yang bisa direkam.', 'There is no screen or window to record.')
+  if (name === 'NotReadableError')
+    return tr(
+      'Layar tidak bisa direkam — mungkin sedang direkam aplikasi lain.',
+      "The screen can't be recorded — another app may be recording it.",
+    )
+  return tr('Perekaman layar tidak bisa dimulai di browser ini.', "Screen recording can't start in this browser.")
 }
 
-const WARNINGS: Record<CaptureWarning, string> = {
-  'system-audio-missing':
+const WARNINGS: Record<CaptureWarning, readonly [string, string]> = {
+  'system-audio-missing': [
     'Suara tab/sistem tidak ikut terekam — centang "Bagikan audio" di jendela pilihan untuk menyertakannya.',
-  'microphone-unavailable': 'Mikrofon tidak bisa dibuka, jadi rekaman ini tanpa suara mikrofon.',
+    'Tab/system audio wasn\'t recorded — tick "Share audio" in the picker to include it.',
+  ],
+  'microphone-unavailable': [
+    'Mikrofon tidak bisa dibuka, jadi rekaman ini tanpa suara mikrofon.',
+    "The microphone couldn't be opened, so this recording has no mic audio.",
+  ],
 }
 
 export interface ScreenRecorderProps {
@@ -54,6 +65,7 @@ export interface ScreenRecorderProps {
 }
 
 export default function ScreenRecorder({ persist = true, onRecording, showInTitle = true }: ScreenRecorderProps = {}) {
+  const t = useT()
   const supported = useMemo(canRecordScreen, [])
   const pipSupported = typeof document !== 'undefined' && !!document.pictureInPictureEnabled
 
@@ -81,7 +93,14 @@ export default function ScreenRecorder({ persist = true, onRecording, showInTitl
     if (!persist) return
     listScreenRecordings()
       .then(setRecordings)
-      .catch(() => setError('Penyimpanan browser tidak bisa dibuka (mode privat?). Rekaman tetap bisa diunduh.'))
+      .catch(() =>
+        setError(
+          tr(
+            'Penyimpanan browser tidak bisa dibuka (mode privat?). Rekaman tetap bisa diunduh.',
+            "Browser storage can't be opened (private mode?). You can still download your recordings.",
+          ),
+        ),
+      )
   }, [persist])
   useEffect(refresh, [refresh])
 
@@ -110,11 +129,11 @@ export default function ScreenRecorder({ persist = true, onRecording, showInTitl
   useEffect(() => {
     if (!showInTitle || (phase !== 'recording' && phase !== 'paused')) return
     const original = document.title
-    document.title = `${phase === 'recording' ? '● Merekam' : '❚❚ Dijeda'} ${formatDuration(elapsed)} — Rekam Layar`
+    document.title = `${phase === 'recording' ? t('● Merekam', '● Recording') : t('❚❚ Dijeda', '❚❚ Paused')} ${formatDuration(elapsed)} — ${t('Rekam Layar', 'Screen Recorder')}`
     return () => {
       document.title = original
     }
-  }, [phase, elapsed, showInTitle])
+  }, [phase, elapsed, showInTitle, t])
 
   // ------------------------------------------------------------- floating camera
 
@@ -156,7 +175,12 @@ export default function ScreenRecorder({ persist = true, onRecording, showInTitl
       cameraStream.current?.getTracks().forEach((t) => t.stop())
       cameraStream.current = null
       setCameraOn(false)
-      setError('Kamera tidak bisa dibuka. Pastikan izin kamera diberikan dan kamera tidak dipakai aplikasi lain.')
+      setError(
+        t(
+          'Kamera tidak bisa dibuka. Pastikan izin kamera diberikan dan kamera tidak dipakai aplikasi lain.',
+          "The camera couldn't be opened. Make sure camera access is allowed and no other app is using it.",
+        ),
+      )
     }
   }
 
@@ -182,7 +206,12 @@ export default function ScreenRecorder({ persist = true, onRecording, showInTitl
     try {
       await saveScreenRecording(recording)
     } catch {
-      setError('Rekaman terlalu besar untuk disimpan di browser ini. Unduh sekarang agar tidak hilang saat halaman ditutup.')
+      setError(
+        tr(
+          'Rekaman terlalu besar untuk disimpan di browser ini. Unduh sekarang agar tidak hilang saat halaman ditutup.',
+          "The recording is too large to save in this browser. Download it now so it isn't lost when the page closes.",
+        ),
+      )
     }
   }
 
@@ -200,7 +229,7 @@ export default function ScreenRecorder({ persist = true, onRecording, showInTitl
       return
     }
     captureRef.current = capture
-    setNotice(capture.warnings.map((w) => WARNINGS[w]).join(' '))
+    setNotice(capture.warnings.map((w) => t(...WARNINGS[w])).join(' '))
     // "Stop sharing" in the browser's own bar ends the take.
     capture.onended = () => void stop(true)
     if (previewRef.current) {
@@ -251,7 +280,12 @@ export default function ScreenRecorder({ persist = true, onRecording, showInTitl
 
   if (!supported)
     return (
-      <ErrorNote message="Perekaman layar hanya bisa di browser komputer (Chrome, Edge, Firefox, atau Safari versi terbaru) — ponsel dan tablet belum mengizinkan situs web merekam layar." />
+      <ErrorNote
+        message={t(
+          'Perekaman layar hanya bisa di browser komputer (Chrome, Edge, Firefox, atau Safari versi terbaru) — ponsel dan tablet belum mengizinkan situs web merekam layar.',
+          "Screen recording only works in desktop browsers (the latest Chrome, Edge, Firefox, or Safari) — phones and tablets don't let websites record the screen yet.",
+        )}
+      />
     )
 
   const active = phase === 'recording' || phase === 'paused'
@@ -270,17 +304,21 @@ export default function ScreenRecorder({ persist = true, onRecording, showInTitl
                   type="button"
                   onClick={() => void start()}
                   className="mx-auto grid size-20 place-items-center rounded-full bg-red-500 text-white shadow-lg shadow-red-500/30 transition-transform hover:scale-105"
-                  aria-label="Mulai rekam layar"
+                  aria-label={t('Mulai rekam layar', 'Start screen recording')}
                 >
                   <MonitorUp className="size-8" />
                 </button>
-                <p className="mt-4 font-medium text-white">Mulai rekam layar</p>
-                <p className="mt-1 text-sm text-zinc-400">Pilih seluruh layar, satu jendela, atau satu tab browser.</p>
+                <p className="mt-4 font-medium text-white">{t('Mulai rekam layar', 'Start screen recording')}</p>
+                <p className="mt-1 text-sm text-zinc-400">
+                  {t('Pilih seluruh layar, satu jendela, atau satu tab browser.', 'Pick your entire screen, a window, or a browser tab.')}
+                </p>
               </div>
             </div>
           )}
           {phase === 'picking' && (
-            <p className="absolute inset-0 grid place-items-center text-sm text-zinc-400">Pilih apa yang mau direkam…</p>
+            <p className="absolute inset-0 grid place-items-center text-sm text-zinc-400">
+              {t('Pilih apa yang mau direkam…', 'Choose what to record…')}
+            </p>
           )}
           {phase === 'countdown' && (
             <div className="absolute inset-0 grid place-items-center bg-black/50">
@@ -292,7 +330,7 @@ export default function ScreenRecorder({ persist = true, onRecording, showInTitl
           {active && (
             <span className="absolute top-3 left-3 flex items-center gap-2 rounded-full bg-black/60 px-3 py-1 font-mono text-sm text-white backdrop-blur">
               <span className={cn('size-2.5 rounded-full', phase === 'recording' ? 'animate-pulse bg-red-500' : 'bg-amber-400')} />
-              {phase === 'recording' ? 'REC' : 'JEDA'} {formatDuration(elapsed)}
+              {phase === 'recording' ? 'REC' : t('JEDA', 'PAUSED')} {formatDuration(elapsed)}
             </span>
           )}
         </div>
@@ -303,8 +341,8 @@ export default function ScreenRecorder({ persist = true, onRecording, showInTitl
             <button
               type="button"
               onClick={() => stop(false)}
-              aria-label="Batalkan rekaman"
-              title="Batalkan (tidak disimpan)"
+              aria-label={t('Batalkan rekaman', 'Discard recording')}
+              title={t('Batalkan (tidak disimpan)', 'Discard (not saved)')}
               className="grid size-11 place-items-center rounded-full border bg-background text-muted-foreground transition-colors hover:text-destructive"
             >
               <X className="size-5" />
@@ -313,8 +351,8 @@ export default function ScreenRecorder({ persist = true, onRecording, showInTitl
               type="button"
               onClick={() => stop(true)}
               disabled={!active}
-              aria-label="Selesai dan simpan"
-              title="Selesai & simpan"
+              aria-label={t('Selesai dan simpan', 'Finish and save')}
+              title={t('Selesai & simpan', 'Finish & save')}
               className="grid size-14 place-items-center rounded-full bg-red-500 text-white shadow-lg shadow-red-500/30 transition-transform hover:scale-105 disabled:opacity-50"
             >
               <Square className="size-6 fill-current" />
@@ -323,8 +361,8 @@ export default function ScreenRecorder({ persist = true, onRecording, showInTitl
               type="button"
               onClick={phase === 'recording' ? pause : resume}
               disabled={!active}
-              aria-label={phase === 'paused' ? 'Lanjutkan' : 'Jeda'}
-              title={phase === 'paused' ? 'Lanjutkan' : 'Jeda'}
+              aria-label={phase === 'paused' ? t('Lanjutkan', 'Resume') : t('Jeda', 'Pause')}
+              title={phase === 'paused' ? t('Lanjutkan', 'Resume') : t('Jeda', 'Pause')}
               className="grid size-11 place-items-center rounded-full border bg-background transition-colors hover:bg-accent disabled:opacity-50"
             >
               {phase === 'paused' ? <Play className="size-5" /> : <Pause className="size-5" />}
@@ -335,18 +373,18 @@ export default function ScreenRecorder({ persist = true, onRecording, showInTitl
         {/* Settings */}
         <div className="grid gap-5 border-t bg-muted/30 px-5 py-5 sm:grid-cols-2 sm:px-8">
           <div className="space-y-2">
-            <p className="text-xs font-medium text-muted-foreground">Suara</p>
+            <p className="text-xs font-medium text-muted-foreground">{t('Suara', 'Audio')}</p>
             <Toggle checked={systemAudio} disabled={busy} onChange={setSystemAudio}>
-              Suara tab / sistem
+              {t('Suara tab / sistem', 'Tab / system audio')}
             </Toggle>
             <Toggle checked={mic} disabled={busy} onChange={setMic}>
-              Mikrofon (suaramu)
+              {t('Mikrofon (suaramu)', 'Microphone (your voice)')}
             </Toggle>
           </div>
           <div className="space-y-3">
-            <Segmented label="Kehalusan gerak" value={fps} options={FPS_OPTIONS} onChange={setFps} disabled={busy} />
+            <Segmented label={t('Kehalusan gerak', 'Motion smoothness')} value={fps} options={FPS_OPTIONS} onChange={setFps} disabled={busy} />
             <Toggle checked={useCountdown} disabled={busy} onChange={setUseCountdown}>
-              Hitung mundur 3 detik sebelum mulai
+              {t('Hitung mundur 3 detik sebelum mulai', '3-second countdown before starting')}
             </Toggle>
           </div>
           <div className="flex flex-wrap items-center gap-3 sm:col-span-2">
@@ -358,18 +396,26 @@ export default function ScreenRecorder({ persist = true, onRecording, showInTitl
             />
             <Button variant="outline" size="sm" onClick={() => void toggleCamera()}>
               {cameraOn ? <CameraOff className="size-4" /> : <Camera className="size-4" />}
-              {cameraOn ? 'Matikan kamera' : 'Tampilkan kamera melayang'}
+              {cameraOn ? t('Matikan kamera', 'Turn off camera') : t('Tampilkan kamera melayang', 'Show floating camera')}
             </Button>
             <p className="min-w-0 flex-1 text-xs leading-relaxed text-muted-foreground">
               {pipSupported
-                ? 'Wajahmu tampil di jendela kecil yang selalu di atas — ikut terekam saat kamu merekam seluruh layar.'
-                : 'Browser ini tidak punya jendela melayang (picture-in-picture), jadi kamera hanya tampil di halaman ini.'}
+                ? t(
+                    'Wajahmu tampil di jendela kecil yang selalu di atas — ikut terekam saat kamu merekam seluruh layar.',
+                    'Your face appears in a small always-on-top window — it gets recorded when you record the entire screen.',
+                  )
+                : t(
+                    'Browser ini tidak punya jendela melayang (picture-in-picture), jadi kamera hanya tampil di halaman ini.',
+                    "This browser has no floating window (picture-in-picture), so the camera only shows on this page.",
+                  )}
             </p>
           </div>
           <p className="text-xs leading-relaxed text-muted-foreground sm:col-span-2">
-            Di Chrome dan Edge, centang <b>Bagikan audio</b> di jendela pilihan agar suara tab (atau seluruh sistem, di
-            Windows) ikut terekam. Hentikan kapan saja dengan tombol merah di sini atau "Berhenti berbagi" milik
-            browser.
+            {t('Di Chrome dan Edge, centang', 'In Chrome and Edge, tick')} <b>{t('Bagikan audio', 'Share audio')}</b>{' '}
+            {t(
+              'di jendela pilihan agar suara tab (atau seluruh sistem, di Windows) ikut terekam. Hentikan kapan saja dengan tombol merah di sini atau "Berhenti berbagi" milik browser.',
+              'in the picker so the tab\'s audio (or the whole system\'s, on Windows) is recorded too. Stop anytime with the red button here or the browser\'s own "Stop sharing".',
+            )}
           </p>
         </div>
       </div>
@@ -381,12 +427,16 @@ export default function ScreenRecorder({ persist = true, onRecording, showInTitl
 
       <section>
         <div className="flex items-baseline justify-between gap-3">
-          <h2 className="text-lg font-semibold tracking-tight">Rekaman</h2>
-          <p className="text-xs text-muted-foreground">{persist ? 'Tersimpan di browser ini saja' : 'Hilang saat halaman ditutup — unduh dulu'}</p>
+          <h2 className="text-lg font-semibold tracking-tight">{t('Rekaman', 'Recordings')}</h2>
+          <p className="text-xs text-muted-foreground">
+            {persist
+              ? t('Tersimpan di browser ini saja', 'Saved in this browser only')
+              : t('Hilang saat halaman ditutup — unduh dulu', 'Lost when the page closes — download first')}
+          </p>
         </div>
         {recordings.length === 0 ? (
           <p className="mt-3 rounded-2xl border border-dashed p-8 text-center text-sm text-muted-foreground">
-            Belum ada rekaman layar.
+            {t('Belum ada rekaman layar.', 'No screen recordings yet.')}
           </p>
         ) : (
           <ul className="mt-3 grid gap-4 md:grid-cols-2">
@@ -445,6 +495,7 @@ function RecordingCard({
   onRename: (name: string) => void
   onDelete: () => void
 }) {
+  const t = useT()
   const url = useMemo(() => URL.createObjectURL(recording.blob), [recording.blob])
   useEffect(() => () => URL.revokeObjectURL(url), [url])
   const [name, setName] = useState(recording.name)
@@ -462,7 +513,13 @@ function RecordingCard({
       const blob = await toMp4(recording.blob, setProgress, (c) => (cancel.current = c))
       downloadBlob(blob, `${file}.mp4`)
     } catch (e) {
-      if (!isCanceled(e)) setError(`Gagal mengubah ke MP4. Unduh format aslinya (.${ext}) sebagai gantinya.`)
+      if (!isCanceled(e))
+        setError(
+          t(
+            `Gagal mengubah ke MP4. Unduh format aslinya (.${ext}) sebagai gantinya.`,
+            `Couldn't convert to MP4. Download the original format (.${ext}) instead.`,
+          ),
+        )
     } finally {
       setProgress(null)
       cancel.current = null
@@ -484,7 +541,7 @@ function RecordingCard({
           onChange={(e) => setName(e.target.value)}
           onBlur={() => name !== recording.name && onRename(name)}
           onKeyDown={(e) => e.key === 'Enter' && e.currentTarget.blur()}
-          aria-label="Nama rekaman"
+          aria-label={t('Nama rekaman', 'Recording name')}
           className="w-full rounded-md bg-transparent px-1 py-0.5 font-medium outline-none hover:bg-muted focus:bg-muted"
         />
         <p className="mt-1 px-1 font-mono text-xs text-muted-foreground">
@@ -493,34 +550,34 @@ function RecordingCard({
         </p>
         <div className="mt-3 flex flex-wrap items-center gap-2">
           <Button size="sm" variant="outline" onClick={() => downloadBlob(recording.blob, `${file}.${ext}`)}>
-            <Download className="size-4" /> Unduh .{ext}
+            <Download className="size-4" /> {t('Unduh', 'Download')} .{ext}
           </Button>
           {hasWebCodecs() && ext !== 'mp4' && (
             <Button size="sm" variant="outline" disabled={progress !== null} onClick={() => void saveMp4()}>
-              {progress !== null ? `MP4 ${Math.round(progress * 100)}%` : 'Ubah ke MP4'}
+              {progress !== null ? `MP4 ${Math.round(progress * 100)}%` : t('Ubah ke MP4', 'Convert to MP4')}
             </Button>
           )}
           {progress !== null && (
             <Button size="sm" variant="ghost" onClick={() => cancel.current?.()}>
-              Batal
+              {t('Batal', 'Cancel')}
             </Button>
           )}
           {confirming ? (
             <span className="ml-auto flex items-center gap-1.5 text-sm">
-              Hapus?
+              {t('Hapus?', 'Delete?')}
               <Button size="sm" variant="destructive" onClick={onDelete}>
-                Hapus
+                {t('Hapus', 'Delete')}
               </Button>
               <Button size="sm" variant="ghost" onClick={() => setConfirming(false)}>
-                Batal
+                {t('Batal', 'Cancel')}
               </Button>
             </span>
           ) : (
             <button
               type="button"
               onClick={() => setConfirming(true)}
-              aria-label="Hapus rekaman"
-              title="Hapus rekaman"
+              aria-label={t('Hapus rekaman', 'Delete recording')}
+              title={t('Hapus rekaman', 'Delete recording')}
               className="ml-auto grid size-8 place-items-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-destructive"
             >
               <Trash2 className="size-4" />

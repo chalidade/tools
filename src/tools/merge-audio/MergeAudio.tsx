@@ -8,6 +8,7 @@ import { Segmented } from '@/components/tool/Segmented'
 import { ProgressCard } from '@/components/tool/SizeResult'
 import { downloadBlob } from '@/lib/download'
 import { AUDIO_OUTPUTS, formatDuration, formatSize, hasWebCodecs, isCanceled, NoEncoderError, probeMedia, type AudioOut } from '@/lib/media'
+import { useT } from '@/lib/i18n'
 import { mergeAudio, type AudioItem } from './merge'
 
 const ACCEPT = 'audio/*,video/*,.mkv,.flac,.m4a'
@@ -16,14 +17,15 @@ const OUT_OPTIONS: { value: AudioOut; label: string }[] = [
   { value: 'm4a', label: 'M4A' },
   { value: 'wav', label: 'WAV' },
 ]
-const GAP_OPTIONS: { value: number; label: string }[] = [
-  { value: 0, label: 'Tanpa' },
-  { value: 0.5, label: '0,5 dtk' },
-  { value: 1, label: '1 dtk' },
-  { value: 2, label: '2 dtk' },
-]
 
 export default function MergeAudio() {
+  const t = useT()
+  const GAP_OPTIONS: { value: number; label: string }[] = [
+    { value: 0, label: t('Tanpa', 'None') },
+    { value: 0.5, label: t('0,5 dtk', '0.5 s') },
+    { value: 1, label: t('1 dtk', '1 s') },
+    { value: 2, label: t('2 dtk', '2 s') },
+  ]
   const [items, setItems] = useState<AudioItem[]>([])
   const [loading, setLoading] = useState(0)
   const [out, setOut] = useState<AudioOut>('mp3')
@@ -39,7 +41,12 @@ export default function MergeAudio() {
   async function add(files: File[]) {
     setError(null)
     if (!hasWebCodecs()) {
-      setError('Browser ini belum mendukung WebCodecs. Pakai Chrome, Edge, Safari 16.4+, atau Firefox 130+.')
+      setError(
+        t(
+          'Browser ini belum mendukung WebCodecs. Pakai Chrome, Edge, Safari 16.4+, atau Firefox 130+.',
+          "This browser doesn't support WebCodecs yet. Use Chrome, Edge, Safari 16.4+, or Firefox 130+.",
+        ),
+      )
       return
     }
     setLoading((n) => n + files.length)
@@ -55,7 +62,10 @@ export default function MergeAudio() {
         setLoading((n) => n - 1)
       }
     }
-    if (skipped.length) setError(`${skipped.join(', ')} dilewati: tidak ada suara yang bisa dibaca.`)
+    if (skipped.length)
+      setError(
+        `${skipped.join(', ')} ${t('dilewati: tidak ada suara yang bisa dibaca.', 'skipped: no readable audio found.')}`,
+      )
   }
 
   function move(id: string, by: number) {
@@ -86,8 +96,11 @@ export default function MergeAudio() {
       if (isCanceled(e)) return
       setError(
         e instanceof NoEncoderError
-          ? 'Browser ini tidak bisa meng-encode format itu. Coba WAV, atau Chrome/Edge terbaru.'
-          : 'Gagal menggabungkan. Salah satu file mungkin rusak.',
+          ? t(
+              'Browser ini tidak bisa meng-encode format itu. Coba WAV, atau Chrome/Edge terbaru.',
+              "This browser can't encode that format. Try WAV, or the latest Chrome/Edge.",
+            )
+          : t('Gagal menggabungkan. Salah satu file mungkin rusak.', "Couldn't merge the files. One of them may be damaged."),
       )
     } finally {
       setJob(null)
@@ -104,12 +117,15 @@ export default function MergeAudio() {
         <FileDrop
           accept={ACCEPT}
           multiple
-          label="Tarik beberapa file audio ke sini"
-          busyLabel={loading ? `Membaca ${loading} file…` : undefined}
+          label={t('Tarik beberapa file audio ke sini', 'Drop several audio files here')}
+          busyLabel={loading ? t(`Membaca ${loading} file…`, `Reading ${loading} file${loading === 1 ? '' : 's'}…`) : undefined}
           onFiles={(f) => void add(f)}
         />
         <p className="text-center text-xs text-muted-foreground">
-          MP3, M4A, WAV, OGG, FLAC, atau suara dari video — boleh campur format.
+          {t(
+            'MP3, M4A, WAV, OGG, FLAC, atau suara dari video — boleh campur format.',
+            'MP3, M4A, WAV, OGG, FLAC, or audio from a video — mixing formats is fine.',
+          )}
         </p>
         {error && <ErrorNote message={error} />}
       </div>
@@ -121,24 +137,28 @@ export default function MergeAudio() {
       <div className="flex flex-col gap-4 rounded-2xl border bg-card p-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <p className="font-medium">
-            {items.length} file · {formatDuration(total)}
+            {items.length} {t('file', items.length === 1 ? 'file' : 'files')} · {formatDuration(total)}
           </p>
           <p className="text-sm text-muted-foreground">
-            {loading ? `Membaca ${loading} file lagi…` : items.length < 2 ? 'Tambahkan minimal satu file lagi.' : 'Diputar berurutan dari atas.'}
+            {loading
+              ? t(`Membaca ${loading} file lagi…`, `Reading ${loading} more file${loading === 1 ? '' : 's'}…`)
+              : items.length < 2
+                ? t('Tambahkan minimal satu file lagi.', 'Add at least one more file.')
+                : t('Diputar berurutan dari atas.', 'Played in order from the top.')}
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
           <Button onClick={() => void run()} disabled={busy || loading > 0 || items.length < 2}>
             <Combine />
-            Gabung
+            {t('Gabung', 'Merge')}
           </Button>
           <Button variant="outline" disabled={busy} onClick={() => addRef.current?.click()}>
             <Plus />
-            Tambah
+            {t('Tambah', 'Add')}
           </Button>
           <Button variant="ghost" disabled={busy} onClick={() => setItems([])}>
             <Trash2 />
-            Hapus semua
+            {t('Hapus semua', 'Remove all')}
           </Button>
           <input
             ref={addRef}
@@ -170,13 +190,13 @@ export default function MergeAudio() {
               </p>
             </div>
             <div className="flex">
-              <IconButton label="Naik" disabled={busy || i === 0} onClick={() => move(item.id, -1)}>
+              <IconButton label={t('Naik', 'Move up')} disabled={busy || i === 0} onClick={() => move(item.id, -1)}>
                 <ChevronUp />
               </IconButton>
-              <IconButton label="Turun" disabled={busy || i === items.length - 1} onClick={() => move(item.id, 1)}>
+              <IconButton label={t('Turun', 'Move down')} disabled={busy || i === items.length - 1} onClick={() => move(item.id, 1)}>
                 <ChevronDown />
               </IconButton>
-              <IconButton label="Hapus" disabled={busy} onClick={() => setItems((prev) => prev.filter((p) => p.id !== item.id))}>
+              <IconButton label={t('Hapus', 'Remove')} disabled={busy} onClick={() => setItems((prev) => prev.filter((p) => p.id !== item.id))}>
                 <X />
               </IconButton>
             </div>
@@ -185,19 +205,19 @@ export default function MergeAudio() {
       </ol>
 
       <div className="flex flex-wrap gap-x-8 gap-y-4 rounded-2xl border bg-card p-4">
-        <Segmented label="Format hasil" value={out} options={OUT_OPTIONS} disabled={busy} onChange={setOut} />
-        <Segmented label="Jeda antar file" value={gap} options={GAP_OPTIONS} disabled={busy} onChange={setGap} />
+        <Segmented label={t('Format hasil', 'Output format')} value={out} options={OUT_OPTIONS} disabled={busy} onChange={setOut} />
+        <Segmented label={t('Jeda antar file', 'Gap between files')} value={gap} options={GAP_OPTIONS} disabled={busy} onChange={setGap} />
       </div>
 
       {job && (
         <ProgressCard
-          label="Menggabungkan…"
+          label={t('Menggabungkan…', 'Merging…')}
           progress={job.progress}
           startedAt={job.startedAt}
           action={
             <Button variant="ghost" size="sm" onClick={() => cancelRef.current?.()}>
               <Square />
-              Batalkan
+              {t('Batalkan', 'Cancel')}
             </Button>
           }
         />
@@ -210,9 +230,9 @@ export default function MergeAudio() {
             <p className="text-sm text-muted-foreground">
               {formatDuration(result.duration)} · {formatSize(result.blob.size)}
             </p>
-            <Button onClick={() => downloadBlob(result.blob, `gabungan.${result.ext}`)}>
+            <Button onClick={() => downloadBlob(result.blob, `${t('gabungan', 'merged')}.${result.ext}`)}>
               <Download />
-              Unduh .{result.ext}
+              {t('Unduh', 'Download')} .{result.ext}
             </Button>
           </div>
         </div>

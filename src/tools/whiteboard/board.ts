@@ -55,16 +55,19 @@ export interface BoardDoc {
   pages: Page[]
 }
 
-/** Colours are stored by name and resolved per surface, so a drawing stays readable when the board flips. */
+/**
+ * Colours are stored by name and resolved per surface, so a drawing stays readable when the board flips.
+ * label is [Indonesian, English]; render it with t(...label).
+ */
 export const COLORS = [
-  { id: 'ink', label: 'Tinta', white: '#111827', black: '#f8fafc' },
-  { id: 'red', label: 'Merah', white: '#dc2626', black: '#fca5a5' },
-  { id: 'blue', label: 'Biru', white: '#2563eb', black: '#93c5fd' },
-  { id: 'green', label: 'Hijau', white: '#16a34a', black: '#86efac' },
-  { id: 'orange', label: 'Oranye', white: '#ea580c', black: '#fdba74' },
-  { id: 'purple', label: 'Ungu', white: '#7c3aed', black: '#c4b5fd' },
-  { id: 'yellow', label: 'Kuning', white: '#ca8a04', black: '#fde047' },
-  { id: 'pink', label: 'Merah muda', white: '#db2777', black: '#f9a8d4' },
+  { id: 'ink', label: ['Tinta', 'Ink'], white: '#111827', black: '#f8fafc' },
+  { id: 'red', label: ['Merah', 'Red'], white: '#dc2626', black: '#fca5a5' },
+  { id: 'blue', label: ['Biru', 'Blue'], white: '#2563eb', black: '#93c5fd' },
+  { id: 'green', label: ['Hijau', 'Green'], white: '#16a34a', black: '#86efac' },
+  { id: 'orange', label: ['Oranye', 'Orange'], white: '#ea580c', black: '#fdba74' },
+  { id: 'purple', label: ['Ungu', 'Purple'], white: '#7c3aed', black: '#c4b5fd' },
+  { id: 'yellow', label: ['Kuning', 'Yellow'], white: '#ca8a04', black: '#fde047' },
+  { id: 'pink', label: ['Merah muda', 'Pink'], white: '#db2777', black: '#f9a8d4' },
 ] as const
 
 export const SURFACES: Record<Surface, { bg: string; line: string; label: string }> = {

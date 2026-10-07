@@ -6,6 +6,7 @@ import { FileDrop } from '@/components/tool/FileDrop'
 import { IconButton } from '@/components/tool/IconButton'
 import { Segmented } from '@/components/tool/Segmented'
 import { downloadBlob, withExtension } from '@/lib/download'
+import { tr, useT } from '@/lib/i18n'
 import { cn } from '@/lib/utils'
 import {
   buildPdf,
@@ -22,30 +23,39 @@ import {
 
 const ACCEPT = 'image/*,.heic,.heif'
 
-const PAGE_OPTIONS: { value: PageSize; label: string }[] = [
-  { value: 'a4', label: 'A4' },
-  { value: 'letter', label: 'Letter' },
-  { value: 'fit', label: 'Sesuai gambar' },
-]
-
-const ORIENTATION_OPTIONS: { value: Orientation; label: string }[] = [
-  { value: 'auto', label: 'Otomatis' },
-  { value: 'portrait', label: 'Potret' },
-  { value: 'landscape', label: 'Lanskap' },
-]
-
-const MARGIN_OPTIONS: { value: number; label: string }[] = [
-  { value: 0, label: 'Tanpa' },
-  { value: 20, label: 'Kecil' },
-  { value: 40, label: 'Besar' },
-]
-
 function skippedMessage(names: string[]) {
-  const list = names.length > 3 ? `${names.slice(0, 3).join(', ')} dan ${names.length - 3} lainnya` : names.join(', ')
-  return `${list} tidak bisa dibaca browser ini dan dilewati. Foto HEIC dari iPhone hanya terbaca di Safari — ubah ke JPG dulu bila perlu.`
+  const rest = names.length - 3
+  const list =
+    names.length > 3
+      ? tr(`${names.slice(0, 3).join(', ')} dan ${rest} lainnya`, `${names.slice(0, 3).join(', ')} and ${rest} more`)
+      : names.join(', ')
+  return tr(
+    `${list} tidak bisa dibaca browser ini dan dilewati. Foto HEIC dari iPhone hanya terbaca di Safari — ubah ke JPG dulu bila perlu.`,
+    `${list} couldn't be read by this browser and ${names.length === 1 ? 'was' : 'were'} skipped. iPhone HEIC photos only open in Safari — convert them to JPG first if needed.`,
+  )
 }
 
 export default function ImageToPdf() {
+  const t = useT()
+
+  const PAGE_OPTIONS: { value: PageSize; label: string }[] = [
+    { value: 'a4', label: 'A4' },
+    { value: 'letter', label: 'Letter' },
+    { value: 'fit', label: t('Sesuai gambar', 'Fit image') },
+  ]
+
+  const ORIENTATION_OPTIONS: { value: Orientation; label: string }[] = [
+    { value: 'auto', label: t('Otomatis', 'Auto') },
+    { value: 'portrait', label: t('Potret', 'Portrait') },
+    { value: 'landscape', label: t('Lanskap', 'Landscape') },
+  ]
+
+  const MARGIN_OPTIONS: { value: number; label: string }[] = [
+    { value: 0, label: t('Tanpa', 'None') },
+    { value: 20, label: t('Kecil', 'Small') },
+    { value: 40, label: t('Besar', 'Large') },
+  ]
+
   const [items, setItems] = useState<ImageItem[]>([])
   const [opts, setOpts] = useState<PdfOptions>({ page: 'a4', orientation: 'auto', margin: 20 })
   const [loading, setLoading] = useState(0)
@@ -111,10 +121,15 @@ export default function ImageToPdf() {
     setProgress({ done: 0, total: items.length })
     try {
       const blob = await buildPdf(items, opts, (done, total) => setProgress({ done, total }))
-      const name = items.length === 1 ? withExtension(items[0].file.name, '.pdf') : 'gambar.pdf'
+      const name = items.length === 1 ? withExtension(items[0].file.name, '.pdf') : tr('gambar.pdf', 'images.pdf')
       downloadBlob(blob, name)
     } catch {
-      setError('Gagal membuat PDF. Coba kurangi jumlah gambar atau ukurannya.')
+      setError(
+        tr(
+          'Gagal membuat PDF. Coba kurangi jumlah gambar atau ukurannya.',
+          "Couldn't create the PDF. Try fewer or smaller images.",
+        ),
+      )
     } finally {
       setProgress(null)
     }
@@ -128,11 +143,13 @@ export default function ImageToPdf() {
         <FileDrop
           accept={ACCEPT}
           multiple
-          label="Tarik gambar ke sini"
-          busyLabel={loading ? `Membaca ${loading} gambar…` : undefined}
+          label={t('Tarik gambar ke sini', 'Drag images here')}
+          busyLabel={loading ? t(`Membaca ${loading} gambar…`, `Reading ${loading} images…`) : undefined}
           onFiles={(files) => void add(files)}
         />
-        <p className="text-center text-xs text-muted-foreground">JPG, PNG, WebP, GIF, BMP — bisa banyak sekaligus.</p>
+        <p className="text-center text-xs text-muted-foreground">
+          {t('JPG, PNG, WebP, GIF, BMP — bisa banyak sekaligus.', 'JPG, PNG, WebP, GIF, BMP — add as many as you like at once.')}
+        </p>
         {error && <ErrorNote message={error} />}
       </div>
     )
@@ -144,28 +161,28 @@ export default function ImageToPdf() {
       <div className="flex flex-col gap-4 rounded-2xl border bg-card p-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <p className="font-medium">
-            {items.length} gambar · {items.length} halaman
+            {t(`${items.length} gambar · ${items.length} halaman`, `${items.length} images · ${items.length} pages`)}
           </p>
           <p className="text-sm text-muted-foreground">
             {busy
-              ? `Membuat PDF… halaman ${progress.done}/${progress.total}`
+              ? t(`Membuat PDF… halaman ${progress.done}/${progress.total}`, `Creating PDF… page ${progress.done}/${progress.total}`)
               : loading
-                ? `Membaca ${loading} gambar lagi…`
-                : 'Seret untuk mengatur urutan.'}
+                ? t(`Membaca ${loading} gambar lagi…`, `Reading ${loading} more images…`)
+                : t('Seret untuk mengatur urutan.', 'Drag to reorder.')}
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
           <Button onClick={exportPdf} disabled={busy || loading > 0}>
             {busy ? <Loader2 className="animate-spin" /> : <Download />}
-            Unduh PDF
+            {t('Unduh PDF', 'Download PDF')}
           </Button>
           <Button variant="outline" disabled={busy} onClick={() => addRef.current?.click()}>
             <Plus />
-            Tambah
+            {t('Tambah', 'Add')}
           </Button>
           <Button variant="ghost" disabled={busy} onClick={() => setItems([])}>
             <Trash2 />
-            Hapus semua
+            {t('Hapus semua', 'Remove all')}
           </Button>
           <input
             ref={addRef}
@@ -185,14 +202,14 @@ export default function ImageToPdf() {
       {/* Settings */}
       <div className="flex flex-wrap gap-x-8 gap-y-4 rounded-2xl border bg-card p-4">
         <Segmented
-          label="Ukuran kertas"
+          label={t('Ukuran kertas', 'Paper size')}
           value={opts.page}
           options={PAGE_OPTIONS}
           disabled={busy}
           onChange={(page) => setOpts((o) => ({ ...o, page }))}
         />
         <Segmented
-          label="Orientasi"
+          label={t('Orientasi', 'Orientation')}
           value={opts.orientation}
           options={ORIENTATION_OPTIONS}
           disabled={busy || opts.page === 'fit'}
@@ -262,11 +279,11 @@ export default function ImageToPdf() {
 
               <div className="mt-2 flex items-center justify-between">
                 <div className="flex">
-                  <IconButton label="Pindah ke kiri" disabled={busy || i === 0} onClick={() => move(item.id, -1)}>
+                  <IconButton label={t('Pindah ke kiri', 'Move left')} disabled={busy || i === 0} onClick={() => move(item.id, -1)}>
                     <ChevronLeft />
                   </IconButton>
                   <IconButton
-                    label="Pindah ke kanan"
+                    label={t('Pindah ke kanan', 'Move right')}
                     disabled={busy || i === items.length - 1}
                     onClick={() => move(item.id, 1)}
                   >
@@ -274,11 +291,11 @@ export default function ImageToPdf() {
                   </IconButton>
                 </div>
                 <div className="flex">
-                  <IconButton label="Putar 90°" disabled={busy} onClick={() => void rotate(item.id)}>
+                  <IconButton label={t('Putar 90°', 'Rotate 90°')} disabled={busy} onClick={() => void rotate(item.id)}>
                     <RotateCw />
                   </IconButton>
                   <IconButton
-                    label="Hapus"
+                    label={t('Hapus', 'Remove')}
                     disabled={busy}
                     onClick={() => setItems((prev) => prev.filter((p) => p.id !== item.id))}
                   >
@@ -298,7 +315,7 @@ export default function ImageToPdf() {
             className="flex h-full min-h-48 w-full flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed text-sm text-muted-foreground transition-colors hover:border-brand-2/40 hover:text-foreground"
           >
             <Plus className="size-5" />
-            Tambah gambar
+            {t('Tambah gambar', 'Add images')}
           </button>
         </li>
       </ol>

@@ -1,6 +1,7 @@
 import { useState, type DragEvent } from 'react'
 import { Loader2, Upload } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { useT } from '@/lib/i18n'
 
 interface FileDropProps {
   /** Passed straight to the input's `accept`. */
@@ -16,6 +17,7 @@ interface FileDropProps {
 
 /** Drag-and-drop or click-to-pick zone for one or more files. Reads nothing itself. */
 export function FileDrop({ accept, label, busyLabel, multiple = false, onFiles }: FileDropProps) {
+  const t = useT()
   const [dragging, setDragging] = useState(false)
 
   function onDrop(e: DragEvent) {
@@ -51,7 +53,9 @@ export function FileDrop({ accept, label, busyLabel, multiple = false, onFiles }
       </span>
       <p className="relative mt-5 text-lg font-medium tracking-tight">{busyLabel ?? label}</p>
       <p className="relative mt-1 text-sm text-muted-foreground">
-        {busyLabel ? 'Diproses di perangkatmu…' : 'atau klik untuk memilih dari perangkat'}
+        {busyLabel
+          ? t('Diproses di perangkatmu…', 'Processing on your device…')
+          : t('atau klik untuk memilih dari perangkat', 'or click to choose from your device')}
       </p>
       <input
         type="file"

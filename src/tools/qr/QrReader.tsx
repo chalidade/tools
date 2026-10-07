@@ -5,16 +5,18 @@ import { CopyButton } from '@/components/tool/CopyButton'
 import { ErrorNote } from '@/components/tool/ErrorNote'
 import { FileDrop } from '@/components/tool/FileDrop'
 import { Segmented } from '@/components/tool/Segmented'
+import { useT } from '@/lib/i18n'
 import { parseQr } from './payload'
 import { formatName, isQrLike, scanFile, scanPixels, type Scan } from './scan'
 
 type Source = 'image' | 'camera'
-const SOURCE_OPTIONS: { value: Source; label: string }[] = [
-  { value: 'image', label: 'Dari gambar' },
-  { value: 'camera', label: 'Kamera' },
+const SOURCE_OPTIONS: { value: Source; label: readonly [string, string] }[] = [
+  { value: 'image', label: ['Dari gambar', 'From image'] },
+  { value: 'camera', label: ['Kamera', 'Camera'] },
 ]
 
 export default function QrReader() {
+  const t = useT()
   const [source, setSource] = useState<Source>('image')
   const [results, setResults] = useState<Scan[] | null>(null)
   const [busy, setBusy] = useState(false)
@@ -28,11 +30,14 @@ export default function QrReader() {
       const found = await scanFile(file)
       if (!found.length)
         setError(
-          'Tidak ada QR code atau barcode yang terbaca di gambar ini. Pastikan kodenya utuh, tajam, dan tidak terlalu kecil.',
+          t(
+            'Tidak ada QR code atau barcode yang terbaca di gambar ini. Pastikan kodenya utuh, tajam, dan tidak terlalu kecil.',
+            'No QR code or barcode could be read in this image. Make sure the code is whole, sharp, and not too small.',
+          ),
         )
       else setResults(found)
     } catch {
-      setError('Gambar tidak bisa dibaca. Coba JPG, PNG, atau WebP.')
+      setError(t('Gambar tidak bisa dibaca. Coba JPG, PNG, atau WebP.', 'The image can’t be read. Try JPG, PNG, or WebP.'))
     } finally {
       setBusy(false)
     }
@@ -51,9 +56,9 @@ export default function QrReader() {
   return (
     <div className="space-y-6">
       <Segmented
-        label="Sumber"
+        label={t('Sumber', 'Source')}
         value={source}
-        options={SOURCE_OPTIONS}
+        options={SOURCE_OPTIONS.map((o) => ({ value: o.value, label: t(...o.label) }))}
         onChange={(s) => {
           setSource(s)
           setError(null)
@@ -63,7 +68,9 @@ export default function QrReader() {
       {results ? (
         <div className="space-y-4">
           {results.length > 1 && (
-            <p className="text-sm text-muted-foreground">{results.length} kode ditemukan di gambar ini.</p>
+            <p className="text-sm text-muted-foreground">
+              {t(`${results.length} kode ditemukan di gambar ini.`, `${results.length} codes found in this image.`)}
+            </p>
           )}
           {results.map((r, i) => (
             <Result key={i} scan={r} onAgain={() => setResults(null)} />
@@ -73,12 +80,12 @@ export default function QrReader() {
         <div className="space-y-3">
           <FileDrop
             accept="image/*"
-            label="Tarik gambar QR code atau barcode ke sini"
-            busyLabel={busy ? 'Membaca kode…' : undefined}
+            label={t('Tarik gambar QR code atau barcode ke sini', 'Drag an image of a QR code or barcode here')}
+            busyLabel={busy ? t('Membaca kode…', 'Reading code…') : undefined}
             onFiles={([f]) => void readFile(f)}
           />
           <p className="text-center text-xs text-muted-foreground">
-            Atau tempel screenshot dari clipboard (Ctrl/⌘ + V).
+            {t('Atau tempel screenshot dari clipboard (Ctrl/⌘ + V).', 'Or paste a screenshot from the clipboard (Ctrl/⌘ + V).')}
           </p>
         </div>
       ) : (
@@ -95,9 +102,10 @@ function CameraScanner({ onFound }: { onFound: (scan: Scan) => void }) {
   const streamRef = useRef<MediaStream | null>(null)
   const [state, setState] = useState<'idle' | 'starting' | 'scanning'>('idle')
   const [error, setError] = useState<string | null>(null)
+  const t = useT()
 
   const stop = useCallback(() => {
-    streamRef.current?.getTracks().forEach((t) => t.stop())
+    streamRef.current?.getTracks().forEach((track) => track.stop())
     streamRef.current = null
     setState('idle')
   }, [])
@@ -108,7 +116,12 @@ function CameraScanner({ onFound }: { onFound: (scan: Scan) => void }) {
   async function start() {
     setError(null)
     if (!navigator.mediaDevices?.getUserMedia) {
-      setError('Browser ini tidak bisa memakai kamera di halaman ini (perlu HTTPS dan browser yang mendukung).')
+      setError(
+        t(
+          'Browser ini tidak bisa memakai kamera di halaman ini (perlu HTTPS dan browser yang mendukung).',
+          'This browser can’t use the camera on this page (it needs HTTPS and a browser that supports it).',
+        ),
+      )
       return
     }
     setState('starting')
@@ -127,10 +140,16 @@ function CameraScanner({ onFound }: { onFound: (scan: Scan) => void }) {
       const name = (e as DOMException)?.name
       setError(
         name === 'NotAllowedError'
-          ? 'Izin kamera ditolak. Izinkan akses kamera untuk situs ini di pengaturan browser, lalu coba lagi.'
+          ? t(
+              'Izin kamera ditolak. Izinkan akses kamera untuk situs ini di pengaturan browser, lalu coba lagi.',
+              'Camera permission was denied. Allow camera access for this site in your browser settings, then try again.',
+            )
           : name === 'NotFoundError' || name === 'OverconstrainedError'
-            ? 'Kamera tidak ditemukan di perangkat ini.'
-            : 'Kamera tidak bisa dibuka. Mungkin sedang dipakai aplikasi lain.',
+            ? t('Kamera tidak ditemukan di perangkat ini.', 'No camera was found on this device.')
+            : t(
+                'Kamera tidak bisa dibuka. Mungkin sedang dipakai aplikasi lain.',
+                'The camera can’t be opened. Another app may be using it.',
+              ),
       )
     }
   }
@@ -183,22 +202,27 @@ function CameraScanner({ onFound }: { onFound: (scan: Scan) => void }) {
           <div className="absolute inset-0 grid place-items-center">
             <Button onClick={() => void start()} disabled={state === 'starting'}>
               {state === 'starting' ? <Loader2 className="animate-spin" /> : <Camera />}
-              Nyalakan kamera
+              {t('Nyalakan kamera', 'Turn on camera')}
             </Button>
           </div>
         )}
       </div>
       {state === 'scanning' && (
         <div className="flex items-center justify-center gap-3">
-          <p className="text-sm text-muted-foreground">Arahkan kamera ke QR code atau barcode…</p>
+          <p className="text-sm text-muted-foreground">
+            {t('Arahkan kamera ke QR code atau barcode…', 'Point the camera at a QR code or barcode…')}
+          </p>
           <Button variant="ghost" size="sm" onClick={stop}>
             <CameraOff />
-            Matikan
+            {t('Matikan', 'Turn off')}
           </Button>
         </div>
       )}
       <p className="text-center text-xs text-muted-foreground">
-        Gambar kamera hanya diproses di perangkat ini, tidak direkam atau dikirim.
+        {t(
+          'Gambar kamera hanya diproses di perangkat ini, tidak direkam atau dikirim.',
+          'Camera images are processed only on this device — never recorded or sent.',
+        )}
       </p>
       {error && <ErrorNote message={error} />}
     </div>
@@ -206,6 +230,7 @@ function CameraScanner({ onFound }: { onFound: (scan: Scan) => void }) {
 }
 
 function Result({ scan, onAgain }: { scan: Scan; onAgain: () => void }) {
+  const t = useT()
   const { text } = scan
   // Retail/industrial barcodes are plain numbers or codes; only 2D codes carry Wi-Fi, links, contacts.
   const parsed = isQrLike(scan.format)
@@ -213,7 +238,7 @@ function Result({ scan, onAgain }: { scan: Scan; onAgain: () => void }) {
     : {
         kind: 'text' as const,
         title: formatName(scan.format),
-        fields: [{ label: 'Kode', value: text }],
+        fields: [{ label: t('Kode', 'Code'), value: text }],
         href: undefined,
       }
   const [shown, setShown] = useState<Record<number, boolean>>({})
@@ -229,7 +254,7 @@ function Result({ scan, onAgain }: { scan: Scan; onAgain: () => void }) {
         </p>
         <Button variant="ghost" size="sm" onClick={onAgain}>
           <RotateCcw />
-          Pindai lagi
+          {t('Pindai lagi', 'Scan again')}
         </Button>
       </div>
 
@@ -260,23 +285,23 @@ function Result({ scan, onAgain }: { scan: Scan; onAgain: () => void }) {
           <a href={parsed.href} target="_blank" rel="noopener noreferrer" className={buttonVariants()}>
             <ExternalLink />
             {parsed.kind === 'whatsapp'
-              ? 'Buka WhatsApp'
+              ? t('Buka WhatsApp', 'Open WhatsApp')
               : parsed.kind === 'email'
-                ? 'Tulis email'
+                ? t('Tulis email', 'Write email')
                 : parsed.kind === 'phone'
-                  ? 'Hubungi'
-                  : 'Buka tautan'}
+                  ? t('Hubungi', 'Call')
+                  : t('Buka tautan', 'Open link')}
           </a>
           {parsed.kind === 'url' && (
             <p className="text-xs text-muted-foreground">
-              Periksa domainnya dulu — QR code bisa mengarah ke situs palsu.
+              {t('Periksa domainnya dulu — QR code bisa mengarah ke situs palsu.', 'Check the domain first — a QR code can lead to a fake site.')}
             </p>
           )}
         </div>
       )}
 
       <details className="text-xs text-muted-foreground">
-        <summary className="cursor-pointer">Teks mentah</summary>
+        <summary className="cursor-pointer">{t('Teks mentah', 'Raw text')}</summary>
         <div className="mt-2 flex items-start gap-2">
           <pre className="min-w-0 flex-1 overflow-auto rounded-lg bg-muted/60 p-2 font-mono break-all whitespace-pre-wrap">
             {text}

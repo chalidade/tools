@@ -6,6 +6,7 @@ import { FileDrop } from '@/components/tool/FileDrop'
 import { Filmstrip, MediaRange, Waveform } from '@/components/tool/MediaRange'
 import { ProgressCard } from '@/components/tool/SizeResult'
 import { downloadBlob } from '@/lib/download'
+import { tr, useT } from '@/lib/i18n'
 import {
   audioPeaks,
   convertMedia,
@@ -30,6 +31,8 @@ type Status =
   | { kind: 'error'; message: string }
 
 export default function TrimMedia() {
+  // Not `t`: seek() below takes a time in seconds named `t`.
+  const tx = useT()
   const [status, setStatus] = useState<Status>({ kind: 'idle' })
   const [file, setFile] = useState<File | null>(null)
   const [url, setUrl] = useState<string | null>(null)
@@ -53,7 +56,13 @@ export default function TrimMedia() {
     setResult(null)
     setStrip({})
     if (!hasWebCodecs()) {
-      setStatus({ kind: 'error', message: 'Browser ini belum mendukung WebCodecs. Pakai Chrome, Edge, Safari 16.4+, atau Firefox 130+.' })
+      setStatus({
+        kind: 'error',
+        message: tx(
+          'Browser ini belum mendukung WebCodecs. Pakai Chrome, Edge, Safari 16.4+, atau Firefox 130+.',
+          "This browser doesn't support WebCodecs yet. Use Chrome, Edge, Safari 16.4+, or Firefox 130+.",
+        ),
+      })
       return
     }
     setFile(next)
@@ -70,7 +79,10 @@ export default function TrimMedia() {
     } catch {
       setStatus({
         kind: 'error',
-        message: 'File tidak bisa dibaca. Didukung: MP4, MOV, WebM, MKV, MP3, M4A, WAV, OGG, FLAC, AAC.',
+        message: tx(
+          'File tidak bisa dibaca. Didukung: MP4, MOV, WebM, MKV, MP3, M4A, WAV, OGG, FLAC, AAC.',
+          "Couldn't read the file. Supported: MP4, MOV, WebM, MKV, MP3, M4A, WAV, OGG, FLAC, AAC.",
+        ),
       })
     }
   }
@@ -135,8 +147,14 @@ export default function TrimMedia() {
       if (isCanceled(e)) return
       setError(
         e instanceof NoEncoderError
-          ? 'Browser ini tidak bisa meng-encode ulang bagian potongan file ini. Coba Chrome atau Edge terbaru.'
-          : 'Gagal memotong file. File mungkin rusak atau formatnya belum didukung.',
+          ? tx(
+              'Browser ini tidak bisa meng-encode ulang bagian potongan file ini. Coba Chrome atau Edge terbaru.',
+              "This browser can't re-encode the cut points of this file. Try the latest Chrome or Edge.",
+            )
+          : tx(
+              'Gagal memotong file. File mungkin rusak atau formatnya belum didukung.',
+              "Couldn't trim the file. It may be damaged or in a format that isn't supported yet.",
+            ),
       )
     } finally {
       setJob(null)
@@ -148,7 +166,7 @@ export default function TrimMedia() {
     const { info, out } = status
     const busy = job !== null
     const isVideo = !!info.video
-    const name = `${file.name.replace(/\.[^.]+$/, '')}-potong.${out.ext}`
+    const name = `${file.name.replace(/\.[^.]+$/, '')}${tr('-potong', '-trimmed')}.${out.ext}`
 
     return (
       <div className="space-y-6">
@@ -157,17 +175,17 @@ export default function TrimMedia() {
             <p className="truncate font-medium">{file.name}</p>
             <p className="text-sm text-muted-foreground">
               {formatDuration(info.duration)} · {formatSize(file.size)}
-              {info.video && ` · ${info.video.width}×${info.video.height}`} → disimpan sebagai .{out.ext}
+              {info.video && ` · ${info.video.width}×${info.video.height}`} → {tx('disimpan sebagai', 'saved as')} .{out.ext}
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
             <Button onClick={() => void save(info, out)} disabled={busy}>
               <Scissors />
-              Potong
+              {tx('Potong', 'Trim')}
             </Button>
             <Button variant="ghost" disabled={busy} onClick={() => setStatus({ kind: 'idle' })}>
               <RotateCcw />
-              File lain
+              {tx('File lain', 'Another file')}
             </Button>
           </div>
         </div>
@@ -208,26 +226,26 @@ export default function TrimMedia() {
           <div className="flex flex-wrap items-center gap-2">
             <Button variant="outline" size="sm" onClick={playSelection}>
               {playing ? <Pause /> : <Play />}
-              {playing ? 'Jeda' : 'Putar bagian ini'}
+              {playing ? tx('Jeda', 'Pause') : tx('Putar bagian ini', 'Play selection')}
             </Button>
             <Button variant="ghost" size="sm" onClick={() => setRange((r) => ({ ...r, start: Math.min(time, r.end - 0.1) }))}>
-              Jadikan awal ({formatTime(time)})
+              {tx('Jadikan awal', 'Set as start')} ({formatTime(time)})
             </Button>
             <Button variant="ghost" size="sm" onClick={() => setRange((r) => ({ ...r, end: Math.max(time, r.start + 0.1) }))}>
-              Jadikan akhir
+              {tx('Jadikan akhir', 'Set as end')}
             </Button>
           </div>
         </div>
 
         {job && (
           <ProgressCard
-            label="Memotong…"
+            label={tx('Memotong…', 'Trimming…')}
             progress={job.progress}
             startedAt={job.startedAt}
             action={
               <Button variant="ghost" size="sm" onClick={() => cancelRef.current?.()}>
                 <Square />
-                Batalkan
+                {tx('Batalkan', 'Cancel')}
               </Button>
             }
           />
@@ -242,11 +260,11 @@ export default function TrimMedia() {
             )}
             <div className="flex flex-wrap items-center justify-between gap-3">
               <p className="text-sm text-muted-foreground">
-                Hasil {formatTime(range.end - range.start)} · {formatSize(result.blob.size)}
+                {tx('Hasil', 'Result')} {formatTime(range.end - range.start)} · {formatSize(result.blob.size)}
               </p>
               <Button onClick={() => downloadBlob(result.blob, name)}>
                 <Download />
-                Unduh .{out.ext}
+                {tx('Unduh', 'Download')} .{out.ext}
               </Button>
             </div>
           </div>
@@ -261,13 +279,15 @@ export default function TrimMedia() {
     <div className="space-y-6">
       <FileDrop
         accept="video/*,audio/*,.mkv,.flac,.m4a"
-        label="Tarik video atau audio ke sini"
-        busyLabel={status.kind === 'reading' ? `Membuka ${file?.name}…` : undefined}
+        label={tx('Tarik video atau audio ke sini', 'Drop a video or audio file here')}
+        busyLabel={status.kind === 'reading' ? tx(`Membuka ${file?.name}…`, `Opening ${file?.name}…`) : undefined}
         onFiles={([f]) => void open(f)}
       />
       <p className="text-center text-xs text-muted-foreground">
-        MP4, MOV, WebM, MKV, MP3, M4A, WAV, OGG, FLAC. Hasil memakai format yang sama; bagian yang tidak terpotong disalin
-        tanpa encode ulang, jadi kualitas tidak turun.
+        {tx(
+          'MP4, MOV, WebM, MKV, MP3, M4A, WAV, OGG, FLAC. Hasil memakai format yang sama; bagian yang tidak terpotong disalin tanpa encode ulang, jadi kualitas tidak turun.',
+          "MP4, MOV, WebM, MKV, MP3, M4A, WAV, OGG, FLAC. The result keeps the same format; the uncut parts are copied without re-encoding, so quality doesn't drop.",
+        )}
       </p>
       {status.kind === 'error' && <ErrorNote message={status.message} />}
     </div>

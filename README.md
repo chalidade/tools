@@ -5,6 +5,9 @@ perangkat pengguna: tidak di-upload ke server dan tidak disimpan di mana pun.
 
 **Live:** https://chalidade.github.io/tools/
 
+Tersedia dalam **Bahasa Indonesia dan English** — ganti lewat tombol ID/EN di
+header (atau `#/<tool>?lang=en` di tautan).
+
 ## Pasang di situsmu
 
 Lisensinya **MIT**, jadi setiap tool boleh dipasang di website-mu sendiri,

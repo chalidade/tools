@@ -7,6 +7,7 @@ import { IconButton } from '@/components/tool/IconButton'
 import { Segmented } from '@/components/tool/Segmented'
 import { downloadBlob } from '@/lib/download'
 import { isPdfFile, openErrorMessage, pageThumbs, type PageThumb } from '@/lib/pdf-doc'
+import { useT } from '@/lib/i18n'
 import { cn } from '@/lib/utils'
 import { readSignatureImage, signPdf, type Placement, type Signature } from './sign'
 import { SignaturePad } from './SignaturePad'
@@ -18,10 +19,6 @@ type Status =
   | { kind: 'error'; message: string }
 
 type Source = 'draw' | 'upload'
-const SOURCE_OPTIONS: { value: Source; label: string }[] = [
-  { value: 'draw', label: 'Gambar' },
-  { value: 'upload', label: 'Unggah foto' },
-]
 
 /** Drag in progress: what moves, and where the pointer and box started. */
 interface Drag {
@@ -36,6 +33,7 @@ interface Drag {
 const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v))
 
 export default function SignPdf() {
+  const t = useT()
   const [status, setStatus] = useState<Status>({ kind: 'idle' })
   const [file, setFile] = useState<File | null>(null)
   const [signature, setSignature] = useState<Signature | null>(null)
@@ -55,8 +53,8 @@ export default function SignPdf() {
   useEffect(() => {
     if (!file || !thumbs || large[page]) return
     let current = true
-    void pageThumbs(file, 1400, undefined, [page]).then(({ thumbs: [t] }) => {
-      if (current) setLarge((l) => ({ ...l, [page]: t.src }))
+    void pageThumbs(file, 1400, undefined, [page]).then(({ thumbs: [big] }) => {
+      if (current) setLarge((l) => ({ ...l, [page]: big.src }))
     })
     return () => {
       current = false
@@ -73,7 +71,7 @@ export default function SignPdf() {
 
   async function open(next: File) {
     if (!isPdfFile(next)) {
-      setStatus({ kind: 'error', message: 'Pilih file berformat .pdf.' })
+      setStatus({ kind: 'error', message: t('Pilih file berformat .pdf.', 'Choose a .pdf file.') })
       return
     }
     setFile(next)
@@ -97,7 +95,12 @@ export default function SignPdf() {
       if (!sig) throw new Error('empty')
       applySignature(sig)
     } catch {
-      setError('Gambar tidak bisa dibaca, atau tidak ada tanda tangan yang terlihat. Pakai foto PNG/JPG dengan tinta gelap di kertas terang.')
+      setError(
+        t(
+          'Gambar tidak bisa dibaca, atau tidak ada tanda tangan yang terlihat. Pakai foto PNG/JPG dengan tinta gelap di kertas terang.',
+          "Couldn't read the image, or no signature is visible in it. Use a PNG/JPG photo of dark ink on light paper.",
+        ),
+      )
     }
   }
 
@@ -109,9 +112,9 @@ export default function SignPdf() {
 
   function addPlacement(sig = signature) {
     if (!sig || !thumbs) return
-    const t = thumbs[page - 1]
+    const shown = thumbs[page - 1]
     const w = 0.3
-    const h = (w * t.width * sig.height) / sig.width / t.height
+    const h = (w * shown.width * sig.height) / sig.width / shown.height
     setPlacements((prev) => [
       ...prev,
       { id: crypto.randomUUID(), page, x: 0.6 - w / 2, y: clamp(0.8 - h / 2, 0, 1 - h), w },
@@ -152,7 +155,7 @@ export default function SignPdf() {
     setError(null)
     try {
       const blob = await signPdf(file, signature, placements)
-      downloadBlob(blob, file.name.replace(/\.pdf$/i, '') + '-ditandatangani.pdf')
+      downloadBlob(blob, file.name.replace(/\.pdf$/i, '') + t('-ditandatangani.pdf', '-signed.pdf'))
     } catch (e) {
       setError(openErrorMessage(e))
     } finally {
@@ -161,7 +164,7 @@ export default function SignPdf() {
   }
 
   if (thumbs && file) {
-    const t = thumbs[page - 1]
+    const shown = thumbs[page - 1]
     const onPage = placements.filter((p) => p.page === page)
     const perPage = (n: number) => placements.filter((p) => p.page === n).length
 
@@ -172,20 +175,23 @@ export default function SignPdf() {
             <p className="truncate font-medium">{file.name}</p>
             <p className="text-sm text-muted-foreground">
               {!signature
-                ? 'Buat tanda tanganmu dulu.'
+                ? t('Buat tanda tanganmu dulu.', 'Create your signature first.')
                 : placements.length
-                  ? `${placements.length} tanda tangan di ${new Set(placements.map((p) => p.page)).size} halaman.`
-                  : 'Tempel tanda tangan di halaman yang dipilih.'}
+                  ? t(
+                      `${placements.length} tanda tangan di ${new Set(placements.map((p) => p.page)).size} halaman.`,
+                      `${placements.length} signature(s) on ${new Set(placements.map((p) => p.page)).size} page(s).`,
+                    )
+                  : t('Tempel tanda tangan di halaman yang dipilih.', 'Place the signature on the page you choose.')}
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
             <Button onClick={() => void save()} disabled={saving || !signature || !placements.length}>
               {saving ? <Loader2 className="animate-spin" /> : <PenLine />}
-              Simpan &amp; unduh
+              {t('Simpan & unduh', 'Save & download')}
             </Button>
             <Button variant="ghost" disabled={saving} onClick={() => setStatus({ kind: 'idle' })}>
               <RotateCcw />
-              File lain
+              {t('File lain', 'Another file')}
             </Button>
           </div>
         </div>
@@ -193,16 +199,16 @@ export default function SignPdf() {
         <div className="grid gap-6 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
           {/* Signature */}
           <div className="space-y-4 rounded-2xl border bg-card p-5">
-            <p className="font-medium">Tanda tangan</p>
+            <p className="font-medium">{t('Tanda tangan', 'Signature')}</p>
             {signature ? (
               <div className="space-y-3">
                 <div className="grid h-32 place-items-center rounded-xl border bg-white p-3">
-                  <img src={signature.url} alt="Tanda tangan" className="max-h-full max-w-full object-contain" />
+                  <img src={signature.url} alt={t('Tanda tangan', 'Signature')} className="max-h-full max-w-full object-contain" />
                 </div>
                 <div className="flex flex-wrap gap-2">
                   <Button onClick={() => addPlacement()} disabled={saving}>
                     <Plus />
-                    Tempel di halaman {page}
+                    {t(`Tempel di halaman ${page}`, `Place on page ${page}`)}
                   </Button>
                   <Button
                     variant="ghost"
@@ -213,20 +219,28 @@ export default function SignPdf() {
                     }}
                   >
                     <RotateCcw />
-                    Buat ulang
+                    {t('Buat ulang', 'Start over')}
                   </Button>
                 </div>
               </div>
             ) : (
               <div className="space-y-4">
-                <Segmented label="Cara" value={source} options={SOURCE_OPTIONS} onChange={setSource} />
+                <Segmented
+                  label={t('Cara', 'Method')}
+                  value={source}
+                  options={[
+                    { value: 'draw', label: t('Gambar', 'Draw') },
+                    { value: 'upload', label: t('Unggah foto', 'Upload a photo') },
+                  ]}
+                  onChange={setSource}
+                />
                 {source === 'draw' ? (
                   <SignaturePad onDone={applySignature} />
                 ) : (
                   <div className="space-y-3">
                     <Button variant="outline" onClick={() => uploadRef.current?.click()}>
                       <ImagePlus />
-                      Pilih foto tanda tangan
+                      {t('Pilih foto tanda tangan', 'Choose a signature photo')}
                     </Button>
                     <input
                       ref={uploadRef}
@@ -246,14 +260,17 @@ export default function SignPdf() {
                         onChange={(e) => setRemoveWhite(e.target.checked)}
                         className="size-4 accent-[var(--brand-2)]"
                       />
-                      Hapus latar putih (untuk foto tanda tangan di kertas)
+                      {t('Hapus latar putih (untuk foto tanda tangan di kertas)', 'Remove white background (for a photo of a signature on paper)')}
                     </label>
                   </div>
                 )}
               </div>
             )}
             <p className="text-xs text-muted-foreground">
-              Ini tanda tangan berupa gambar, bukan tanda tangan digital bersertifikat (TTE).
+              {t(
+                'Ini tanda tangan berupa gambar, bukan tanda tangan digital bersertifikat (TTE).',
+                'This is an image of a signature, not a certified digital signature.',
+              )}
             </p>
           </div>
 
@@ -261,13 +278,13 @@ export default function SignPdf() {
           <div className="space-y-3">
             <div className="flex items-center justify-between gap-2">
               <p className="text-xs font-medium text-muted-foreground">
-                Halaman {page} dari {thumbs.length}
+                {t(`Halaman ${page} dari ${thumbs.length}`, `Page ${page} of ${thumbs.length}`)}
               </p>
               <div className="flex">
-                <IconButton label="Halaman sebelumnya" disabled={page === 1} onClick={() => setPage(page - 1)}>
+                <IconButton label={t('Halaman sebelumnya', 'Previous page')} disabled={page === 1} onClick={() => setPage(page - 1)}>
                   <ChevronLeft />
                 </IconButton>
-                <IconButton label="Halaman berikutnya" disabled={page === thumbs.length} onClick={() => setPage(page + 1)}>
+                <IconButton label={t('Halaman berikutnya', 'Next page')} disabled={page === thumbs.length} onClick={() => setPage(page + 1)}>
                   <ChevronRight />
                 </IconButton>
               </div>
@@ -276,9 +293,14 @@ export default function SignPdf() {
               <div
                 data-page
                 className="relative w-full max-w-xl select-none shadow-md ring-1 ring-black/5"
-                style={{ aspectRatio: `${t.width} / ${t.height}` }}
+                style={{ aspectRatio: `${shown.width} / ${shown.height}` }}
               >
-                <img src={large[page] ?? t.src} alt={`Halaman ${page}`} draggable={false} className="absolute inset-0 size-full" />
+                <img
+                  src={large[page] ?? shown.src}
+                  alt={t(`Halaman ${page}`, `Page ${page}`)}
+                  draggable={false}
+                  className="absolute inset-0 size-full"
+                />
                 {signature &&
                   onPage.map((p) => (
                     <div
@@ -297,7 +319,7 @@ export default function SignPdf() {
                       <img src={signature.url} alt="" draggable={false} className="size-full" />
                       <button
                         type="button"
-                        aria-label="Hapus tanda tangan ini"
+                        aria-label={t('Hapus tanda tangan ini', 'Remove this signature')}
                         onPointerDown={(e) => e.stopPropagation()}
                         onClick={() => setPlacements((prev) => prev.filter((x) => x.id !== p.id))}
                         className="absolute -top-3 -right-3 grid size-6 place-items-center rounded-full bg-destructive text-white shadow"
@@ -305,7 +327,7 @@ export default function SignPdf() {
                         <X className="size-3.5" />
                       </button>
                       <span
-                        aria-label="Ubah ukuran"
+                        aria-label={t('Ubah ukuran', 'Resize')}
                         onPointerDown={(e) => startDrag(e, p, 'resize')}
                         onPointerMove={onDrag}
                         onPointerUp={() => (drag.current = null)}
@@ -316,7 +338,12 @@ export default function SignPdf() {
               </div>
             </div>
             {onPage.length > 0 && (
-              <p className="text-xs text-muted-foreground">Seret tanda tangan untuk memindah, tarik titik di sudutnya untuk mengubah ukuran.</p>
+              <p className="text-xs text-muted-foreground">
+                {t(
+                  'Seret tanda tangan untuk memindah, tarik titik di sudutnya untuk mengubah ukuran.',
+                  'Drag a signature to move it; drag its corner handle to resize it.',
+                )}
+              </p>
             )}
           </div>
         </div>
@@ -337,7 +364,7 @@ export default function SignPdf() {
                     n === page ? 'border-brand-2/60 ring-2 ring-brand-2/30' : 'opacity-60 hover:opacity-100',
                   )}
                 >
-                  <img src={thumb.src} alt={`Halaman ${n}`} className="h-24 rounded-sm" />
+                  <img src={thumb.src} alt={t(`Halaman ${n}`, `Page ${n}`)} className="h-24 rounded-sm" />
                   <span className="mt-1 block text-center font-mono text-[11px] text-muted-foreground">{n}</span>
                   {count > 0 && (
                     <span className="absolute -top-1.5 -right-1.5 grid size-5 place-items-center rounded-full bg-gradient-brand text-[10px] font-medium text-white">
@@ -359,12 +386,12 @@ export default function SignPdf() {
     <div className="space-y-6">
       <FileDrop
         accept=".pdf,application/pdf"
-        label="Tarik file .pdf yang mau ditandatangani"
+        label={t('Tarik file .pdf yang mau ditandatangani', 'Drop the .pdf file you want to sign')}
         busyLabel={
           status.kind === 'reading'
             ? status.total
-              ? `Menyiapkan pratinjau ${status.done}/${status.total}…`
-              : `Membuka ${file?.name}…`
+              ? t(`Menyiapkan pratinjau ${status.done}/${status.total}…`, `Preparing previews ${status.done}/${status.total}…`)
+              : t(`Membuka ${file?.name}…`, `Opening ${file?.name}…`)
             : undefined
         }
         onFiles={([f]) => void open(f)}

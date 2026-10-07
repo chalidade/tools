@@ -5,6 +5,7 @@ import { ErrorNote } from '@/components/tool/ErrorNote'
 import { FileDrop } from '@/components/tool/FileDrop'
 import { Segmented } from '@/components/tool/Segmented'
 import { downloadBlob, withExtension } from '@/lib/download'
+import { tr, useLang, useT } from '@/lib/i18n'
 import { cn } from '@/lib/utils'
 import {
   assemble,
@@ -27,23 +28,23 @@ type Status =
 /** Rows shown in the on-page preview; the .xlsx always has all of them. */
 const PREVIEW_ROWS = 200
 
-const MODE_OPTIONS: { value: SheetMode; label: string }[] = [
-  { value: 'merge', label: 'Gabung jadi satu' },
-  { value: 'per-page', label: 'Satu per halaman' },
-]
-const NUMBER_OPTIONS: { value: 'on' | 'off'; label: string }[] = [
-  { value: 'on', label: 'Jadikan angka' },
-  { value: 'off', label: 'Biarkan teks' },
-]
-
 function errorMessage(e: unknown) {
   if (e instanceof ScannedPdfError)
-    return 'PDF ini tidak berisi teks. Biasanya karena hasil scan atau foto, dan butuh OCR yang belum didukung tool ini.'
-  if (e instanceof LockedPdfError) return 'PDF ini dikunci password. Buka kuncinya dulu, lalu coba lagi.'
-  return 'PDF tidak bisa dibaca. Pastikan filenya tidak rusak.'
+    return tr(
+      'PDF ini tidak berisi teks. Biasanya karena hasil scan atau foto, dan butuh OCR yang belum didukung tool ini.',
+      "This PDF has no text. It's usually a scan or photo, which needs OCR — not supported by this tool yet.",
+    )
+  if (e instanceof LockedPdfError)
+    return tr(
+      'PDF ini dikunci password. Buka kuncinya dulu, lalu coba lagi.',
+      'This PDF is password-protected. Unlock it first, then try again.',
+    )
+  return tr('PDF tidak bisa dibaca. Pastikan filenya tidak rusak.', "The PDF couldn't be read. Make sure the file isn't damaged.")
 }
 
 export default function PdfToExcel() {
+  const t = useT()
+  const lang = useLang()
   const [status, setStatus] = useState<Status>({ kind: 'idle' })
   const [file, setFile] = useState<File | null>(null)
   const [opts, setOpts] = useState<AssembleOptions>({ mode: 'merge', convertNumbers: true })
@@ -52,11 +53,21 @@ export default function PdfToExcel() {
 
   const pages = status.kind === 'ready' ? status.pages : null
   // Re-assembling is pure and fast, so options apply instantly without re-reading the PDF.
-  const result = useMemo(() => (pages ? assemble(pages, opts) : null), [pages, opts])
+  // `lang` is a dependency because assemble names the per-page sheets in the current language.
+  const result = useMemo(() => (pages ? assemble(pages, opts) : null), [pages, opts, lang])
+
+  const MODE_OPTIONS: { value: SheetMode; label: string }[] = [
+    { value: 'merge', label: t('Gabung jadi satu', 'Merge into one') },
+    { value: 'per-page', label: t('Satu per halaman', 'One per page') },
+  ]
+  const NUMBER_OPTIONS: { value: 'on' | 'off'; label: string }[] = [
+    { value: 'on', label: t('Jadikan angka', 'Convert to numbers') },
+    { value: 'off', label: t('Biarkan teks', 'Keep as text') },
+  ]
 
   async function open(next: File) {
     if (!/\.pdf$/i.test(next.name) && next.type !== 'application/pdf') {
-      setStatus({ kind: 'error', message: 'Pilih file berformat .pdf.' })
+      setStatus({ kind: 'error', message: t('Pilih file berformat .pdf.', 'Choose a file in .pdf format.') })
       return
     }
     setFile(next)
@@ -90,24 +101,27 @@ export default function PdfToExcel() {
           <div className="min-w-0">
             <p className="truncate font-medium">{file.name}</p>
             <p className="text-sm text-muted-foreground">
-              {result.pages} halaman · {result.tables} tabel terdeteksi · {rowCount} baris
+              {t(
+                `${result.pages} halaman · ${result.tables} tabel terdeteksi · ${rowCount} baris`,
+                `${result.pages} pages · ${result.tables} tables detected · ${rowCount} rows`,
+              )}
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
             <Button onClick={() => void download()} disabled={saving}>
               {saving ? <Loader2 className="animate-spin" /> : <Download />}
-              Unduh Excel
+              {t('Unduh Excel', 'Download Excel')}
             </Button>
             <Button variant="ghost" disabled={saving} onClick={() => setStatus({ kind: 'idle' })}>
               <RotateCcw />
-              File lain
+              {t('File lain', 'Another file')}
             </Button>
           </div>
         </div>
 
         <div className="flex flex-wrap gap-x-8 gap-y-4 rounded-2xl border bg-card p-4">
           <Segmented
-            label="Sheet"
+            label={t('Sheet', 'Sheets')}
             value={opts.mode}
             options={MODE_OPTIONS}
             onChange={(mode) => {
@@ -116,7 +130,7 @@ export default function PdfToExcel() {
             }}
           />
           <Segmented
-            label="Angka"
+            label={t('Angka', 'Numbers')}
             value={opts.convertNumbers ? 'on' : 'off'}
             options={NUMBER_OPTIONS}
             onChange={(v) => setOpts((o) => ({ ...o, convertNumbers: v === 'on' }))}
@@ -124,9 +138,10 @@ export default function PdfToExcel() {
         </div>
 
         <p className="text-xs text-muted-foreground">
-          Kolom dibaca dari posisi teks di PDF. Angka seperti “Rp15.500.000” atau “12,5%” dijadikan angka sungguhan agar
-          bisa langsung dihitung. Periksa hasilnya — tata letak yang rumit (kolom bertumpuk, tabel tanpa jarak) bisa
-          tergabung kurang tepat.
+          {t(
+            'Kolom dibaca dari posisi teks di PDF. Angka seperti “Rp15.500.000” atau “12,5%” dijadikan angka sungguhan agar bisa langsung dihitung. Periksa hasilnya — tata letak yang rumit (kolom bertumpuk, tabel tanpa jarak) bisa tergabung kurang tepat.',
+            'Columns are read from where the text sits in the PDF. Numbers like “Rp15.500.000” or “12,5%” become real numbers so you can calculate with them right away. Check the result — complex layouts (overlapping columns, tables with no spacing) may not merge quite right.',
+          )}
         </p>
 
         {sheet && <Preview sheets={result.sheets} active={active} onActive={setActive} sheet={sheet} />}
@@ -138,12 +153,12 @@ export default function PdfToExcel() {
     <div className="space-y-6">
       <FileDrop
         accept=".pdf,application/pdf"
-        label="Tarik file .pdf ke sini"
+        label={t('Tarik file .pdf ke sini', 'Drag a .pdf file here')}
         busyLabel={
           status.kind === 'reading'
             ? status.total
-              ? `Membaca halaman ${status.done}/${status.total}…`
-              : `Membuka ${file?.name}…`
+              ? t(`Membaca halaman ${status.done}/${status.total}…`, `Reading page ${status.done}/${status.total}…`)
+              : t(`Membuka ${file?.name}…`, `Opening ${file?.name}…`)
             : undefined
         }
         onFiles={([f]) => void open(f)}
@@ -170,6 +185,7 @@ function Preview({
   onActive: (i: number) => void
   sheet: OutSheet
 }) {
+  const t = useT()
   const rows = sheet.rows.slice(0, PREVIEW_ROWS)
   const cols = Array.from({ length: sheet.columns }, (_, i) => i)
 
@@ -238,7 +254,7 @@ function Preview({
                           cell?.bold && 'font-semibold',
                           cell?.value !== undefined && 'text-right tabular-nums text-blue-700',
                         )}
-                        title={cell?.value !== undefined ? `Angka: ${cell.value}` : undefined}
+                        title={cell?.value !== undefined ? t(`Angka: ${cell.value}`, `Number: ${cell.value}`) : undefined}
                       >
                         {cell?.text}
                       </td>
@@ -252,11 +268,15 @@ function Preview({
       </div>
       <div className="flex flex-wrap items-center justify-between gap-2 border-t bg-muted px-4 py-2 text-xs text-muted-foreground">
         <span>
-          <span className="font-medium text-blue-600 dark:text-blue-400">Biru</span> = dibaca sebagai angka
+          <span className="font-medium text-blue-600 dark:text-blue-400">{t('Biru', 'Blue')}</span>{' '}
+          {t('= dibaca sebagai angka', '= read as a number')}
         </span>
         {sheet.rows.length > PREVIEW_ROWS && (
           <span>
-            Menampilkan {PREVIEW_ROWS} dari {sheet.rows.length} baris — file Excel memuat semuanya.
+            {t(
+              `Menampilkan ${PREVIEW_ROWS} dari ${sheet.rows.length} baris — file Excel memuat semuanya.`,
+              `Showing ${PREVIEW_ROWS} of ${sheet.rows.length} rows — the Excel file includes all of them.`,
+            )}
           </span>
         )}
       </div>

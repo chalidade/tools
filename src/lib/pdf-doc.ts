@@ -5,6 +5,7 @@
 import type { PDFDocument, PDFPage } from 'pdf-lib'
 import { LockedPdfError, loadPdf } from '@/lib/pdf-text'
 import { isPasswordError, runQpdf } from '@/lib/qpdf'
+import { tr } from '@/lib/i18n'
 
 export { LockedPdfError } from '@/lib/pdf-text'
 
@@ -113,6 +114,9 @@ export async function pageThumbs(
 /** Message for a PDF that could not be opened. */
 export function openErrorMessage(e: unknown) {
   return e instanceof LockedPdfError
-    ? 'PDF ini dikunci password. Buka kuncinya dulu dengan tool “Buka Proteksi PDF”.'
-    : 'PDF tidak bisa dibaca. Pastikan filenya tidak rusak.'
+    ? tr(
+        'PDF ini dikunci password. Buka kuncinya dulu dengan tool “Buka Proteksi PDF”.',
+        'This PDF is password-protected. Unlock it first with the “Unlock PDF” tool.',
+      )
+    : tr('PDF tidak bisa dibaca. Pastikan filenya tidak rusak.', "This PDF can't be read. Make sure the file isn't damaged.")
 }

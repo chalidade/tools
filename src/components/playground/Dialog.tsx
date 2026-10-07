@@ -3,6 +3,8 @@ import { ArrowRight, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import type { Tool } from '@/tools/registry'
 import { dialogFor } from './dialog'
+import { useLang, useT } from '@/lib/i18n'
+import { toolText } from '@/tools/registry'
 import { Person, type Look } from './Person'
 
 const CHARS_PER_TICK = 2
@@ -26,7 +28,10 @@ export function Dialog({
   onOpen: () => void
   onClose: () => void
 }) {
-  const pages = dialogFor(tool, name)
+  const t = useT()
+  const lang = useLang()
+  const title = toolText(tool, lang).title
+  const pages = dialogFor(tool, name, lang)
   const [page, setPage] = useState(0)
   const [shown, setShown] = useState(0)
   const [choice, setChoice] = useState<0 | 1>(0)
@@ -77,7 +82,7 @@ export function Dialog({
   return (
     <div
       role="dialog"
-      aria-label={`Percakapan dengan ${name}, penjaga ${tool.title}`}
+      aria-label={t(`Percakapan dengan ${name}, penjaga ${title}`, `Conversation with ${name}, keeper of ${title}`)}
       onClick={(e) => {
         e.stopPropagation()
         if (!asking) advance()
@@ -86,7 +91,7 @@ export function Dialog({
     >
       <button
         type="button"
-        aria-label="Tutup percakapan"
+        aria-label={t('Tutup percakapan', 'Close conversation')}
         onClick={(e) => {
           e.stopPropagation()
           onClose()
@@ -111,7 +116,7 @@ export function Dialog({
             <span className="font-semibold tracking-tight">{name}</span>
             <span className="flex items-center gap-1 rounded-md border bg-muted px-1.5 py-0.5 text-[11px] text-muted-foreground">
               <tool.icon className="size-3" />
-              {tool.title}
+              {title}
             </span>
           </div>
           {/* The full line sits invisibly underneath, so the box never grows while typing. */}
@@ -149,7 +154,7 @@ export function Dialog({
                 choice === 0 && 'ring-2 ring-brand-2 ring-offset-2 ring-offset-card',
               )}
             >
-              Buka {tool.title}
+              {t('Buka', 'Open')} {title}
               <ArrowRight className="size-4" />
             </button>
             <button
@@ -164,16 +169,16 @@ export function Dialog({
                 choice === 1 && 'ring-2 ring-brand-2 ring-offset-2 ring-offset-card',
               )}
             >
-              Nanti saja
+              {t('Nanti saja', 'Maybe later')}
             </button>
           </span>
         ) : (
           <span className="text-xs text-muted-foreground">
             <span className="hidden pointer-fine:inline">
-              <kbd className="rounded border border-b-2 bg-muted px-1 font-mono text-[10px]">E</kbd> lanjut ·{' '}
-              <kbd className="rounded border border-b-2 bg-muted px-1 font-mono text-[10px]">Esc</kbd> tutup
+              <kbd className="rounded border border-b-2 bg-muted px-1 font-mono text-[10px]">E</kbd> {t('lanjut', 'next')} ·{' '}
+              <kbd className="rounded border border-b-2 bg-muted px-1 font-mono text-[10px]">Esc</kbd> {t('tutup', 'close')}
             </span>
-            <span className="pointer-fine:hidden">Ketuk untuk lanjut</span>
+            <span className="pointer-fine:hidden">{t('Ketuk untuk lanjut', 'Tap to continue')}</span>
           </span>
         )}
       </div>

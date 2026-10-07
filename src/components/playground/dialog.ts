@@ -1,4 +1,5 @@
-import type { Tool } from '@/tools/registry'
+import type { Lang } from '@/lib/i18n'
+import { toolText, type Tool } from '@/tools/registry'
 
 /**
  * What each tool's keeper says when the player talks to it, after
@@ -199,6 +200,200 @@ const DIALOG: Record<string, string[]> = {
   ],
 }
 
+/** The same lines in English. */
+const DIALOG_EN: Record<string, string[]> = {
+  'doc-to-pdf': [
+    "Hand me a .docx and I'll turn it into a tidy PDF, ready to send.",
+    'Good for letters, résumés or reports — I keep the layout as close to the original as I can.',
+    "One thing: old .doc files aren't supported yet. Everything happens in your browser; nothing is uploaded.",
+  ],
+  'pdf-to-word': [
+    'I turn a stiff PDF into a .docx you can edit again.',
+    'Text, font sizes, bold and italic, fonts, tabs and even page breaks come along.',
+    "Images and table lines don't come along yet, and scanned PDFs need OCR, which I can't do.",
+  ],
+  'image-to-pdf': [
+    'JPG, PNG, WebP, GIF, BMP — lots at once — I put them all into one PDF.',
+    'You set the order, rotate images, and pick A4, Letter or a page the size of each image.',
+    'Sideways phone photos get straightened automatically. HEIC only opens in Safari, though.',
+  ],
+  'ppt-to-pdf': [
+    'Every .pptx slide becomes one PDF page.',
+    "Text, shapes, tables, charts and images come along. Animations, transitions and video don't.",
+    "Great for sharing a deck without its look changing. Old .ppt files aren't supported yet.",
+  ],
+  'excel-to-pdf': [
+    'I turn an .xlsx or .csv table into a PDF whose text you can still select.',
+    'Colors, borders, merged cells and number, date or percent formats stay put. Hidden rows and sheets are skipped.',
+    'You pick the paper, orientation, fit-to-width, and which sheets to print.',
+  ],
+  'pdf-to-excel': [
+    'I pull the tables out of a PDF into an .xlsx.',
+    'Currency, thousands, percentages and negatives in brackets become real numbers you can calculate with.',
+    "Headers repeated on every page are taken once. Scanned PDFs don't work yet.",
+  ],
+  'pdf-to-ppt': [
+    'Every PDF page becomes one .pptx slide.',
+    '"Editable text" mode puts the text in text boxes where it was, with its font and color.',
+    '"Exactly like the PDF" mode makes each slide an image of the page — guaranteed to look the same.',
+  ],
+  'pdf-to-image': [
+    'I save PDF pages as PNG or JPG.',
+    'At 72, 150 or 300 dpi, and you choose the pages from the previews.',
+    'One page becomes one image; several pages come zipped up.',
+  ],
+  'compress-pdf': [
+    'I slim down a PDF that has put on weight.',
+    'The photos inside get smaller — Light, Medium or Strong — then I tidy the structure. Text stays text.',
+    "Don't worry, the result is never bigger than your original.",
+  ],
+  'pdf-to-markdown': [
+    'I turn a PDF into Markdown text.',
+    'I spot headings by their font size, plus bold, italic, lists and tables.',
+    'Tables that continue across pages are joined into one. Handy for notes or docs.',
+  ],
+  'protect-pdf': [
+    'I lock your PDF with a password.',
+    'The encryption is AES-256, and you can also restrict printing, copying and editing.',
+    "Don't forget the password — I never store it anywhere.",
+  ],
+  'unlock-pdf': [
+    'I take the password off a PDF that belongs to you.',
+    'Enter the right password and you get an unlocked copy. I can remove print, copy and edit limits too.',
+    "I'm no lock-picker, though — without the right password, a locked PDF stays locked.",
+  ],
+  'compress-video': [
+    'I turn MP4, MOV, WebM or MKV into a smaller MP4.',
+    'Pick Light, Medium or Strong and 1080p, 720p or 480p. I show the expected size before starting.',
+    "I use your device's own encoder, so it's usually faster than the video itself. Needs a browser with WebCodecs.",
+  ],
+  'compress-image': [
+    'I shrink lots of photos at once into JPG or WebP.',
+    'You set the quality and maximum size. Metadata, GPS location included, gets removed.',
+    "If a result isn't any smaller, I keep the original.",
+  ],
+  'compress-audio': [
+    'I turn audio — or the sound from a video — into MP3, M4A or OGG.',
+    'From 64 to 192 kbps, stereo or mono.',
+    'Just right for oversized meeting recordings or voice notes.',
+  ],
+  'json-beautify': [
+    'I tidy messy JSON with 2, 4 or tab indentation.',
+    'I can sort the keys, and if there is a syntax error I show its line and column.',
+    'Numbers and text are copied exactly — no silent rounding.',
+  ],
+  'json-minify': [
+    'I remove every space outside strings so your JSON is as small as it gets.',
+    "Numbers and text don't change one bit.",
+    'Handy before pasting into a config or sending through an API.',
+  ],
+  'merge-pdf': [
+    'I join several PDFs into one file.',
+    'Just drag them into order before I merge.',
+    'Great for combining attachments, scans or chapters of a report.',
+  ],
+  'split-pdf': [
+    'I split a thick PDF into several files.',
+    'Take certain pages, split by range, or break it every N pages.',
+    "Your original file doesn't change — you get new files.",
+  ],
+  'watermark-pdf': [
+    'I put a text or logo watermark on every page of your PDF.',
+    'Centered or tiled, with the transparency you choose.',
+    'Good for marking drafts, confidential documents or company property.',
+  ],
+  'sign-pdf': [
+    'I place your signature on any PDF page.',
+    'Draw it on screen, or upload a photo of your signature.',
+    'Move and resize it freely — no printing, no scanning.',
+  ],
+  'crop-resize-image': [
+    'I crop and resize your images.',
+    'Free ratio or 1:1, 16:9, 4:5 — I can rotate and flip them too.',
+    'Just right for profile pictures, thumbnails or social posts.',
+  ],
+  'remove-background': [
+    "I remove a photo's background — no AI, you're in control.",
+    'Mark it with the magic wand, color select, lasso or brush.',
+    'Make it transparent, or I swap the background for a color you pick.',
+  ],
+  'trim-media': [
+    'I trim a video or song down to the part you want.',
+    'Drag the start and end markers, then save the clip.',
+    'The format and quality stay the same as the original.',
+  ],
+  'gif-mp4': [
+    'I turn a GIF into an MP4, or a video clip into a GIF.',
+    'An MP4 from a GIF is usually much smaller, and looks the same.',
+    'Great for memes, short demos or stickers.',
+  ],
+  'extract-frames': [
+    'I grab video frames as full-resolution images.',
+    'Pick them one by one, or automatically every N seconds.',
+    'Good for thumbnails or catching the perfect moment.',
+  ],
+  'change-speed': [
+    'I speed up or slow down video and audio, from 0.25× to 4×.',
+    "The pitch stays natural — no chipmunks, no growls.",
+    'Handy for lectures, tutorials or slow motion.',
+  ],
+  'merge-audio': [
+    'I join several audio files into one.',
+    'Mixed formats are fine; you set the order and the gaps between them.',
+    'Good for stitching recordings together or making a playlist.',
+  ],
+  'qr-generator': [
+    'I make QR codes for links, text, Wi-Fi, WhatsApp, contacts or email.',
+    'You can change the colors, and put your logo in the middle.',
+    'Save it as an image, ready to print or share.',
+  ],
+  'qr-reader': [
+    'I read QR codes and barcodes from an image, a screenshot or the camera.',
+    'Wi-Fi details, contacts and links are shown neatly.',
+    'Everything is scanned on your device — nothing is sent.',
+  ],
+  'favicon-generator': [
+    'I make favicon.ico, iOS and Android icons, plus a web manifest.',
+    'From a logo, a letter or an emoji.',
+    'Every size a website needs, in one download.',
+  ],
+  'image-to-base64': [
+    'I turn an image into Base64 or a data URL — and back.',
+    'Ready to paste into HTML, CSS or Markdown.',
+    'Handy for small icons you want to embed straight into code.',
+  ],
+  'color-picker': [
+    'I pick colors from an image or from your screen.',
+    'I convert them to HEX, RGB, HSL or OKLCH, and check their contrast.',
+    'I can build shades from your colors too.',
+  ],
+  whiteboard: [
+    'You can write and draw freely here, on a whiteboard or a blackboard.',
+    "There's a pressure-sensitive pen, highlighter, eraser, lines, arrows, boxes, circles and text — across many pages.",
+    'Your board is saved in this browser, and you can download it as PNG or PDF.',
+  ],
+  'audio-recorder': [
+    'I record your voice straight from the microphone — pause and resume anytime.',
+    'Speech mode suits meetings and lectures (noise is reduced); raw mode suits music.',
+    'Recordings stay in this browser, and download as MP3, M4A or WAV.',
+  ],
+  'screen-recorder': [
+    'I record your screen — the whole screen, one window or one tab — with microphone and tab sound.',
+    'Want to look like a presenter? Turn on the floating camera and your face is recorded in the corner.',
+    "Recordings stay in this browser; download them as WebM or convert to MP4. Needs a computer — phones can't yet.",
+  ],
+  calculator: [
+    'I can calculate anything — from shopping to sines and logarithms.',
+    'Percent works like a phone calculator: 200 + 10% is 220.',
+    'Your results go into the history; click one to use it again.',
+  ],
+  notes: [
+    'Write notes here — saved automatically in your browser, no account needed.',
+    'Use Markdown for headings, lists and checklists you can tick right in the preview.',
+    'Switching devices? Back up all your notes to a file, then restore them there.',
+  ],
+}
+
 /** Keeper names, in tool order; a tool past the end borrows one by its slug. */
 const NAMES = [
   'Raka', 'Sinta', 'Bayu', 'Putri', 'Dimas', 'Ayu', 'Fajar', 'Nadia', 'Rizky',
@@ -214,26 +409,48 @@ export function nameFor(tool: Tool, index: number) {
   return NAMES[h % NAMES.length]
 }
 
-export function dialogFor(tool: Tool, name: string): string[] {
-  const [first, ...rest] = DIALOG[tool.slug] ?? [
-    tool.description,
-    `Formatnya ${tool.formats}.`,
-    'Semuanya kuproses di browser-mu — tidak ada yang di-upload.',
+export function dialogFor(tool: Tool, name: string, lang: Lang = 'id'): string[] {
+  const en = lang === 'en'
+  const text = toolText(tool, lang)
+  const [first, ...rest] = (en ? DIALOG_EN : DIALOG)[tool.slug] ?? [
+    text.description,
+    en ? `It works with ${text.formats}.` : `Formatnya ${text.formats}.`,
+    en ? 'Everything happens in your browser — nothing is uploaded.' : 'Semuanya kuproses di browser-mu — tidak ada yang di-upload.',
   ]
-  return [`Halo! Aku ${name}, penjaga ${tool.title} di sini. ${first}`, ...rest]
+  return [
+    en ? `Hi! I'm ${name}, the keeper of ${text.title} here. ${first}` : `Halo! Aku ${name}, penjaga ${text.title} di sini. ${first}`,
+    ...rest,
+  ]
 }
 
 /** Short calls a keeper makes when the player wanders close. */
-export const CALLS = ['Sini, sini!', 'Butuh bantuan?', 'Hai! 👋', 'Mampir dulu!', 'Aku bisa bantu!']
+export const CALLS: Record<Lang, string[]> = {
+  id: ['Sini, sini!', 'Butuh bantuan?', 'Hai! 👋', 'Mampir dulu!', 'Aku bisa bantu!'],
+  en: ['Over here!', 'Need a hand?', 'Hi! 👋', 'Drop by!', 'I can help!'],
+}
 
 /** What townsfolk say to themselves (and to whoever walks by). */
-export const TOWN_LINES = [
-  'Katanya semua di sini jalan di browser, lho.',
-  'Tadi aku kompres video, cepat banget.',
-  'Tiap rumah isinya tools sejenis.',
-  'Sudah mampir ke rumah Developer?',
-  'Nggak ada file yang di-upload. Aman.',
-  'Paspor-mu sudah berapa cap?',
-  'Masuk rumahnya, ngobrol sama penjaganya.',
-]
-export const TOWN_GREETINGS = ['Halo! 👋', 'Selamat datang di kota!', 'Eh, pendatang baru?', 'Hai!']
+export const TOWN_LINES: Record<Lang, string[]> = {
+  id: [
+    'Katanya semua di sini jalan di browser, lho.',
+    'Tadi aku kompres video, cepat banget.',
+    'Tiap gedung isinya tools sejenis.',
+    'Sudah mampir ke Lab?',
+    'Nggak ada file yang di-upload. Aman.',
+    'Paspor-mu sudah berapa cap?',
+    'Masuk gedungnya, ngobrol sama penjaganya.',
+  ],
+  en: [
+    'They say everything here runs in your browser.',
+    'I just compressed a video — so fast.',
+    'Each building holds tools of one kind.',
+    'Been to the Lab yet?',
+    'No file ever gets uploaded. Safe.',
+    'How many stamps in your passport?',
+    'Go inside and chat with the keepers.',
+  ],
+}
+export const TOWN_GREETINGS: Record<Lang, string[]> = {
+  id: ['Halo! 👋', 'Selamat datang di kota!', 'Eh, pendatang baru?', 'Hai!'],
+  en: ['Hello! 👋', 'Welcome to town!', 'Oh, someone new?', 'Hi!'],
+}

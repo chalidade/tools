@@ -4,6 +4,7 @@
 // and no picture leaves the device.
 
 import type { ReaderOptions } from 'zxing-wasm/reader'
+import { tr } from '@/lib/i18n'
 import { decodeImage, newCanvas, UnreadableImageError } from '@/lib/image'
 
 export { UnreadableImageError }
@@ -54,7 +55,7 @@ const FORMAT_NAMES: Record<string, string> = {
   ITF: 'Barcode ITF',
   Codabar: 'Barcode Codabar',
 }
-export const formatName = (format: string) => FORMAT_NAMES[format] ?? `Kode ${format}`
+export const formatName = (format: string) => FORMAT_NAMES[format] ?? tr(`Kode ${format}`, `${format} code`)
 export const isQrLike = (format: string) => /QR|Aztec|DataMatrix|PDF417|MaxiCode/i.test(format)
 
 /** Every code found in a picture (EXIF rotation applied; very large photos scaled to 3000 px). */

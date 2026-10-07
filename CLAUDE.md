@@ -78,7 +78,19 @@ picture; the rules that matter when editing:
 - `App.tsx` only composes sections; each section lives in
   `src/components/<Section>.tsx`. Style with the semantic shadcn tokens in
   `src/index.css`, not hard-coded colors. Animation via `motion/react`.
-- UI copy is Indonesian.
+- **UI copy is bilingual — Indonesian and English** (`src/lib/i18n.ts`). Write
+  both languages where the text is used: `const t = useT()` then
+  `t('Teks Indonesia', 'English text')` in components; `tr(id, en)` in plain
+  `.ts` code at the moment a message is built (never at module load, or the
+  language freezes); `locale()` instead of a hard-coded `'id-ID'`. Module-level
+  label lists store `[id, en]` pairs. A tool's title/description/formats in
+  English go in `src/tools/registry-en.ts` (read via `toolText()` /
+  `categoryText()`; search matches both languages). The header's ID/EN switch
+  persists the choice; first visits get Indonesian only if the browser
+  language is Indonesian/Malay; `#/…?lang=en` forces a language (embeds).
+  Town text (keeper dialog, residents) lives in `playground/dialog.ts` and
+  `residents.ts` per language. `setLang(x, { page: false })` is for the
+  packages: it never touches the host page's `<html lang>` or storage.
 - `npm run build` (tsc -b + vite build) is the correctness gate; there is no
   test runner.
 - Design: Geist font, zinc neutrals, blue→violet brand gradient (`--brand-1`,

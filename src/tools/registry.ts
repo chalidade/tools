@@ -1,4 +1,6 @@
 import { lazy, type ComponentType, type LazyExoticComponent } from 'react'
+import type { Lang } from '@/lib/i18n'
+import { CATEGORIES_EN, TOOLS_EN } from './registry-en'
 import {
   AppWindow,
   Binary,
@@ -586,6 +588,22 @@ export const TOOLS: Tool[] = [
     component: lazy(() => import('./color-picker/ColorPicker')),
   },
 ]
+
+/** A tool's title, description and formats in the given language (English lives in registry-en.ts). */
+export function toolText(tool: Tool, lang: Lang) {
+  const en = lang === 'en' ? TOOLS_EN[tool.slug] : undefined
+  return {
+    title: en?.title ?? tool.title,
+    description: en?.description ?? tool.description,
+    formats: en?.formats ?? tool.formats,
+  }
+}
+
+/** A category's title and description in the given language. */
+export function categoryText(id: CategoryId, lang: Lang) {
+  const c = CATEGORIES.find((x) => x.id === id)!
+  return lang === 'en' ? CATEGORIES_EN[id] : { title: c.title, description: c.description }
+}
 
 export function findTool(slug: string) {
   return TOOLS.find((t) => t.slug === slug)

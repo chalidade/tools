@@ -5,6 +5,7 @@ import { ErrorNote } from '@/components/tool/ErrorNote'
 import { FileDrop } from '@/components/tool/FileDrop'
 import { Segmented } from '@/components/tool/Segmented'
 import { downloadBlob } from '@/lib/download'
+import { useT } from '@/lib/i18n'
 import { cn } from '@/lib/utils'
 import { exportImages, LockedPdfError, openPdf, type ImageFormat, type PdfPages } from './convert'
 
@@ -18,13 +19,13 @@ const FORMAT_OPTIONS: { value: ImageFormat; label: string }[] = [
   { value: 'png', label: 'PNG' },
   { value: 'jpg', label: 'JPG' },
 ]
-const DPI_OPTIONS: { value: number; label: string }[] = [
-  { value: 72, label: '72 dpi · layar' },
-  { value: 150, label: '150 dpi · standar' },
-  { value: 300, label: '300 dpi · cetak' },
-]
-
 export default function PdfToImage() {
+  const t = useT()
+  const DPI_OPTIONS: { value: number; label: string }[] = [
+    { value: 72, label: t('72 dpi · layar', '72 dpi · screen') },
+    { value: 150, label: t('150 dpi · standar', '150 dpi · standard') },
+    { value: 300, label: t('300 dpi · cetak', '300 dpi · print') },
+  ]
   const [status, setStatus] = useState<Status>({ kind: 'idle' })
   const [file, setFile] = useState<File | null>(null)
   const [format, setFormat] = useState<ImageFormat>('png')
@@ -37,7 +38,7 @@ export default function PdfToImage() {
 
   async function open(next: File) {
     if (!/\.pdf$/i.test(next.name) && next.type !== 'application/pdf') {
-      setStatus({ kind: 'error', message: 'Pilih file berformat .pdf.' })
+      setStatus({ kind: 'error', message: t('Pilih file berformat .pdf.', 'Choose a file in .pdf format.') })
       return
     }
     setFile(next)
@@ -52,8 +53,11 @@ export default function PdfToImage() {
         kind: 'error',
         message:
           e instanceof LockedPdfError
-            ? 'PDF ini dikunci password. Buka kuncinya dulu dengan tool “Buka Proteksi PDF”.'
-            : 'PDF tidak bisa dibaca. Pastikan filenya tidak rusak.',
+            ? t(
+                'PDF ini dikunci password. Buka kuncinya dulu dengan tool “Buka Proteksi PDF”.',
+                'This PDF is password-protected. Unlock it first with the “Unlock PDF” tool.',
+              )
+            : t('PDF tidak bisa dibaca. Pastikan filenya tidak rusak.', "The PDF couldn't be read. Make sure the file isn't damaged."),
       })
     }
   }
@@ -71,7 +75,7 @@ export default function PdfToImage() {
       )
       downloadBlob(blob, fileName)
     } catch {
-      setError('Gagal membuat gambar. Coba resolusi yang lebih kecil.')
+      setError(t('Gagal membuat gambar. Coba resolusi yang lebih kecil.', "Couldn't create the images. Try a lower resolution."))
     } finally {
       setProgress(null)
     }
@@ -89,36 +93,43 @@ export default function PdfToImage() {
             <p className="truncate font-medium">{file.name}</p>
             <p className="text-sm text-muted-foreground">
               {busy
-                ? `Membuat gambar ${progress.done}/${progress.total}…`
-                : `${doc.thumbs.length} halaman · ${selected.size} dipilih${selected.size > 1 ? ' → ZIP' : ''}`}
+                ? t(`Membuat gambar ${progress.done}/${progress.total}…`, `Creating image ${progress.done}/${progress.total}…`)
+                : t(
+                    `${doc.thumbs.length} halaman · ${selected.size} dipilih${selected.size > 1 ? ' → ZIP' : ''}`,
+                    `${doc.thumbs.length} pages · ${selected.size} selected${selected.size > 1 ? ' → ZIP' : ''}`,
+                  )}
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
             <Button onClick={() => void download(pages)} disabled={busy || selected.size === 0}>
               {busy ? <Loader2 className="animate-spin" /> : <Download />}
-              {selected.size > 1 ? `Unduh ${selected.size} gambar` : 'Unduh gambar'}
+              {selected.size > 1
+                ? t(`Unduh ${selected.size} gambar`, `Download ${selected.size} images`)
+                : t('Unduh gambar', 'Download image')}
             </Button>
             <Button variant="ghost" disabled={busy} onClick={() => setStatus({ kind: 'idle' })}>
               <RotateCcw />
-              File lain
+              {t('File lain', 'Another file')}
             </Button>
           </div>
         </div>
 
         <div className="flex flex-wrap gap-x-8 gap-y-4 rounded-2xl border bg-card p-4">
           <Segmented label="Format" value={format} options={FORMAT_OPTIONS} disabled={busy} onChange={setFormat} />
-          <Segmented label="Resolusi" value={dpi} options={DPI_OPTIONS} disabled={busy} onChange={setDpi} />
+          <Segmented label={t('Resolusi', 'Resolution')} value={dpi} options={DPI_OPTIONS} disabled={busy} onChange={setDpi} />
         </div>
 
         <div className="flex items-center justify-between gap-4">
-          <p className="text-xs text-muted-foreground">Klik halaman untuk memilih atau membatalkan.</p>
+          <p className="text-xs text-muted-foreground">
+            {t('Klik halaman untuk memilih atau membatalkan.', 'Click a page to select or deselect it.')}
+          </p>
           <button
             type="button"
             disabled={busy}
             onClick={() => setSelected(all ? new Set() : new Set(doc.thumbs.map((_, i) => i + 1)))}
             className="text-xs font-medium text-brand-2 hover:underline"
           >
-            {all ? 'Batalkan semua' : 'Pilih semua'}
+            {all ? t('Batalkan semua', 'Deselect all') : t('Pilih semua', 'Select all')}
           </button>
         </div>
 
@@ -146,10 +157,10 @@ export default function PdfToImage() {
                 )}
               >
                 <div className="grid place-items-center rounded-lg bg-muted/60 p-2">
-                  <img src={thumb} alt={`Halaman ${n}`} className="max-h-56 rounded-sm shadow-md ring-1 ring-black/5" />
+                  <img src={thumb} alt={t(`Halaman ${n}`, `Page ${n}`)} className="max-h-56 rounded-sm shadow-md ring-1 ring-black/5" />
                 </div>
                 <div className="mt-2 flex items-center justify-between px-1">
-                  <span className="font-mono text-[11px] text-muted-foreground">Halaman {n}</span>
+                  <span className="font-mono text-[11px] text-muted-foreground">{t(`Halaman ${n}`, `Page ${n}`)}</span>
                   <span
                     className={cn(
                       'grid size-5 place-items-center rounded-md border',
@@ -173,12 +184,12 @@ export default function PdfToImage() {
     <div className="space-y-6">
       <FileDrop
         accept=".pdf,application/pdf"
-        label="Tarik file .pdf ke sini"
+        label={t('Tarik file .pdf ke sini', 'Drag a .pdf file here')}
         busyLabel={
           status.kind === 'reading'
             ? status.total
-              ? `Menyiapkan pratinjau ${status.done}/${status.total}…`
-              : `Membuka ${file?.name}…`
+              ? t(`Menyiapkan pratinjau ${status.done}/${status.total}…`, `Preparing preview ${status.done}/${status.total}…`)
+              : t(`Membuka ${file?.name}…`, `Opening ${file?.name}…`)
             : undefined
         }
         onFiles={([f]) => void open(f)}

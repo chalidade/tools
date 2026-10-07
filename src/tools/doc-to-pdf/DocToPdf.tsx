@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button'
 import { ErrorNote } from '@/components/tool/ErrorNote'
 import { FileDrop } from '@/components/tool/FileDrop'
 import { withExtension } from '@/lib/download'
+import { useT } from '@/lib/i18n'
 import { cn } from '@/lib/utils'
 import { downloadPdf, printDocx, renderDocx } from './convert'
 
@@ -17,6 +18,7 @@ type Status =
 const DOCX_MIME = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
 
 export default function DocToPdf() {
+  const t = useT()
   const [status, setStatus] = useState<Status>({ kind: 'idle' })
   const [file, setFile] = useState<File | null>(null)
 
@@ -28,13 +30,15 @@ export default function DocToPdf() {
     if (/\.doc$/i.test(next.name)) {
       setStatus({
         kind: 'error',
-        message:
+        message: t(
           'Format .doc lama (Word 97–2003) belum didukung. Buka di Word/LibreOffice, simpan sebagai .docx, lalu coba lagi.',
+          "The old .doc format (Word 97–2003) isn't supported yet. Open it in Word/LibreOffice, save it as .docx, then try again.",
+        ),
       })
       return
     }
     if (!/\.docx$/i.test(next.name) && next.type !== DOCX_MIME) {
-      setStatus({ kind: 'error', message: 'Pilih file Word berformat .docx.' })
+      setStatus({ kind: 'error', message: t('Pilih file Word berformat .docx.', 'Choose a Word file in .docx format.') })
       return
     }
 
@@ -48,7 +52,10 @@ export default function DocToPdf() {
     } catch {
       setStatus({
         kind: 'error',
-        message: 'Dokumen tidak bisa dibaca. Pastikan file .docx tidak rusak atau terkunci password.',
+        message: t(
+          'Dokumen tidak bisa dibaca. Pastikan file .docx tidak rusak atau terkunci password.',
+          "The document couldn't be read. Make sure the .docx file isn't damaged or password-protected.",
+        ),
       })
     }
   }
@@ -63,7 +70,7 @@ export default function DocToPdf() {
       )
       setStatus({ kind: 'ready' })
     } catch {
-      setStatus({ kind: 'error', message: 'Gagal membuat PDF. Coba dokumen yang lebih kecil.' })
+      setStatus({ kind: 'error', message: t('Gagal membuat PDF. Coba dokumen yang lebih kecil.', "Couldn't create the PDF. Try a smaller document.") })
     }
   }
 
@@ -83,8 +90,8 @@ export default function DocToPdf() {
       {!hasDoc && (
         <FileDrop
           accept={`.docx,.doc,${DOCX_MIME}`}
-          label="Tarik file .docx ke sini"
-          busyLabel={status.kind === 'rendering' ? `Membaca ${file?.name}…` : undefined}
+          label={t('Tarik file .docx ke sini', 'Drag a .docx file here')}
+          busyLabel={status.kind === 'rendering' ? t(`Membaca ${file?.name}…`, `Reading ${file?.name}…`) : undefined}
           onFiles={([f]) => void open(f)}
         />
       )}
@@ -97,27 +104,30 @@ export default function DocToPdf() {
             <p className="truncate font-medium">{file?.name}</p>
             <p className="text-sm text-muted-foreground">
               {status.kind === 'exporting'
-                ? `Membuat PDF… bagian ${status.done}/${status.total}`
-                : 'Siap dikonversi'}
+                ? t(`Membuat PDF… bagian ${status.done}/${status.total}`, `Creating PDF… section ${status.done}/${status.total}`)
+                : t('Siap dikonversi', 'Ready to convert')}
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
             <Button onClick={exportPdf} disabled={busy}>
               {status.kind === 'exporting' ? <Loader2 className="animate-spin" /> : <Download />}
-              Unduh PDF
+              {t('Unduh PDF', 'Download PDF')}
             </Button>
             <Button
               variant="outline"
               disabled={busy}
               onClick={() => printDocx(bodyRef.current!, styleRef.current!, sectionsRef.current)}
-              title="Lewat dialog cetak browser — pilih “Simpan sebagai PDF”. Teks di PDF bisa diseleksi."
+              title={t(
+                'Lewat dialog cetak browser — pilih “Simpan sebagai PDF”. Teks di PDF bisa diseleksi.',
+                'Uses the browser’s print dialog — choose “Save as PDF”. Text in the PDF stays selectable.',
+              )}
             >
               <Printer />
-              Cetak / Simpan PDF
+              {t('Cetak / Simpan PDF', 'Print / Save PDF')}
             </Button>
             <Button variant="ghost" disabled={busy} onClick={reset}>
               <RotateCcw />
-              File lain
+              {t('File lain', 'Another file')}
             </Button>
           </div>
         </div>
@@ -125,10 +135,13 @@ export default function DocToPdf() {
 
       {hasDoc && (
         <p className="text-xs text-muted-foreground">
-          <strong className="font-medium text-foreground">Unduh PDF</strong> langsung menyimpan file, tapi
-          tiap halaman berupa gambar. Butuh teks yang bisa diseleksi/dicari? Pakai{' '}
-          <strong className="font-medium text-foreground">Cetak / Simpan PDF</strong> lalu pilih “Simpan
-          sebagai PDF”.
+          <strong className="font-medium text-foreground">{t('Unduh PDF', 'Download PDF')}</strong>{' '}
+          {t(
+            'langsung menyimpan file, tapi tiap halaman berupa gambar. Butuh teks yang bisa diseleksi/dicari? Pakai',
+            'saves the file right away, but each page becomes an image. Need selectable/searchable text? Use',
+          )}{' '}
+          <strong className="font-medium text-foreground">{t('Cetak / Simpan PDF', 'Print / Save PDF')}</strong>{' '}
+          {t('lalu pilih “Simpan sebagai PDF”.', 'and choose “Save as PDF”.')}
         </p>
       )}
 

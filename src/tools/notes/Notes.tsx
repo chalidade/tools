@@ -25,10 +25,10 @@ import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { ErrorNote } from '@/components/tool/ErrorNote'
 import { downloadBlob } from '@/lib/download'
+import { locale, useLang, useT } from '@/lib/i18n'
 import { newId, safeFileName } from '@/lib/local-store'
 import {
   NOTE_COLORS,
-  WELCOME_BODY,
   continueList,
   deleteNote,
   displayTitle,
@@ -41,6 +41,7 @@ import {
   snippet,
   taskCount,
   toggleTask,
+  welcomeNote,
   wrap,
   type Note,
   type NoteColor,
@@ -56,8 +57,12 @@ const dateText = (t: number) => {
   const d = new Date(t)
   const today = new Date()
   return d.toDateString() === today.toDateString()
-    ? d.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })
-    : d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: d.getFullYear() === today.getFullYear() ? undefined : 'numeric' })
+    ? d.toLocaleTimeString(locale(), { hour: '2-digit', minute: '2-digit' })
+    : d.toLocaleDateString(locale(), {
+        day: 'numeric',
+        month: 'short',
+        year: d.getFullYear() === today.getFullYear() ? undefined : 'numeric',
+      })
 }
 
 function blankNote(): Note {
@@ -66,6 +71,9 @@ function blankNote(): Note {
 }
 
 export default function Notes() {
+  // Not `t`: the editor helpers below already use t for the note text.
+  const tx = useT()
+  const lang = useLang()
   const [notes, setNotes] = useState<Note[]>([])
   const [loaded, setLoaded] = useState(false)
   const [currentId, setCurrentId] = useState<string | null>(null)
@@ -87,8 +95,15 @@ export default function Notes() {
     setSaving(true)
     saveNote(note)
       .then(() => setSaving(false))
-      .catch(() => setError('Catatan tidak bisa disimpan di browser ini (penyimpanan penuh atau mode privat).'))
-  }, [])
+      .catch(() =>
+        setError(
+          tx(
+            'Catatan tidak bisa disimpan di browser ini (penyimpanan penuh atau mode privat).',
+            'Notes can’t be saved in this browser (storage is full or you’re in private mode).',
+          ),
+        ),
+      )
+  }, [tx])
 
   // Load; the very first visit gets a short welcome note.
   useEffect(() => {
@@ -102,15 +117,21 @@ export default function Notes() {
           // Private mode: skip the welcome note.
         }
         if (!list.length && !welcomed) {
-          const welcome = { ...blankNote(), title: 'Selamat datang di Catatan', color: 'yellow' as NoteColor }
-          welcome.body = WELCOME_BODY
+          const welcome = { ...blankNote(), ...welcomeNote(), color: 'yellow' as NoteColor }
           await saveNote(welcome)
           list = [welcome]
         }
         setNotes(sortNotes(list))
         if (list.length && window.matchMedia('(min-width: 768px)').matches) setCurrentId(sortNotes(list)[0].id)
       })
-      .catch(() => setError('Penyimpanan browser tidak bisa dibuka (mode privat?), jadi catatan tidak bisa disimpan.'))
+      .catch(() =>
+        setError(
+          tx(
+            'Penyimpanan browser tidak bisa dibuka (mode privat?), jadi catatan tidak bisa disimpan.',
+            'Browser storage can’t be opened (private mode?), so notes can’t be saved.',
+          ),
+        ),
+      )
       .finally(() => setLoaded(true))
   }, [])
 
@@ -191,12 +212,12 @@ export default function Notes() {
       el.setSelectionRange(r.start, r.end)
     })
   }
-  const bold = () => edit((t, s, e) => wrap(t, s, e, '**', 'tebal'))
-  const italic = () => edit((t, s, e) => wrap(t, s, e, '_', 'miring'))
-  const code = () => edit((t, s, e) => wrap(t, s, e, '`', 'kode'))
+  const bold = () => edit((t, s, e) => wrap(t, s, e, '**', tx('tebal', 'bold')))
+  const italic = () => edit((t, s, e) => wrap(t, s, e, '_', tx('miring', 'italic')))
+  const code = () => edit((t, s, e) => wrap(t, s, e, '`', tx('kode', 'code')))
   const link = () =>
     edit((t, s, e) => {
-      const label = t.slice(s, e) || 'teks tautan'
+      const label = t.slice(s, e) || tx('teks tautan', 'link text')
       const inserted = `[${label}](https://)`
       const urlAt = s + label.length + 3
       return { text: t.slice(0, s) + inserted + t.slice(e), start: urlAt, end: urlAt + 8 }
@@ -215,7 +236,7 @@ export default function Notes() {
   // ------------------------------------------------------------- backup
 
   function backup() {
-    downloadBlob(new Blob([JSON.stringify(notes, null, 2)], { type: 'application/json' }), 'catatan-cadangan.json')
+    downloadBlob(new Blob([JSON.stringify(notes, null, 2)], { type: 'application/json' }), tx('catatan-cadangan.json', 'notes-backup.json'))
   }
   async function restore(file: File | undefined) {
     if (!file) return
@@ -237,7 +258,7 @@ export default function Notes() {
       setNotes(sortNotes([...byId.values()]))
       setError('')
     } catch {
-      setError('File itu bukan cadangan dari tool Catatan ini (.json).')
+      setError(tx('File itu bukan cadangan dari tool Catatan ini (.json).', 'That file isn’t a backup from this Notes tool (.json).'))
     }
   }
 
@@ -255,27 +276,29 @@ export default function Notes() {
         <aside className={cn('flex min-h-0 flex-col border-b md:border-r md:border-b-0', current && 'max-md:hidden')}>
           <div className="flex items-center gap-2 border-b p-3">
             <label className="relative min-w-0 flex-1">
-              <span className="sr-only">Cari catatan</span>
+              <span className="sr-only">{tx('Cari catatan', 'Search notes')}</span>
               <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
               <input
                 type="search"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Cari catatan…"
+                placeholder={tx('Cari catatan…', 'Search notes…')}
                 className="h-9 w-full rounded-xl border bg-background pr-3 pl-9 text-sm outline-none focus:border-brand-2/50"
               />
             </label>
-            <Button size="sm" onClick={create} aria-label="Catatan baru" title="Catatan baru">
+            <Button size="sm" onClick={create} aria-label={tx('Catatan baru', 'New note')} title={tx('Catatan baru', 'New note')}>
               <Plus className="size-4" />
             </Button>
           </div>
           <ul className="min-h-0 flex-1 overflow-y-auto p-2">
             {loaded && visible.length === 0 && (
               <li className="p-6 text-center text-sm text-muted-foreground">
-                {q ? `Tidak ada catatan berisi “${query}”.` : 'Belum ada catatan.'}
+                {q
+                  ? tx(`Tidak ada catatan berisi “${query}”.`, `No notes contain “${query}”.`)
+                  : tx('Belum ada catatan.', 'No notes yet.')}
                 {!q && (
                   <Button size="sm" variant="outline" className="mt-3" onClick={create}>
-                    <Plus className="size-4" /> Tulis catatan
+                    <Plus className="size-4" /> {tx('Tulis catatan', 'Write a note')}
                   </Button>
                 )}
               </li>
@@ -300,7 +323,7 @@ export default function Notes() {
                       {n.pinned && <Pin className="size-3 shrink-0 text-brand-2" />}
                       <span className="truncate text-sm font-medium">{displayTitle(n)}</span>
                     </span>
-                    <span className="mt-0.5 line-clamp-2 text-xs text-muted-foreground">{snippet(n) || 'Kosong'}</span>
+                    <span className="mt-0.5 line-clamp-2 text-xs text-muted-foreground">{snippet(n) || tx('Kosong', 'Empty')}</span>
                     <span className="mt-1 flex items-center gap-2 font-mono text-[10px] text-muted-foreground">
                       {dateText(n.updatedAt)}
                       {tasks.total > 0 && (
@@ -317,10 +340,10 @@ export default function Notes() {
           </ul>
           <div className="flex gap-1 border-t p-2">
             <Button size="sm" variant="ghost" className="flex-1" onClick={backup} disabled={!notes.length}>
-              <Download className="size-4" /> Cadangkan
+              <Download className="size-4" /> {tx('Cadangkan', 'Back up')}
             </Button>
             <Button size="sm" variant="ghost" className="flex-1" onClick={() => fileRef.current?.click()}>
-              <Upload className="size-4" /> Pulihkan
+              <Upload className="size-4" /> {tx('Pulihkan', 'Restore')}
             </Button>
             <input
               ref={fileRef}
@@ -340,9 +363,9 @@ export default function Notes() {
           {!current ? (
             <div className="grid flex-1 place-items-center p-10 text-center text-sm text-muted-foreground">
               <div>
-                <p>Pilih catatan di samping, atau buat yang baru.</p>
+                <p>{tx('Pilih catatan di samping, atau buat yang baru.', 'Pick a note from the list, or create a new one.')}</p>
                 <Button size="sm" className="mt-4" onClick={create}>
-                  <Plus className="size-4" /> Catatan baru
+                  <Plus className="size-4" /> {tx('Catatan baru', 'New note')}
                 </Button>
               </div>
             </div>
@@ -353,7 +376,7 @@ export default function Notes() {
                   type="button"
                   onClick={() => setCurrentId(null)}
                   className="grid size-8 place-items-center rounded-lg text-muted-foreground hover:bg-accent md:hidden"
-                  aria-label="Kembali ke daftar"
+                  aria-label={tx('Kembali ke daftar', 'Back to list')}
                 >
                   <ArrowLeft className="size-4" />
                 </button>
@@ -369,54 +392,54 @@ export default function Notes() {
                       )}
                     >
                       {v === 'edit' ? <PenLine className="size-3.5" /> : <Eye className="size-3.5" />}
-                      {v === 'edit' ? 'Tulis' : 'Pratinjau'}
+                      {v === 'edit' ? tx('Tulis', 'Write') : tx('Pratinjau', 'Preview')}
                     </button>
                   ))}
                 </div>
                 {view === 'edit' && (
                   <div className="flex flex-wrap items-center">
-                    <Tool label="Tebal (Ctrl+B)" onClick={bold}>
+                    <Tool label={tx('Tebal (Ctrl+B)', 'Bold (Ctrl+B)')} onClick={bold}>
                       <Bold />
                     </Tool>
-                    <Tool label="Miring (Ctrl+I)" onClick={italic}>
+                    <Tool label={tx('Miring (Ctrl+I)', 'Italic (Ctrl+I)')} onClick={italic}>
                       <Italic />
                     </Tool>
-                    <Tool label="Judul" onClick={() => prefix('## ')}>
+                    <Tool label={tx('Judul', 'Heading')} onClick={() => prefix('## ')}>
                       <Heading2 />
                     </Tool>
-                    <Tool label="Daftar" onClick={() => prefix('- ')}>
+                    <Tool label={tx('Daftar', 'List')} onClick={() => prefix('- ')}>
                       <List />
                     </Tool>
-                    <Tool label="Daftar bernomor" onClick={() => prefix('1. ')}>
+                    <Tool label={tx('Daftar bernomor', 'Numbered list')} onClick={() => prefix('1. ')}>
                       <ListOrdered />
                     </Tool>
                     <Tool label="Checklist" onClick={() => prefix('- [ ] ')}>
                       <ListChecks />
                     </Tool>
-                    <Tool label="Tautan (Ctrl+K)" onClick={link}>
+                    <Tool label={tx('Tautan (Ctrl+K)', 'Link (Ctrl+K)')} onClick={link}>
                       <Link2 />
                     </Tool>
-                    <Tool label="Kode" onClick={code}>
+                    <Tool label={tx('Kode', 'Code')} onClick={code}>
                       <Code />
                     </Tool>
-                    <Tool label="Kutipan" onClick={() => prefix('> ')}>
+                    <Tool label={tx('Kutipan', 'Quote')} onClick={() => prefix('> ')}>
                       <Quote />
                     </Tool>
                   </div>
                 )}
                 <div className="ml-auto flex items-center gap-1">
                   <span className="mr-1 hidden text-xs text-muted-foreground sm:inline">
-                    {saving ? 'Menyimpan…' : 'Tersimpan'}
+                    {saving ? tx('Menyimpan…', 'Saving…') : tx('Tersimpan', 'Saved')}
                   </span>
                   <Tool
-                    label={current.pinned ? 'Lepas sematan' : 'Sematkan di atas'}
+                    label={current.pinned ? tx('Lepas sematan', 'Unpin') : tx('Sematkan di atas', 'Pin to top')}
                     active={current.pinned}
                     onClick={() => update(current.id, { pinned: !current.pinned }, { touch: false })}
                   >
                     {current.pinned ? <PinOff /> : <Pin />}
                   </Tool>
                   <Tool
-                    label="Unduh sebagai .md"
+                    label={tx('Unduh sebagai .md', 'Download as .md')}
                     onClick={() =>
                       downloadBlob(
                         new Blob([noteAsMarkdown(current)], { type: 'text/markdown' }),
@@ -428,16 +451,16 @@ export default function Notes() {
                   </Tool>
                   {confirming ? (
                     <span className="flex items-center gap-1 text-xs">
-                      Hapus?
+                      {tx('Hapus?', 'Delete?')}
                       <Button size="sm" variant="destructive" onClick={remove}>
-                        Hapus
+                        {tx('Hapus', 'Delete')}
                       </Button>
                       <Button size="sm" variant="ghost" onClick={() => setConfirming(false)}>
-                        Batal
+                        {tx('Batal', 'Cancel')}
                       </Button>
                     </span>
                   ) : (
-                    <Tool label="Hapus catatan" onClick={() => setConfirming(true)}>
+                    <Tool label={tx('Hapus catatan', 'Delete note')} onClick={() => setConfirming(true)}>
                       <Trash2 />
                     </Tool>
                   )}
@@ -456,19 +479,19 @@ export default function Notes() {
                       requestAnimationFrame(() => bodyRef.current?.focus())
                     }
                   }}
-                  placeholder="Judul"
-                  aria-label="Judul catatan"
+                  placeholder={tx('Judul', 'Title')}
+                  aria-label={tx('Judul catatan', 'Note title')}
                   className="min-w-0 flex-1 bg-transparent text-2xl font-semibold tracking-tight outline-none placeholder:text-muted-foreground/50"
                 />
-                <div className="flex shrink-0 items-center gap-1" role="radiogroup" aria-label="Warna">
+                <div className="flex shrink-0 items-center gap-1" role="radiogroup" aria-label={tx('Warna', 'Color')}>
                   {NOTE_COLORS.map((c) => (
                     <button
                       key={c.id}
                       type="button"
                       role="radio"
                       aria-checked={current.color === c.id}
-                      aria-label={c.label}
-                      title={c.label}
+                      aria-label={tx(...c.label)}
+                      title={tx(...c.label)}
                       onClick={() => update(current.id, { color: c.id }, { touch: false })}
                       className={cn(
                         'size-4 rounded-full border',
@@ -480,7 +503,7 @@ export default function Notes() {
                 </div>
               </div>
               <p className="px-5 pt-1 text-xs text-muted-foreground sm:px-6">
-                Diubah {dateText(current.updatedAt)} · dibuat {dateText(current.createdAt)}
+                {tx('Diubah', 'Edited')} {dateText(current.updatedAt)} · {tx('dibuat', 'created')} {dateText(current.createdAt)}
               </p>
 
               {view === 'edit' ? (
@@ -509,8 +532,11 @@ export default function Notes() {
                       requestAnimationFrame(() => el.setSelectionRange(r.cursor, r.cursor))
                     }
                   }}
-                  placeholder="Tulis sesuatu… (Markdown didukung: **tebal**, - daftar, - [ ] checklist)"
-                  aria-label="Isi catatan"
+                  placeholder={tx(
+                    'Tulis sesuatu… (Markdown didukung: **tebal**, - daftar, - [ ] checklist)',
+                    'Write something… (Markdown works: **bold**, - list, - [ ] checklist)',
+                  )}
+                  aria-label={tx('Isi catatan', 'Note content')}
                   className="min-h-[50vh] flex-1 resize-none bg-transparent px-5 py-4 font-mono text-[14px] leading-relaxed outline-none placeholder:text-muted-foreground/50 sm:px-6"
                 />
               ) : (
@@ -533,7 +559,9 @@ export default function Notes() {
                     '[&_hr]:my-4 [&_table]:my-3 [&_td]:border [&_td]:px-2 [&_td]:py-1 [&_th]:border [&_th]:px-2 [&_th]:py-1',
                   )}
                   // Sanitized with DOMPurify in renderMarkdown().
-                  dangerouslySetInnerHTML={{ __html: html || '<p style="opacity:.5">Catatan ini masih kosong.</p>' }}
+                  dangerouslySetInnerHTML={{
+                    __html: html || `<p style="opacity:.5">${tx('Catatan ini masih kosong.', 'This note is still empty.')}</p>`,
+                  }}
                 />
               )}
             </>
@@ -543,9 +571,18 @@ export default function Notes() {
 
       {error && <ErrorNote message={error} />}
       <p className="text-xs text-muted-foreground">
-        Catatan tersimpan otomatis di browser ini saja — tidak dikirim ke mana pun dan tidak tersinkron ke perangkat
-        lain. Pakai <b>Cadangkan</b> untuk menyimpan semua catatan ke file, dan <b>Pulihkan</b> untuk membukanya di
-        perangkat lain.
+        {lang === 'en' ? (
+          <>
+            Notes are saved automatically in this browser only — never sent anywhere and not synced to other devices.
+            Use <b>Back up</b> to save all your notes to a file, and <b>Restore</b> to open them on another device.
+          </>
+        ) : (
+          <>
+            Catatan tersimpan otomatis di browser ini saja — tidak dikirim ke mana pun dan tidak tersinkron ke perangkat
+            lain. Pakai <b>Cadangkan</b> untuk menyimpan semua catatan ke file, dan <b>Pulihkan</b> untuk membukanya di
+            perangkat lain.
+          </>
+        )}
       </p>
     </div>
   )

@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 import { ErrorNote } from '@/components/tool/ErrorNote'
 import { Segmented } from '@/components/tool/Segmented'
 import { downloadBlob } from '@/lib/download'
+import { tr, useT } from '@/lib/i18n'
 import { fixRecordedDuration } from '@/lib/local-store'
 import { formatDuration, formatSize, hasWebCodecs, isCanceled, type AudioOut } from '@/lib/media'
 import {
@@ -23,25 +24,40 @@ import {
 type Phase = 'idle' | 'starting' | 'recording' | 'paused'
 type Mode = 'speech' | 'raw'
 
-const MODES: { value: Mode; label: string }[] = [
-  { value: 'speech', label: 'Suara bicara' },
-  { value: 'raw', label: 'Asli / musik' },
+const MODES: { value: Mode; label: readonly [string, string] }[] = [
+  { value: 'speech', label: ['Suara bicara', 'Speech'] },
+  { value: 'raw', label: ['Asli / musik', 'Raw / music'] },
 ]
-const MODE_HINT: Record<Mode, string> = {
-  speech: 'Peredam bising, peredam gema, dan penyesuai volume otomatis aktif — pas untuk rapat, kuliah, dan voice note.',
-  raw: 'Tanpa pemrosesan, stereo bila mikrofon mendukung — pas untuk musik dan suara sekitar.',
+const MODE_HINT: Record<Mode, readonly [string, string]> = {
+  speech: [
+    'Peredam bising, peredam gema, dan penyesuai volume otomatis aktif — pas untuk rapat, kuliah, dan voice note.',
+    'Noise suppression, echo cancellation, and automatic gain control are on — great for meetings, lectures, and voice notes.',
+  ],
+  raw: [
+    'Tanpa pemrosesan, stereo bila mikrofon mendukung — pas untuk musik dan suara sekitar.',
+    'No processing, stereo if your mic supports it — great for music and ambient sound.',
+  ],
 }
 
 function micError(e: unknown) {
   const name = (e as DOMException)?.name
   if (name === 'NotAllowedError' || name === 'SecurityError')
-    return 'Izin mikrofon ditolak. Klik ikon gembok di samping alamat situs, izinkan Mikrofon, lalu coba lagi.'
-  if (name === 'NotFoundError' || name === 'OverconstrainedError') return 'Tidak ada mikrofon yang terdeteksi di perangkat ini.'
-  if (name === 'NotReadableError') return 'Mikrofon sedang dipakai aplikasi lain. Tutup aplikasi itu, lalu coba lagi.'
-  return 'Mikrofon tidak bisa dibuka di browser ini.'
+    return tr(
+      'Izin mikrofon ditolak. Klik ikon gembok di samping alamat situs, izinkan Mikrofon, lalu coba lagi.',
+      'Microphone access was denied. Click the lock icon next to the site address, allow Microphone, then try again.',
+    )
+  if (name === 'NotFoundError' || name === 'OverconstrainedError')
+    return tr('Tidak ada mikrofon yang terdeteksi di perangkat ini.', 'No microphone was detected on this device.')
+  if (name === 'NotReadableError')
+    return tr(
+      'Mikrofon sedang dipakai aplikasi lain. Tutup aplikasi itu, lalu coba lagi.',
+      'Another app is using the microphone. Close that app, then try again.',
+    )
+  return tr('Mikrofon tidak bisa dibuka di browser ini.', "The microphone can't be opened in this browser.")
 }
 
 export default function AudioRecorder() {
+  const t = useT()
   const supported = useMemo(canRecord, [])
   const [phase, setPhase] = useState<Phase>('idle')
   const [mode, setMode] = useState<Mode>('speech')
@@ -66,7 +82,14 @@ export default function AudioRecorder() {
   const refresh = useCallback(() => {
     listRecordings()
       .then(setRecordings)
-      .catch(() => setError('Penyimpanan browser tidak bisa dibuka (mode privat?). Rekaman tetap bisa diunduh.'))
+      .catch(() =>
+        setError(
+          tr(
+            'Penyimpanan browser tidak bisa dibuka (mode privat?). Rekaman tetap bisa diunduh.',
+            "Browser storage can't be opened (private mode?). You can still download your recordings.",
+          ),
+        ),
+      )
   }, [])
   useEffect(refresh, [refresh])
 
@@ -227,7 +250,12 @@ export default function AudioRecorder() {
     try {
       await saveRecording(recording)
     } catch {
-      setError('Rekaman tidak bisa disimpan di browser ini (penyimpanan penuh atau mode privat). Unduh sekarang agar tidak hilang.')
+      setError(
+        t(
+          'Rekaman tidak bisa disimpan di browser ini (penyimpanan penuh atau mode privat). Unduh sekarang agar tidak hilang.',
+          "The recording couldn't be saved in this browser (storage full or private mode). Download it now so it isn't lost.",
+        ),
+      )
     }
   }
 
@@ -268,7 +296,12 @@ export default function AudioRecorder() {
 
   if (!supported)
     return (
-      <ErrorNote message="Browser ini tidak bisa merekam suara dari halaman web. Coba Chrome, Edge, Firefox, atau Safari versi terbaru." />
+      <ErrorNote
+        message={t(
+          'Browser ini tidak bisa merekam suara dari halaman web. Coba Chrome, Edge, Firefox, atau Safari versi terbaru.',
+          "This browser can't record audio from a web page. Try the latest Chrome, Edge, Firefox, or Safari.",
+        )}
+      />
     )
 
   const active = phase === 'recording' || phase === 'paused'
@@ -284,7 +317,13 @@ export default function AudioRecorder() {
                 phase === 'recording' ? 'animate-pulse bg-red-500' : phase === 'paused' ? 'bg-amber-500' : 'bg-muted-foreground/40',
               )}
             />
-            {phase === 'recording' ? 'Merekam' : phase === 'paused' ? 'Dijeda' : phase === 'starting' ? 'Membuka mikrofon…' : 'Siap merekam'}
+            {phase === 'recording'
+              ? t('Merekam', 'Recording')
+              : phase === 'paused'
+                ? t('Dijeda', 'Paused')
+                : phase === 'starting'
+                  ? t('Membuka mikrofon…', 'Opening microphone…')
+                  : t('Siap merekam', 'Ready to record')}
           </div>
           <p className="mt-3 text-center font-mono text-5xl font-medium tracking-tight tabular-nums sm:text-6xl">
             {formatDuration(elapsed)}
@@ -298,7 +337,7 @@ export default function AudioRecorder() {
             />
             {!active && !peaks.current.length && (
               <p className="pointer-events-none absolute inset-0 grid place-items-center text-sm text-muted-foreground">
-                Gelombang suara muncul di sini saat merekam
+                {t('Gelombang suara muncul di sini saat merekam', 'The waveform shows up here while you record')}
               </p>
             )}
           </div>
@@ -308,8 +347,8 @@ export default function AudioRecorder() {
               <button
                 type="button"
                 onClick={() => stop(false)}
-                aria-label="Batalkan rekaman"
-                title="Batalkan (tidak disimpan)"
+                aria-label={t('Batalkan rekaman', 'Discard recording')}
+                title={t('Batalkan (tidak disimpan)', 'Discard (not saved)')}
                 className="grid size-12 place-items-center rounded-full border bg-background text-muted-foreground transition-colors hover:text-destructive"
               >
                 <X className="size-5" />
@@ -320,7 +359,7 @@ export default function AudioRecorder() {
                 type="button"
                 onClick={() => void start()}
                 disabled={phase === 'starting'}
-                aria-label="Mulai merekam"
+                aria-label={t('Mulai merekam', 'Start recording')}
                 className="group grid size-20 place-items-center rounded-full bg-red-500 text-white shadow-lg shadow-red-500/30 transition-transform hover:scale-105 disabled:opacity-60"
               >
                 <Mic className="size-8" />
@@ -329,8 +368,8 @@ export default function AudioRecorder() {
               <button
                 type="button"
                 onClick={() => stop(true)}
-                aria-label="Selesai dan simpan"
-                title="Selesai & simpan"
+                aria-label={t('Selesai dan simpan', 'Finish and save')}
+                title={t('Selesai & simpan', 'Finish & save')}
                 className="grid size-20 place-items-center rounded-full bg-red-500 text-white shadow-lg shadow-red-500/30 transition-transform hover:scale-105"
               >
                 <Square className="size-7 fill-current" />
@@ -340,8 +379,8 @@ export default function AudioRecorder() {
               <button
                 type="button"
                 onClick={phase === 'recording' ? pause : resume}
-                aria-label={phase === 'recording' ? 'Jeda' : 'Lanjutkan'}
-                title={phase === 'recording' ? 'Jeda' : 'Lanjutkan'}
+                aria-label={phase === 'recording' ? t('Jeda', 'Pause') : t('Lanjutkan', 'Resume')}
+                title={phase === 'recording' ? t('Jeda', 'Pause') : t('Lanjutkan', 'Resume')}
                 className="grid size-12 place-items-center rounded-full border bg-background transition-colors hover:bg-accent"
               >
                 {phase === 'recording' ? <Pause className="size-5" /> : <Play className="size-5" />}
@@ -352,25 +391,31 @@ export default function AudioRecorder() {
 
         <div className="grid gap-5 border-t bg-muted/30 px-5 py-5 sm:grid-cols-[1fr_auto] sm:px-8">
           <label className="space-y-2">
-            <span className="text-xs font-medium text-muted-foreground">Mikrofon</span>
+            <span className="text-xs font-medium text-muted-foreground">{t('Mikrofon', 'Microphone')}</span>
             <select
               value={deviceId}
               disabled={active}
               onChange={(e) => setDeviceId(e.target.value)}
               className="h-10 w-full rounded-xl border bg-background px-3 text-sm disabled:opacity-60"
             >
-              <option value="">Bawaan sistem</option>
+              <option value="">{t('Bawaan sistem', 'System default')}</option>
               {devices.map((d, i) => (
                 <option key={d.deviceId} value={d.deviceId}>
-                  {d.label || `Mikrofon ${i + 1}`}
+                  {d.label || `${t('Mikrofon', 'Microphone')} ${i + 1}`}
                 </option>
               ))}
             </select>
           </label>
           <div className="space-y-2">
-            <Segmented label="Mode" value={mode} options={MODES} onChange={setMode} disabled={active} />
+            <Segmented
+              label={t('Mode', 'Mode')}
+              value={mode}
+              options={MODES.map((m) => ({ value: m.value, label: t(...m.label) }))}
+              onChange={setMode}
+              disabled={active}
+            />
           </div>
-          <p className="text-xs leading-relaxed text-muted-foreground sm:col-span-2">{MODE_HINT[mode]}</p>
+          <p className="text-xs leading-relaxed text-muted-foreground sm:col-span-2">{t(...MODE_HINT[mode])}</p>
         </div>
       </div>
 
@@ -378,12 +423,12 @@ export default function AudioRecorder() {
 
       <section>
         <div className="flex items-baseline justify-between gap-3">
-          <h2 className="text-lg font-semibold tracking-tight">Rekaman</h2>
-          <p className="text-xs text-muted-foreground">Tersimpan di browser ini saja</p>
+          <h2 className="text-lg font-semibold tracking-tight">{t('Rekaman', 'Recordings')}</h2>
+          <p className="text-xs text-muted-foreground">{t('Tersimpan di browser ini saja', 'Saved in this browser only')}</p>
         </div>
         {recordings.length === 0 ? (
           <p className="mt-3 rounded-2xl border border-dashed p-8 text-center text-sm text-muted-foreground">
-            Belum ada rekaman. Tekan tombol merah untuk mulai.
+            {t('Belum ada rekaman. Tekan tombol merah untuk mulai.', 'No recordings yet. Press the red button to start.')}
           </p>
         ) : (
           <ul className="mt-3 space-y-3">
@@ -412,6 +457,7 @@ function RecordingRow({
   onRename: (name: string) => void
   onDelete: () => void
 }) {
+  const t = useT()
   const url = useMemo(() => URL.createObjectURL(recording.blob), [recording.blob])
   useEffect(() => () => URL.revokeObjectURL(url), [url])
   const [name, setName] = useState(recording.name)
@@ -434,7 +480,13 @@ function RecordingRow({
       )
       downloadBlob(blob, `${file}.${out}`)
     } catch (e) {
-      if (!isCanceled(e)) setError(`Gagal mengubah ke ${out.toUpperCase()}. Unduh format aslinya (.${ext}) sebagai gantinya.`)
+      if (!isCanceled(e))
+        setError(
+          t(
+            `Gagal mengubah ke ${out.toUpperCase()}. Unduh format aslinya (.${ext}) sebagai gantinya.`,
+            `Couldn't convert to ${out.toUpperCase()}. Download the original format (.${ext}) instead.`,
+          ),
+        )
     } finally {
       setJob(null)
       cancel.current = null
@@ -449,7 +501,7 @@ function RecordingRow({
           onChange={(e) => setName(e.target.value)}
           onBlur={() => name !== recording.name && onRename(name)}
           onKeyDown={(e) => e.key === 'Enter' && e.currentTarget.blur()}
-          aria-label="Nama rekaman"
+          aria-label={t('Nama rekaman', 'Recording name')}
           className="min-w-0 flex-1 rounded-md bg-transparent px-1 py-0.5 font-medium outline-none hover:bg-muted focus:bg-muted"
         />
         <span className="font-mono text-xs text-muted-foreground">
@@ -465,9 +517,9 @@ function RecordingRow({
       />
       <div className="mt-3 flex flex-wrap items-center gap-2">
         <Button size="sm" variant="outline" onClick={() => downloadBlob(recording.blob, `${file}.${ext}`)}>
-          <Download className="size-4" /> Unduh .{ext}
+          <Download className="size-4" /> {t('Unduh', 'Download')} .{ext}
         </Button>
-        {hasWebCodecs() && <span className="ml-1 text-xs text-muted-foreground">Ubah ke:</span>}
+        {hasWebCodecs() && <span className="ml-1 text-xs text-muted-foreground">{t('Ubah ke:', 'Convert to:')}</span>}
         {hasWebCodecs() &&
           OUTPUTS.map((o) => (
             <Button key={o.value} size="sm" variant="outline" disabled={!!job} onClick={() => void save(o.value)}>
@@ -476,25 +528,25 @@ function RecordingRow({
           ))}
         {job && (
           <Button size="sm" variant="ghost" onClick={() => cancel.current?.()}>
-            Batal
+            {t('Batal', 'Cancel')}
           </Button>
         )}
         {confirming ? (
           <span className="ml-auto flex items-center gap-1.5 text-sm">
-            Hapus permanen?
+            {t('Hapus permanen?', 'Delete permanently?')}
             <Button size="sm" variant="destructive" onClick={onDelete}>
-              Hapus
+              {t('Hapus', 'Delete')}
             </Button>
             <Button size="sm" variant="ghost" onClick={() => setConfirming(false)}>
-              Batal
+              {t('Batal', 'Cancel')}
             </Button>
           </span>
         ) : (
           <button
             type="button"
             onClick={() => setConfirming(true)}
-            aria-label="Hapus rekaman"
-            title="Hapus rekaman"
+            aria-label={t('Hapus rekaman', 'Delete recording')}
+            title={t('Hapus rekaman', 'Delete recording')}
             className="ml-auto grid size-8 place-items-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-destructive"
           >
             <Trash2 className="size-4" />

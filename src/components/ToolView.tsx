@@ -1,22 +1,26 @@
 import { Suspense, useEffect } from 'react'
 import { ArrowLeft, Loader2, ShieldCheck } from 'lucide-react'
 import { InstallCard } from '@/components/InstallCard'
-import type { Tool } from '@/tools/registry'
+import { toolText, type Tool } from '@/tools/registry'
+import { useLang, useT } from '@/lib/i18n'
 
 export function ToolView({ tool, embed = false }: { tool: Tool; embed?: boolean }) {
   const Component = tool.component
+  const t = useT()
+  const lang = useLang()
+  const text = toolText(tool, lang)
 
   useEffect(() => {
     const previous = document.title
-    document.title = `${tool.title} — Tools`
+    document.title = `${text.title} — Tools`
     return () => {
       document.title = previous
     }
-  }, [tool.title])
+  }, [text.title])
 
   const loading = (
     <div className="flex items-center gap-2 text-sm text-muted-foreground">
-      <Loader2 className="size-4 animate-spin" /> Memuat tool…
+      <Loader2 className="size-4 animate-spin" /> {t('Memuat tool…', 'Loading tool…')}
     </div>
   )
 
@@ -29,7 +33,7 @@ export function ToolView({ tool, embed = false }: { tool: Tool; embed?: boolean 
         </Suspense>
         <p className="mt-4 text-center text-xs text-muted-foreground">
           <a href={`https://chalidade.github.io/tools/#/${tool.slug}`} target="_blank" rel="noreferrer" className="hover:text-foreground">
-            {tool.title} · Tools — berjalan di browsermu, tanpa upload ↗
+            {text.title} · Tools — {t('berjalan di browsermu, tanpa upload', 'runs in your browser, no upload')} ↗
           </a>
         </p>
       </div>
@@ -46,7 +50,7 @@ export function ToolView({ tool, embed = false }: { tool: Tool; embed?: boolean 
           className="inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
         >
           <ArrowLeft className="size-4" />
-          Semua tools
+          {t('Semua tools', 'All tools')}
         </a>
 
         <div className="mt-8 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
@@ -55,13 +59,13 @@ export function ToolView({ tool, embed = false }: { tool: Tool; embed?: boolean 
               <tool.icon className="size-6" />
             </span>
             <div>
-              <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">{tool.title}</h1>
-              <p className="mt-1 text-muted-foreground">{tool.description}</p>
+              <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">{text.title}</h1>
+              <p className="mt-1 text-muted-foreground">{text.description}</p>
             </div>
           </div>
           <p className="inline-flex items-center gap-1.5 self-start rounded-full border bg-card/70 px-3 py-1 text-xs text-muted-foreground backdrop-blur sm:self-auto">
             <ShieldCheck className="size-3.5 text-emerald-600 dark:text-emerald-400" />
-            File tidak di-upload
+            {t('File tidak di-upload', 'Nothing is uploaded')}
           </p>
         </div>
 

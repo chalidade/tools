@@ -3,6 +3,8 @@ import { Check } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { PLAYER_LOOK, Person, type Look } from './Person'
 import type { Keeper as KeeperSpot, Tree } from './scenes'
+import { useLang, useT } from '@/lib/i18n'
+import { toolText } from '@/tools/registry'
 
 /*
  * Everything here is drawn at a fixed world size and positioned by the game
@@ -87,6 +89,8 @@ export const Keeper = forwardRef<
   }
 >(function Keeper({ keeper, name, look, near, talking, visited, onClick, bubbleRef }, ref) {
   const { tool, home } = keeper
+  const t = useT()
+  const lang = useLang()
   return (
     <>
       {/* Rug, drawn on the floor under everything. */}
@@ -114,9 +118,9 @@ export const Keeper = forwardRef<
             <tool.icon className="size-3" />
           </span>
           <span className="font-semibold">{name}</span>
-          <span className="text-muted-foreground">· {tool.title}</span>
+          <span className="text-muted-foreground">· {toolText(tool, lang).title}</span>
           {visited && (
-            <span title="Sudah dikunjungi" className="grid size-3.5 place-items-center rounded-full bg-emerald-500 text-white">
+            <span title={t('Sudah dikunjungi', 'Visited')} className="grid size-3.5 place-items-center rounded-full bg-emerald-500 text-white">
               <Check className="size-2.5" strokeWidth={3.5} />
             </span>
           )}

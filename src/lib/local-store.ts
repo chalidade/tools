@@ -1,3 +1,5 @@
+import { locale } from '@/lib/i18n'
+
 // A small IndexedDB store for things a tool keeps on this device between
 // visits (recordings). One database per tool, one object store, keyed by id.
 // Nothing here ever leaves the browser.
@@ -45,10 +47,10 @@ export function localStore<T extends Stored>(dbName: string) {
 
 export const newId = () => Math.random().toString(36).slice(2, 10)
 
-/** "Rekaman 7 Okt 14.05" */
+/** "Rekaman 7 Okt 14.05" / "Recording Oct 7, 2:05 PM" — the date in the current language. */
 export function timestampName(prefix: string, date = new Date()) {
-  const day = date.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })
-  const time = date.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })
+  const day = date.toLocaleDateString(locale(), { day: 'numeric', month: 'short' })
+  const time = date.toLocaleTimeString(locale(), { hour: '2-digit', minute: '2-digit' })
   return `${prefix} ${day} ${time}`
 }
 

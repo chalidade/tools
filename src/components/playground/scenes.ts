@@ -1,4 +1,5 @@
 import { CATEGORIES, TOOLS, type CategoryId, type Tool } from '@/tools/registry'
+import type { Lang } from '@/lib/i18n'
 
 /*
  * The walkable home page is a set of scenes: a town with one house per
@@ -61,14 +62,17 @@ const STYLE_ORDER: BuildingStyle[] = ['shop', 'library', 'vault', 'studio', 'lab
  * Size of each building, the height `base` from its top where the solid walls
  * begin (above that is roof the player can walk behind), and its name.
  */
-export const BUILDINGS: Record<BuildingStyle, { w: number; h: number; base: number; place: string }> = {
-  shop: { w: 300, h: 236, base: 104, place: 'Percetakan' },
-  library: { w: 340, h: 256, base: 124, place: 'Perpustakaan' },
-  vault: { w: 290, h: 236, base: 104, place: 'Brankas' },
-  studio: { w: 320, h: 244, base: 118, place: 'Studio' },
-  lab: { w: 340, h: 236, base: 84, place: 'Lab' },
-  office: { w: 320, h: 250, base: 60, place: 'Kantor' },
+export const BUILDINGS: Record<BuildingStyle, { w: number; h: number; base: number; place: string; placeEn: string }> = {
+  shop: { w: 300, h: 236, base: 104, place: 'Percetakan', placeEn: 'Print Shop' },
+  library: { w: 340, h: 256, base: 124, place: 'Perpustakaan', placeEn: 'Library' },
+  vault: { w: 290, h: 236, base: 104, place: 'Brankas', placeEn: 'Vault' },
+  studio: { w: 320, h: 244, base: 118, place: 'Studio', placeEn: 'Studio' },
+  lab: { w: 340, h: 236, base: 84, place: 'Lab', placeEn: 'Lab' },
+  office: { w: 320, h: 250, base: 60, place: 'Kantor', placeEn: 'Office' },
 }
+
+/** What a building is called, in the given language. */
+export const placeName = (style: BuildingStyle, lang: Lang) => BUILDINGS[style][lang === 'en' ? 'placeEn' : 'place']
 
 export interface House {
   id: CategoryId

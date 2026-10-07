@@ -3,6 +3,7 @@ import { Check, ImagePlus, Pipette, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { CopyButton } from '@/components/tool/CopyButton'
 import { ErrorNote } from '@/components/tool/ErrorNote'
+import { useT } from '@/lib/i18n'
 import { decodeImage, newCanvas } from '@/lib/image'
 import { cn } from '@/lib/utils'
 import { colorScale, contrast, extractPalette, formats, parseColor, SCALE_STEPS, toHex, type RGB } from './color'
@@ -17,6 +18,7 @@ interface EyeDropperCtor {
 const EyeDropper = (window as unknown as { EyeDropper?: EyeDropperCtor }).EyeDropper
 
 export default function ColorPicker() {
+  const t = useT()
   const [color, setColor] = useState<RGB>({ r: 109, g: 40, b: 217 })
   const [draft, setDraft] = useState('#6D28D9')
   const hex = toHex(color)
@@ -48,7 +50,9 @@ export default function ColorPicker() {
           <div className="h-36 rounded-xl border shadow-inner" style={{ background: hex }} />
           <div className="flex flex-wrap items-end gap-3">
             <label className="block min-w-44 flex-1 space-y-2">
-              <span className="text-xs font-medium text-muted-foreground">HEX, rgb(), hsl(), atau oklch()</span>
+              <span className="text-xs font-medium text-muted-foreground">
+                {t('HEX, rgb(), hsl(), atau oklch()', 'HEX, rgb(), hsl(), or oklch()')}
+              </span>
               <input
                 value={draft}
                 onChange={(e) => {
@@ -67,17 +71,17 @@ export default function ColorPicker() {
               type="color"
               value={hex}
               onChange={(e) => choose(parseColor(e.target.value) ?? color)}
-              aria-label="Pilih warna"
+              aria-label={t('Pilih warna', 'Pick a color')}
               className="h-11 w-14 cursor-pointer rounded-lg border bg-background p-1"
             />
             {EyeDropper && (
               <Button variant="outline" className="h-11" onClick={() => void pickFromScreen()}>
                 <Pipette />
-                Dari layar
+                {t('Dari layar', 'From screen')}
               </Button>
             )}
           </div>
-          {invalid && <p className="text-xs text-destructive">Format warna tidak dikenali.</p>}
+          {invalid && <p className="text-xs text-destructive">{t('Format warna tidak dikenali.', 'Unrecognized color format.')}</p>}
 
           <ul className="divide-y rounded-xl border">
             {formats(color).map((f) => (
@@ -96,22 +100,22 @@ export default function ColorPicker() {
           {/* Contrast */}
           <div className="grid gap-3 sm:grid-cols-2">
             {[
-              { fg: WHITE, label: 'Teks putih' },
-              { fg: BLACK, label: 'Teks hitam' },
+              { fg: WHITE, label: t('Teks putih', 'White text') },
+              { fg: BLACK, label: t('Teks hitam', 'Black text') },
             ].map(({ fg, label }) => {
               const ratio = contrast(color, fg)
               return (
                 <div key={label} className="overflow-hidden rounded-2xl border">
                   <div className="px-4 py-5" style={{ background: hex, color: toHex(fg) }}>
                     <p className="text-lg font-semibold">{label}</p>
-                    <p className="text-sm">Contoh teks biasa di atas warna ini.</p>
+                    <p className="text-sm">{t('Contoh teks biasa di atas warna ini.', 'Sample body text on this color.')}</p>
                   </div>
                   <div className="flex flex-wrap items-center justify-between gap-2 bg-card px-4 py-2 text-xs">
                     <span className="font-mono font-medium whitespace-nowrap">{ratio.toFixed(2)} : 1</span>
                     <span className="flex flex-wrap gap-1.5">
                       <Badge pass={ratio >= 4.5} label="AA" />
                       <Badge pass={ratio >= 7} label="AAA" />
-                      <Badge pass={ratio >= 3} label="AA besar" />
+                      <Badge pass={ratio >= 3} label={t('AA besar', 'AA large')} />
                     </span>
                   </div>
                 </div>
@@ -124,9 +128,11 @@ export default function ColorPicker() {
       {/* Scale */}
       <div className="space-y-2">
         <div className="flex items-center justify-between gap-2">
-          <p className="text-xs font-medium text-muted-foreground">Gradasi 50–950 (klik untuk memakai)</p>
+          <p className="text-xs font-medium text-muted-foreground">
+            {t('Gradasi 50–950 (klik untuk memakai)', 'Shades 50–950 (click to use)')}
+          </p>
           <CopyButton
-            label="Salin sebagai CSS"
+            label={t('Salin sebagai CSS', 'Copy as CSS')}
             text={scale.map((c, i) => `--color-${SCALE_STEPS[i]}: ${toHex(c)};`).join('\n')}
           />
         </div>
@@ -169,6 +175,7 @@ function Badge({ pass, label }: { pass: boolean; label: string }) {
 
 /** Click a pixel of a picked image; shows a magnifier while hovering, and the image's main colours. */
 function ImagePicker({ onPick }: { onPick: (c: RGB) => void }) {
+  const t = useT()
   const [canvas, setCanvas] = useState<HTMLCanvasElement | null>(null)
   const [url, setUrl] = useState<string | null>(null)
   const [palette, setPalette] = useState<RGB[]>([])
@@ -194,7 +201,7 @@ function ImagePicker({ onPick }: { onPick: (c: RGB) => void }) {
       setCanvas(c)
       setUrl(c.toDataURL('image/png'))
     } catch {
-      setError('Gambar tidak bisa dibaca. Coba JPG, PNG, atau WebP.')
+      setError(t('Gambar tidak bisa dibaca. Coba JPG, PNG, atau WebP.', "Couldn't read the image. Try JPG, PNG, or WebP."))
     }
   }
 
@@ -237,7 +244,7 @@ function ImagePicker({ onPick }: { onPick: (c: RGB) => void }) {
           className="flex w-full flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed bg-card px-6 py-10 text-sm text-muted-foreground transition-colors hover:border-brand-2/40 hover:text-foreground"
         >
           <ImagePlus className="size-6" />
-          Ambil warna dari gambar — tarik gambar ke sini atau klik
+          {t('Ambil warna dari gambar — tarik gambar ke sini atau klik', 'Pick colors from an image — drop an image here or click')}
         </button>
         <input
           ref={pickRef}
@@ -258,7 +265,7 @@ function ImagePicker({ onPick }: { onPick: (c: RGB) => void }) {
   return (
     <div className="space-y-3 rounded-2xl border bg-card p-4">
       <div className="flex items-center justify-between gap-2">
-        <p className="text-xs font-medium text-muted-foreground">Klik gambar untuk mengambil warna</p>
+        <p className="text-xs font-medium text-muted-foreground">{t('Klik gambar untuk mengambil warna', 'Click the image to pick a color')}</p>
         <button
           type="button"
           onClick={() => {
@@ -268,7 +275,7 @@ function ImagePicker({ onPick }: { onPick: (c: RGB) => void }) {
           }}
           className="text-xs font-medium text-brand-2 hover:underline"
         >
-          Gambar lain
+          {t('Gambar lain', 'Another image')}
         </button>
       </div>
       <div className="relative grid place-items-center rounded-xl bg-muted/60 p-2">
@@ -300,7 +307,7 @@ function ImagePicker({ onPick }: { onPick: (c: RGB) => void }) {
       </div>
       {palette.length > 0 && (
         <div className="space-y-1.5">
-          <p className="text-xs text-muted-foreground">Warna utama</p>
+          <p className="text-xs text-muted-foreground">{t('Warna utama', 'Main colors')}</p>
           <div className="flex flex-wrap gap-2">
             {palette.map((c, i) => {
               const h = toHex(c)

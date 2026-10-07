@@ -6,6 +6,8 @@
 // original source text, so beautify/minify only ever change whitespace (and
 // key order, when asked).
 
+import { tr } from '@/lib/i18n'
+
 export type JsonNode =
   | { type: 'object'; entries: { key: string; value: JsonNode }[] }
   | { type: 'array'; items: JsonNode[] }
@@ -38,7 +40,10 @@ export function parseJson(source: string): JsonNode {
   const fail = (message: string, at = i): never => {
     throw new JsonSyntaxError(message, text, at)
   }
-  const describe = (at: number) => (at >= text.length ? 'akhir data' : `karakter ${JSON.stringify(text[at])}`)
+  const describe = (at: number) =>
+    at >= text.length
+      ? tr('akhir data', 'end of data')
+      : tr(`karakter ${JSON.stringify(text[at])}`, `character ${JSON.stringify(text[at])}`)
 
   const skipSpace = () => {
     while (i < text.length) {
@@ -61,33 +66,41 @@ export function parseJson(source: string): JsonNode {
         const e = text[i + 1]
         if (e === 'u') {
           if (!/^[0-9a-fA-F]{4}$/.test(text.slice(i + 2, i + 6)))
-            fail('Escape \\u harus diikuti 4 digit heksadesimal', i)
+            fail(tr('Escape \\u harus diikuti 4 digit heksadesimal', 'Escape \\u must be followed by 4 hex digits'), i)
           i += 6
         } else if (e !== undefined && '"\\/bfnrt'.includes(e)) i += 2
-        else fail(`Escape tidak dikenal: \\${e ?? ''}`, i)
+        else fail(tr(`Escape tidak dikenal: \\${e ?? ''}`, `Unknown escape: \\${e ?? ''}`), i)
       } else if (c < 0x20) {
         fail(
-          c === 0x0a ? 'String belum ditutup sebelum ganti baris' : 'Karakter kontrol di dalam string harus di-escape',
+          c === 0x0a
+            ? tr('String belum ditutup sebelum ganti baris', 'String not closed before the line break')
+            : tr('Karakter kontrol di dalam string harus di-escape', 'Control characters inside a string must be escaped'),
           i,
         )
       } else i++
     }
-    return fail('String belum ditutup (tanda kutip " penutup tidak ada)', start)
+    return fail(tr('String belum ditutup (tanda kutip " penutup tidak ada)', 'String not closed (the closing " is missing)'), start)
   }
 
   const readNumber = (): string => {
     const match = /^-?(0|[1-9]\d*)(\.\d+)?([eE][+-]?\d+)?/.exec(text.slice(i, i + 400))
-    if (!match || !match[0] || match[0] === '-') fail(`Angka tidak valid di ${describe(i)}`)
+    if (!match || !match[0] || match[0] === '-') fail(tr(`Angka tidak valid di ${describe(i)}`, `Invalid number at ${describe(i)}`))
     const raw = match![0]
     // "01" or "1." etc.: valid prefix followed by more number characters.
     if (/[\d.eE+-]/.test(text[i + raw.length] ?? ''))
-      fail('Format angka tidak valid (angka 0 di depan atau titik tanpa digit?)', i)
+      fail(
+        tr(
+          'Format angka tidak valid (angka 0 di depan atau titik tanpa digit?)',
+          'Invalid number format (a leading 0, or a decimal point with no digits?)',
+        ),
+        i,
+      )
     i += raw.length
     return raw
   }
 
   const readValue = (depth: number): JsonNode => {
-    if (depth > MAX_DEPTH) fail('Data terlalu dalam bersarang')
+    if (depth > MAX_DEPTH) fail(tr('Data terlalu dalam bersarang', 'Data is nested too deeply'))
     skipSpace()
     const c = text[i]
     if (c === '{') {
@@ -101,12 +114,18 @@ export function parseJson(source: string): JsonNode {
       for (;;) {
         skipSpace()
         if (text[i] !== '"') {
-          if (text[i] === '}' && entries.length) fail('Koma berlebih sebelum }', i)
-          fail(`Diharapkan nama key dalam tanda kutip ganda, ditemukan ${describe(i)}`)
+          if (text[i] === '}' && entries.length) fail(tr('Koma berlebih sebelum }', 'Trailing comma before }'), i)
+          fail(
+            tr(
+              `Diharapkan nama key dalam tanda kutip ganda, ditemukan ${describe(i)}`,
+              `Expected a key name in double quotes, found ${describe(i)}`,
+            ),
+          )
         }
         const key = readString()
         skipSpace()
-        if (text[i] !== ':') fail(`Diharapkan ':' setelah key ${key}, ditemukan ${describe(i)}`)
+        if (text[i] !== ':')
+          fail(tr(`Diharapkan ':' setelah key ${key}, ditemukan ${describe(i)}`, `Expected ':' after key ${key}, found ${describe(i)}`))
         i++
         const value = readValue(depth + 1)
         entries.push({ key, value })
@@ -119,7 +138,7 @@ export function parseJson(source: string): JsonNode {
           i++
           return { type: 'object', entries }
         }
-        fail(`Diharapkan ',' atau '}' setelah nilai, ditemukan ${describe(i)}`)
+        fail(tr(`Diharapkan ',' atau '}' setelah nilai, ditemukan ${describe(i)}`, `Expected ',' or '}' after a value, found ${describe(i)}`))
       }
     }
     if (c === '[') {
@@ -132,7 +151,7 @@ export function parseJson(source: string): JsonNode {
       }
       for (;;) {
         skipSpace()
-        if (text[i] === ']' && items.length) fail('Koma berlebih sebelum ]', i)
+        if (text[i] === ']' && items.length) fail(tr('Koma berlebih sebelum ]', 'Trailing comma before ]'), i)
         items.push(readValue(depth + 1))
         skipSpace()
         if (text[i] === ',') {
@@ -143,7 +162,7 @@ export function parseJson(source: string): JsonNode {
           i++
           return { type: 'array', items }
         }
-        fail(`Diharapkan ',' atau ']' setelah nilai, ditemukan ${describe(i)}`)
+        fail(tr(`Diharapkan ',' atau ']' setelah nilai, ditemukan ${describe(i)}`, `Expected ',' or ']' after a value, found ${describe(i)}`))
       }
     }
     if (c === '"') return { type: 'literal', raw: readString() }
@@ -153,17 +172,19 @@ export function parseJson(source: string): JsonNode {
         i += word.length
         return { type: 'literal', raw: word }
       }
-    if (c === "'") return fail('String JSON harus memakai tanda kutip ganda ", bukan kutip tunggal')
-    if (c === '/') return fail('JSON tidak mengizinkan komentar')
-    if (i >= text.length) return fail('Data berakhir terlalu cepat — ada kurung yang belum ditutup?')
-    return fail(`Nilai tidak valid: ${describe(i)}`)
+    if (c === "'")
+      return fail(tr('String JSON harus memakai tanda kutip ganda ", bukan kutip tunggal', 'JSON strings must use double quotes ", not single quotes'))
+    if (c === '/') return fail(tr('JSON tidak mengizinkan komentar', "JSON doesn't allow comments"))
+    if (i >= text.length)
+      return fail(tr('Data berakhir terlalu cepat — ada kurung yang belum ditutup?', 'The data ends too early — is a bracket left unclosed?'))
+    return fail(tr(`Nilai tidak valid: ${describe(i)}`, `Invalid value: ${describe(i)}`))
   }
 
   skipSpace()
-  if (i >= text.length) fail('Belum ada JSON untuk diproses')
+  if (i >= text.length) fail(tr('Belum ada JSON untuk diproses', 'There is no JSON to process yet'))
   const root = readValue(0)
   skipSpace()
-  if (i < text.length) fail(`Ada data tambahan setelah JSON selesai: ${describe(i)}`)
+  if (i < text.length) fail(tr(`Ada data tambahan setelah JSON selesai: ${describe(i)}`, `Extra data after the JSON ends: ${describe(i)}`))
   return root
 }
 

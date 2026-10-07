@@ -2,6 +2,8 @@
 // contact card, WhatsApp…) and reading a scanned text back into fields.
 // These are the de facto formats phone cameras understand.
 
+import { tr } from '@/lib/i18n'
+
 export type QrKind = 'url' | 'text' | 'wifi' | 'whatsapp' | 'contact' | 'email' | 'phone'
 
 export interface WifiFields {
@@ -124,12 +126,15 @@ export function parseQr(text: string): ParsedQr {
     const security = map.get('T') || 'nopass'
     return {
       kind: 'wifi',
-      title: 'Jaringan Wi-Fi',
+      title: tr('Jaringan Wi-Fi', 'Wi-Fi network'),
       fields: [
-        { label: 'Nama jaringan (SSID)', value: map.get('S') ?? '' },
+        { label: tr('Nama jaringan (SSID)', 'Network name (SSID)'), value: map.get('S') ?? '' },
         ...(security.toLowerCase() !== 'nopass' ? [{ label: 'Password', value: map.get('P') ?? '', secret: true }] : []),
-        { label: 'Keamanan', value: security.toLowerCase() === 'nopass' ? 'Tanpa password' : security },
-        ...(map.get('H') === 'true' ? [{ label: 'Tersembunyi', value: 'Ya' }] : []),
+        {
+          label: tr('Keamanan', 'Security'),
+          value: security.toLowerCase() === 'nopass' ? tr('Tanpa password', 'No password') : security,
+        },
+        ...(map.get('H') === 'true' ? [{ label: tr('Tersembunyi', 'Hidden'), value: tr('Ya', 'Yes') }] : []),
       ],
     }
   }
@@ -138,7 +143,16 @@ export function parseQr(text: string): ParsedQr {
     // Unfold continuation lines, then read the common properties.
     const lines = t.replace(/\r?\n[ \t]/g, '').split(/\r?\n/)
     const fields: ParsedQr['fields'] = []
-    const labels: Record<string, string> = { FN: 'Nama', TEL: 'Telepon', EMAIL: 'Email', ORG: 'Organisasi', TITLE: 'Jabatan', URL: 'Situs', ADR: 'Alamat', NOTE: 'Catatan' }
+    const labels: Record<string, string> = {
+      FN: tr('Nama', 'Name'),
+      TEL: tr('Telepon', 'Phone'),
+      EMAIL: 'Email',
+      ORG: tr('Organisasi', 'Organization'),
+      TITLE: tr('Jabatan', 'Job title'),
+      URL: tr('Situs', 'Website'),
+      ADR: tr('Alamat', 'Address'),
+      NOTE: tr('Catatan', 'Note'),
+    }
     for (const line of lines) {
       const i = line.indexOf(':')
       if (i < 0) continue
@@ -147,7 +161,7 @@ export function parseQr(text: string): ParsedQr {
       const value = splitEscaped(line.slice(i + 1).replace(/\\n/gi, '\n'), ';').filter(Boolean).join(', ')
       if (value) fields.push({ label: labels[key], value })
     }
-    return { kind: 'contact', title: 'Kartu kontak', fields }
+    return { kind: 'contact', title: tr('Kartu kontak', 'Contact card'), fields }
   }
 
   if (/^mailto:/i.test(t)) {
@@ -157,22 +171,30 @@ export function parseQr(text: string): ParsedQr {
       kind: 'email',
       title: 'Email',
       fields: [
-        { label: 'Kepada', value: decode(addr) },
-        ...(q.get('subject') ? [{ label: 'Subjek', value: q.get('subject')! }] : []),
-        ...(q.get('body') ? [{ label: 'Isi', value: q.get('body')! }] : []),
+        { label: tr('Kepada', 'To'), value: decode(addr) },
+        ...(q.get('subject') ? [{ label: tr('Subjek', 'Subject'), value: q.get('subject')! }] : []),
+        ...(q.get('body') ? [{ label: tr('Isi', 'Body'), value: q.get('body')! }] : []),
       ],
       href: t,
     }
   }
 
-  if (/^tel:/i.test(t)) return { kind: 'phone', title: 'Nomor telepon', fields: [{ label: 'Nomor', value: t.slice(4) }], href: t }
+  if (/^tel:/i.test(t)) return {
+      kind: 'phone',
+      title: tr('Nomor telepon', 'Phone number'),
+      fields: [{ label: tr('Nomor', 'Number'), value: t.slice(4) }],
+      href: t,
+    }
 
   if (/^(sms|smsto):/i.test(t)) {
     const [, number = '', body = ''] = /^(?:sms|smsto):([^:?]*)[:?]?(?:body=)?(.*)$/i.exec(t) ?? []
     return {
       kind: 'phone',
       title: 'SMS',
-      fields: [{ label: 'Nomor', value: number }, ...(body ? [{ label: 'Pesan', value: decode(body) }] : [])],
+      fields: [
+        { label: tr('Nomor', 'Number'), value: number },
+        ...(body ? [{ label: tr('Pesan', 'Message'), value: decode(body) }] : []),
+      ],
       href: t,
     }
   }
@@ -185,11 +207,22 @@ export function parseQr(text: string): ParsedQr {
         return {
           kind: 'whatsapp',
           title: 'Chat WhatsApp',
-          fields: [{ label: 'Nomor', value: `+${url.pathname.replace(/\D/g, '')}` }, ...(msg ? [{ label: 'Pesan', value: msg }] : [])],
+          fields: [
+            { label: tr('Nomor', 'Number'), value: `+${url.pathname.replace(/\D/g, '')}` },
+            ...(msg ? [{ label: tr('Pesan', 'Message'), value: msg }] : []),
+          ],
           href: url.href,
         }
       }
-      return { kind: 'url', title: 'Tautan', fields: [{ label: 'Alamat', value: url.href }, { label: 'Domain', value: url.hostname }], href: url.href }
+      return {
+        kind: 'url',
+        title: tr('Tautan', 'Link'),
+        fields: [
+          { label: tr('Alamat', 'Address'), value: url.href },
+          { label: 'Domain', value: url.hostname },
+        ],
+        href: url.href,
+      }
     } catch {
       // Not a valid URL after all; fall through to plain text.
     }
@@ -197,8 +230,8 @@ export function parseQr(text: string): ParsedQr {
 
   return {
     kind: 'text',
-    title: 'Teks',
-    fields: [{ label: 'Isi', value: text }],
+    title: tr('Teks', 'Text'),
+    fields: [{ label: tr('Isi', 'Content'), value: text }],
     href: SAFE_SCHEMES.test(t) ? t : undefined,
   }
 }

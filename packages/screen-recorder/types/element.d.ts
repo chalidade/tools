@@ -8,7 +8,8 @@ export type { RecordingResult } from './index'
  * Attributes:
  * - `theme`: "auto" (default, follows the OS), "light" or "dark"
  * - `persist`: "false" to not keep recordings in this browser (IndexedDB)
- * - `title-indicator`: "true" to show "● Merekam 0:42" in the tab title
+ * - `title-indicator`: "true" to show "● Recording 0:42" in the tab title
+ * - `lang`: "en" or "id" for the UI language (default: the visitor's browser language)
  *
  * Events:
  * - `recording`: a take finished; `event.detail` is the RecordingResult

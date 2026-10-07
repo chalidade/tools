@@ -6,6 +6,7 @@ import { FileDrop } from '@/components/tool/FileDrop'
 import { IconButton } from '@/components/tool/IconButton'
 import { Segmented } from '@/components/tool/Segmented'
 import { downloadBlob } from '@/lib/download'
+import { tr, useT } from '@/lib/i18n'
 import { formatDuration, formatSize, formatTime, hasWebCodecs, probeMedia, type MediaInfo } from '@/lib/media'
 import { captureFrames, frameName, plannedTimes, zipFrames, type Frame, type FrameFormat } from './frames'
 
@@ -16,13 +17,14 @@ const FORMAT_OPTIONS: { value: FrameFormat; label: string }[] = [
   { value: 'jpeg', label: 'JPG' },
   { value: 'webp', label: 'WebP' },
 ]
-const MODE_OPTIONS: { value: 'every' | 'count'; label: string }[] = [
-  { value: 'every', label: 'Setiap N detik' },
-  { value: 'count', label: 'Jumlah frame' },
+const MODE_OPTIONS: { value: 'every' | 'count'; label: readonly [string, string] }[] = [
+  { value: 'every', label: ['Setiap N detik', 'Every N seconds'] },
+  { value: 'count', label: ['Jumlah frame', 'Number of frames'] },
 ]
 const MAX_FRAMES = 300
 
 export default function ExtractFrames() {
+  const t = useT()
   const [status, setStatus] = useState<Status>({ kind: 'idle' })
   const [file, setFile] = useState<File | null>(null)
   const [url, setUrl] = useState<string | null>(null)
@@ -51,7 +53,13 @@ export default function ExtractFrames() {
     setError(null)
     clearFrames()
     if (!hasWebCodecs()) {
-      setStatus({ kind: 'error', message: 'Browser ini belum mendukung WebCodecs. Pakai Chrome, Edge, Safari 16.4+, atau Firefox 130+.' })
+      setStatus({
+        kind: 'error',
+        message: t(
+          'Browser ini belum mendukung WebCodecs. Pakai Chrome, Edge, Safari 16.4+, atau Firefox 130+.',
+          "This browser doesn't support WebCodecs yet. Use Chrome, Edge, Safari 16.4+, or Firefox 130+.",
+        ),
+      })
       return
     }
     setFile(next)
@@ -62,7 +70,10 @@ export default function ExtractFrames() {
       setUrl(URL.createObjectURL(next))
       setStatus({ kind: 'ready', info })
     } catch {
-      setStatus({ kind: 'error', message: 'Video tidak bisa dibaca. Didukung: MP4, MOV, WebM, MKV.' })
+      setStatus({
+        kind: 'error',
+        message: t('Video tidak bisa dibaca. Didukung: MP4, MOV, WebM, MKV.', "Couldn't read the video. Supported: MP4, MOV, WebM, MKV."),
+      })
     }
   }
 
@@ -81,7 +92,7 @@ export default function ExtractFrames() {
         () => cancelled.current,
       )
     } catch {
-      setError('Gagal mengambil frame. Video mungkin rusak.')
+      setError(t('Gagal mengambil frame. Video mungkin rusak.', "Couldn't capture frames. The video may be damaged."))
     } finally {
       setProgress(null)
     }
@@ -98,7 +109,10 @@ export default function ExtractFrames() {
     if (!file) return
     setZipping(true)
     try {
-      downloadBlob(await zipFrames(frames, file.name.replace(/\.[^.]+$/, '')), `${file.name.replace(/\.[^.]+$/, '')}-frame.zip`)
+      downloadBlob(
+        await zipFrames(frames, file.name.replace(/\.[^.]+$/, '')),
+        `${file.name.replace(/\.[^.]+$/, '')}${tr('-frame', '-frames')}.zip`,
+      )
     } finally {
       setZipping(false)
     }
@@ -122,7 +136,7 @@ export default function ExtractFrames() {
           </div>
           <Button variant="ghost" disabled={busy} onClick={() => setStatus({ kind: 'idle' })}>
             <RotateCcw />
-            Video lain
+            {t('Video lain', 'Another video')}
           </Button>
         </div>
 
@@ -130,10 +144,10 @@ export default function ExtractFrames() {
           <div className="space-y-3 rounded-2xl border bg-card p-4">
             <video ref={videoRef} src={url} controls muted playsInline className="max-h-[50vh] w-full rounded-xl bg-black" />
             <div className="flex flex-wrap items-center gap-2">
-              <IconButton label="Frame sebelumnya" onClick={() => step(-1, v.fps)}>
+              <IconButton label={t('Frame sebelumnya', 'Previous frame')} onClick={() => step(-1, v.fps)}>
                 <ChevronLeft />
               </IconButton>
-              <IconButton label="Frame berikutnya" onClick={() => step(1, v.fps)}>
+              <IconButton label={t('Frame berikutnya', 'Next frame')} onClick={() => step(1, v.fps)}>
                 <ChevronRight />
               </IconButton>
               <Button
@@ -141,22 +155,39 @@ export default function ExtractFrames() {
                 onClick={() => void capture([videoRef.current?.currentTime ?? 0])}
               >
                 <Camera />
-                Ambil frame ini
+                {t('Ambil frame ini', 'Capture this frame')}
               </Button>
-              <p className="text-xs text-muted-foreground">Jeda di adegan yang diinginkan, lalu ambil. Resolusi asli {v.width}×{v.height}.</p>
+              <p className="text-xs text-muted-foreground">
+                {t(
+                  `Jeda di adegan yang diinginkan, lalu ambil. Resolusi asli ${v.width}×${v.height}.`,
+                  `Pause on the scene you want, then capture. Original resolution ${v.width}×${v.height}.`,
+                )}
+              </p>
             </div>
           </div>
 
           <div className="space-y-5 rounded-2xl border bg-card p-5">
-            <Segmented label="Format gambar" value={format} options={FORMAT_OPTIONS} disabled={busy} onChange={setFormat} />
+            <Segmented
+              label={t('Format gambar', 'Image format')}
+              value={format}
+              options={FORMAT_OPTIONS}
+              disabled={busy}
+              onChange={setFormat}
+            />
             <div className="space-y-3 border-t pt-4">
-              <p className="text-xs font-medium text-muted-foreground">Ambil otomatis</p>
-              <Segmented label="Cara" value={mode} options={MODE_OPTIONS} disabled={busy} onChange={(m) => {
-                setMode(m)
-                setValue(m === 'every' ? 1 : 10)
-              }} />
+              <p className="text-xs font-medium text-muted-foreground">{t('Ambil otomatis', 'Auto capture')}</p>
+              <Segmented
+                label={t('Cara', 'Method')}
+                value={mode}
+                options={MODE_OPTIONS.map((o) => ({ value: o.value, label: t(...o.label) }))}
+                disabled={busy}
+                onChange={(m) => {
+                  setMode(m)
+                  setValue(m === 'every' ? 1 : 10)
+                }}
+              />
               <label className="block space-y-1.5">
-                <span className="text-xs font-medium text-muted-foreground">{mode === 'every' ? 'Jarak (detik)' : 'Jumlah frame'}</span>
+                <span className="text-xs font-medium text-muted-foreground">{mode === 'every' ? t('Jarak (detik)', 'Interval (seconds)') : t('Jumlah frame', 'Number of frames')}</span>
                 <input
                   type="number"
                   min={mode === 'every' ? 0.1 : 1}
@@ -173,10 +204,15 @@ export default function ExtractFrames() {
                 onClick={() => void capture(plannedTimes(info.duration, mode, value))}
               >
                 <Camera />
-                Ambil {planned} frame
+                {t(`Ambil ${planned} frame`, `Capture ${planned} ${planned === 1 ? 'frame' : 'frames'}`)}
               </Button>
               {planned > MAX_FRAMES && (
-                <p className="text-xs text-destructive">Maksimal {MAX_FRAMES} frame sekali ambil — perbesar jaraknya.</p>
+                <p className="text-xs text-destructive">
+                  {t(
+                    `Maksimal ${MAX_FRAMES} frame sekali ambil — perbesar jaraknya.`,
+                    `Up to ${MAX_FRAMES} frames at a time — increase the interval.`,
+                  )}
+                </p>
               )}
             </div>
           </div>
@@ -186,11 +222,11 @@ export default function ExtractFrames() {
           <div className="flex items-center justify-between gap-3 rounded-2xl border bg-card p-4 text-sm">
             <span className="flex items-center gap-2">
               <Loader2 className="size-4 animate-spin" />
-              Mengambil frame {progress.done}/{progress.total}…
+              {t('Mengambil frame', 'Capturing frame')} {progress.done}/{progress.total}…
             </span>
             <Button variant="ghost" size="sm" onClick={() => (cancelled.current = true)}>
               <Square />
-              Hentikan
+              {t('Hentikan', 'Stop')}
             </Button>
           </div>
         )}
@@ -199,16 +235,16 @@ export default function ExtractFrames() {
           <div className="space-y-3">
             <div className="flex flex-wrap items-center justify-between gap-2">
               <p className="text-sm font-medium">
-                {frames.length} frame · {formatSize(frames.reduce((n, f) => n + f.blob.size, 0))}
+                {frames.length} {t('frame', frames.length === 1 ? 'frame' : 'frames')} · {formatSize(frames.reduce((n, f) => n + f.blob.size, 0))}
               </p>
               <div className="flex gap-2">
                 <Button onClick={() => void downloadAll()} disabled={zipping || busy}>
                   {zipping ? <Loader2 className="animate-spin" /> : <Download />}
-                  Unduh semua (.zip)
+                  {t('Unduh semua (.zip)', 'Download all (.zip)')}
                 </Button>
                 <Button variant="ghost" disabled={busy} onClick={clearFrames}>
                   <Trash2 />
-                  Hapus semua
+                  {t('Hapus semua', 'Remove all')}
                 </Button>
               </div>
             </div>
@@ -217,7 +253,7 @@ export default function ExtractFrames() {
                 <li key={f.id} className="overflow-hidden rounded-xl border bg-card">
                   <button
                     type="button"
-                    title="Lompat ke waktu ini"
+                    title={t('Lompat ke waktu ini', 'Jump to this time')}
                     onClick={() => videoRef.current && (videoRef.current.currentTime = f.time)}
                     className="block w-full bg-black"
                   >
@@ -226,11 +262,11 @@ export default function ExtractFrames() {
                   <div className="flex items-center justify-between gap-1 px-2 py-1">
                     <span className="font-mono text-xs text-muted-foreground">{formatTime(f.time)}</span>
                     <div className="flex">
-                      <IconButton label="Unduh" onClick={() => downloadBlob(f.blob, frameName(base, f))}>
+                      <IconButton label={t('Unduh', 'Download')} onClick={() => downloadBlob(f.blob, frameName(base, f))}>
                         <Download />
                       </IconButton>
                       <IconButton
-                        label="Buang"
+                        label={t('Buang', 'Discard')}
                         onClick={() => {
                           URL.revokeObjectURL(f.url)
                           setFrames((prev) => prev.filter((x) => x.id !== f.id))
@@ -255,8 +291,8 @@ export default function ExtractFrames() {
     <div className="space-y-6">
       <FileDrop
         accept="video/*,.mkv"
-        label="Tarik video ke sini"
-        busyLabel={status.kind === 'reading' ? `Membuka ${file?.name}…` : undefined}
+        label={t('Tarik video ke sini', 'Drop a video here')}
+        busyLabel={status.kind === 'reading' ? t(`Membuka ${file?.name}…`, `Opening ${file?.name}…`) : undefined}
         onFiles={([f]) => void open(f)}
       />
       {status.kind === 'error' && <ErrorNote message={status.message} />}

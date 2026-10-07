@@ -5,6 +5,7 @@ import { ErrorNote } from '@/components/tool/ErrorNote'
 import { FileDrop } from '@/components/tool/FileDrop'
 import { Segmented } from '@/components/tool/Segmented'
 import { downloadBlob } from '@/lib/download'
+import { tr, useT } from '@/lib/i18n'
 import { canvasBlob, decodeImage, newCanvas } from '@/lib/image'
 import { cn } from '@/lib/utils'
 import {
@@ -24,77 +25,93 @@ const MAX_SIDE = 3000
 const HISTORY = 10
 
 type Tool = 'wand' | 'color' | 'lasso' | 'rect' | 'brush'
-const TOOLS: { value: Tool; label: string; icon: ReactNode; hint: string }[] = [
+type Text = readonly [string, string]
+const TOOLS: { value: Tool; label: Text; icon: ReactNode; hint: Text }[] = [
   {
     value: 'wand',
-    label: 'Tongkat',
+    label: ['Tongkat', 'Wand'],
     icon: <Wand2 />,
-    hint: 'Klik latar: area bersambung yang warnanya mirip ikut terpilih. Klik beberapa kali untuk bagian latar lain.',
+    hint: [
+      'Klik latar: area bersambung yang warnanya mirip ikut terpilih. Klik beberapa kali untuk bagian latar lain.',
+      'Click the background: the connected area with a similar color gets selected. Click again for other parts of the background.',
+    ],
   },
   {
     value: 'color',
-    label: 'Warna',
+    label: ['Warna', 'Color'],
     icon: <Pipette />,
-    hint: 'Klik satu warna: semua piksel serupa di seluruh gambar ikut terpilih, walau tidak bersambung (mis. latar putih di sela huruf).',
+    hint: [
+      'Klik satu warna: semua piksel serupa di seluruh gambar ikut terpilih, walau tidak bersambung (mis. latar putih di sela huruf).',
+      'Click a color: every similar pixel across the whole image gets selected, even if not connected (e.g. white background between letters).',
+    ],
   },
   {
     value: 'lasso',
-    label: 'Lasso',
+    label: ['Lasso', 'Lasso'],
     icon: <Lasso />,
-    hint: 'Gambar garis mengelilingi objek sambil menahan klik. Pilih apakah yang terkena bagian dalam atau luar garis.',
+    hint: [
+      'Gambar garis mengelilingi objek sambil menahan klik. Pilih apakah yang terkena bagian dalam atau luar garis.',
+      'Hold the click and draw a line around the object. Choose whether it applies inside or outside the line.',
+    ],
   },
   {
     value: 'rect',
-    label: 'Kotak',
+    label: ['Kotak', 'Box'],
     icon: <SquareDashed />,
-    hint: 'Tarik kotak di sekitar objek. Pilih apakah yang terkena bagian dalam atau luar kotak.',
+    hint: [
+      'Tarik kotak di sekitar objek. Pilih apakah yang terkena bagian dalam atau luar kotak.',
+      'Drag a box around the object. Choose whether it applies inside or outside the box.',
+    ],
   },
   {
     value: 'brush',
-    label: 'Kuas',
+    label: ['Kuas', 'Brush'],
     icon: <Brush />,
-    hint: 'Sapukan untuk merapikan. Pakai “Pulihkan” untuk mengembalikan bagian yang terhapus — mode Tinjau membantu melihatnya.',
+    hint: [
+      'Sapukan untuk merapikan. Pakai “Pulihkan” untuk mengembalikan bagian yang terhapus — mode Tinjau membantu melihatnya.',
+      'Brush to tidy up. Use “Restore” to bring back erased parts — Review mode helps you see them.',
+    ],
   },
 ]
 
-const ACTION_OPTIONS: { value: Action; label: string }[] = [
-  { value: 'erase', label: 'Hapus' },
-  { value: 'restore', label: 'Pulihkan' },
+const ACTION_OPTIONS: { value: Action; label: Text }[] = [
+  { value: 'erase', label: ['Hapus', 'Erase'] },
+  { value: 'restore', label: ['Pulihkan', 'Restore'] },
 ]
-const SIDE_OPTIONS: { value: 'outside' | 'inside'; label: string }[] = [
-  { value: 'outside', label: 'Luar seleksi' },
-  { value: 'inside', label: 'Dalam seleksi' },
+const SIDE_OPTIONS: { value: 'outside' | 'inside'; label: Text }[] = [
+  { value: 'outside', label: ['Luar seleksi', 'Outside selection'] },
+  { value: 'inside', label: ['Dalam seleksi', 'Inside selection'] },
 ]
-const SHRINK_OPTIONS: { value: number; label: string }[] = [
-  { value: 0, label: 'Tidak' },
-  { value: 1, label: '1 px' },
-  { value: 2, label: '2 px' },
-  { value: 3, label: '3 px' },
+const SHRINK_OPTIONS: { value: number; label: Text }[] = [
+  { value: 0, label: ['Tidak', 'None'] },
+  { value: 1, label: ['1 px', '1 px'] },
+  { value: 2, label: ['2 px', '2 px'] },
+  { value: 3, label: ['3 px', '3 px'] },
 ]
-const FEATHER_OPTIONS: { value: number; label: string }[] = [
-  { value: 0, label: 'Tajam' },
-  { value: 1, label: 'Halus' },
-  { value: 2, label: 'Lembut' },
-  { value: 4, label: 'Sangat lembut' },
+const FEATHER_OPTIONS: { value: number; label: Text }[] = [
+  { value: 0, label: ['Tajam', 'Sharp'] },
+  { value: 1, label: ['Halus', 'Smooth'] },
+  { value: 2, label: ['Lembut', 'Soft'] },
+  { value: 4, label: ['Sangat lembut', 'Very soft'] },
 ]
-const VIEW_OPTIONS: { value: 'result' | 'overlay'; label: string }[] = [
-  { value: 'result', label: 'Hasil' },
-  { value: 'overlay', label: 'Tinjau' },
+const VIEW_OPTIONS: { value: 'result' | 'overlay'; label: Text }[] = [
+  { value: 'result', label: ['Hasil', 'Result'] },
+  { value: 'overlay', label: ['Tinjau', 'Review'] },
 ]
-const ZOOM_OPTIONS: { value: number; label: string }[] = [
-  { value: 0, label: 'Pas' },
-  { value: 1, label: '100%' },
-  { value: 2, label: '200%' },
-  { value: 4, label: '400%' },
+const ZOOM_OPTIONS: { value: number; label: Text }[] = [
+  { value: 0, label: ['Pas', 'Fit'] },
+  { value: 1, label: ['100%', '100%'] },
+  { value: 2, label: ['200%', '200%'] },
+  { value: 4, label: ['400%', '400%'] },
 ]
 
 type Background = 'transparent' | 'white' | 'red' | 'blue' | 'custom'
-const BACKGROUNDS: { value: Background; label: string; color?: string }[] = [
-  { value: 'transparent', label: 'Transparan' },
-  { value: 'white', label: 'Putih', color: '#ffffff' },
-  { value: 'red', label: 'Merah', color: '#db1514' },
-  { value: 'blue', label: 'Biru', color: '#0f58c9' },
-  { value: 'custom', label: 'Lainnya' },
+const BACKGROUNDS: { value: Background; label: Text; color?: string }[] = [
+  { value: 'transparent', label: ['Transparan', 'Transparent'] },
+  { value: 'white', label: ['Putih', 'White'], color: '#ffffff' },
+  { value: 'red', label: ['Merah', 'Red'], color: '#db1514' },
+  { value: 'blue', label: ['Biru', 'Blue'], color: '#0f58c9' },
+  { value: 'custom', label: ['Lainnya', 'Other'] },
 ]
 
 interface Picture {
@@ -112,6 +129,8 @@ type Selection = { kind: 'lasso'; points: Point[] } | { kind: 'rect'; from: Poin
 const CHECKER = '[background:repeating-conic-gradient(#d4d4d8_0_25%,#fff_0_50%)_0_0/16px_16px]'
 
 export default function RemoveBackground() {
+  const t = useT()
+  const options = <V,>(list: { value: V; label: Text }[]) => list.map((o) => ({ value: o.value, label: t(...o.label) }))
   const [picture, setPicture] = useState<Picture | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -159,7 +178,7 @@ export default function RemoveBackground() {
       setPicture({ W: c.width, H: c.height, rgba, scaled: s < 1, name: file.name })
       setVersion((v) => v + 1)
     } catch {
-      setError('Gambar tidak bisa dibaca. Coba JPG, PNG, atau WebP.')
+      setError(t('Gambar tidak bisa dibaca. Coba JPG, PNG, atau WebP.', "Couldn't read the image. Try JPG, PNG, or WebP."))
     } finally {
       setLoading(false)
     }
@@ -321,9 +340,9 @@ export default function RemoveBackground() {
       }
       const asJpg = !!fill && jpg
       const blob = await canvasBlob(out, asJpg ? 'image/jpeg' : 'image/png', 0.92)
-      downloadBlob(blob, `${name.replace(/\.[^.]+$/, '')}-tanpa-latar.${asJpg ? 'jpg' : 'png'}`)
+      downloadBlob(blob, `${name.replace(/\.[^.]+$/, '')}${tr('-tanpa-latar', '-no-background')}.${asJpg ? 'jpg' : 'png'}`)
     } catch {
-      setError('Gagal menyimpan gambar.')
+      setError(t('Gagal menyimpan gambar.', "Couldn't save the image."))
     } finally {
       setSaving(false)
     }
@@ -332,9 +351,17 @@ export default function RemoveBackground() {
   if (!picture) {
     return (
       <div className="space-y-6">
-        <FileDrop accept="image/*" label="Tarik foto ke sini" busyLabel={loading ? 'Membuka gambar…' : undefined} onFiles={([f]) => void open(f)} />
+        <FileDrop
+          accept="image/*"
+          label={t('Tarik foto ke sini', 'Drop a photo here')}
+          busyLabel={loading ? t('Membuka gambar…', 'Opening image…') : undefined}
+          onFiles={([f]) => void open(f)}
+        />
         <p className="text-center text-xs text-muted-foreground">
-          Tanpa AI: kamu yang memilih latarnya — paling cocok untuk latar polos (foto produk, pas foto, logo, scan).
+          {t(
+            'Tanpa AI: kamu yang memilih latarnya — paling cocok untuk latar polos (foto produk, pas foto, logo, scan).',
+            'No AI: you pick the background — works best on plain backgrounds (product photos, ID photos, logos, scans).',
+          )}
         </p>
         {error && <ErrorNote message={error} />}
       </div>
@@ -342,7 +369,7 @@ export default function RemoveBackground() {
   }
 
   const { W, H } = picture
-  const current = TOOLS.find((t) => t.value === tool)!
+  const current = TOOLS.find((item) => item.value === tool)!
   const checker = view === 'overlay' || !fill
   const sizeStyle = zoom ? { width: W * zoom } : { width: `min(100%, calc(70vh * ${W / H}))` }
 
@@ -352,17 +379,21 @@ export default function RemoveBackground() {
         <div className="min-w-0">
           <p className="truncate font-medium">{picture.name}</p>
           <p className="text-sm text-muted-foreground">
-            {W} × {H} px{picture.scaled && ` (diperkecil ke ${MAX_SIDE} px agar cepat diproses)`}
+            {W} × {H} px{picture.scaled &&
+              t(
+                ` (diperkecil ke ${MAX_SIDE} px agar cepat diproses)`,
+                ` (scaled down to ${MAX_SIDE} px for faster processing)`,
+              )}
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
           <Button onClick={() => void save()} disabled={saving}>
             {saving ? <Loader2 className="animate-spin" /> : <Download />}
-            Unduh {fill && jpg ? 'JPG' : 'PNG'}
+            {t('Unduh', 'Download')} {fill && jpg ? 'JPG' : 'PNG'}
           </Button>
           <Button variant="ghost" disabled={saving} onClick={() => setPicture(null)}>
             <RotateCcw />
-            Gambar lain
+            {t('Gambar lain', 'Another image')}
           </Button>
         </div>
       </div>
@@ -371,32 +402,32 @@ export default function RemoveBackground() {
         <div className="space-y-3">
           {/* Toolbar */}
           <div className="flex flex-wrap items-center justify-between gap-3">
-            <div role="radiogroup" aria-label="Alat" className="inline-flex flex-wrap gap-1 rounded-xl border bg-muted/60 p-1">
-              {TOOLS.map((t) => (
+            <div role="radiogroup" aria-label={t('Alat', 'Tools')} className="inline-flex flex-wrap gap-1 rounded-xl border bg-muted/60 p-1">
+              {TOOLS.map((item) => (
                 <button
-                  key={t.value}
+                  key={item.value}
                   type="button"
                   role="radio"
-                  aria-checked={tool === t.value}
-                  onClick={() => setTool(t.value)}
+                  aria-checked={tool === item.value}
+                  onClick={() => setTool(item.value)}
                   className={cn(
                     'inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-sm transition-colors [&_svg]:size-4',
-                    tool === t.value ? 'bg-background font-medium text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground',
+                    tool === item.value ? 'bg-background font-medium text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground',
                   )}
                 >
-                  {t.icon}
-                  {t.label}
+                  {item.icon}
+                  {t(...item.label)}
                 </button>
               ))}
             </div>
             <div className="flex gap-1">
               <Button variant="ghost" size="sm" disabled={!canUndo} onClick={undo} title="Ctrl/⌘ + Z">
                 <Undo2 />
-                Urungkan
+                {t('Urungkan', 'Undo')}
               </Button>
-              <Button variant="ghost" size="sm" onClick={() => edit(invert)} title="Yang terhapus jadi tersimpan, dan sebaliknya">
+              <Button variant="ghost" size="sm" onClick={() => edit(invert)} title={t('Yang terhapus jadi tersimpan, dan sebaliknya', 'Erased becomes kept, and vice versa')}>
                 <Contrast />
-                Balik
+                {t('Balik', 'Invert')}
               </Button>
               <Button variant="ghost" size="sm" onClick={() => edit((m) => m.fill(255))}>
                 <RotateCcw />
@@ -404,7 +435,7 @@ export default function RemoveBackground() {
               </Button>
             </div>
           </div>
-          <p className="text-xs text-muted-foreground">{current.hint}</p>
+          <p className="text-xs text-muted-foreground">{t(...current.hint)}</p>
 
           {/* Canvas */}
           <div className="max-h-[75vh] overflow-auto rounded-2xl border bg-muted/60 p-4">
@@ -456,24 +487,31 @@ export default function RemoveBackground() {
             </div>
           </div>
           <div className="flex flex-wrap gap-x-6 gap-y-3">
-            <Segmented label="Tampilan" value={view} options={VIEW_OPTIONS} onChange={setView} />
-            <Segmented label="Zoom" value={zoom} options={ZOOM_OPTIONS} onChange={setZoom} />
+            <Segmented label={t('Tampilan', 'View')} value={view} options={options(VIEW_OPTIONS)} onChange={setView} />
+            <Segmented label="Zoom" value={zoom} options={options(ZOOM_OPTIONS)} onChange={setZoom} />
           </div>
         </div>
 
         {/* Settings */}
         <div className="space-y-5 rounded-2xl border bg-card p-5">
-          <Segmented label="Aksi" value={action} options={ACTION_OPTIONS} onChange={setAction} />
+          <Segmented label={t('Aksi', 'Action')} value={action} options={options(ACTION_OPTIONS)} onChange={setAction} />
 
           {(tool === 'lasso' || tool === 'rect') && (
-            <Segmented label="Kenakan ke" value={side} options={SIDE_OPTIONS} onChange={setSide} />
+            <Segmented label={t('Kenakan ke', 'Apply to')} value={side} options={options(SIDE_OPTIONS)} onChange={setSide} />
           )}
           {(tool === 'wand' || tool === 'color') && (
-            <Slider label="Toleransi warna" value={tolerance} min={0} max={100} step={1} onChange={setTolerance} />
+            <Slider
+              label={t('Toleransi warna', 'Color tolerance')}
+              value={tolerance}
+              min={0}
+              max={100}
+              step={1}
+              onChange={setTolerance}
+            />
           )}
           {tool === 'brush' && (
             <Slider
-              label="Ukuran kuas"
+              label={t('Ukuran kuas', 'Brush size')}
               suffix=" px"
               value={brushSize}
               min={2}
@@ -484,13 +522,23 @@ export default function RemoveBackground() {
           )}
 
           <div className="space-y-4 border-t pt-4">
-            <p className="text-xs font-medium text-muted-foreground">Tepi</p>
-            <Segmented label="Kikis tepi (hilangkan sisa warna latar)" value={shrink} options={SHRINK_OPTIONS} onChange={setShrink} />
-            <Segmented label="Haluskan tepi" value={feather} options={FEATHER_OPTIONS} onChange={setFeather} />
+            <p className="text-xs font-medium text-muted-foreground">{t('Tepi', 'Edges')}</p>
+            <Segmented
+              label={t('Kikis tepi (hilangkan sisa warna latar)', 'Shrink edges (remove leftover background color)')}
+              value={shrink}
+              options={options(SHRINK_OPTIONS)}
+              onChange={setShrink}
+            />
+            <Segmented
+              label={t('Haluskan tepi', 'Smooth edges')}
+              value={feather}
+              options={options(FEATHER_OPTIONS)}
+              onChange={setFeather}
+            />
           </div>
 
           <div className="space-y-3 border-t pt-4">
-            <p className="text-xs font-medium text-muted-foreground">Latar baru</p>
+            <p className="text-xs font-medium text-muted-foreground">{t('Latar baru', 'New background')}</p>
             <div className="flex flex-wrap gap-2">
               {BACKGROUNDS.map((b) => (
                 <button
@@ -507,7 +555,7 @@ export default function RemoveBackground() {
                     className={cn('size-4 rounded border', b.value === 'transparent' && CHECKER)}
                     style={{ background: b.value === 'custom' ? customColor : b.color }}
                   />
-                  {b.label}
+                  {t(...b.label)}
                 </button>
               ))}
             </div>
@@ -516,7 +564,7 @@ export default function RemoveBackground() {
                 type="color"
                 value={customColor}
                 onChange={(e) => setCustomColor(e.target.value)}
-                aria-label="Warna latar"
+                aria-label={t('Warna latar', 'Background color')}
                 className="h-9 w-14 cursor-pointer rounded-lg border bg-background p-1"
               />
             )}

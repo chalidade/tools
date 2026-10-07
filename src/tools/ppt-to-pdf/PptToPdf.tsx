@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button'
 import { ErrorNote } from '@/components/tool/ErrorNote'
 import { FileDrop } from '@/components/tool/FileDrop'
 import { downloadBlob, withExtension } from '@/lib/download'
+import { useT } from '@/lib/i18n'
 import { downloadPdf, printDeck, readPptx, type Deck } from './convert'
 
 type Status =
@@ -16,6 +17,7 @@ type Status =
 const PPTX_MIME = 'application/vnd.openxmlformats-officedocument.presentationml.presentation'
 
 export default function PptToPdf() {
+  const t = useT()
   const [status, setStatus] = useState<Status>({ kind: 'idle' })
   const [file, setFile] = useState<File | null>(null)
   // Full-size copies of the slides, kept off-screen: the PDF is made from these
@@ -26,13 +28,15 @@ export default function PptToPdf() {
     if (/\.ppt$/i.test(next.name)) {
       setStatus({
         kind: 'error',
-        message:
+        message: t(
           'Format .ppt lama (PowerPoint 97–2003) belum didukung. Buka di PowerPoint/LibreOffice, simpan sebagai .pptx, lalu coba lagi.',
+          "The old .ppt format (PowerPoint 97–2003) isn't supported yet. Open it in PowerPoint/LibreOffice, save it as .pptx, then try again.",
+        ),
       })
       return
     }
     if (!/\.pptx$/i.test(next.name) && next.type !== PPTX_MIME) {
-      setStatus({ kind: 'error', message: 'Pilih file PowerPoint berformat .pptx.' })
+      setStatus({ kind: 'error', message: t('Pilih file PowerPoint berformat .pptx.', 'Choose a PowerPoint file in .pptx format.') })
       return
     }
     setFile(next)
@@ -44,7 +48,10 @@ export default function PptToPdf() {
     } catch {
       setStatus({
         kind: 'error',
-        message: 'Presentasi tidak bisa dibaca. Pastikan file .pptx tidak rusak atau terkunci password.',
+        message: t(
+          'Presentasi tidak bisa dibaca. Pastikan file .pptx tidak rusak atau terkunci password.',
+          "The presentation couldn't be read. Make sure the .pptx file isn't damaged or password-protected.",
+        ),
       })
     }
   }
@@ -58,7 +65,7 @@ export default function PptToPdf() {
       downloadBlob(blob, withExtension(file.name, '.pdf'))
       setStatus({ kind: 'ready', deck })
     } catch {
-      setStatus({ kind: 'error', message: 'Gagal membuat PDF. Coba presentasi yang lebih kecil.' })
+      setStatus({ kind: 'error', message: t('Gagal membuat PDF. Coba presentasi yang lebih kecil.', "Couldn't create the PDF. Try a smaller presentation.") })
     }
   }
 
@@ -72,35 +79,46 @@ export default function PptToPdf() {
           <div className="min-w-0">
             <p className="truncate font-medium">{file?.name}</p>
             <p className="text-sm text-muted-foreground">
-              {busy ? `Membuat PDF… slide ${status.done}/${status.total}` : `${deck.slides.length} slide · siap dikonversi`}
+              {busy
+                ? t(`Membuat PDF… slide ${status.done}/${status.total}`, `Creating PDF… slide ${status.done}/${status.total}`)
+                : t(`${deck.slides.length} slide · siap dikonversi`, `${deck.slides.length} slides · ready to convert`)}
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
             <Button onClick={() => void exportPdf(deck)} disabled={busy}>
               {busy ? <Loader2 className="animate-spin" /> : <Download />}
-              Unduh PDF
+              {t('Unduh PDF', 'Download PDF')}
             </Button>
             <Button
               variant="outline"
               disabled={busy}
-              onClick={() => void printDeck(deck, file?.name ?? 'Presentasi')}
-              title="Lewat dialog cetak browser — pilih “Simpan sebagai PDF”. Teks di PDF bisa diseleksi."
+              onClick={() => void printDeck(deck, file?.name ?? t('Presentasi', 'Presentation'))}
+              title={t(
+                'Lewat dialog cetak browser — pilih “Simpan sebagai PDF”. Teks di PDF bisa diseleksi.',
+                'Uses the browser’s print dialog — choose “Save as PDF”. Text in the PDF stays selectable.',
+              )}
             >
               <Printer />
-              Cetak / Simpan PDF
+              {t('Cetak / Simpan PDF', 'Print / Save PDF')}
             </Button>
             <Button variant="ghost" disabled={busy} onClick={() => setStatus({ kind: 'idle' })}>
               <RotateCcw />
-              File lain
+              {t('File lain', 'Another file')}
             </Button>
           </div>
         </div>
 
         <p className="text-xs text-muted-foreground">
-          <strong className="font-medium text-foreground">Unduh PDF</strong> langsung menyimpan file, satu halaman per
-          slide berupa gambar. Butuh teks yang bisa diseleksi? Pakai{' '}
-          <strong className="font-medium text-foreground">Cetak / Simpan PDF</strong> lalu pilih “Simpan sebagai PDF”.
-          Animasi, transisi, dan video tidak ikut; font yang tidak terpasang di perangkatmu diganti yang mirip.
+          <strong className="font-medium text-foreground">{t('Unduh PDF', 'Download PDF')}</strong>{' '}
+          {t(
+            'langsung menyimpan file, satu halaman per slide berupa gambar. Butuh teks yang bisa diseleksi? Pakai',
+            'saves the file right away, one page per slide as an image. Need selectable text? Use',
+          )}{' '}
+          <strong className="font-medium text-foreground">{t('Cetak / Simpan PDF', 'Print / Save PDF')}</strong>{' '}
+          {t(
+            'lalu pilih “Simpan sebagai PDF”. Animasi, transisi, dan video tidak ikut; font yang tidak terpasang di perangkatmu diganti yang mirip.',
+            'and choose “Save as PDF”. Animations, transitions and video aren’t included; fonts not installed on your device are swapped for similar ones.',
+          )}
         </p>
 
         {/* A div grid, not <ol>: slides contain their own lists, and nesting
@@ -128,8 +146,8 @@ export default function PptToPdf() {
     <div className="space-y-6">
       <FileDrop
         accept={`.pptx,.ppt,${PPTX_MIME}`}
-        label="Tarik file .pptx ke sini"
-        busyLabel={status.kind === 'reading' ? `Membaca ${file?.name}…` : undefined}
+        label={t('Tarik file .pptx ke sini', 'Drag a .pptx file here')}
+        busyLabel={status.kind === 'reading' ? t(`Membaca ${file?.name}…`, `Reading ${file?.name}…`) : undefined}
         onFiles={([f]) => void open(f)}
       />
       {status.kind === 'error' && <ErrorNote message={status.message} />}

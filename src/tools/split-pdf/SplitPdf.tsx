@@ -6,6 +6,7 @@ import { FileDrop } from '@/components/tool/FileDrop'
 import { Segmented } from '@/components/tool/Segmented'
 import { downloadBlob } from '@/lib/download'
 import { isPdfFile, openErrorMessage, pageThumbs, type PageThumb } from '@/lib/pdf-doc'
+import { useT } from '@/lib/i18n'
 import { cn } from '@/lib/utils'
 import { chunkPages, parseRanges, splitPdf, type PageGroup } from './split'
 
@@ -17,16 +18,11 @@ type Status =
 
 type Mode = 'select' | 'ranges' | 'every'
 
-const MODE_OPTIONS: { value: Mode; label: string }[] = [
-  { value: 'select', label: 'Ambil halaman' },
-  { value: 'ranges', label: 'Rentang' },
-  { value: 'every', label: 'Per N halaman' },
-]
-
 /** Alternating tints so neighbouring groups stand apart on the page grid. */
 const GROUP_TINTS = ['bg-brand-1', 'bg-brand-2']
 
 export default function SplitPdf() {
+  const t = useT()
   const [status, setStatus] = useState<Status>({ kind: 'idle' })
   const [file, setFile] = useState<File | null>(null)
   const [mode, setMode] = useState<Mode>('select')
@@ -41,7 +37,7 @@ export default function SplitPdf() {
 
   async function open(next: File) {
     if (!isPdfFile(next)) {
-      setStatus({ kind: 'error', message: 'Pilih file berformat .pdf.' })
+      setStatus({ kind: 'error', message: t('Pilih file berformat .pdf.', 'Choose a .pdf file.') })
       return
     }
     setFile(next)
@@ -62,12 +58,12 @@ export default function SplitPdf() {
   const plan: PageGroup[] | string = useMemo(() => {
     if (!count) return []
     if (mode === 'select') {
-      if (!selected.size) return 'Klik halaman yang ingin diambil.'
+      if (!selected.size) return t('Klik halaman yang ingin diambil.', 'Click the pages you want to keep.')
       return [[...selected].sort((a, b) => a - b)]
     }
     if (mode === 'ranges') return parseRanges(ranges, count)
     return chunkPages(count, Math.max(1, every))
-  }, [mode, selected, ranges, every, count])
+  }, [mode, selected, ranges, every, count, t])
 
   const groups = typeof plan === 'string' ? [] : plan
   const groupOf = useMemo(() => {
@@ -103,29 +99,46 @@ export default function SplitPdf() {
             <p className="truncate font-medium">{file.name}</p>
             <p className="text-sm text-muted-foreground">
               {busy
-                ? `Membuat PDF ${progress.done}/${progress.total}…`
+                ? t(`Membuat PDF ${progress.done}/${progress.total}…`, `Creating PDF ${progress.done}/${progress.total}…`)
                 : groups.length
-                  ? `${count} halaman → ${groups.length} file PDF${groups.length > 1 ? ' (ZIP)' : ''}`
-                  : `${count} halaman`}
+                  ? t(
+                      `${count} halaman → ${groups.length} file PDF${groups.length > 1 ? ' (ZIP)' : ''}`,
+                      `${count} pages → ${groups.length} PDF file${groups.length > 1 ? 's (ZIP)' : ''}`,
+                    )
+                  : t(`${count} halaman`, `${count} pages`)}
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
             <Button onClick={() => void save()} disabled={busy || !groups.length}>
               {busy ? <Loader2 className="animate-spin" /> : <Scissors />}
-              {groups.length > 1 ? `Pisah jadi ${groups.length} PDF` : 'Pisah & unduh'}
+              {groups.length > 1
+                ? t(`Pisah jadi ${groups.length} PDF`, `Split into ${groups.length} PDFs`)
+                : t('Pisah & unduh', 'Split & download')}
             </Button>
             <Button variant="ghost" disabled={busy} onClick={() => setStatus({ kind: 'idle' })}>
               <RotateCcw />
-              File lain
+              {t('File lain', 'Another file')}
             </Button>
           </div>
         </div>
 
         <div className="flex flex-wrap items-end gap-x-8 gap-y-4 rounded-2xl border bg-card p-4">
-          <Segmented label="Cara memisah" value={mode} options={MODE_OPTIONS} disabled={busy} onChange={setMode} />
+          <Segmented
+            label={t('Cara memisah', 'How to split')}
+            value={mode}
+            options={[
+              { value: 'select', label: t('Ambil halaman', 'Pick pages') },
+              { value: 'ranges', label: t('Rentang', 'Ranges') },
+              { value: 'every', label: t('Per N halaman', 'Every N pages') },
+            ]}
+            disabled={busy}
+            onChange={setMode}
+          />
           {mode === 'ranges' && (
             <label className="block min-w-60 flex-1 space-y-2">
-              <span className="text-xs font-medium text-muted-foreground">Rentang halaman — satu PDF per rentang</span>
+              <span className="text-xs font-medium text-muted-foreground">
+                {t('Rentang halaman — satu PDF per rentang', 'Page ranges — one PDF per range')}
+              </span>
               <input
                 value={ranges}
                 onChange={(e) => setRanges(e.target.value)}
@@ -138,7 +151,7 @@ export default function SplitPdf() {
           )}
           {mode === 'every' && (
             <label className="block space-y-2">
-              <span className="text-xs font-medium text-muted-foreground">Halaman per file</span>
+              <span className="text-xs font-medium text-muted-foreground">{t('Halaman per file', 'Pages per file')}</span>
               <input
                 type="number"
                 min={1}
@@ -157,8 +170,14 @@ export default function SplitPdf() {
         <div className="flex items-center justify-between gap-4">
           <p className="text-xs text-muted-foreground">
             {mode === 'select'
-              ? 'Klik halaman untuk memilih — halaman terpilih disimpan jadi satu PDF.'
-              : 'Label di tiap halaman menunjukkan file PDF tempat halaman itu masuk.'}
+              ? t(
+                  'Klik halaman untuk memilih — halaman terpilih disimpan jadi satu PDF.',
+                  'Click pages to select them — the selected pages are saved as one PDF.',
+                )
+              : t(
+                  'Label di tiap halaman menunjukkan file PDF tempat halaman itu masuk.',
+                  'The label on each page shows which PDF file it goes into.',
+                )}
           </p>
           {mode === 'select' && (
             <button
@@ -167,7 +186,7 @@ export default function SplitPdf() {
               onClick={() => setSelected(allSelected ? new Set() : new Set(thumbs.map((_, i) => i + 1)))}
               className="text-xs font-medium text-brand-2 hover:underline"
             >
-              {allSelected ? 'Batalkan semua' : 'Pilih semua'}
+              {allSelected ? t('Batalkan semua', 'Deselect all') : t('Pilih semua', 'Select all')}
             </button>
           )}
         </div>
@@ -199,7 +218,7 @@ export default function SplitPdf() {
                 )}
               >
                 <div className="grid place-items-center rounded-md bg-muted/60 p-1.5">
-                  <img src={thumb.src} alt={`Halaman ${n}`} className="max-h-40 rounded-sm shadow-sm ring-1 ring-black/5" />
+                  <img src={thumb.src} alt={t(`Halaman ${n}`, `Page ${n}`)} className="max-h-40 rounded-sm shadow-sm ring-1 ring-black/5" />
                 </div>
                 <div className="mt-1.5 flex items-center justify-between px-0.5">
                   <span className="font-mono text-[11px] text-muted-foreground">{n}</span>
@@ -234,12 +253,12 @@ export default function SplitPdf() {
     <div className="space-y-6">
       <FileDrop
         accept=".pdf,application/pdf"
-        label="Tarik file .pdf ke sini"
+        label={t('Tarik file .pdf ke sini', 'Drop a .pdf file here')}
         busyLabel={
           status.kind === 'reading'
             ? status.total
-              ? `Menyiapkan pratinjau ${status.done}/${status.total}…`
-              : `Membuka ${file?.name}…`
+              ? t(`Menyiapkan pratinjau ${status.done}/${status.total}…`, `Preparing previews ${status.done}/${status.total}…`)
+              : t(`Membuka ${file?.name}…`, `Opening ${file?.name}…`)
             : undefined
         }
         onFiles={([f]) => void open(f)}

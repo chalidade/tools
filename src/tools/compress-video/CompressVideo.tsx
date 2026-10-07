@@ -6,23 +6,25 @@ import { FileDrop } from '@/components/tool/FileDrop'
 import { Segmented } from '@/components/tool/Segmented'
 import { ProgressCard, SizeResult } from '@/components/tool/SizeResult'
 import { downloadBlob } from '@/lib/download'
+import { tr, useT } from '@/lib/i18n'
 import { formatDuration, formatSize, hasWebCodecs, NoEncoderError, probeMedia, type MediaInfo } from '@/lib/media'
 import { compressVideo, targetBitrate, targetSize, type Level, type Resolution } from './compress'
 
 type Status =
   { kind: 'idle' } | { kind: 'reading' } | { kind: 'ready'; info: MediaInfo } | { kind: 'error'; message: string }
 
-const LEVEL_OPTIONS: { value: Level; label: string }[] = [
-  { value: 'light', label: 'Ringan' },
-  { value: 'medium', label: 'Sedang' },
-  { value: 'strong', label: 'Kuat' },
+const LEVEL_OPTIONS: { value: Level; label: readonly [string, string] }[] = [
+  { value: 'light', label: ['Ringan', 'Light'] },
+  { value: 'medium', label: ['Sedang', 'Medium'] },
+  { value: 'strong', label: ['Kuat', 'Strong'] },
 ]
-const AUDIO_OPTIONS: { value: 'keep' | 'drop'; label: string }[] = [
-  { value: 'keep', label: 'Pertahankan' },
-  { value: 'drop', label: 'Hapus suara' },
+const AUDIO_OPTIONS: { value: 'keep' | 'drop'; label: readonly [string, string] }[] = [
+  { value: 'keep', label: ['Pertahankan', 'Keep'] },
+  { value: 'drop', label: ['Hapus suara', 'Remove sound'] },
 ]
 
 export default function CompressVideo() {
+  const t = useT()
   const [status, setStatus] = useState<Status>({ kind: 'idle' })
   const [file, setFile] = useState<File | null>(null)
   const [level, setLevel] = useState<Level>('medium')
@@ -57,7 +59,10 @@ export default function CompressVideo() {
       setStatus({
         kind: 'error',
         message:
-          'Browser ini belum mendukung WebCodecs untuk mengolah video. Pakai Chrome, Edge, Safari 16.4+, atau Firefox 130+.',
+          t(
+            'Browser ini belum mendukung WebCodecs untuk mengolah video. Pakai Chrome, Edge, Safari 16.4+, atau Firefox 130+.',
+            "This browser doesn't support WebCodecs for processing video yet. Use Chrome, Edge, Safari 16.4+, or Firefox 130+.",
+          ),
       })
       return
     }
@@ -73,7 +78,10 @@ export default function CompressVideo() {
       setStatus({
         kind: 'error',
         message:
-          'Video tidak bisa dibaca. Format yang didukung: MP4, MOV, WebM, MKV. Format lama seperti AVI atau WMV belum didukung.',
+          t(
+            'Video tidak bisa dibaca. Format yang didukung: MP4, MOV, WebM, MKV. Format lama seperti AVI atau WMV belum didukung.',
+            "Couldn't read the video. Supported formats: MP4, MOV, WebM, MKV. Older formats like AVI or WMV aren't supported yet.",
+          ),
       })
     }
   }
@@ -96,8 +104,14 @@ export default function CompressVideo() {
       if ((e as Error)?.name === 'ConversionCanceledError' || /cancel/i.test(String(e))) return
       setError(
         e instanceof NoEncoderError
-          ? 'Browser ini tidak bisa meng-encode video di perangkat ini. Coba Chrome atau Edge versi terbaru.'
-          : 'Gagal mengompres video. File mungkin rusak atau memakai format yang tidak didukung.',
+          ? t(
+              'Browser ini tidak bisa meng-encode video di perangkat ini. Coba Chrome atau Edge versi terbaru.',
+              "This browser can't encode video on this device. Try the latest Chrome or Edge.",
+            )
+          : t(
+              'Gagal mengompres video. File mungkin rusak atau memakai format yang tidak didukung.',
+              "Couldn't compress the video. The file may be damaged or use an unsupported format.",
+            ),
       )
     } finally {
       setJob(null)
@@ -111,7 +125,7 @@ export default function CompressVideo() {
     const busy = job !== null
     const short = Math.min(v.width, v.height)
     const resolutionOptions: { value: Resolution; label: string }[] = [
-      { value: 0, label: `Asli (${short}p)` },
+      { value: 0, label: `${t('Asli', 'Original')} (${short}p)` },
       ...([1080, 720, 480] as const).filter((r) => r < short).map((r) => ({ value: r, label: `${r}p` })),
     ]
     const out = targetSize(v.width, v.height, resolution)
@@ -131,12 +145,12 @@ export default function CompressVideo() {
               <p className="truncate font-medium">{file.name}</p>
               <dl className="mt-3 grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
                 {[
-                  ['Ukuran', formatSize(file.size)],
-                  ['Durasi', formatDuration(info.duration)],
-                  ['Resolusi', `${v.width}×${v.height}`],
+                  [t('Ukuran', 'Size'), formatSize(file.size)],
+                  [t('Durasi', 'Duration'), formatDuration(info.duration)],
+                  [t('Resolusi', 'Resolution'), `${v.width}×${v.height}`],
                   ['Frame rate', `${Math.round(v.fps)} fps`],
                   ['Bitrate', v.bitrate ? `${(v.bitrate / 1e6).toFixed(1)} Mbps` : '—'],
-                  ['Audio', info.audio ? `${info.audio.codec ?? '?'} · ${info.audio.channels} ch` : 'tidak ada'],
+                  ['Audio', info.audio ? `${info.audio.codec ?? '?'} · ${info.audio.channels} ch` : t('tidak ada', 'none')],
                 ].map(([k, val]) => (
                   <div key={k}>
                     <dt className="text-xs text-muted-foreground">{k}</dt>
@@ -147,15 +161,21 @@ export default function CompressVideo() {
             </div>
             <Button variant="ghost" className="self-start" disabled={busy} onClick={() => setStatus({ kind: 'idle' })}>
               <RotateCcw />
-              Video lain
+              {t('Video lain', 'Another video')}
             </Button>
           </div>
         </div>
 
         <div className="flex flex-wrap items-end gap-x-8 gap-y-4 rounded-2xl border bg-card p-4">
-          <Segmented label="Kualitas" value={level} options={LEVEL_OPTIONS} disabled={busy} onChange={setLevel} />
           <Segmented
-            label="Resolusi"
+            label={t('Kualitas', 'Quality')}
+            value={level}
+            options={LEVEL_OPTIONS.map((o) => ({ value: o.value, label: t(...o.label) }))}
+            disabled={busy}
+            onChange={setLevel}
+          />
+          <Segmented
+            label={t('Resolusi', 'Resolution')}
             value={resolution}
             options={resolutionOptions}
             disabled={busy}
@@ -165,33 +185,33 @@ export default function CompressVideo() {
             <Segmented
               label="Audio"
               value={keepAudio ? 'keep' : 'drop'}
-              options={AUDIO_OPTIONS}
+              options={AUDIO_OPTIONS.map((o) => ({ value: o.value, label: t(...o.label) }))}
               disabled={busy}
               onChange={(v) => setKeepAudio(v === 'keep')}
             />
           )}
           <div className="ml-auto flex items-center gap-4">
             <p className="text-right text-xs text-muted-foreground">
-              Hasil {out.width}×{out.height}
+              {t('Hasil', 'Output')} {out.width}×{out.height}
               <br />
-              perkiraan <span className="font-mono text-foreground">~{formatSize(Math.min(estimate, file.size))}</span>
+              {t('perkiraan', 'estimated')} <span className="font-mono text-foreground">~{formatSize(Math.min(estimate, file.size))}</span>
             </p>
             <Button onClick={() => void run(info)} disabled={busy}>
               <Sparkles />
-              Kompres
+              {t('Kompres', 'Compress')}
             </Button>
           </div>
         </div>
 
         {job && (
           <ProgressCard
-            label="Mengompres video…"
+            label={t('Mengompres video…', 'Compressing video…')}
             progress={job.progress}
             startedAt={job.startedAt}
             action={
               <Button variant="outline" size="sm" onClick={() => cancelRef.current?.()}>
                 <Square />
-                Batalkan
+                {t('Batalkan', 'Cancel')}
               </Button>
             }
           />
@@ -201,13 +221,16 @@ export default function CompressVideo() {
           <SizeResult before={file.size} after={result.size}>
             <p className="text-xs text-muted-foreground">
               {result.size < file.size
-                ? `MP4 ${out.width}×${out.height}${keepAudio && info.audio ? '' : ', tanpa suara'} — bisa diputar di hampir semua perangkat.`
-                : 'Video ini sudah sangat ringkas; hasilnya tidak lebih kecil. Coba kualitas Kuat atau resolusi lebih rendah.'}
+                ? `MP4 ${out.width}×${out.height}${keepAudio && info.audio ? '' : t(', tanpa suara', ', no sound')} — ${t('bisa diputar di hampir semua perangkat.', 'plays on almost any device.')}`
+                : t(
+                    'Video ini sudah sangat ringkas; hasilnya tidak lebih kecil. Coba kualitas Kuat atau resolusi lebih rendah.',
+                    "This video is already very compact; the result isn't any smaller. Try Strong quality or a lower resolution.",
+                  )}
             </p>
             {result.size < file.size && (
-              <Button onClick={() => downloadBlob(result, file.name.replace(/\.[^.]+$/, '') + '-kompres.mp4')}>
+              <Button onClick={() => downloadBlob(result, file.name.replace(/\.[^.]+$/, '') + tr('-kompres', '-compressed') + '.mp4')}>
                 <Download />
-                Unduh video
+                {t('Unduh video', 'Download video')}
               </Button>
             )}
           </SizeResult>
@@ -225,12 +248,15 @@ export default function CompressVideo() {
     <div className="space-y-6">
       <FileDrop
         accept="video/*,.mkv,.mov"
-        label="Tarik video ke sini"
-        busyLabel={status.kind === 'reading' ? `Membaca ${file?.name}…` : undefined}
+        label={t('Tarik video ke sini', 'Drop a video here')}
+        busyLabel={status.kind === 'reading' ? t(`Membaca ${file?.name}…`, `Reading ${file?.name}…`) : undefined}
         onFiles={([f]) => void open(f)}
       />
       <p className="text-center text-xs text-muted-foreground">
-        MP4, MOV, WebM, MKV. Diproses dengan encoder video bawaan perangkatmu — tidak di-upload.
+        {t(
+          'MP4, MOV, WebM, MKV. Diproses dengan encoder video bawaan perangkatmu — tidak di-upload.',
+          "MP4, MOV, WebM, MKV. Processed with your device's built-in video encoder — nothing is uploaded.",
+        )}
       </p>
       {status.kind === 'error' && <ErrorNote message={status.message} />}
     </div>

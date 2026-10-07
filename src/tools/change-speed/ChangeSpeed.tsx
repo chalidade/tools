@@ -16,22 +16,15 @@ import {
   type AudioOut,
   type MediaInfo,
 } from '@/lib/media'
+import { locale, useT } from '@/lib/i18n'
 import { cn } from '@/lib/utils'
 import { changeSpeed, outputFor, type SpeedOptions } from './speed'
 
 type Status = { kind: 'idle' } | { kind: 'reading' } | { kind: 'ready'; info: MediaInfo } | { kind: 'error'; message: string }
 
 const PRESETS = [0.25, 0.5, 0.75, 1.25, 1.5, 2, 3, 4]
-/** "0,25×" — Indonesian decimal comma. */
-const times = (speed: number) => `${String(Number(speed.toFixed(2))).replace('.', ',')}×`
-const PITCH_OPTIONS: { value: 'keep' | 'shift'; label: string }[] = [
-  { value: 'keep', label: 'Tetap (suara normal)' },
-  { value: 'shift', label: 'Ikut berubah' },
-]
-const AUDIO_OPTIONS: { value: 'keep' | 'drop'; label: string }[] = [
-  { value: 'keep', label: 'Pertahankan' },
-  { value: 'drop', label: 'Hapus suara' },
-]
+/** "0,25×" in Indonesian, "0.25×" in English — the decimal mark follows the language. */
+const times = (speed: number) => `${Number(speed.toFixed(2)).toLocaleString(locale())}×`
 const OUT_OPTIONS: { value: AudioOut; label: string }[] = [
   { value: 'mp3', label: 'MP3' },
   { value: 'm4a', label: 'M4A' },
@@ -39,6 +32,15 @@ const OUT_OPTIONS: { value: AudioOut; label: string }[] = [
 ]
 
 export default function ChangeSpeed() {
+  const t = useT()
+  const PITCH_OPTIONS: { value: 'keep' | 'shift'; label: string }[] = [
+    { value: 'keep', label: t('Tetap (suara normal)', 'Keep (normal voice)') },
+    { value: 'shift', label: t('Ikut berubah', 'Change with speed') },
+  ]
+  const AUDIO_OPTIONS: { value: 'keep' | 'drop'; label: string }[] = [
+    { value: 'keep', label: t('Pertahankan', 'Keep') },
+    { value: 'drop', label: t('Hapus suara', 'Remove audio') },
+  ]
   const [status, setStatus] = useState<Status>({ kind: 'idle' })
   const [file, setFile] = useState<File | null>(null)
   const [url, setUrl] = useState<string | null>(null)
@@ -64,7 +66,11 @@ export default function ChangeSpeed() {
     setError(null)
     setResult(null)
     if (!hasWebCodecs()) {
-      setStatus({ kind: 'error', message: 'Browser ini belum mendukung WebCodecs. Pakai Chrome, Edge, Safari 16.4+, atau Firefox 130+.' })
+      setStatus({ kind: 'error', message: t(
+          'Browser ini belum mendukung WebCodecs. Pakai Chrome, Edge, Safari 16.4+, atau Firefox 130+.',
+          "This browser doesn't support WebCodecs yet. Use Chrome, Edge, Safari 16.4+, or Firefox 130+.",
+        ),
+      })
       return
     }
     setFile(next)
@@ -74,7 +80,13 @@ export default function ChangeSpeed() {
       setUrl(URL.createObjectURL(next))
       setStatus({ kind: 'ready', info })
     } catch {
-      setStatus({ kind: 'error', message: 'File tidak bisa dibaca. Didukung: MP4, MOV, WebM, MKV, MP3, M4A, WAV, OGG, FLAC.' })
+      setStatus({
+        kind: 'error',
+        message: t(
+          'File tidak bisa dibaca. Didukung: MP4, MOV, WebM, MKV, MP3, M4A, WAV, OGG, FLAC.',
+          "Couldn't read the file. Supported: MP4, MOV, WebM, MKV, MP3, M4A, WAV, OGG, FLAC.",
+        ),
+      })
     }
   }
 
@@ -96,8 +108,14 @@ export default function ChangeSpeed() {
       if (isCanceled(e)) return
       setError(
         e instanceof NoEncoderError
-          ? 'Browser ini tidak bisa meng-encode hasilnya. Coba Chrome atau Edge terbaru.'
-          : 'Gagal mengubah kecepatan. File mungkin rusak atau formatnya belum didukung.',
+          ? t(
+              'Browser ini tidak bisa meng-encode hasilnya. Coba Chrome atau Edge terbaru.',
+              "This browser can't encode the result. Try the latest Chrome or Edge.",
+            )
+          : t(
+              'Gagal mengubah kecepatan. File mungkin rusak atau formatnya belum didukung.',
+              "Couldn't change the speed. The file may be damaged or its format isn't supported yet.",
+            ),
       )
     } finally {
       setJob(null)
@@ -121,17 +139,17 @@ export default function ChangeSpeed() {
             <p className="truncate font-medium">{file.name}</p>
             <p className="text-sm text-muted-foreground">
               {formatDuration(info.duration)} → <span className="font-medium text-foreground">{formatDuration(info.duration / opts.speed)}</span>{' '}
-              · {formatSize(file.size)} · hasil .{out.ext}
+              · {formatSize(file.size)} · {t('hasil', 'output')} .{out.ext}
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
             <Button onClick={() => void run(info)} disabled={busy || !valid}>
               <Gauge />
-              Ubah ke {times(opts.speed)}
+              {t('Ubah ke', 'Change to')} {times(opts.speed)}
             </Button>
             <Button variant="ghost" disabled={busy} onClick={() => setStatus({ kind: 'idle' })}>
               <RotateCcw />
-              File lain
+              {t('File lain', 'Another file')}
             </Button>
           </div>
         </div>
@@ -143,12 +161,14 @@ export default function ChangeSpeed() {
             ) : (
               <audio ref={previewRef} src={url} controls className="w-full" />
             )}
-            <p className="text-xs text-muted-foreground">Pratinjau sudah diputar di {times(opts.speed)}.</p>
+            <p className="text-xs text-muted-foreground">
+              {t('Pratinjau sudah diputar di', 'The preview already plays at')} {times(opts.speed)}.
+            </p>
           </div>
 
           <div className="space-y-5 rounded-2xl border bg-card p-5">
             <div className="space-y-2">
-              <p className="text-xs font-medium text-muted-foreground">Kecepatan</p>
+              <p className="text-xs font-medium text-muted-foreground">{t('Kecepatan', 'Speed')}</p>
               <div className="flex flex-wrap gap-1.5">
                 {PRESETS.map((s) => (
                   <button
@@ -171,12 +191,18 @@ export default function ChangeSpeed() {
                 max={4}
                 step={0.05}
                 value={opts.speed}
-                aria-label="Kecepatan"
+                aria-label={t('Kecepatan', 'Speed')}
                 onChange={(e) => set('speed', Number(e.target.value))}
                 className="w-full accent-[var(--brand-2)]"
               />
               <p className="text-xs text-muted-foreground">
-                {times(opts.speed)} · {opts.speed < 1 ? 'diperlambat' : opts.speed > 1 ? 'dipercepat' : 'kecepatan asli'} (0,25× sampai 4×)
+                {times(opts.speed)} ·{' '}
+                {opts.speed < 1
+                  ? t('diperlambat', 'slowed down')
+                  : opts.speed > 1
+                    ? t('dipercepat', 'sped up')
+                    : t('kecepatan asli', 'original speed')}{' '}
+                ({times(0.25)} {t('sampai', 'to')} {times(4)})
               </p>
             </div>
 
@@ -184,7 +210,7 @@ export default function ChangeSpeed() {
               <>
                 {isVideo && (
                   <Segmented
-                    label="Suara"
+                    label={t('Suara', 'Audio')}
                     value={opts.keepAudio ? 'keep' : 'drop'}
                     options={AUDIO_OPTIONS}
                     onChange={(v) => set('keepAudio', v === 'keep')}
@@ -192,7 +218,7 @@ export default function ChangeSpeed() {
                 )}
                 {(opts.keepAudio || !isVideo) && (
                   <Segmented
-                    label="Nada suara"
+                    label={t('Nada suara', 'Pitch')}
                     value={opts.keepPitch ? 'keep' : 'shift'}
                     options={PITCH_OPTIONS}
                     onChange={(v) => set('keepPitch', v === 'keep')}
@@ -200,11 +226,18 @@ export default function ChangeSpeed() {
                 )}
               </>
             )}
-            {!isVideo && <Segmented label="Format hasil" value={opts.audioOut} options={OUT_OPTIONS} onChange={(v) => set('audioOut', v)} />}
+            {!isVideo && <Segmented label={t('Format hasil', 'Output format')} value={opts.audioOut} options={OUT_OPTIONS} onChange={(v) => set('audioOut', v)} />}
             {isVideo && (
               <p className="text-xs text-muted-foreground">
-                Video di-encode ulang ke MP4 (H.264 bila browser mendukung). Saat dipercepat, frame rate tetap {Math.round(info.video!.fps)} fps; saat
-                diperlambat, gerakannya jadi lebih patah-patah karena tidak ada frame baru yang dibuat.
+                {t(
+                  'Video di-encode ulang ke MP4 (H.264 bila browser mendukung). Saat dipercepat, frame rate tetap',
+                  'The video is re-encoded to MP4 (H.264 if your browser supports it). When sped up, the frame rate stays at',
+                )}{' '}
+                {Math.round(info.video!.fps)} fps;{' '}
+                {t(
+                  'saat diperlambat, gerakannya jadi lebih patah-patah karena tidak ada frame baru yang dibuat.',
+                  'when slowed down, motion gets choppier because no new frames are created.',
+                )}
               </p>
             )}
           </div>
@@ -212,13 +245,13 @@ export default function ChangeSpeed() {
 
         {job && (
           <ProgressCard
-            label="Memproses…"
+            label={t('Memproses…', 'Processing…')}
             progress={job.progress}
             startedAt={job.startedAt}
             action={
               <Button variant="ghost" size="sm" onClick={() => cancelRef.current?.()}>
                 <Square />
-                Batalkan
+                {t('Batalkan', 'Cancel')}
               </Button>
             }
           />
@@ -232,10 +265,10 @@ export default function ChangeSpeed() {
               <audio src={result.url} controls className="w-full" />
             )}
             <div className="flex flex-wrap items-center justify-between gap-3">
-              <p className="text-sm text-muted-foreground">Hasil {formatSize(result.blob.size)}</p>
+              <p className="text-sm text-muted-foreground">{t('Hasil', 'Result')} {formatSize(result.blob.size)}</p>
               <Button onClick={() => downloadBlob(result.blob, name)}>
                 <Download />
-                Unduh .{out.ext}
+                {t('Unduh', 'Download')} .{out.ext}
               </Button>
             </div>
           </div>
@@ -250,8 +283,8 @@ export default function ChangeSpeed() {
     <div className="space-y-6">
       <FileDrop
         accept="video/*,audio/*,.mkv,.flac,.m4a"
-        label="Tarik video atau audio ke sini"
-        busyLabel={status.kind === 'reading' ? `Membuka ${file?.name}…` : undefined}
+        label={t('Tarik video atau audio ke sini', 'Drop a video or audio file here')}
+        busyLabel={status.kind === 'reading' ? `${t('Membuka', 'Opening')} ${file?.name}…` : undefined}
         onFiles={([f]) => void open(f)}
       />
       {status.kind === 'error' && <ErrorNote message={status.message} />}

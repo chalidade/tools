@@ -5,6 +5,7 @@ import { ErrorNote } from '@/components/tool/ErrorNote'
 import { FileDrop } from '@/components/tool/FileDrop'
 import { PasswordInput } from '@/components/tool/PasswordInput'
 import { downloadBlob } from '@/lib/download'
+import { useT } from '@/lib/i18n'
 import { encryptionInfo, runQpdf } from '@/lib/qpdf'
 import { cn } from '@/lib/utils'
 
@@ -14,10 +15,11 @@ type Status =
   | { kind: 'ready'; bytes: Uint8Array }
   | { kind: 'error'; message: string }
 
+/** Labels are [Indonesian, English]. */
 const PERMISSIONS = [
-  { key: 'print', label: 'Boleh dicetak' },
-  { key: 'copy', label: 'Boleh salin teks' },
-  { key: 'modify', label: 'Boleh diubah' },
+  { key: 'print', label: ['Boleh dicetak', 'Can print'] },
+  { key: 'copy', label: ['Boleh salin teks', 'Can copy text'] },
+  { key: 'modify', label: ['Boleh diubah', 'Can edit'] },
 ] as const
 type Permission = (typeof PERMISSIONS)[number]['key']
 
@@ -32,6 +34,7 @@ function randomPassword() {
 }
 
 export default function ProtectPdf() {
+  const t = useT()
   const [status, setStatus] = useState<Status>({ kind: 'idle' })
   const [file, setFile] = useState<File | null>(null)
   const [password, setPassword] = useState('')
@@ -43,7 +46,7 @@ export default function ProtectPdf() {
 
   async function open(next: File) {
     if (!/\.pdf$/i.test(next.name) && next.type !== 'application/pdf') {
-      setStatus({ kind: 'error', message: 'Pilih file berformat .pdf.' })
+      setStatus({ kind: 'error', message: t('Pilih file berformat .pdf.', 'Choose a .pdf file.') })
       return
     }
     setFile(next)
@@ -55,7 +58,10 @@ export default function ProtectPdf() {
     if (info.encrypted) {
       setStatus({
         kind: 'error',
-        message: 'PDF ini sudah terproteksi. Buka proteksinya dulu dengan tool “Buka Proteksi PDF”, lalu proteksi ulang di sini.',
+        message: t(
+          'PDF ini sudah terproteksi. Buka proteksinya dulu dengan tool “Buka Proteksi PDF”, lalu proteksi ulang di sini.',
+          'This PDF is already protected. Remove the protection first with the “Unlock PDF” tool, then protect it again here.',
+        ),
       })
       return
     }
@@ -84,10 +90,13 @@ export default function ProtectPdf() {
         o,
       ])
       if (code === 2 || !output) throw new Error('qpdf')
-      downloadBlob(new Blob([output as BlobPart], { type: 'application/pdf' }), file.name.replace(/\.pdf$/i, '') + '-terproteksi.pdf')
+      downloadBlob(
+        new Blob([output as BlobPart], { type: 'application/pdf' }),
+        file.name.replace(/\.pdf$/i, '') + t('-terproteksi.pdf', '-protected.pdf'),
+      )
       setDone(true)
     } catch {
-      setError('Gagal memproteksi PDF. File mungkin rusak.')
+      setError(t('Gagal memproteksi PDF. File mungkin rusak.', "Couldn't protect the PDF. The file may be damaged."))
     } finally {
       setSaving(false)
     }
@@ -108,12 +117,14 @@ export default function ProtectPdf() {
           <div className="min-w-0">
             <p className="truncate font-medium">{file.name}</p>
             <p className="text-sm text-muted-foreground">
-              {done ? 'Selesai — PDF terproteksi sudah diunduh.' : 'Atur password untuk membuka PDF ini.'}
+              {done
+                ? t('Selesai — PDF terproteksi sudah diunduh.', 'Done — the protected PDF has been downloaded.')
+                : t('Atur password untuk membuka PDF ini.', 'Set a password for opening this PDF.')}
             </p>
           </div>
           <Button variant="ghost" disabled={saving} onClick={reset}>
             <RotateCcw />
-            File lain
+            {t('File lain', 'Another file')}
           </Button>
         </div>
 
@@ -123,13 +134,13 @@ export default function ProtectPdf() {
               label="Password"
               value={password}
               onChange={setPassword}
-              placeholder="Minimal 4 karakter"
+              placeholder={t('Minimal 4 karakter', 'At least 4 characters')}
               autoFocus
               invalid={tooShort}
               autoComplete="new-password"
             />
             <PasswordInput
-              label="Ulangi password"
+              label={t('Ulangi password', 'Repeat password')}
               value={confirm}
               onChange={setConfirm}
               invalid={mismatch}
@@ -138,13 +149,15 @@ export default function ProtectPdf() {
             />
             {(tooShort || mismatch) && (
               <p className="text-xs text-destructive">
-                {tooShort ? 'Password minimal 4 karakter.' : 'Kedua password belum sama.'}
+                {tooShort
+                  ? t('Password minimal 4 karakter.', 'The password needs at least 4 characters.')
+                  : t('Kedua password belum sama.', "The passwords don't match yet.")}
               </p>
             )}
           </div>
 
           <div className="space-y-3">
-            <p className="text-xs font-medium text-muted-foreground">Setelah dibuka, pembaca PDF…</p>
+            <p className="text-xs font-medium text-muted-foreground">{t('Setelah dibuka, pembaca PDF…', 'Once opened, the reader…')}</p>
             <div className="flex flex-col gap-2">
               {PERMISSIONS.map((p) => {
                 const on = allowed[p.key]
@@ -167,13 +180,16 @@ export default function ProtectPdf() {
                     >
                       {on && <Check className="size-3" />}
                     </span>
-                    {p.label}
+                    {t(p.label[0], p.label[1])}
                   </button>
                 )
               })}
             </div>
             <p className="text-xs text-muted-foreground">
-              Batasan ini dihormati Adobe Reader, browser, dan kebanyakan aplikasi PDF, tapi tidak semua.
+              {t(
+                'Batasan ini dihormati Adobe Reader, browser, dan kebanyakan aplikasi PDF, tapi tidak semua.',
+                'Adobe Reader, browsers and most PDF apps respect these restrictions, but not all of them do.',
+              )}
             </p>
           </div>
         </div>
@@ -181,10 +197,13 @@ export default function ProtectPdf() {
         <div className="flex flex-wrap items-center gap-3">
           <Button size="lg" onClick={() => void protect(status.bytes)} disabled={!canSave}>
             {saving ? <Loader2 className="animate-spin" /> : <Lock />}
-            Proteksi &amp; unduh
+            {t('Proteksi & unduh', 'Protect & download')}
           </Button>
           <p className="text-xs text-muted-foreground">
-            Enkripsi AES-256. Simpan password-nya baik-baik — tanpa password, isi PDF tidak bisa dipulihkan.
+            {t(
+              'Enkripsi AES-256. Simpan password-nya baik-baik — tanpa password, isi PDF tidak bisa dipulihkan.',
+              'AES-256 encryption. Keep the password safe — without it, the PDF’s contents can’t be recovered.',
+            )}
           </p>
         </div>
 
@@ -197,8 +216,8 @@ export default function ProtectPdf() {
     <div className="space-y-6">
       <FileDrop
         accept=".pdf,application/pdf"
-        label="Tarik file .pdf ke sini"
-        busyLabel={status.kind === 'checking' ? `Memeriksa ${file?.name}…` : undefined}
+        label={t('Tarik file .pdf ke sini', 'Drop a .pdf file here')}
+        busyLabel={status.kind === 'checking' ? t(`Memeriksa ${file?.name}…`, `Checking ${file?.name}…`) : undefined}
         onFiles={([f]) => void open(f)}
       />
       {status.kind === 'error' && <ErrorNote message={status.message} />}

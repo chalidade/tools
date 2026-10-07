@@ -5,6 +5,7 @@ import { ErrorNote } from '@/components/tool/ErrorNote'
 import { FileDrop } from '@/components/tool/FileDrop'
 import { PasswordInput } from '@/components/tool/PasswordInput'
 import { downloadBlob } from '@/lib/download'
+import { useT } from '@/lib/i18n'
 import { encryptionInfo, isPasswordError, runQpdf } from '@/lib/qpdf'
 
 type Status =
@@ -15,6 +16,7 @@ type Status =
   | { kind: 'error'; message: string }
 
 export default function UnlockPdf() {
+  const t = useT()
   const [status, setStatus] = useState<Status>({ kind: 'idle' })
   const [file, setFile] = useState<File | null>(null)
   const [password, setPassword] = useState('')
@@ -24,7 +26,7 @@ export default function UnlockPdf() {
 
   async function open(next: File) {
     if (!/\.pdf$/i.test(next.name) && next.type !== 'application/pdf') {
-      setStatus({ kind: 'error', message: 'Pilih file berformat .pdf.' })
+      setStatus({ kind: 'error', message: t('Pilih file berformat .pdf.', 'Choose a .pdf file.') })
       return
     }
     setFile(next)
@@ -35,7 +37,13 @@ export default function UnlockPdf() {
     const bytes = new Uint8Array(await next.arrayBuffer())
     const info = await encryptionInfo(bytes)
     if (!info.encrypted) {
-      setStatus({ kind: 'error', message: 'PDF ini tidak terproteksi — tidak ada password atau batasan yang perlu dibuka.' })
+      setStatus({
+        kind: 'error',
+        message: t(
+          'PDF ini tidak terproteksi — tidak ada password atau batasan yang perlu dibuka.',
+          "This PDF isn't protected — there's no password or restriction to remove.",
+        ),
+      })
       return
     }
     setStatus({ kind: 'ready', bytes, needsPassword: info.needsPassword })
@@ -53,14 +61,22 @@ export default function UnlockPdf() {
         o,
       ])
       if (isPasswordError(log)) {
-        setError('Password salah. Coba lagi — perhatikan huruf besar/kecil.')
+        setError(t('Password salah. Coba lagi — perhatikan huruf besar/kecil.', 'Wrong password. Try again — mind upper and lower case.'))
         return
       }
       if (code === 2 || !output) throw new Error('qpdf')
-      downloadBlob(new Blob([output as BlobPart], { type: 'application/pdf' }), file.name.replace(/\.pdf$/i, '') + '-terbuka.pdf')
+      downloadBlob(
+        new Blob([output as BlobPart], { type: 'application/pdf' }),
+        file.name.replace(/\.pdf$/i, '') + t('-terbuka.pdf', '-unlocked.pdf'),
+      )
       setDone(true)
     } catch {
-      setError('Gagal membuka proteksi. File mungkin rusak atau memakai enkripsi yang tidak didukung.')
+      setError(
+        t(
+          'Gagal membuka proteksi. File mungkin rusak atau memakai enkripsi yang tidak didukung.',
+          "Couldn't remove the protection. The file may be damaged or use an unsupported encryption.",
+        ),
+      )
     } finally {
       setSaving(false)
     }
@@ -75,22 +91,22 @@ export default function UnlockPdf() {
             <p className="truncate font-medium">{file.name}</p>
             <p className="text-sm text-muted-foreground">
               {done
-                ? 'Selesai — PDF tanpa proteksi sudah diunduh.'
+                ? t('Selesai — PDF tanpa proteksi sudah diunduh.', 'Done — the unprotected PDF has been downloaded.')
                 : needsPassword
-                  ? 'Terkunci dengan password.'
-                  : 'Bisa dibuka, tapi dibatasi (cetak/salin/ubah).'}
+                  ? t('Terkunci dengan password.', 'Locked with a password.')
+                  : t('Bisa dibuka, tapi dibatasi (cetak/salin/ubah).', 'Opens freely, but is restricted (print/copy/edit).')}
             </p>
           </div>
           <Button variant="ghost" disabled={saving} onClick={() => setStatus({ kind: 'idle' })}>
             <RotateCcw />
-            File lain
+            {t('File lain', 'Another file')}
           </Button>
         </div>
 
         <div className="max-w-md space-y-4 rounded-2xl border bg-card p-5">
           {needsPassword ? (
             <PasswordInput
-              label="Password PDF"
+              label={t('Password PDF', 'PDF password')}
               value={password}
               onChange={(v) => {
                 setPassword(v)
@@ -104,18 +120,24 @@ export default function UnlockPdf() {
           ) : (
             <p className="flex gap-2 text-sm text-muted-foreground">
               <ShieldCheck className="mt-0.5 size-4 shrink-0 text-emerald-600 dark:text-emerald-400" />
-              PDF ini tidak butuh password untuk dibuka. Batasan cetak, salin, dan ubahnya akan dihapus.
+              {t(
+                'PDF ini tidak butuh password untuk dibuka. Batasan cetak, salin, dan ubahnya akan dihapus.',
+                "This PDF doesn't need a password to open. Its print, copy and edit restrictions will be removed.",
+              )}
             </p>
           )}
           <Button size="lg" onClick={() => void unlock(bytes, needsPassword)} disabled={saving || (needsPassword && !password)}>
             {saving ? <Loader2 className="animate-spin" /> : <LockOpen />}
-            {needsPassword ? 'Buka & unduh' : 'Hapus batasan & unduh'}
+            {needsPassword ? t('Buka & unduh', 'Unlock & download') : t('Hapus batasan & unduh', 'Remove restrictions & download')}
           </Button>
         </div>
 
         {error && <ErrorNote message={error} />}
         <p className="text-xs text-muted-foreground">
-          Gunakan hanya untuk PDF milikmu atau yang memang boleh kamu buka.
+          {t(
+            'Gunakan hanya untuk PDF milikmu atau yang memang boleh kamu buka.',
+            "Only use this on your own PDFs or ones you're allowed to open.",
+          )}
         </p>
       </div>
     )
@@ -125,8 +147,8 @@ export default function UnlockPdf() {
     <div className="space-y-6">
       <FileDrop
         accept=".pdf,application/pdf"
-        label="Tarik PDF yang terproteksi ke sini"
-        busyLabel={status.kind === 'checking' ? `Memeriksa ${file?.name}…` : undefined}
+        label={t('Tarik PDF yang terproteksi ke sini', 'Drop a protected PDF here')}
+        busyLabel={status.kind === 'checking' ? t(`Memeriksa ${file?.name}…`, `Checking ${file?.name}…`) : undefined}
         onFiles={([f]) => void open(f)}
       />
       {status.kind === 'error' && <ErrorNote message={status.message} />}

@@ -5,6 +5,7 @@ import { ErrorNote } from '@/components/tool/ErrorNote'
 import { FileDrop } from '@/components/tool/FileDrop'
 import { Segmented } from '@/components/tool/Segmented'
 import { downloadBlob } from '@/lib/download'
+import { tr, useT } from '@/lib/i18n'
 import { cn } from '@/lib/utils'
 import {
   canEncodeWebp,
@@ -28,16 +29,16 @@ interface Item {
 
 const ACCEPT = 'image/jpeg,image/png,image/webp,image/gif,image/bmp,image/avif,.heic,.heif'
 
-const FORMAT_OPTIONS: { value: OutFormat; label: string }[] = [
-  { value: 'same', label: 'Sama' },
-  { value: 'jpeg', label: 'JPG' },
-  { value: 'webp', label: 'WebP' },
+const FORMAT_OPTIONS: { value: OutFormat; label: readonly [string, string] }[] = [
+  { value: 'same', label: ['Sama', 'Same'] },
+  { value: 'jpeg', label: ['JPG', 'JPG'] },
+  { value: 'webp', label: ['WebP', 'WebP'] },
 ]
-const SIZE_OPTIONS: { value: number; label: string }[] = [
-  { value: 0, label: 'Asli' },
-  { value: 2560, label: '2560 px' },
-  { value: 1920, label: '1920 px' },
-  { value: 1280, label: '1280 px' },
+const SIZE_OPTIONS: { value: number; label: readonly [string, string] }[] = [
+  { value: 0, label: ['Asli', 'Original'] },
+  { value: 2560, label: ['2560 px', '2560 px'] },
+  { value: 1920, label: ['1920 px', '1920 px'] },
+  { value: 1280, label: ['1280 px', '1280 px'] },
 ]
 
 function formatSize(n: number) {
@@ -49,6 +50,7 @@ function formatSize(n: number) {
 let nextId = 0
 
 export default function CompressImage() {
+  const t = useT()
   const [items, setItems] = useState<Item[]>([])
   const [opts, setOpts] = useState<ImageOptions>({ format: 'webp', quality: 0.75, maxSide: 1920 })
   const [busy, setBusy] = useState(false)
@@ -110,7 +112,7 @@ export default function CompressImage() {
       used.add(name)
       zip.file(name, item.result!.blob, { compression: 'STORE' })
     }
-    downloadBlob(await zip.generateAsync({ type: 'blob' }), 'gambar-kompres.zip')
+    downloadBlob(await zip.generateAsync({ type: 'blob' }), tr('gambar-kompres', 'compressed-images') + '.zip')
   }
 
   function downloadOne(item: Item) {
@@ -124,9 +126,12 @@ export default function CompressImage() {
   if (!items.length) {
     return (
       <div className="space-y-6">
-        <FileDrop accept={ACCEPT} multiple label="Tarik gambar ke sini" onFiles={add} />
+        <FileDrop accept={ACCEPT} multiple label={t('Tarik gambar ke sini', 'Drop images here')} onFiles={add} />
         <p className="text-center text-xs text-muted-foreground">
-          JPG, PNG, WebP, GIF, BMP — bisa banyak sekaligus. Metadata seperti lokasi GPS ikut dihapus.
+          {t(
+            'JPG, PNG, WebP, GIF, BMP — bisa banyak sekaligus. Metadata seperti lokasi GPS ikut dihapus.',
+            'JPG, PNG, WebP, GIF, BMP — many at once. Metadata like GPS location is removed too.',
+          )}
         </p>
       </div>
     )
@@ -142,7 +147,7 @@ export default function CompressImage() {
       <div className="flex flex-col gap-4 rounded-2xl border bg-card p-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <p className="font-medium">
-            {items.length} gambar
+            {items.length} {t('gambar', items.length === 1 ? 'image' : 'images')}
             {done.length > 0 && (
               <span className="text-muted-foreground">
                 {' '}
@@ -152,31 +157,31 @@ export default function CompressImage() {
           </p>
           <p className="text-sm text-muted-foreground">
             {busy ? (
-              'Mengompres…'
+              t('Mengompres…', 'Compressing…')
             ) : before > 0 ? (
               <>
-                Hemat{' '}
+                {t('Hemat', 'Saved')}{' '}
                 <span className="text-gradient font-semibold">
                   {Math.max(0, Math.round((1 - after / before) * 100))}%
                 </span>
               </>
             ) : (
-              'Siap'
+              t('Siap', 'Ready')
             )}
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
           <Button onClick={() => void downloadAll()} disabled={busy || !done.length}>
             {busy ? <Loader2 className="animate-spin" /> : <Download />}
-            {done.length > 1 ? `Unduh semua (${done.length})` : 'Unduh'}
+            {done.length > 1 ? t(`Unduh semua (${done.length})`, `Download all (${done.length})`) : t('Unduh', 'Download')}
           </Button>
           <Button variant="outline" onClick={() => addRef.current?.click()}>
             <Plus />
-            Tambah
+            {t('Tambah', 'Add')}
           </Button>
           <Button variant="ghost" onClick={() => items.forEach((i) => remove(i.id))}>
             <Trash2 />
-            Hapus semua
+            {t('Hapus semua', 'Remove all')}
           </Button>
           <input
             ref={addRef}
@@ -197,18 +202,21 @@ export default function CompressImage() {
         <Segmented
           label="Format"
           value={opts.format}
-          options={FORMAT_OPTIONS.filter((o) => o.value !== 'webp' || canEncodeWebp())}
+          options={FORMAT_OPTIONS.filter((o) => o.value !== 'webp' || canEncodeWebp()).map((o) => ({
+            value: o.value,
+            label: t(...o.label),
+          }))}
           onChange={(format) => setOpts((o) => ({ ...o, format }))}
         />
         <Segmented
-          label="Ukuran maksimum"
+          label={t('Ukuran maksimum', 'Max size')}
           value={opts.maxSide}
-          options={SIZE_OPTIONS}
+          options={SIZE_OPTIONS.map((o) => ({ value: o.value, label: t(...o.label) }))}
           onChange={(maxSide) => setOpts((o) => ({ ...o, maxSide }))}
         />
         <label className="min-w-48 flex-1 space-y-2">
           <span className="flex justify-between text-xs font-medium text-muted-foreground">
-            Kualitas <span className="font-mono text-foreground">{Math.round(opts.quality * 100)}</span>
+            {t('Kualitas', 'Quality')} <span className="font-mono text-foreground">{Math.round(opts.quality * 100)}</span>
           </span>
           <input
             type="range"
@@ -223,8 +231,10 @@ export default function CompressImage() {
       </div>
       {opts.format === 'same' && items.some((i) => i.file.type === 'image/png') && (
         <p className="text-xs text-muted-foreground">
-          PNG disimpan tanpa kompresi kualitas, jadi biasanya hanya mengecil kalau ukurannya diperkecil. Pilih WebP
-          untuk hasil jauh lebih kecil dengan transparansi tetap terjaga.
+          {t(
+            'PNG disimpan tanpa kompresi kualitas, jadi biasanya hanya mengecil kalau ukurannya diperkecil. Pilih WebP untuk hasil jauh lebih kecil dengan transparansi tetap terjaga.',
+            'PNG is saved without quality compression, so it usually only shrinks when you reduce its size. Choose WebP for a much smaller result that keeps transparency.',
+          )}
         </p>
       )}
 
@@ -240,15 +250,20 @@ export default function CompressImage() {
                 <p className="text-xs text-muted-foreground">
                   {item.error ? (
                     <span className="text-destructive">
-                      Tidak bisa dibaca browser ini (HEIC hanya terbaca di Safari).
+                      {t(
+                        'Tidak bisa dibaca browser ini (HEIC hanya terbaca di Safari).',
+                        "This browser can't read it (HEIC only opens in Safari).",
+                      )}
                     </span>
                   ) : current ? (
                     <>
                       {formatSize(item.file.size)} → {formatSize(current.blob.size)} · {current.width}×{current.height}
-                      {current.kept && ' · sudah optimal, disimpan apa adanya'}
+                      {current.kept && t(' · sudah optimal, disimpan apa adanya', ' · already optimal, kept as is')}
                     </>
                   ) : (
-                    <>{formatSize(item.file.size)} · mengompres…</>
+                    <>
+                      {formatSize(item.file.size)} · {t('mengompres…', 'compressing…')}
+                    </>
                   )}
                 </p>
               </div>
@@ -265,7 +280,7 @@ export default function CompressImage() {
               <div className="flex">
                 <button
                   type="button"
-                  aria-label="Unduh"
+                  aria-label={t('Unduh', 'Download')}
                   disabled={!current}
                   onClick={() => downloadOne(item)}
                   className="grid size-8 place-items-center rounded-lg text-muted-foreground hover:bg-accent hover:text-foreground disabled:opacity-30"
@@ -274,7 +289,7 @@ export default function CompressImage() {
                 </button>
                 <button
                   type="button"
-                  aria-label="Hapus"
+                  aria-label={t('Hapus', 'Remove')}
                   onClick={() => remove(item.id)}
                   className="grid size-8 place-items-center rounded-lg text-muted-foreground hover:bg-accent hover:text-foreground"
                 >
@@ -288,7 +303,10 @@ export default function CompressImage() {
 
       {failed.length > 0 && (
         <ErrorNote
-          message={`${failed.length} gambar tidak bisa dibaca dan dilewati. Foto HEIC dari iPhone hanya terbaca di Safari — ubah ke JPG dulu bila perlu.`}
+          message={t(
+            `${failed.length} gambar tidak bisa dibaca dan dilewati. Foto HEIC dari iPhone hanya terbaca di Safari — ubah ke JPG dulu bila perlu.`,
+            `${failed.length} ${failed.length === 1 ? "image couldn't" : "images couldn't"} be read and ${failed.length === 1 ? 'was' : 'were'} skipped. HEIC photos from iPhone only open in Safari — convert them to JPG first if needed.`,
+          )}
         />
       )}
     </div>

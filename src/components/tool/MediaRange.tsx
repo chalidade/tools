@@ -1,6 +1,7 @@
 import { useRef, useState, type PointerEvent, type ReactNode } from 'react'
 import { formatTime, parseTime } from '@/lib/media'
 import { cn } from '@/lib/utils'
+import { useT } from '@/lib/i18n'
 
 interface MediaRangeProps {
   duration: number
@@ -19,6 +20,8 @@ interface MediaRangeProps {
 
 /** A timeline with two draggable handles for picking a part of a video or audio file. */
 export function MediaRange({ duration, start, end, onChange, time, onSeek, children, minLength = 0.1 }: MediaRangeProps) {
+  // `tx`, not `t`: in this file `t` is a time in seconds.
+  const tx = useT()
   const trackRef = useRef<HTMLDivElement>(null)
   const drag = useRef<'start' | 'end' | null>(null)
 
@@ -65,7 +68,7 @@ export function MediaRange({ duration, start, end, onChange, time, onSeek, child
           <span
             key={which}
             role="slider"
-            aria-label={which === 'start' ? 'Awal' : 'Akhir'}
+            aria-label={which === 'start' ? tx('Awal', 'Start') : tx('Akhir', 'End')}
             aria-valuemin={0}
             aria-valuemax={duration}
             aria-valuenow={which === 'start' ? start : end}
@@ -83,8 +86,8 @@ export function MediaRange({ duration, start, end, onChange, time, onSeek, child
         ))}
       </div>
       <div className="flex flex-wrap items-end gap-3">
-        <TimeField label="Awal" value={start} onCommit={(t) => onChange(Math.min(t, end - minLength), end)} />
-        <TimeField label="Akhir" value={end} onCommit={(t) => onChange(start, Math.min(duration, Math.max(t, start + minLength)))} />
+        <TimeField label={tx('Awal', 'Start')} value={start} onCommit={(t) => onChange(Math.min(t, end - minLength), end)} />
+        <TimeField label={tx('Akhir', 'End')} value={end} onCommit={(t) => onChange(start, Math.min(duration, Math.max(t, start + minLength)))} />
         <p className="pb-2.5 text-sm text-muted-foreground">
           Durasi <span className="font-mono text-foreground">{formatTime(end - start)}</span>
         </p>

@@ -27,6 +27,7 @@ import {
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { downloadBlob } from '@/lib/download'
+import { useT } from '@/lib/i18n'
 import { ErrorNote } from '@/components/tool/ErrorNote'
 import {
   COLORS,
@@ -57,26 +58,29 @@ import {
 type ToolId = 'select' | 'hand' | 'pen' | 'marker' | 'eraser' | 'line' | 'arrow' | 'rect' | 'ellipse' | 'text'
 type View = { x: number; y: number; zoom: number }
 
-const TOOLS: { id: ToolId; label: string; key: string; icon: typeof Pencil }[] = [
-  { id: 'select', label: 'Pilih & geser', key: 'V', icon: MousePointer2 },
-  { id: 'hand', label: 'Geser papan', key: 'H', icon: Hand },
-  { id: 'pen', label: 'Pena', key: 'P', icon: Pencil },
-  { id: 'marker', label: 'Stabilo', key: 'M', icon: Highlighter },
-  { id: 'eraser', label: 'Penghapus', key: 'E', icon: Eraser },
-  { id: 'line', label: 'Garis', key: 'L', icon: Minus },
-  { id: 'arrow', label: 'Panah', key: 'A', icon: MoveUpRight },
-  { id: 'rect', label: 'Kotak', key: 'R', icon: Square },
-  { id: 'ellipse', label: 'Lingkaran', key: 'O', icon: Circle },
-  { id: 'text', label: 'Teks', key: 'T', icon: Type },
+// Labels are [Indonesian, English]; the component picks one with tx(...label).
+type Label = readonly [string, string]
+
+const TOOLS: { id: ToolId; label: Label; key: string; icon: typeof Pencil }[] = [
+  { id: 'select', label: ['Pilih & geser', 'Select & move'], key: 'V', icon: MousePointer2 },
+  { id: 'hand', label: ['Geser papan', 'Pan board'], key: 'H', icon: Hand },
+  { id: 'pen', label: ['Pena', 'Pen'], key: 'P', icon: Pencil },
+  { id: 'marker', label: ['Stabilo', 'Highlighter'], key: 'M', icon: Highlighter },
+  { id: 'eraser', label: ['Penghapus', 'Eraser'], key: 'E', icon: Eraser },
+  { id: 'line', label: ['Garis', 'Line'], key: 'L', icon: Minus },
+  { id: 'arrow', label: ['Panah', 'Arrow'], key: 'A', icon: MoveUpRight },
+  { id: 'rect', label: ['Kotak', 'Rectangle'], key: 'R', icon: Square },
+  { id: 'ellipse', label: ['Lingkaran', 'Ellipse'], key: 'O', icon: Circle },
+  { id: 'text', label: ['Teks', 'Text'], key: 'T', icon: Type },
 ]
 
 const SIZES = [2, 4, 8, 16]
 const TEXT_SIZES = [18, 26, 38, 56]
-const PATTERNS: { value: Pattern; label: string }[] = [
-  { value: 'plain', label: 'Polos' },
-  { value: 'grid', label: 'Kotak' },
-  { value: 'lines', label: 'Garis' },
-  { value: 'dots', label: 'Titik' },
+const PATTERNS: { value: Pattern; label: Label }[] = [
+  { value: 'plain', label: ['Polos', 'Plain'] },
+  { value: 'grid', label: ['Kotak', 'Grid'] },
+  { value: 'lines', label: ['Garis', 'Lines'] },
+  { value: 'dots', label: ['Titik', 'Dots'] },
 ]
 const MIN_ZOOM = 0.2
 const MAX_ZOOM = 5
@@ -102,6 +106,8 @@ const isTyping = (t: EventTarget | null) =>
 const clampZoom = (z: number) => Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, z))
 
 export default function Whiteboard() {
+  // Not `t`: the tool loops and handlers below already use t for a tool.
+  const tx = useT()
   const [doc, setDoc] = useState<BoardDoc>(loadDoc)
   const [pageIndex, setPageIndex] = useState(0)
   const [tool, setTool] = useState<ToolId>('pen')
@@ -663,14 +669,14 @@ export default function Whiteboard() {
   const exportPng = () => {
     setMenuOpen(false)
     const canvas = renderPage(page, doc)
-    if (!canvas) return setError('Halaman ini masih kosong — belum ada yang bisa disimpan.')
+    if (!canvas) return setError(tx('Halaman ini masih kosong — belum ada yang bisa disimpan.', 'This page is still empty — nothing to save yet.'))
     setError('')
-    canvas.toBlob((blob) => blob && downloadBlob(blob, `papan-tulis-halaman-${pageIndex + 1}.png`), 'image/png')
+    canvas.toBlob((blob) => blob && downloadBlob(blob, tx(`papan-tulis-halaman-${pageIndex + 1}.png`, `whiteboard-page-${pageIndex + 1}.png`)), 'image/png')
   }
   const exportPdf = async () => {
     setMenuOpen(false)
     const pages = doc.pages.map((p) => renderPage(p, doc)).filter((c): c is HTMLCanvasElement => !!c)
-    if (!pages.length) return setError('Papan masih kosong — belum ada yang bisa disimpan.')
+    if (!pages.length) return setError(tx('Papan masih kosong — belum ada yang bisa disimpan.', 'The board is still empty — nothing to save yet.'))
     setError('')
     const { jsPDF } = await import('jspdf')
     let pdf: InstanceType<typeof jsPDF> | null = null
@@ -683,11 +689,11 @@ export default function Whiteboard() {
       else pdf.addPage([w, h], orientation)
       pdf.addImage(canvas, 'PNG', 0, 0, w, h)
     }
-    pdf!.save('papan-tulis.pdf')
+    pdf!.save(tx('papan-tulis.pdf', 'whiteboard.pdf'))
   }
   const saveFile = () => {
     setMenuOpen(false)
-    downloadBlob(new Blob([JSON.stringify(doc)], { type: 'application/json' }), 'papan-tulis.board.json')
+    downloadBlob(new Blob([JSON.stringify(doc)], { type: 'application/json' }), tx('papan-tulis.board.json', 'whiteboard.board.json'))
   }
   const openFile = async (file: File | undefined) => {
     setMenuOpen(false)
@@ -701,7 +707,7 @@ export default function Whiteboard() {
       setViewNow({ x: 0, y: 0, zoom: 1 })
       setError('')
     } catch {
-      setError('File itu bukan file papan tulis (.board.json) dari tool ini.')
+      setError(tx('File itu bukan file papan tulis (.board.json) dari tool ini.', 'That file isn’t a whiteboard file (.board.json) from this tool.'))
     }
   }
 
@@ -727,7 +733,7 @@ export default function Whiteboard() {
             {TOOLS.map((t) => (
               <ToolButton
                 key={t.id}
-                label={`${t.label} (${t.key})`}
+                label={`${tx(...t.label)} (${t.key})`}
                 active={tool === t.id}
                 onClick={() => {
                   if (editing) finishText()
@@ -746,8 +752,8 @@ export default function Whiteboard() {
                 <button
                   key={c.id}
                   type="button"
-                  aria-label={c.label}
-                  title={c.label}
+                  aria-label={tx(c.label[0], c.label[1])}
+                  title={tx(c.label[0], c.label[1])}
                   onClick={() => {
                     setColor(c.id)
                     if (editing) setEditing({ ...editing, color: c.id })
@@ -772,8 +778,8 @@ export default function Whiteboard() {
                 <button
                   key={s}
                   type="button"
-                  aria-label={`Ukuran ${i + 1}`}
-                  title={`Ukuran ${i + 1}`}
+                  aria-label={tx(`Ukuran ${i + 1}`, `Size ${i + 1}`)}
+                  title={tx(`Ukuran ${i + 1}`, `Size ${i + 1}`)}
                   onClick={() => {
                     setSizeIndex(i)
                     if (editing) setEditing({ ...editing, size: TEXT_SIZES[i] })
@@ -798,11 +804,11 @@ export default function Whiteboard() {
           {tool === 'eraser' && (
             <Group>
               {[
-                { whole: false, label: 'Sebagian' },
-                { whole: true, label: 'Per objek' },
+                { whole: false, label: tx('Sebagian', 'Partial') },
+                { whole: true, label: tx('Per objek', 'Whole object') },
               ].map((o) => (
                 <button
-                  key={o.label}
+                  key={String(o.whole)}
                   type="button"
                   onClick={() => setEraseWhole(o.whole)}
                   className={cn(
@@ -817,33 +823,33 @@ export default function Whiteboard() {
           )}
 
           <div className="ml-auto flex flex-wrap items-center gap-1">
-            <ToolButton label="Urungkan (Ctrl+Z)" disabled={!history.past} onClick={undo}>
+            <ToolButton label={tx('Urungkan (Ctrl+Z)', 'Undo (Ctrl+Z)')} disabled={!history.past} onClick={undo}>
               <Undo2 />
             </ToolButton>
-            <ToolButton label="Ulangi (Ctrl+Shift+Z)" disabled={!history.future} onClick={redo}>
+            <ToolButton label={tx('Ulangi (Ctrl+Shift+Z)', 'Redo (Ctrl+Shift+Z)')} disabled={!history.future} onClick={redo}>
               <Redo2 />
             </ToolButton>
-            <ToolButton label="Bersihkan halaman" disabled={!page.items.length} onClick={clearPage}>
+            <ToolButton label={tx('Bersihkan halaman', 'Clear page')} disabled={!page.items.length} onClick={clearPage}>
               <Trash2 />
             </ToolButton>
             <div className="relative">
-              <ToolButton label="Simpan / buka" active={menuOpen} onClick={() => setMenuOpen((o) => !o)}>
+              <ToolButton label={tx('Simpan / buka', 'Save / open')} active={menuOpen} onClick={() => setMenuOpen((o) => !o)}>
                 <Download />
               </ToolButton>
               {menuOpen && (
                 <div className="absolute top-full right-0 z-20 mt-2 w-60 rounded-xl border bg-popover p-1.5 text-sm shadow-xl">
                   <MenuItem icon={<FileImage />} onClick={exportPng}>
-                    Unduh halaman ini (PNG)
+                    {tx('Unduh halaman ini (PNG)', 'Download this page (PNG)')}
                   </MenuItem>
                   <MenuItem icon={<FileText />} onClick={() => void exportPdf()}>
-                    Unduh semua halaman (PDF)
+                    {tx('Unduh semua halaman (PDF)', 'Download all pages (PDF)')}
                   </MenuItem>
                   <div className="my-1 h-px bg-border" />
                   <MenuItem icon={<Save />} onClick={saveFile}>
-                    Simpan file papan (.json)
+                    {tx('Simpan file papan (.json)', 'Save board file (.json)')}
                   </MenuItem>
                   <MenuItem icon={<FolderOpen />} onClick={() => fileRef.current?.click()}>
-                    Buka file papan…
+                    {tx('Buka file papan…', 'Open board file…')}
                   </MenuItem>
                 </div>
               )}
@@ -858,7 +864,7 @@ export default function Whiteboard() {
                 }}
               />
             </div>
-            <ToolButton label={fullscreen ? 'Keluar layar penuh' : 'Layar penuh'} onClick={toggleFullscreen}>
+            <ToolButton label={fullscreen ? tx('Keluar layar penuh', 'Exit full screen') : tx('Layar penuh', 'Full screen')} onClick={toggleFullscreen}>
               {fullscreen ? <Minimize /> : <Maximize />}
             </ToolButton>
           </div>
@@ -900,7 +906,7 @@ export default function Whiteboard() {
             <textarea
               autoFocus
               value={editing.text}
-              placeholder="Ketik di sini…"
+              placeholder={tx('Ketik di sini…', 'Type here…')}
               onChange={(e) => setEditing({ ...editing, text: e.target.value })}
               onBlur={finishText}
               onKeyDown={(e) => {
@@ -955,23 +961,23 @@ export default function Whiteboard() {
                     doc.pattern === p.value ? 'bg-accent font-medium' : 'text-muted-foreground hover:text-foreground',
                   )}
                 >
-                  {p.label}
+                  {tx(...p.label)}
                 </button>
               ))}
             </div>
             <div className="pointer-events-auto flex items-center gap-0.5 rounded-xl border bg-card/90 p-1 shadow-sm backdrop-blur">
-              <ToolButton label="Perkecil" onClick={() => zoomBy(1 / 1.25)}>
+              <ToolButton label={tx('Perkecil', 'Zoom out')} onClick={() => zoomBy(1 / 1.25)}>
                 <ZoomOut />
               </ToolButton>
               <button
                 type="button"
-                title="Pas ke isi halaman"
+                title={tx('Pas ke isi halaman', 'Fit to page content')}
                 onClick={fit}
                 className="h-8 min-w-14 rounded-lg px-1.5 font-mono text-xs tabular-nums hover:bg-accent"
               >
                 {Math.round(view.zoom * 100)}%
               </button>
-              <ToolButton label="Perbesar" onClick={() => zoomBy(1.25)}>
+              <ToolButton label={tx('Perbesar', 'Zoom in')} onClick={() => zoomBy(1.25)}>
                 <ZoomIn />
               </ToolButton>
             </div>
@@ -990,7 +996,7 @@ export default function Whiteboard() {
                 i === pageIndex ? 'border-transparent bg-primary text-primary-foreground' : 'bg-card text-muted-foreground hover:text-foreground',
               )}
             >
-              Halaman {i + 1}
+              {tx('Halaman', 'Page')} {i + 1}
             </button>
           ))}
           <button
@@ -998,7 +1004,7 @@ export default function Whiteboard() {
             onClick={addPage}
             className="flex h-8 items-center gap-1 rounded-lg border border-dashed px-2.5 text-sm text-muted-foreground hover:text-foreground"
           >
-            <Plus className="size-4" /> Halaman
+            <Plus className="size-4" /> {tx('Halaman', 'Page')}
           </button>
           {doc.pages.length > 1 && (
             <button
@@ -1006,7 +1012,7 @@ export default function Whiteboard() {
               onClick={deletePage}
               className="flex h-8 items-center gap-1 rounded-lg px-2.5 text-sm text-muted-foreground hover:text-destructive"
             >
-              <X className="size-4" /> Hapus halaman ini
+              <X className="size-4" /> {tx('Hapus halaman ini', 'Delete this page')}
             </button>
           )}
         </div>
@@ -1014,10 +1020,16 @@ export default function Whiteboard() {
 
       {error && <ErrorNote message={error} />}
       <p className="text-xs leading-relaxed text-muted-foreground">
-        Papan tersimpan otomatis di browser ini saja
-        {saveFailed && ' — tapi papan ini sudah terlalu besar untuk disimpan otomatis, simpan sebagai file lewat tombol unduh'}
-        . Geser papan: tool tangan, tahan Spasi, atau scroll; perbesar: Ctrl + scroll atau cubit dengan dua jari. Tahan
-        Shift saat menggambar garis atau bentuk agar lurus / bujur sangkar. Pena dengan stylus mengikuti tekanan.
+        {tx('Papan tersimpan otomatis di browser ini saja', 'The board is saved automatically in this browser only')}
+        {saveFailed &&
+          tx(
+            ' — tapi papan ini sudah terlalu besar untuk disimpan otomatis, simpan sebagai file lewat tombol unduh',
+            ' — but this board has grown too large to save automatically, so save it as a file with the download button',
+          )}
+        {tx(
+          '. Geser papan: tool tangan, tahan Spasi, atau scroll; perbesar: Ctrl + scroll atau cubit dengan dua jari. Tahan Shift saat menggambar garis atau bentuk agar lurus / bujur sangkar. Pena dengan stylus mengikuti tekanan.',
+          '. Pan the board: hand tool, hold Space, or scroll; zoom: Ctrl + scroll or pinch with two fingers. Hold Shift while drawing a line or shape to keep it straight / square. A stylus follows pen pressure.',
+        )}
       </p>
     </div>
   )

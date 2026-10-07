@@ -2,6 +2,7 @@
 // iOS, and Android ask for, a multi-size favicon.ico, and a web manifest,
 // zipped together. Nothing is uploaded.
 
+import { tr } from '@/lib/i18n'
 import { canvasBlob, newCanvas, type DecodedImage } from '@/lib/image'
 
 export type Shape = 'square' | 'rounded' | 'circle'
@@ -140,6 +141,6 @@ export async function buildFaviconZip(opts: FaviconOptions, appName: string, the
       2,
     ) + '\n',
   )
-  zip.file('cara-pakai.html', HTML_SNIPPET + '\n')
+  zip.file(tr('cara-pakai.html', 'how-to-use.html'), HTML_SNIPPET + '\n')
   return zip.generateAsync({ type: 'blob' })
 }

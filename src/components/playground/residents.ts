@@ -1,3 +1,4 @@
+import type { Lang } from '@/lib/i18n'
 import type { Look } from './Person'
 import type { BuildingStyle, Point, Town } from './scenes'
 
@@ -22,11 +23,11 @@ export interface Resident {
   /** Drawn smaller: a child. */
   scale?: number
   home?: 'plaza' | 'pond' | 'grass' | 'bench' | 'plaza-west'
-  /** Coat colour of the dog that follows this resident. */
+  /** Coat color of the dog that follows this resident. */
   dog?: string
   /** Index of the resident they chat with (both should be `idle`). */
   partner?: number
-  lines?: string[]
+  lines?: Record<Lang, string[]>
 }
 
 export const RESIDENTS: Resident[] = [
@@ -36,7 +37,10 @@ export const RESIDENTS: Resident[] = [
     mode: 'stroll',
     speed: 26,
     home: 'bench',
-    lines: ['Dulu cetak file harus ke tukang fotokopi…', 'Duduk dulu ah, capek.', 'Anak muda sekarang enak, semua ada di browser.'],
+    lines: {
+      id: ['Dulu cetak file harus ke tukang fotokopi…', 'Duduk dulu ah, capek.', 'Anak muda sekarang enak, semua ada di browser.'],
+      en: ['Back in my day, printing meant a trip to the copy shop…', 'Time for a sit-down.', 'Young folks have it easy — everything is in the browser.'],
+    },
   },
   {
     name: 'Rara',
@@ -44,7 +48,7 @@ export const RESIDENTS: Resident[] = [
     mode: 'wander',
     speed: 135,
     scale: 0.78,
-    lines: ['Kejar aku!', 'Wiii!', 'Aku tahu jalan pintas!'],
+    lines: { id: ['Kejar aku!', 'Wiii!', 'Aku tahu jalan pintas!'], en: ['Catch me!', 'Wheee!', 'I know a shortcut!'] },
   },
   {
     name: 'Bagas',
@@ -52,7 +56,10 @@ export const RESIDENTS: Resident[] = [
     mode: 'stroll',
     speed: 34,
     home: 'grass',
-    lines: ['Rumputnya tinggi, hati-hati.', 'Bunga-bunganya sudah mekar.', 'Panas ya hari ini.'],
+    lines: {
+      id: ['Rumputnya tinggi, hati-hati.', 'Bunga-bunganya sudah mekar.', 'Panas ya hari ini.'],
+      en: ['Mind the tall grass.', 'The flowers are in bloom.', 'Hot one today, huh?'],
+    },
   },
   {
     name: 'Sari',
@@ -73,7 +80,7 @@ export const RESIDENTS: Resident[] = [
     mode: 'wander',
     speed: 62,
     dog: '#c58a4a',
-    lines: ['Ayo, Belang!', 'Jalan-jalan sore dulu.', 'Sudah mampir ke Studio?'],
+    lines: { id: ['Ayo, Belang!', 'Jalan-jalan sore dulu.', 'Sudah mampir ke Studio?'], en: ['Come on, Spot!', 'Just an afternoon walk.', 'Been to the Studio yet?'] },
   },
   {
     name: 'Tono',
@@ -123,7 +130,10 @@ export const RESIDENTS: Resident[] = [
     mode: 'wander',
     speed: 80,
     scale: 0.86,
-    lines: ['Paspor-ku sudah banyak capnya!', 'Aku mau jadi developer!'],
+    lines: {
+      id: ['Paspor-ku sudah banyak capnya!', 'Aku mau jadi developer!'],
+      en: ['My passport has loads of stamps!', 'I want to be a developer!'],
+    },
   },
   {
     name: 'Bu Wati',
@@ -131,19 +141,34 @@ export const RESIDENTS: Resident[] = [
     mode: 'stroll',
     speed: 30,
     home: 'pond',
-    lines: ['Ikannya banyak di kolam ini.', 'Sudah makan, Nak?', 'Kolamnya jernih ya.'],
+    lines: {
+      id: ['Ikannya banyak di kolam ini.', 'Sudah makan, Nak?', 'Kolamnya jernih ya.'],
+      en: ['Lots of fish in this pond.', 'Have you eaten, dear?', 'The water is so clear.'],
+    },
   },
 ]
 
 /** What two chatting residents talk about: one line each, in turn. */
-export const CHATS: [string, string][] = [
-  ['Mau ubah PDF jadi Word di mana, ya?', 'Di Perpustakaan, tanya penjaganya.'],
-  ['Foto liburanku berat semua.', 'Ke Studio, ada yang bisa kompres.'],
-  ['File kita beneran nggak di-upload?', 'Nggak, semuanya jalan di browser.'],
-  ['JSON-ku berantakan…', 'Mampir ke Lab, ada yang bisa rapikan.'],
-  ['PDF-nya mau kukunci.', 'Brankas tempatnya!'],
-  ['Mau cetak laporan jadi PDF.', 'Percetakan di pojok sana.'],
-]
+export const CHATS: Record<Lang, [string, string][]> = {
+  id: [
+    ['Mau ubah PDF jadi Word di mana, ya?', 'Di Perpustakaan, tanya penjaganya.'],
+    ['Foto liburanku berat semua.', 'Ke Studio, ada yang bisa kompres.'],
+    ['File kita beneran nggak di-upload?', 'Nggak, semuanya jalan di browser.'],
+    ['JSON-ku berantakan…', 'Mampir ke Lab, ada yang bisa rapikan.'],
+    ['PDF-nya mau kukunci.', 'Brankas tempatnya!'],
+    ['Mau cetak laporan jadi PDF.', 'Percetakan di pojok sana.'],
+    ['Butuh kalkulator.', 'Di Kantor ada, sekalian catatan.'],
+  ],
+  en: [
+    ['Where do I turn a PDF into Word?', 'At the Library — ask the keeper.'],
+    ['My holiday photos are huge.', 'Try the Studio, someone there compresses.'],
+    ['Our files really never get uploaded?', 'Nope, it all runs in the browser.'],
+    ['My JSON is a mess…', 'Stop by the Lab, they tidy it up.'],
+    ['I need to lock this PDF.', 'The Vault is the place!'],
+    ['I want my report as a PDF.', 'The Print Shop, just over there.'],
+    ['I need a calculator.', "The Office has one — and notes too."],
+  ],
+}
 
 /** Where a resident's favourite spot is in this town. */
 export function homeOf(resident: Resident, town: Town, index: number): Point {

@@ -2,6 +2,7 @@
 // so recordings survive a reload. Nothing leaves the device.
 
 import { AUDIO_OUTPUTS, convertMedia, ensureAudioEncoder, NoEncoderError, type AudioOut } from '@/lib/media'
+import { tr } from '@/lib/i18n'
 import { localStore, timestampName } from '@/lib/local-store'
 
 export { safeFileName } from '@/lib/local-store'
@@ -60,4 +61,4 @@ export async function convertRecording(
   })
 }
 
-export const defaultName = () => timestampName('Rekaman')
+export const defaultName = () => timestampName(tr('Rekaman', 'Recording'))

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Eye, EyeOff } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { useT } from '@/lib/i18n'
 
 interface PasswordInputProps {
   label: string
@@ -16,6 +17,7 @@ interface PasswordInputProps {
 
 /** A labelled password field with a show/hide toggle. */
 export function PasswordInput({ label, value, onChange, placeholder, autoFocus, invalid, autoComplete, onEnter }: PasswordInputProps) {
+  const t = useT()
   const [visible, setVisible] = useState(false)
   return (
     <label className="block space-y-2">
@@ -42,7 +44,7 @@ export function PasswordInput({ label, value, onChange, placeholder, autoFocus, 
         <button
           type="button"
           onClick={() => setVisible((v) => !v)}
-          aria-label={visible ? 'Sembunyikan password' : 'Tampilkan password'}
+          aria-label={visible ? t('Sembunyikan password', 'Hide password') : t('Tampilkan password', 'Show password')}
           className="grid size-9 place-items-center rounded-lg text-muted-foreground hover:bg-accent hover:text-foreground"
         >
           {visible ? <EyeOff className="size-4" /> : <Eye className="size-4" />}

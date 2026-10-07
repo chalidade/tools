@@ -7,6 +7,7 @@ import { MediaRange } from '@/components/tool/MediaRange'
 import { Segmented } from '@/components/tool/Segmented'
 import { ProgressCard } from '@/components/tool/SizeResult'
 import { downloadBlob } from '@/lib/download'
+import { tr, useT } from '@/lib/i18n'
 import { formatDuration, formatSize, formatTime, hasWebCodecs, NoEncoderError, probeMedia, type MediaInfo } from '@/lib/media'
 import { gifToMp4, isGif, readGifInfo, videoToGif, type GifInfo } from './gif'
 
@@ -17,9 +18,9 @@ type Status =
   | { kind: 'video'; info: MediaInfo }
   | { kind: 'error'; message: string }
 
-const BACKGROUND_OPTIONS: { value: string; label: string }[] = [
-  { value: '#ffffff', label: 'Putih' },
-  { value: '#000000', label: 'Hitam' },
+const BACKGROUND_OPTIONS: { value: string; label: readonly [string, string] }[] = [
+  { value: '#ffffff', label: ['Putih', 'White'] },
+  { value: '#000000', label: ['Hitam', 'Black'] },
 ]
 const LOOP_OPTIONS: { value: number; label: string }[] = [
   { value: 1, label: '1×' },
@@ -37,6 +38,8 @@ const FPS_OPTIONS: { value: number; label: string }[] = [
 const FRAME_WARNING = 450
 
 export default function GifMp4() {
+  // Not `t`: the MediaRange onSeek callback below names its time `t`.
+  const tx = useT()
   const [status, setStatus] = useState<Status>({ kind: 'idle' })
   const [file, setFile] = useState<File | null>(null)
   const [url, setUrl] = useState<string | null>(null)
@@ -59,7 +62,13 @@ export default function GifMp4() {
     setError(null)
     setResult(null)
     if (!hasWebCodecs()) {
-      setStatus({ kind: 'error', message: 'Browser ini belum mendukung WebCodecs. Pakai Chrome, Edge, Safari 16.4+, atau Firefox 130+.' })
+      setStatus({
+        kind: 'error',
+        message: tx(
+          'Browser ini belum mendukung WebCodecs. Pakai Chrome, Edge, Safari 16.4+, atau Firefox 130+.',
+          "This browser doesn't support WebCodecs yet. Use Chrome, Edge, Safari 16.4+, or Firefox 130+.",
+        ),
+      })
       return
     }
     setFile(next)
@@ -80,7 +89,13 @@ export default function GifMp4() {
         setStatus({ kind: 'video', info })
       }
     } catch {
-      setStatus({ kind: 'error', message: 'File tidak bisa dibaca. Pilih GIF, atau video MP4/MOV/WebM/MKV.' })
+      setStatus({
+        kind: 'error',
+        message: tx(
+          'File tidak bisa dibaca. Pilih GIF, atau video MP4/MOV/WebM/MKV.',
+          "Couldn't read the file. Choose a GIF, or an MP4/MOV/WebM/MKV video.",
+        ),
+      })
     }
   }
 
@@ -96,15 +111,18 @@ export default function GifMp4() {
       if (cancelled.current) return
       setError(
         e instanceof NoEncoderError
-          ? 'Browser ini tidak bisa meng-encode video MP4. Coba Chrome atau Edge terbaru.'
-          : 'Gagal mengonversi. File mungkin rusak.',
+          ? tx(
+              'Browser ini tidak bisa meng-encode video MP4. Coba Chrome atau Edge terbaru.',
+              "This browser can't encode MP4 video. Try the latest Chrome or Edge.",
+            )
+          : tx('Gagal mengonversi. File mungkin rusak.', "Couldn't convert. The file may be damaged."),
       )
     } finally {
       setJob(null)
     }
   }
 
-  const base = file?.name.replace(/\.[^.]+$/, '') ?? 'hasil'
+  const base = file?.name.replace(/\.[^.]+$/, '') ?? tr('hasil', 'result')
   const busy = job !== null
 
   const header = (detail: string, action: ReactNode) =>
@@ -118,7 +136,7 @@ export default function GifMp4() {
           {action}
           <Button variant="ghost" disabled={busy} onClick={() => setStatus({ kind: 'idle' })}>
             <RotateCcw />
-            File lain
+            {tx('File lain', 'Another file')}
           </Button>
         </div>
       </div>
@@ -126,14 +144,14 @@ export default function GifMp4() {
 
   const progress = job && (
     <ProgressCard
-      label="Mengonversi…"
+      label={tx('Mengonversi…', 'Converting…')}
       progress={job.progress}
       startedAt={job.startedAt}
       action={
         status.kind === 'video' ? (
           <Button variant="ghost" size="sm" onClick={() => (cancelled.current = true)}>
             <Square />
-            Batalkan
+            {tx('Batalkan', 'Cancel')}
           </Button>
         ) : undefined
       }
@@ -144,7 +162,7 @@ export default function GifMp4() {
     <div className="space-y-3 rounded-2xl border bg-card p-4">
       <div className="grid place-items-center rounded-xl bg-muted/60 p-2">
         {result.blob.type === 'image/gif' ? (
-          <img src={result.url} alt="Hasil GIF" className="max-h-[50vh] max-w-full" />
+          <img src={result.url} alt={tx('Hasil GIF', 'GIF result')} className="max-h-[50vh] max-w-full" />
         ) : (
           <video src={result.url} controls loop autoPlay muted playsInline className="max-h-[50vh] max-w-full rounded-lg" />
         )}
@@ -155,7 +173,7 @@ export default function GifMp4() {
         </p>
         <Button onClick={() => downloadBlob(result.blob, result.name)}>
           <Download />
-          Unduh {result.name.split('.').pop()!.toUpperCase()}
+          {tx('Unduh', 'Download')} {result.name.split('.').pop()!.toUpperCase()}
         </Button>
       </div>
     </div>
@@ -166,13 +184,16 @@ export default function GifMp4() {
     return (
       <div className="space-y-6">
         {header(
-          `GIF ${info.width}×${info.height} · ${info.frames} frame · ${info.duration.toFixed(1)} dtk · ${formatSize(file.size)} → MP4`,
+          tx(
+            `GIF ${info.width}×${info.height} · ${info.frames} frame · ${info.duration.toFixed(1)} dtk · ${formatSize(file.size)} → MP4`,
+            `GIF ${info.width}×${info.height} · ${info.frames} frames · ${info.duration.toFixed(1)} s · ${formatSize(file.size)} → MP4`,
+          ),
           <Button
             disabled={busy}
             onClick={() => void run((p) => gifToMp4(file, { background, loops }, p), `${base}.mp4`)}
           >
             <Sparkles />
-            Ubah ke MP4
+            {tx('Ubah ke MP4', 'Convert to MP4')}
           </Button>,
         )}
         <div className="grid gap-6 md:grid-cols-2">
@@ -180,11 +201,18 @@ export default function GifMp4() {
             <img src={url} alt={file.name} className="max-h-72 max-w-full" />
           </div>
           <div className="space-y-5 rounded-2xl border bg-card p-5">
-            <Segmented label="Latar untuk bagian transparan" value={background} options={BACKGROUND_OPTIONS} onChange={setBackground} />
-            <Segmented label="Ulangi animasi" value={loops} options={LOOP_OPTIONS} onChange={setLoops} />
+            <Segmented
+              label={tx('Latar untuk bagian transparan', 'Background for transparent areas')}
+              value={background}
+              options={BACKGROUND_OPTIONS.map((o) => ({ value: o.value, label: tx(...o.label) }))}
+              onChange={setBackground}
+            />
+            <Segmented label={tx('Ulangi animasi', 'Repeat animation')} value={loops} options={LOOP_OPTIONS} onChange={setLoops} />
             <p className="text-xs text-muted-foreground">
-              Durasi video {(info.duration * loops).toFixed(1)} dtk. Video tidak berulang sendiri seperti GIF; WhatsApp dan
-              Instagram juga sering menolak video di bawah ~3 detik.
+              {tx(
+                `Durasi video ${(info.duration * loops).toFixed(1)} dtk. Video tidak berulang sendiri seperti GIF; WhatsApp dan Instagram juga sering menolak video di bawah ~3 detik.`,
+                `Video length ${(info.duration * loops).toFixed(1)} s. Videos don't loop on their own like GIFs; WhatsApp and Instagram also often reject videos under ~3 seconds.`,
+              )}
             </p>
           </div>
         </div>
@@ -212,7 +240,7 @@ export default function GifMp4() {
             }
           >
             <Sparkles />
-            Buat GIF
+            {tx('Buat GIF', 'Make GIF')}
           </Button>,
         )}
         <div className="space-y-4 rounded-2xl border bg-card p-4">
@@ -238,14 +266,20 @@ export default function GifMp4() {
           />
         </div>
         <div className="flex flex-wrap gap-x-8 gap-y-4 rounded-2xl border bg-card p-4">
-          <Segmented label="Kehalusan gerak" value={fps} options={FPS_OPTIONS} onChange={setFps} />
-          <Segmented label="Lebar" value={width} options={widthOptions} onChange={setWidth} />
+          <Segmented label={tx('Kehalusan gerak', 'Motion smoothness')} value={fps} options={FPS_OPTIONS} onChange={setFps} />
+          <Segmented label={tx('Lebar', 'Width')} value={width} options={widthOptions} onChange={setWidth} />
         </div>
         <p className={frames > FRAME_WARNING ? 'text-xs text-destructive' : 'text-xs text-muted-foreground'}>
-          {frames} frame ({formatTime(range.end - range.start)}).{' '}
+          {frames} {tx('frame', frames === 1 ? 'frame' : 'frames')} ({formatTime(range.end - range.start)}).{' '}
           {frames > FRAME_WARNING
-            ? 'GIF sepanjang ini akan sangat besar — perpendek bagiannya atau turunkan fps/lebar.'
-            : 'GIF jauh lebih besar dari video; bagian 2–6 detik di 480 px biasanya pas untuk chat.'}
+            ? tx(
+                'GIF sepanjang ini akan sangat besar — perpendek bagiannya atau turunkan fps/lebar.',
+                'A GIF this long will be very large — shorten the clip or lower the fps/width.',
+              )
+            : tx(
+                'GIF jauh lebih besar dari video; bagian 2–6 detik di 480 px biasanya pas untuk chat.',
+                'GIFs are much larger than video; a 2–6 second clip at 480 px is usually right for chat.',
+              )}
         </p>
         {progress}
         {resultCard}
@@ -258,12 +292,15 @@ export default function GifMp4() {
     <div className="space-y-6">
       <FileDrop
         accept="image/gif,video/*,.mkv"
-        label="Tarik GIF atau video ke sini"
-        busyLabel={status.kind === 'reading' ? `Membuka ${file?.name}…` : undefined}
+        label={tx('Tarik GIF atau video ke sini', 'Drop a GIF or video here')}
+        busyLabel={status.kind === 'reading' ? tx(`Membuka ${file?.name}…`, `Opening ${file?.name}…`) : undefined}
         onFiles={([f]) => void open(f)}
       />
       <p className="text-center text-xs text-muted-foreground">
-        GIF → MP4 (jauh lebih kecil, bisa dikirim sebagai video), atau potongan video → GIF.
+        {tx(
+          'GIF → MP4 (jauh lebih kecil, bisa dikirim sebagai video), atau potongan video → GIF.',
+          'GIF → MP4 (much smaller, can be sent as a video), or a video clip → GIF.',
+        )}
       </p>
       {status.kind === 'error' && <ErrorNote message={status.message} />}
     </div>

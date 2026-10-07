@@ -7,7 +7,7 @@ server, tidak ada yang di-upload.
 
 *English: a drop-in screen recorder for any website (a `<screen-recorder>`
 custom element) plus a small headless API. Runs entirely in the browser. The
-built-in UI is in Indonesian.*
+built-in UI speaks Indonesian and English (`lang="en"`).*
 
 Ini adalah tool [Rekam Layar](https://chalidade.github.io/tools/#/screen-recorder)
 dari [chalidade/tools](https://github.com/chalidade/tools), dikemas supaya bisa
@@ -33,6 +33,7 @@ atau diubah ke MP4.
 | `theme` | `auto` (ikut sistem), `light`, `dark` | `auto` |
 | `persist` | `false` = jangan simpan rekaman di browser (IndexedDB) | simpan |
 | `title-indicator` | `true` = tampilkan "● Merekam 0:42" di judul tab | mati |
+| `lang` | `id` atau `en` — bahasa tampilan | bahasa browser pengunjung |
 
 ### Event: ambil file rekamannya
 

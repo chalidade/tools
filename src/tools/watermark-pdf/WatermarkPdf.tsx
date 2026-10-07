@@ -5,6 +5,7 @@ import { ErrorNote } from '@/components/tool/ErrorNote'
 import { FileDrop } from '@/components/tool/FileDrop'
 import { Segmented } from '@/components/tool/Segmented'
 import { downloadBlob } from '@/lib/download'
+import { useT } from '@/lib/i18n'
 import { isPdfFile, openErrorMessage, pageThumbs, type PageThumb } from '@/lib/pdf-doc'
 import {
   COLORS,
@@ -25,43 +26,48 @@ type Status =
   | { kind: 'ready'; preview: PageThumb; pages: number }
   | { kind: 'error'; message: string }
 
-const KIND_OPTIONS: { value: WatermarkOptions['kind']; label: string }[] = [
-  { value: 'text', label: 'Teks' },
-  { value: 'image', label: 'Gambar / logo' },
+/** Option labels in both languages: [Indonesian, English]. */
+type Option<V> = { value: V; label: readonly [string, string] }
+
+const KIND_OPTIONS: Option<WatermarkOptions['kind']>[] = [
+  { value: 'text', label: ['Teks', 'Text'] },
+  { value: 'image', label: ['Gambar / logo', 'Image / logo'] },
 ]
-const COLOR_OPTIONS: { value: WatermarkColor; label: string }[] = [
-  { value: 'gray', label: 'Abu-abu' },
-  { value: 'red', label: 'Merah' },
-  { value: 'blue', label: 'Biru' },
-  { value: 'black', label: 'Hitam' },
+const COLOR_OPTIONS: Option<WatermarkColor>[] = [
+  { value: 'gray', label: ['Abu-abu', 'Gray'] },
+  { value: 'red', label: ['Merah', 'Red'] },
+  { value: 'blue', label: ['Biru', 'Blue'] },
+  { value: 'black', label: ['Hitam', 'Black'] },
 ]
-const LAYOUT_OPTIONS: { value: WatermarkLayout; label: string }[] = [
-  { value: 'center', label: 'Satu di tengah' },
-  { value: 'tile', label: 'Berulang' },
+const LAYOUT_OPTIONS: Option<WatermarkLayout>[] = [
+  { value: 'center', label: ['Satu di tengah', 'One in the center'] },
+  { value: 'tile', label: ['Berulang', 'Tiled'] },
 ]
-const ANGLE_OPTIONS: { value: number; label: string }[] = [
-  { value: 45, label: 'Diagonal' },
-  { value: 0, label: 'Mendatar' },
+const ANGLE_OPTIONS: Option<number>[] = [
+  { value: 45, label: ['Diagonal', 'Diagonal'] },
+  { value: 0, label: ['Mendatar', 'Horizontal'] },
 ]
-const SIZE_OPTIONS: { value: WatermarkSize; label: string }[] = [
-  { value: 'sm', label: 'Kecil' },
-  { value: 'md', label: 'Sedang' },
-  { value: 'lg', label: 'Besar' },
+const SIZE_OPTIONS: Option<WatermarkSize>[] = [
+  { value: 'sm', label: ['Kecil', 'Small'] },
+  { value: 'md', label: ['Sedang', 'Medium'] },
+  { value: 'lg', label: ['Besar', 'Large'] },
 ]
-const OPACITY_OPTIONS: { value: number; label: string }[] = [
-  { value: 0.15, label: 'Samar' },
-  { value: 0.3, label: 'Sedang' },
-  { value: 0.5, label: 'Tebal' },
+const OPACITY_OPTIONS: Option<number>[] = [
+  { value: 0.15, label: ['Samar', 'Faint'] },
+  { value: 0.3, label: ['Sedang', 'Medium'] },
+  { value: 0.5, label: ['Tebal', 'Strong'] },
 ]
 
 const css = (c: [number, number, number]) => `rgb(${c.map((v) => Math.round(v * 255)).join(' ')})`
 
 export default function WatermarkPdf() {
+  const t = useT()
+  const opt = <V,>(list: Option<V>[]) => list.map((o) => ({ value: o.value, label: t(...o.label) }))
   const [status, setStatus] = useState<Status>({ kind: 'idle' })
   const [file, setFile] = useState<File | null>(null)
   const [opts, setOpts] = useState<WatermarkOptions>({
     kind: 'text',
-    text: 'RAHASIA',
+    text: t('RAHASIA', 'CONFIDENTIAL'),
     image: null,
     color: 'gray',
     opacity: 0.3,
@@ -96,7 +102,7 @@ export default function WatermarkPdf() {
 
   async function open(next: File) {
     if (!isPdfFile(next)) {
-      setStatus({ kind: 'error', message: 'Pilih file berformat .pdf.' })
+      setStatus({ kind: 'error', message: t('Pilih file berformat .pdf.', 'Choose a .pdf file.') })
       return
     }
     setFile(next)
@@ -115,19 +121,22 @@ export default function WatermarkPdf() {
     try {
       set('image', await readWatermarkImage(picked))
     } catch {
-      setError('Gambar tidak bisa dibaca. Pakai PNG atau JPG.')
+      setError(t('Gambar tidak bisa dibaca. Pakai PNG atau JPG.', "Couldn't read the image. Use a PNG or JPG."))
     }
   }
 
   const textProblem =
     opts.kind === 'text'
       ? !opts.text.trim()
-        ? 'Tulis teks watermark.'
+        ? t('Tulis teks watermark.', 'Type the watermark text.')
         : textWidth === null
-          ? 'Teks berisi huruf yang belum didukung (mis. emoji atau aksara non-Latin). Pakai huruf Latin, angka, dan tanda baca biasa.'
+          ? t(
+              'Teks berisi huruf yang belum didukung (mis. emoji atau aksara non-Latin). Pakai huruf Latin, angka, dan tanda baca biasa.',
+              'The text has characters that aren’t supported yet (e.g. emoji or non-Latin scripts). Use Latin letters, numbers and basic punctuation.',
+            )
           : null
       : !opts.image
-        ? 'Pilih gambar atau logo untuk watermark.'
+        ? t('Pilih gambar atau logo untuk watermark.', 'Choose an image or logo for the watermark.')
         : null
 
   const preview = status.kind === 'ready' ? status.preview : null
@@ -161,51 +170,69 @@ export default function WatermarkPdf() {
             <p className="truncate font-medium">{file.name}</p>
             <p className="text-sm text-muted-foreground">
               {busy && progress.total
-                ? `Memberi watermark… halaman ${progress.done}/${progress.total}`
-                : `${status.pages} halaman — watermark dipasang di semua halaman.`}
+                ? t(
+                    `Memberi watermark… halaman ${progress.done}/${progress.total}`,
+                    `Adding watermark… page ${progress.done}/${progress.total}`,
+                  )
+                : t(
+                    `${status.pages} halaman — watermark dipasang di semua halaman.`,
+                    `${status.pages} pages — the watermark goes on every page.`,
+                  )}
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
             <Button onClick={() => void save()} disabled={busy || !!textProblem}>
               {busy ? <Loader2 className="animate-spin" /> : <Stamp />}
-              Pasang &amp; unduh
+              {t('Pasang & unduh', 'Apply & download')}
             </Button>
             <Button variant="ghost" disabled={busy} onClick={() => setStatus({ kind: 'idle' })}>
               <RotateCcw />
-              File lain
+              {t('File lain', 'Another file')}
             </Button>
           </div>
         </div>
 
         <div className="grid gap-6 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
           <div className="space-y-5 rounded-2xl border bg-card p-5">
-            <Segmented label="Jenis" value={opts.kind} options={KIND_OPTIONS} disabled={busy} onChange={(v) => set('kind', v)} />
+            <Segmented
+              label={t('Jenis', 'Type')}
+              value={opts.kind}
+              options={opt(KIND_OPTIONS)}
+              disabled={busy}
+              onChange={(v) => set('kind', v)}
+            />
 
             {opts.kind === 'text' ? (
               <>
                 <label className="block space-y-2">
-                  <span className="text-xs font-medium text-muted-foreground">Teks watermark</span>
+                  <span className="text-xs font-medium text-muted-foreground">{t('Teks watermark', 'Watermark text')}</span>
                   <input
                     value={opts.text}
                     onChange={(e) => set('text', e.target.value)}
                     disabled={busy}
                     maxLength={80}
-                    placeholder="RAHASIA"
+                    placeholder={t('RAHASIA', 'CONFIDENTIAL')}
                     className="h-11 w-full rounded-xl border bg-background px-3 text-sm outline-none focus:border-brand-2/60"
                   />
                 </label>
-                <Segmented label="Warna" value={opts.color} options={COLOR_OPTIONS} disabled={busy} onChange={(v) => set('color', v)} />
+                <Segmented
+                  label={t('Warna', 'Color')}
+                  value={opts.color}
+                  options={opt(COLOR_OPTIONS)}
+                  disabled={busy}
+                  onChange={(v) => set('color', v)}
+                />
               </>
             ) : (
               <div className="space-y-2">
-                <p className="text-xs font-medium text-muted-foreground">Gambar watermark</p>
+                <p className="text-xs font-medium text-muted-foreground">{t('Gambar watermark', 'Watermark image')}</p>
                 <div className="flex items-center gap-3">
                   {opts.image && (
                     <img src={opts.image.url} alt="" className="size-14 rounded-lg border bg-muted/60 object-contain p-1" />
                   )}
                   <Button variant="outline" disabled={busy} onClick={() => imageRef.current?.click()}>
                     <ImagePlus />
-                    {opts.image ? 'Ganti gambar' : 'Pilih gambar'}
+                    {opts.image ? t('Ganti gambar', 'Change image') : t('Pilih gambar', 'Choose image')}
                   </Button>
                   <input
                     ref={imageRef}
@@ -219,18 +246,38 @@ export default function WatermarkPdf() {
                     }}
                   />
                 </div>
-                <p className="text-xs text-muted-foreground">PNG dengan latar transparan memberi hasil paling rapi.</p>
+                <p className="text-xs text-muted-foreground">
+                  {t('PNG dengan latar transparan memberi hasil paling rapi.', 'A PNG with a transparent background gives the cleanest result.')}
+                </p>
               </div>
             )}
 
             <div className="flex flex-wrap gap-x-6 gap-y-4">
-              <Segmented label="Posisi" value={opts.layout} options={LAYOUT_OPTIONS} disabled={busy} onChange={(v) => set('layout', v)} />
-              <Segmented label="Arah" value={opts.angle} options={ANGLE_OPTIONS} disabled={busy} onChange={(v) => set('angle', v)} />
-              <Segmented label="Ukuran" value={opts.size} options={SIZE_OPTIONS} disabled={busy} onChange={(v) => set('size', v)} />
               <Segmented
-                label="Ketebalan"
+                label={t('Posisi', 'Position')}
+                value={opts.layout}
+                options={opt(LAYOUT_OPTIONS)}
+                disabled={busy}
+                onChange={(v) => set('layout', v)}
+              />
+              <Segmented
+                label={t('Arah', 'Direction')}
+                value={opts.angle}
+                options={opt(ANGLE_OPTIONS)}
+                disabled={busy}
+                onChange={(v) => set('angle', v)}
+              />
+              <Segmented
+                label={t('Ukuran', 'Size')}
+                value={opts.size}
+                options={opt(SIZE_OPTIONS)}
+                disabled={busy}
+                onChange={(v) => set('size', v)}
+              />
+              <Segmented
+                label={t('Ketebalan', 'Opacity')}
                 value={opts.opacity}
-                options={OPACITY_OPTIONS}
+                options={opt(OPACITY_OPTIONS)}
                 disabled={busy}
                 onChange={(v) => set('opacity', v)}
               />
@@ -240,10 +287,10 @@ export default function WatermarkPdf() {
           </div>
 
           <div className="space-y-2">
-            <p className="text-xs font-medium text-muted-foreground">Pratinjau halaman 1</p>
+            <p className="text-xs font-medium text-muted-foreground">{t('Pratinjau halaman 1', 'Page 1 preview')}</p>
             <div className="grid place-items-center rounded-2xl border bg-muted/60 p-4">
               <div className="relative w-full max-w-md shadow-md ring-1 ring-black/5" style={{ aspectRatio: `${W} / ${H}` }}>
-                <img src={preview.src} alt="Halaman 1" className="absolute inset-0 size-full" />
+                <img src={preview.src} alt={t('Halaman 1', 'Page 1')} className="absolute inset-0 size-full" />
                 {layout && (
                   <svg viewBox={`0 0 ${W} ${H}`} className="absolute inset-0 size-full overflow-hidden" aria-hidden>
                     {layout.stamps.map(({ cx, cy }, i) => {
@@ -298,8 +345,8 @@ export default function WatermarkPdf() {
     <div className="space-y-6">
       <FileDrop
         accept=".pdf,application/pdf"
-        label="Tarik file .pdf ke sini"
-        busyLabel={status.kind === 'reading' ? `Membuka ${file?.name}…` : undefined}
+        label={t('Tarik file .pdf ke sini', 'Drop a .pdf file here')}
+        busyLabel={status.kind === 'reading' ? t(`Membuka ${file?.name}…`, `Opening ${file?.name}…`) : undefined}
         onFiles={([f]) => void open(f)}
       />
       {status.kind === 'error' && <ErrorNote message={status.message} />}

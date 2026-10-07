@@ -5,6 +5,7 @@ import { ErrorNote } from '@/components/tool/ErrorNote'
 import { FileDrop } from '@/components/tool/FileDrop'
 import { Segmented } from '@/components/tool/Segmented'
 import { downloadBlob, withExtension } from '@/lib/download'
+import { useT } from '@/lib/i18n'
 import { cn } from '@/lib/utils'
 import {
   buildPdf,
@@ -34,21 +35,23 @@ const PAGE_OPTIONS: { value: PageSize; label: string }[] = [
   { value: 'a4', label: 'A4' },
   { value: 'letter', label: 'Letter' },
 ]
-const ORIENTATION_OPTIONS: { value: Orientation; label: string }[] = [
-  { value: 'auto', label: 'Otomatis' },
-  { value: 'portrait', label: 'Potret' },
-  { value: 'landscape', label: 'Lanskap' },
-]
-const FIT_OPTIONS: { value: 'fit' | 'actual'; label: string }[] = [
-  { value: 'fit', label: 'Muat lebar halaman' },
-  { value: 'actual', label: 'Ukuran asli' },
-]
-const GRID_OPTIONS: { value: 'on' | 'off'; label: string }[] = [
-  { value: 'on', label: 'Tampil' },
-  { value: 'off', label: 'Sembunyi' },
-]
 
 export default function ExcelToPdf() {
+  const t = useT()
+  const ORIENTATION_OPTIONS: { value: Orientation; label: string }[] = [
+    { value: 'auto', label: t('Otomatis', 'Auto') },
+    { value: 'portrait', label: t('Potret', 'Portrait') },
+    { value: 'landscape', label: t('Lanskap', 'Landscape') },
+  ]
+  const FIT_OPTIONS: { value: 'fit' | 'actual'; label: string }[] = [
+    { value: 'fit', label: t('Muat lebar halaman', 'Fit page width') },
+    { value: 'actual', label: t('Ukuran asli', 'Actual size') },
+  ]
+  const GRID_OPTIONS: { value: 'on' | 'off'; label: string }[] = [
+    { value: 'on', label: t('Tampil', 'Show') },
+    { value: 'off', label: t('Sembunyi', 'Hide') },
+  ]
+
   const [status, setStatus] = useState<Status>({ kind: 'idle' })
   const [file, setFile] = useState<File | null>(null)
   const [opts, setOpts] = useState<PdfOptions>({ page: 'a4', orientation: 'auto', fitWidth: true, gridlines: true })
@@ -59,12 +62,15 @@ export default function ExcelToPdf() {
     if (/\.(xls|ods)$/i.test(next.name)) {
       setStatus({
         kind: 'error',
-        message: `Format ${next.name.split('.').pop()} belum didukung. Buka di Excel/LibreOffice, simpan sebagai .xlsx, lalu coba lagi.`,
+        message: t(
+          `Format ${next.name.split('.').pop()} belum didukung. Buka di Excel/LibreOffice, simpan sebagai .xlsx, lalu coba lagi.`,
+          `The ${next.name.split('.').pop()} format isn't supported yet. Open it in Excel/LibreOffice, save it as .xlsx, then try again.`,
+        ),
       })
       return
     }
     if (!/\.(xlsx|xlsm|csv)$/i.test(next.name) && next.type !== XLSX_MIME && next.type !== 'text/csv') {
-      setStatus({ kind: 'error', message: 'Pilih file Excel (.xlsx) atau CSV.' })
+      setStatus({ kind: 'error', message: t('Pilih file Excel (.xlsx) atau CSV.', 'Choose an Excel (.xlsx) or CSV file.') })
       return
     }
     setFile(next)
@@ -77,7 +83,10 @@ export default function ExcelToPdf() {
     } catch {
       setStatus({
         kind: 'error',
-        message: 'File tidak bisa dibaca, atau semua sheet-nya kosong. Pastikan file tidak rusak atau terkunci password.',
+        message: t(
+          'File tidak bisa dibaca, atau semua sheet-nya kosong. Pastikan file tidak rusak atau terkunci password.',
+          "The file couldn't be read, or all its sheets are empty. Make sure it isn't damaged or password-protected.",
+        ),
       })
     }
   }
@@ -91,7 +100,7 @@ export default function ExcelToPdf() {
       downloadBlob(blob, withExtension(file.name, '.pdf'))
       setStatus({ kind: 'ready', book })
     } catch {
-      setStatus({ kind: 'error', message: 'Gagal membuat PDF. Coba file yang lebih kecil.' })
+      setStatus({ kind: 'error', message: t('Gagal membuat PDF. Coba file yang lebih kecil.', "Couldn't create the PDF. Try a smaller file.") })
     }
   }
 
@@ -108,46 +117,46 @@ export default function ExcelToPdf() {
             <p className="truncate font-medium">{file?.name}</p>
             <p className="text-sm text-muted-foreground">
               {busy
-                ? `Membuat PDF… sheet ${status.done}/${status.total}`
-                : `${book.sheets.length} sheet · ${selected.size} dipilih`}
+                ? t(`Membuat PDF… sheet ${status.done}/${status.total}`, `Creating PDF… sheet ${status.done}/${status.total}`)
+                : t(`${book.sheets.length} sheet · ${selected.size} dipilih`, `${book.sheets.length} sheets · ${selected.size} selected`)}
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
             <Button onClick={() => void exportPdf(book)} disabled={busy || selected.size === 0}>
               {busy ? <Loader2 className="animate-spin" /> : <Download />}
-              Unduh PDF
+              {t('Unduh PDF', 'Download PDF')}
             </Button>
             <Button variant="ghost" disabled={busy} onClick={() => setStatus({ kind: 'idle' })}>
               <RotateCcw />
-              File lain
+              {t('File lain', 'Another file')}
             </Button>
           </div>
         </div>
 
         <div className="flex flex-wrap gap-x-8 gap-y-4 rounded-2xl border bg-card p-4">
           <Segmented
-            label="Ukuran kertas"
+            label={t('Ukuran kertas', 'Paper size')}
             value={opts.page}
             options={PAGE_OPTIONS}
             disabled={busy}
             onChange={(page) => setOpts((o) => ({ ...o, page }))}
           />
           <Segmented
-            label="Orientasi"
+            label={t('Orientasi', 'Orientation')}
             value={opts.orientation}
             options={ORIENTATION_OPTIONS}
             disabled={busy}
             onChange={(orientation) => setOpts((o) => ({ ...o, orientation }))}
           />
           <Segmented
-            label="Skala"
+            label={t('Skala', 'Scale')}
             value={opts.fitWidth ? 'fit' : 'actual'}
             options={FIT_OPTIONS}
             disabled={busy}
             onChange={(v) => setOpts((o) => ({ ...o, fitWidth: v === 'fit' }))}
           />
           <Segmented
-            label="Garis bantu"
+            label={t('Garis bantu', 'Gridlines')}
             value={opts.gridlines ? 'on' : 'off'}
             options={GRID_OPTIONS}
             disabled={busy}
@@ -157,7 +166,7 @@ export default function ExcelToPdf() {
 
         {multi && (
           <div className="space-y-2 rounded-2xl border bg-card p-4">
-            <p className="text-xs font-medium text-muted-foreground">Sheet yang dimasukkan ke PDF</p>
+            <p className="text-xs font-medium text-muted-foreground">{t('Sheet yang dimasukkan ke PDF', 'Sheets to include in the PDF')}</p>
             <div className="flex flex-wrap gap-2">
               {book.sheets.map((s, i) => {
                 const on = selected.has(i)
@@ -205,8 +214,8 @@ export default function ExcelToPdf() {
     <div className="space-y-6">
       <FileDrop
         accept={ACCEPT}
-        label="Tarik file .xlsx atau .csv ke sini"
-        busyLabel={status.kind === 'reading' ? `Membaca ${file?.name}…` : undefined}
+        label={t('Tarik file .xlsx atau .csv ke sini', 'Drag an .xlsx or .csv file here')}
+        busyLabel={status.kind === 'reading' ? t(`Membaca ${file?.name}…`, `Reading ${file?.name}…`) : undefined}
         onFiles={([f]) => void open(f)}
       />
       {status.kind === 'error' && <ErrorNote message={status.message} />}
@@ -227,6 +236,7 @@ function SheetPreview({
   sheet: Sheet
   opts: PdfOptions
 }) {
+  const t = useT()
   const { landscape, scale } = pageFor(sheet, opts)
   const rows = sheet.rows.slice(0, PREVIEW_ROWS)
 
@@ -249,7 +259,7 @@ function SheetPreview({
           ))}
         </div>
         <p className="shrink-0 pr-2 font-mono text-[11px] text-muted-foreground">
-          {landscape ? 'lanskap' : 'potret'}
+          {landscape ? t('lanskap', 'landscape') : t('potret', 'portrait')}
           {scale < 1 && ` · ${Math.round(scale * 100)}%`}
         </p>
       </div>
@@ -304,7 +314,10 @@ function SheetPreview({
         </table>
         {sheet.rows.length > PREVIEW_ROWS && (
           <p className="mt-3 text-xs text-neutral-500">
-            Pratinjau menampilkan {PREVIEW_ROWS} dari {sheet.rows.length} baris. PDF memuat semuanya.
+            {t(
+              `Pratinjau menampilkan ${PREVIEW_ROWS} dari ${sheet.rows.length} baris. PDF memuat semuanya.`,
+              `The preview shows ${PREVIEW_ROWS} of ${sheet.rows.length} rows. The PDF includes all of them.`,
+            )}
           </p>
         )}
       </div>

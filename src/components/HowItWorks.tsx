@@ -1,23 +1,33 @@
 import { motion } from 'motion/react'
 import { Cpu, Download, FileUp } from 'lucide-react'
+import { useT } from '@/lib/i18n'
 
 const STEPS = [
   {
     icon: FileUp,
-    title: 'Pilih file',
-    body: 'Tarik file ke halaman atau pilih dari perangkat. File dibaca langsung ke memori browser.',
+    title: ['Pilih file', 'Pick a file'],
+    body: [
+      'Tarik file ke halaman atau pilih dari perangkat. File dibaca langsung ke memori browser.',
+      'Drop a file on the page or choose one from your device. It is read straight into browser memory.',
+    ],
   },
   {
     icon: Cpu,
-    title: 'Diproses di perangkatmu',
-    body: 'Konversi berjalan dengan JavaScript di tab ini. Tidak ada server yang menerima file-mu.',
+    title: ['Diproses di perangkatmu', 'Processed on your device'],
+    body: [
+      'Semua berjalan dengan JavaScript di tab ini. Tidak ada server yang menerima file-mu.',
+      'Everything runs as JavaScript in this tab. No server ever receives your file.',
+    ],
   },
   {
     icon: Download,
-    title: 'Unduh hasilnya',
-    body: 'Hasil langsung tersimpan ke perangkat. Tutup tab, dan semua data ikut hilang.',
+    title: ['Unduh hasilnya', 'Download the result'],
+    body: [
+      'Hasil langsung tersimpan ke perangkat. Yang kamu simpan di tool, seperti catatan, tetap di browser ini saja.',
+      'The result saves straight to your device. Anything a tool keeps, like notes, stays in this browser only.',
+    ],
   },
-]
+] as const
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -25,6 +35,7 @@ const fadeUp = {
 }
 
 export function HowItWorks() {
+  const t = useT()
   return (
     <section className="mx-auto max-w-6xl px-5 py-12 sm:px-6 sm:py-20">
       <div className="overflow-hidden rounded-3xl border bg-card">
@@ -32,13 +43,15 @@ export function HowItWorks() {
           <div className="relative border-b p-8 sm:p-10 lg:border-r lg:border-b-0">
             <div aria-hidden className="bg-glow absolute inset-0 opacity-70" />
             <div className="relative">
-              <p className="font-mono text-xs tracking-widest text-muted-foreground uppercase">Cara kerja</p>
+              <p className="font-mono text-xs tracking-widest text-muted-foreground uppercase">{t('Cara kerja', 'How it works')}</p>
               <h2 className="mt-2 text-2xl font-semibold tracking-tight text-balance sm:text-3xl">
-                Privat sejak awal, bukan sekadar janji.
+                {t('Privat sejak awal, bukan sekadar janji.', 'Private by design, not just by promise.')}
               </h2>
               <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-                Situs ini statis — tidak punya backend sama sekali. Kodenya bisa dilihat di GitHub, jadi
-                siapa pun bisa memeriksa bahwa tidak ada file yang dikirim keluar.
+                {t(
+                  'Situs ini statis — tidak punya backend sama sekali. Kodenya bisa dilihat di GitHub, jadi siapa pun bisa memeriksa bahwa tidak ada file yang dikirim keluar.',
+                  'This site is static — it has no backend at all. The code is on GitHub, so anyone can check that no file is ever sent out.',
+                )}
               </p>
             </div>
           </div>
@@ -52,7 +65,7 @@ export function HowItWorks() {
           >
             {STEPS.map((step, i) => (
               <motion.li
-                key={step.title}
+                key={step.title[0]}
                 variants={fadeUp}
                 className="border-b p-8 last:border-b-0 sm:border-r sm:border-b-0 sm:last:border-r-0"
               >
@@ -62,8 +75,8 @@ export function HowItWorks() {
                   </span>
                   <span className="font-mono text-xs text-muted-foreground">0{i + 1}</span>
                 </div>
-                <h3 className="mt-6 font-semibold tracking-tight">{step.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{step.body}</p>
+                <h3 className="mt-6 font-semibold tracking-tight">{t(step.title[0], step.title[1])}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{t(step.body[0], step.body[1])}</p>
               </motion.li>
             ))}
           </motion.ol>
