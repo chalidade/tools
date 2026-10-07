@@ -5,6 +5,45 @@ perangkat pengguna: tidak di-upload ke server dan tidak disimpan di mana pun.
 
 **Live:** https://chalidade.github.io/tools/
 
+## Pasang di situsmu
+
+Lisensinya **MIT**, jadi setiap tool boleh dipasang di website-mu sendiri,
+gratis. Tool tetap berjalan di browser pengunjungmu, tanpa server.
+
+**1. Iframe (semua tool, bisa dipakai sekarang).** Ganti `screen-recorder`
+dengan alamat tool mana pun dari tabel di bawah, misalnya `whiteboard`,
+`compress-image`, atau `qr-generator`:
+
+```html
+<iframe
+  src="https://chalidade.github.io/tools/#/screen-recorder?embed"
+  title="Rekam Layar"
+  style="width: 100%; height: 760px; border: 0; border-radius: 16px"
+  allow="display-capture; microphone; camera; clipboard-write; fullscreen; picture-in-picture"
+></iframe>
+```
+
+`?embed` menampilkan tool saja, tanpa header dan footer. Tambahkan
+`&theme=light` atau `&theme=dark` untuk memaksa tema. Atribut `allow` hanya
+dibutuhkan oleh tool yang memakai layar, mikrofon, atau kamera. Kode siap salin
+juga ada di bagian **Pasang di situsmu** di halaman setiap tool.
+
+**2. Paket npm / satu tag script** (dimulai dari Rekam Layar,
+[`@chalidade/screen-recorder`](packages/screen-recorder)): elemen
+`<screen-recorder>` yang gayanya terisolasi (Shadow DOM), bisa diatur warnanya,
+dan mengirim event berisi file rekaman. Ada juga API tanpa UI untuk developer.
+
+```html
+<script type="module" src="https://cdn.jsdelivr.net/npm/@chalidade/screen-recorder@0/dist/element.js"></script>
+<screen-recorder theme="auto"></screen-recorder>
+```
+
+> Paket npm-nya sedang menunggu diterbitkan. Sampai saat itu, pakai iframe di
+> atas. Cara kerja, build, dan cara menambah paket untuk tool lain ada di
+> [packages/README.md](packages/README.md).
+
+## Daftar tools
+
 | Tool | Alamat | Keterangan |
 | --- | --- | --- |
 | Word ke PDF | [`#/doc-to-pdf`](https://chalidade.github.io/tools/#/doc-to-pdf) | `.docx` → PDF (docx-preview + jsPDF). `.doc` lama belum didukung. |
@@ -66,19 +105,6 @@ lampu taman serta kunang-kunang menyala (mode gelap).
 Minimap kota dan "paspor" (jumlah tool yang sudah dikunjungi) ada di pojok
 kanan atas. Kartu pembuka bisa disembunyikan (tombol ×). Daftar tools biasa
 tetap ada di bawahnya.
-
-## Pasang tools ini di situsmu
-
-Repo ini berlisensi **MIT**. Setiap tool bisa dipasang di website lain:
-
-- **Iframe (semua tool):** buka halaman tool, lalu salin kode di bagian
-  **Pasang di situsmu**. Tool tampil lewat `#/<tool>?embed` (tambahkan
-  `&theme=light` atau `&theme=dark` bila perlu).
-- **Paket npm / satu tag script:** dimulai dari
-  [`@chalidade/screen-recorder`](packages/screen-recorder). Paket ini berisi
-  elemen `<screen-recorder>` siap pakai dan API tanpa UI, dan dibangun dari kode
-  yang sama dengan situs ini. Cara kerja, build, publikasi, dan cara menambah
-  paket untuk tool lain ada di [packages/README.md](packages/README.md).
 
 ## Menjalankan
 
