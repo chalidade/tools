@@ -166,15 +166,19 @@
 [data-walking] .pg-arm-b {
   animation-direction: alternate-reverse;
 }
-/* Facing away (walking up): the back of the head instead of the face. */
-.pg-back {
+/* Which way a character faces: front by default, back when walking up, the
+   right-facing profile when walking sideways (mirrored for left by .pg-flip). */
+.pg-v-back,
+.pg-v-side {
   display: none;
 }
-[data-dir='up'] .pg-back {
+[data-dir='up'] .pg-v-front,
+[data-dir='side'] .pg-v-front {
+  display: none;
+}
+[data-dir='up'] .pg-v-back,
+[data-dir='side'] .pg-v-side {
   display: inline;
-}
-[data-dir='up'] .pg-face {
-  display: none;
 }
 [data-running] .pg-body,
 [data-running] .pg-leg-a,

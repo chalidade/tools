@@ -72,6 +72,8 @@ function readVisited() {
 
 interface Walker {
   home: Point
+  /** Which side of them we see: front, back or profile. */
+  dir: 'up' | 'down' | 'side'
   x: number
   y: number
   tx: number
@@ -167,6 +169,7 @@ export function Playground() {
       return {
         home,
         ...p,
+        dir: (r.mode === 'idle' ? 'side' : 'down') as Walker['dir'],
         tx: p.x,
         ty: p.y,
         wait: Math.random() * 2,
@@ -502,7 +505,9 @@ export function Playground() {
 
           let mx = 0
           if (toPlayer < 80) {
+            // Turn to face the visitor.
             n.face = Math.sign(g.pos.x - n.x) || n.face
+            n.dir = 'down'
             if (!n.greeted) {
               n.greeted = true
               say(i, pick(TOWN_GREETINGS), 2.2)
@@ -512,6 +517,7 @@ export function Playground() {
             if (r.mode === 'idle') {
               const other = r.partner !== undefined ? walkers.current[r.partner] : undefined
               if (other) n.face = Math.sign(other.x - n.x) || n.face
+              n.dir = 'side'
             } else if (n.wait > 0) n.wait -= dt
             else {
               const dx = n.tx - n.x
@@ -534,6 +540,7 @@ export function Playground() {
                 mx = Math.hypot(n.x - ox, n.y - oy)
                 n.stuck = mx < n.speed * dt * 0.3 ? n.stuck + dt : 0
                 if (Math.abs(dx) > 2) n.face = Math.sign(dx)
+                n.dir = Math.abs(dy) > Math.abs(dx) * 1.1 ? (dy < 0 ? 'up' : 'down') : 'side'
               }
             }
           }
@@ -554,8 +561,10 @@ export function Playground() {
           el.style.zIndex = String(Math.round(n.y))
           if (mx > 0.1) el.dataset.walking = ''
           else delete el.dataset.walking
+          // Standing still they turn to face us, unless they're mid-conversation.
+          el.dataset.dir = mx > 0.1 || r.mode === 'idle' || toPlayer < 80 ? n.dir : 'down'
           const flip = el.querySelector<HTMLElement>('.pg-flip')
-          if (flip) flip.style.transform = `scaleX(${n.face})`
+          if (flip) flip.style.transform = `scaleX(${n.dir === 'side' ? n.face : 1})`
 
           // A dog trots a step behind its owner.
           const dog = dogs.current.get(i)

@@ -49,7 +49,8 @@ picture; the rules that matter when editing:
   one building per category, each in its own style (`playground/Buildings.tsx`:
   print shop, library, vault, studio, lab — assigned in category order).
   Walking into a door enters it; inside, each tool is a cartoon keeper
-  (`playground/Person.tsx`) in that building's uniform who explains the tool
+  (`playground/Person.tsx`: chibi style with dark outlines, drawn from the
+  front, back and a right-facing profile; the sprite's `data-dir` picks one) in that building's uniform who explains the tool
   in a dialog (`playground/Dialog.tsx`) and offers to open it. Town layout
   (winding paths, plaza, pond, tall grass, benches, lamps, trees), collision
   and A* click-to-walk live in `playground/scenes.ts`, all laid out from the
