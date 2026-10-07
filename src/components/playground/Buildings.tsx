@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { Braces, Clapperboard, FileInput, FileLock, FileOutput, Home, type LucideIcon } from 'lucide-react'
+import { Braces, Briefcase, Clapperboard, FileInput, FileLock, FileOutput, Home, type LucideIcon } from 'lucide-react'
 import type { CategoryId } from '@/tools/registry'
 import type { BuildingStyle, House } from './scenes'
 
@@ -9,6 +9,7 @@ export const CATEGORY_ICONS: Record<CategoryId, LucideIcon> = {
   pdf: FileLock,
   media: Clapperboard,
   dev: Braces,
+  productivity: Briefcase,
 }
 
 /*
@@ -287,7 +288,55 @@ function lab(w: number, h: number, accent: string): Art {
   }
 }
 
-const ART: Record<BuildingStyle, (w: number, h: number, accent: string) => Art> = { shop, library, vault, studio, lab }
+function office(w: number, h: number, accent: string): Art {
+  const cols = 5
+  const colW = (w - 60) / cols
+  return {
+    name: 150,
+    icon: 0,
+    nameClass: 'bg-white text-[#1f2937] border-0 tracking-[0.3em] text-[10px] shadow-md',
+    svg: (
+      <>
+        {/* Clock on the roof; the minute hand turns. */}
+        <rect x={w / 2 - 30} y="2" width="60" height="44" rx="6" className="fill-[#8a7f72] dark:fill-[#4b443d]" />
+        <circle cx={w / 2} cy="24" r="17" fill="#fffaf0" stroke="#3f3a36" strokeWidth="3" />
+        <path d={`M${w / 2} 24v-9`} stroke="#3f3a36" strokeWidth="2.5" strokeLinecap="round" />
+        <g className="pg-wheel" style={{ transformOrigin: `${w / 2}px 24px`, animationDuration: '20s' }}>
+          <path d={`M${w / 2} 24h11`} stroke={accent} strokeWidth="2" strokeLinecap="round" />
+        </g>
+        <circle cx={w / 2} cy="24" r="2" fill="#3f3a36" />
+        <rect x="0" y="40" width={w} height="14" rx="3" style={{ fill: accent }} />
+        <rect x="8" y="52" width={w - 16} height={h - 52} className="fill-[#e9dfcf] dark:fill-[#3a3545]" />
+        <path d={`M8 102H${w - 8}`} stroke="black" strokeOpacity="0.12" strokeWidth="3" />
+        {/* Two floors of windows. */}
+        {[62, 110].flatMap((y) =>
+          Array.from({ length: cols }, (_, i) => (
+            <g key={`${y}-${i}`}>
+              <rect x={30 + i * colW + 4} y={y} width={colW - 8} height="32" rx="3" className="fill-[#bfe3f5] dark:fill-[#fcd77a]" />
+              <path d={`M${30 + i * colW + colW / 2} ${y}v32`} stroke="white" strokeWidth="2" opacity="0.7" />
+              <rect x={30 + i * colW + 2} y={y + 32} width={colW - 4} height="4" rx="1" className="fill-[#c8b8a6] dark:fill-[#4b433d]" />
+            </g>
+          )),
+        )}
+        {/* Entrance canopy, glass doors and two potted shrubs. */}
+        <rect x={w / 2 - 62} y="168" width="124" height="12" rx="3" style={{ fill: accent }} />
+        <rect x={w / 2 - 62} y="168" width="124" height="12" rx="3" fill="black" opacity="0.15" />
+        <rect x={w / 2 - 40} y="180" width="80" height={h - 180} rx="3" fill="#475569" />
+        <rect x={w / 2 - 36} y="184" width="34" height={h - 188} rx="2" className="fill-[#bfe3f5] dark:fill-[#fcd77a]" />
+        <rect x={w / 2 + 2} y="184" width="34" height={h - 188} rx="2" className="fill-[#bfe3f5] dark:fill-[#fcd77a]" />
+        {[w / 2 - 82, w / 2 + 62].map((x) => (
+          <g key={x}>
+            <rect x={x} y={h - 22} width="20" height="22" rx="3" fill="#78716c" />
+            <circle cx={x + 10} cy={h - 30} r="14" className="fill-[#3c9a4e] dark:fill-[#1c5232]" />
+          </g>
+        ))}
+        <Step cx={w / 2} y={h - 6} w={100} />
+      </>
+    ),
+  }
+}
+
+const ART: Record<BuildingStyle, (w: number, h: number, accent: string) => Art> = { shop, library, vault, studio, lab, office }
 
 /** A category's building in town. Its door is where the player walks in. */
 export function Building({ house, near, onClick }: { house: House; near: boolean; onClick: () => void }) {

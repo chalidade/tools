@@ -187,6 +187,16 @@ const DIALOG: Record<string, string[]> = {
     'Mau tampil seperti presenter? Nyalakan kamera melayang, wajahmu ikut terekam di pojok layar.',
     'Rekamannya tersimpan di browser ini dan bisa diunduh sebagai WebM atau diubah ke MP4. Perlu komputer — ponsel belum bisa.',
   ],
+  calculator: [
+    'Aku bisa menghitung apa saja — dari belanjaan sampai sinus dan logaritma.',
+    'Persen-nya seperti kalkulator HP: 200 + 10% jadi 220. Koma atau titik sama-sama desimal.',
+    'Hasil hitunganmu tersimpan di riwayat; klik salah satu untuk memakainya lagi.',
+  ],
+  notes: [
+    'Tulis catatan di sini — tersimpan otomatis di browser, tanpa akun.',
+    'Pakai Markdown untuk judul, daftar, dan checklist yang bisa dicentang langsung.',
+    'Mau pindah perangkat? Cadangkan semua catatan ke file, lalu pulihkan di sana.',
+  ],
 }
 
 /** Keeper names, in tool order; a tool past the end borrows one by its slug. */

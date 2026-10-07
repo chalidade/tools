@@ -54,8 +54,8 @@ interface SceneBase {
 }
 
 /** Each category gets its own kind of building, in category order (wrapping). */
-export type BuildingStyle = 'shop' | 'library' | 'vault' | 'studio' | 'lab'
-const STYLE_ORDER: BuildingStyle[] = ['shop', 'library', 'vault', 'studio', 'lab']
+export type BuildingStyle = 'shop' | 'library' | 'vault' | 'studio' | 'lab' | 'office'
+const STYLE_ORDER: BuildingStyle[] = ['shop', 'library', 'vault', 'studio', 'lab', 'office']
 
 /**
  * Size of each building, the height `base` from its top where the solid walls
@@ -67,6 +67,7 @@ export const BUILDINGS: Record<BuildingStyle, { w: number; h: number; base: numb
   vault: { w: 290, h: 236, base: 104, place: 'Brankas' },
   studio: { w: 320, h: 244, base: 118, place: 'Studio' },
   lab: { w: 340, h: 236, base: 84, place: 'Lab' },
+  office: { w: 320, h: 250, base: 60, place: 'Kantor' },
 }
 
 export interface House {
@@ -221,8 +222,10 @@ export function buildScenes(): Record<SceneId, Scene> {
     const a = Math.atan2(toward.y - plaza.y, toward.x - plaza.x)
     return { x: plaza.x + Math.cos(a) * plaza.rx * shrink, y: plaza.y + Math.sin(a) * plaza.ry * shrink }
   }
+  // The road out of town runs south from the plaza, unless a building sits right below it.
+  const southRoad = !houses.some((h) => h.door.y > plaza.y && Math.abs(h.door.x - plaza.x) < h.rect.w)
   const curves = houses.map((h) => {
-    const { door } = h
+    const { door, rect } = h
     if (door.y < plaza.y) {
       const end = onPlaza(door)
       return curve([
@@ -232,13 +235,26 @@ export function buildScenes(): Record<SceneId, Scene> {
         end,
       ])
     }
-    // Doors face down, away from the plaza: wind over to the road south and join it.
+    // Doors face down, away from the plaza.
     const side = Math.sign(plaza.x - door.x) || 1
+    if (southRoad)
+      // Wind over to the road south and join it.
+      return curve([
+        door,
+        { x: door.x + side * 16 + jitter(10), y: door.y + 56 },
+        { x: (door.x + plaza.x) / 2 + jitter(30), y: door.y + 74 + jitter(16) },
+        { x: plaza.x - side * 6, y: door.y + 40 },
+      ])
+    // No road south (a building stands in its way): loop round the building's inner side up to the plaza.
+    const gx = door.x + side * (rect.w / 2 + 60)
+    const end = onPlaza({ x: gx, y: rect.y })
     return curve([
       door,
-      { x: door.x + side * 16 + jitter(10), y: door.y + 56 },
-      { x: (door.x + plaza.x) / 2 + jitter(30), y: door.y + 74 + jitter(16) },
-      { x: plaza.x - side * 6, y: door.y + 40 },
+      { x: door.x + side * 24, y: door.y + 54 },
+      { x: gx + jitter(12), y: door.y + 24 },
+      { x: gx + jitter(16), y: (rect.y + door.y) / 2 },
+      { x: gx - side * 16 + jitter(16), y: rect.y - 24 },
+      end,
     ])
   })
 
@@ -246,8 +262,10 @@ export function buildScenes(): Record<SceneId, Scene> {
   curves.push(
     curve([onPlaza({ x: 0, y: plaza.y + 60 }), { x: plaza.x - 420, y: plaza.y + 70 }, { x: pond.x + pond.rx + 10, y: pond.y }]),
   )
-  // The road out of town, south.
-  curves.push(curve([onPlaza({ x: plaza.x, y: height }), { x: plaza.x + 30, y: plaza.y + 330 }, { x: plaza.x - 10, y: height + 40 }]))
+  if (southRoad)
+    curves.push(
+      curve([onPlaza({ x: plaza.x, y: height }), { x: plaza.x + 30, y: plaza.y + 330 }, { x: plaza.x - 10, y: height + 40 }]),
+    )
   const pathSamples = curves.flatMap((c) => c.samples)
   const nearPath = (p: Point, pad: number) => pathSamples.some((s) => Math.hypot(s.x - p.x, s.y - p.y) < PATH_WIDTH / 2 + pad)
 

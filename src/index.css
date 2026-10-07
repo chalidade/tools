@@ -93,6 +93,14 @@
   background-color: #3a2a35;
   background-image: conic-gradient(#4b3546 25%, transparent 0 50%, #4b3546 0 75%, transparent 0);
 }
+.pg-floor-office {
+  background-color: #b9c3cf;
+  background-image: conic-gradient(rgb(0 0 0 / 0.06) 25%, transparent 0 50%, rgb(0 0 0 / 0.06) 0 75%, transparent 0);
+  background-size: 80px 80px;
+}
+.dark .pg-floor-office {
+  background-color: #2b3340;
+}
 .pg-floor-tile {
   background-color: #eef2f6;
   background-image:

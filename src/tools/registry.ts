@@ -3,6 +3,8 @@ import {
   AppWindow,
   Binary,
   Braces,
+  NotebookPen,
+  Calculator,
   Camera,
   Clapperboard,
   Combine,
@@ -70,7 +72,7 @@ export interface ToolPackage {
   published: boolean
 }
 
-export type CategoryId = 'to-pdf' | 'from-pdf' | 'pdf' | 'media' | 'dev'
+export type CategoryId = 'to-pdf' | 'from-pdf' | 'pdf' | 'media' | 'dev' | 'productivity'
 
 /** Home page groups, in display order. */
 export const CATEGORIES: { id: CategoryId; title: string; description: string }[] = [
@@ -95,6 +97,7 @@ export const CATEGORIES: { id: CategoryId; title: string; description: string }[
     title: 'Developer & Desain',
     description: 'QR code, favicon, Base64, warna, dan rapikan data.',
   },
+  { id: 'productivity', title: 'Produktivitas', description: 'Catat, hitung, dan corat-coret.' },
 ]
 
 // Adding a tool: create src/tools/<slug>/ with a default-exported component,
@@ -266,8 +269,30 @@ export const TOOLS: Tool[] = [
     component: lazy(() => import('./unlock-pdf/UnlockPdf')),
   },
   {
+    slug: 'notes',
+    category: 'productivity',
+    keywords: ['catatan', 'notes', 'note', 'memo', 'markdown', 'checklist', 'to do', 'todo', 'daftar tugas', 'jurnal', 'tulis'],
+    title: 'Catatan',
+    description: 'Tulis catatan dengan Markdown dan checklist — tersimpan otomatis di browser, bisa dicadangkan ke file.',
+    icon: NotebookPen,
+    formats: 'Teks → Markdown',
+    badge: 'Baru',
+    component: lazy(() => import('./notes/Notes')),
+  },
+  {
+    slug: 'calculator',
+    category: 'productivity',
+    keywords: ['kalkulator', 'calculator', 'hitung', 'kalkulator ilmiah', 'scientific', 'persen', 'diskon', 'sin', 'cos', 'log', 'akar', 'matematika'],
+    title: 'Kalkulator',
+    description: 'Kalkulator biasa dan ilmiah — persen, pangkat, akar, trigonometri, dengan riwayat hitungan.',
+    icon: Calculator,
+    formats: 'Ekspresi → Hasil',
+    badge: 'Baru',
+    component: lazy(() => import('./calculator/Calculator')),
+  },
+  {
     slug: 'whiteboard',
-    category: 'media',
+    category: 'productivity',
     keywords: [
       'papan tulis',
       'whiteboard',

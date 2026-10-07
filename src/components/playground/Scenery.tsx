@@ -314,6 +314,7 @@ const FLOORS: Record<BuildingStyle, string> = {
   vault: 'pg-floor-stone',
   studio: 'pg-floor-check',
   lab: 'pg-floor-tile',
+  office: 'pg-floor-office',
 }
 
 /** Inside a building: back wall, floor, carpet, plants and the door mat — styled to match the building. */
@@ -437,6 +438,27 @@ function WallDecor({ style, accent, side }: { style: BuildingStyle; accent: stri
               style={{ width: `${w}%`, background: i % 2 ? '#a78bfa' : '#67e8f9' }}
             />
           ))}
+        </div>
+      </div>
+    )
+  if (style === 'office')
+    return (
+      <div className="absolute top-6 flex items-start gap-3" style={pos}>
+        {/* A whiteboard with a scribbled chart, and a wall calendar. */}
+        <div className="h-[92px] w-28 rounded-md border-4 border-[#94a3b8] bg-white p-2">
+          <svg viewBox="0 0 96 64" className="size-full">
+            <path d="M4 56V8M4 56h88" stroke="#64748b" strokeWidth="2" fill="none" />
+            <path d="M10 48 30 36l18 8 20-22 20-10" stroke={accent} strokeWidth="3" fill="none" strokeLinecap="round" />
+            <path d="M10 22h24M10 30h16" stroke="#94a3b8" strokeWidth="3" strokeLinecap="round" />
+          </svg>
+        </div>
+        <div className="w-14 overflow-hidden rounded-md bg-white shadow">
+          <div className="h-4" style={{ background: accent }} />
+          <div className="grid grid-cols-4 gap-0.5 p-1">
+            {Array.from({ length: 12 }, (_, i) => (
+              <span key={i} className={i === 6 ? 'h-2 rounded-sm bg-red-400' : 'h-2 rounded-sm bg-slate-200'} />
+            ))}
+          </div>
         </div>
       </div>
     )

@@ -138,5 +138,7 @@ export function uniformFor(style: BuildingStyle, index: number): Partial<Look> {
       return { outfit: odd ? 'tee' : 'hoodie', hat: odd ? 'beret' : undefined, hatColor: '#18181b' }
     case 'lab':
       return { outfit: 'labcoat', glasses: !odd, hat: odd ? 'hardhat' : undefined }
+    case 'office':
+      return { outfit: odd ? 'vest' : 'jacket', accent: '#f8fafc', glasses: odd, hat: undefined }
   }
 }
