@@ -1,8 +1,9 @@
 import { Suspense, useEffect } from 'react'
 import { ArrowLeft, Loader2, ShieldCheck } from 'lucide-react'
+import { InstallCard } from '@/components/InstallCard'
 import type { Tool } from '@/tools/registry'
 
-export function ToolView({ tool }: { tool: Tool }) {
+export function ToolView({ tool, embed = false }: { tool: Tool; embed?: boolean }) {
   const Component = tool.component
 
   useEffect(() => {
@@ -12,6 +13,27 @@ export function ToolView({ tool }: { tool: Tool }) {
       document.title = previous
     }
   }, [tool.title])
+
+  const loading = (
+    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+      <Loader2 className="size-4 animate-spin" /> Memuat tool…
+    </div>
+  )
+
+  // Inside someone else's iframe: just the tool, and a small credit.
+  if (embed)
+    return (
+      <div className="bg-background p-3 sm:p-4">
+        <Suspense fallback={loading}>
+          <Component key={tool.slug} />
+        </Suspense>
+        <p className="mt-4 text-center text-xs text-muted-foreground">
+          <a href={`https://chalidade.github.io/tools/#/${tool.slug}`} target="_blank" rel="noreferrer" className="hover:text-foreground">
+            {tool.title} · Tools — berjalan di browsermu, tanpa upload ↗
+          </a>
+        </p>
+      </div>
+    )
 
   return (
     <section className="relative isolate">
@@ -44,16 +66,11 @@ export function ToolView({ tool }: { tool: Tool }) {
         </div>
 
         <div className="mt-10">
-          <Suspense
-            fallback={
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Loader2 className="size-4 animate-spin" /> Memuat tool…
-              </div>
-            }
-          >
+          <Suspense fallback={loading}>
             <Component key={tool.slug} />
           </Suspense>
         </div>
+        <InstallCard tool={tool} />
       </div>
     </section>
   )

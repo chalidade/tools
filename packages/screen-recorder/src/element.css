@@ -1,0 +1,32 @@
+/* Styles for <screen-recorder>'s Shadow DOM: only the classes its own
+   components use, plus the site's design tokens (src/theme.css). */
+@import "tailwindcss" source(none);
+@import "tw-animate-css";
+
+@source "../../../src/tools/screen-recorder";
+@source "../../../src/components/tool";
+@source "../../../src/components/ui";
+
+@custom-variant dark (&:is(.dark *));
+
+@import "../../../src/theme.css";
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  :host {
+    display: block;
+  }
+}
+
+/* The page embedding the element can recolour it, in both themes:
+   screen-recorder { --sr-brand-1: …; --sr-brand-2: … } */
+.sr-frame {
+  --brand-1: var(--sr-brand-1, oklch(0.623 0.214 259.815));
+  --brand-2: var(--sr-brand-2, oklch(0.606 0.25 292.717));
+}
+.sr-frame.dark {
+  --brand-1: var(--sr-brand-1, oklch(0.707 0.165 254.624));
+  --brand-2: var(--sr-brand-2, oklch(0.702 0.183 293.541));
+}

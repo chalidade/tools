@@ -61,6 +61,19 @@ picture; the rules that matter when editing:
   styles and animations live in `src/index.css`. The world is `aria-hidden`;
   the ToolGrid below stays the accessible way in. Visited stamps persist in
   localStorage (`tools:visited`).
+- **Installable packages** live in `packages/<tool>/` (see packages/README.md):
+  each builds the site's own tool source (alias `@` → `../../src`, never a
+  copy) into an npm package with a custom element rendering the React UI in a
+  Shadow DOM (`dist/element.js`, React + CSS bundled) and a headless API
+  (`dist/index.js`). Design tokens live in `src/theme.css` under `:root, :host`
+  so they reach shadow roots; Tailwind's `@property` rules are hoisted to the
+  page head by `element.tsx`. Hand-written public types are guarded by
+  `types/check.ts`. A tool with a package sets `package` in the registry; the
+  tool page's "Pasang di situsmu" card (`InstallCard.tsx`) shows the script/npm
+  snippets once `published: true`, and always offers the iframe embed —
+  `#/<tool>?embed[&theme=light|dark]` renders the tool alone (any tool).
+  `npm run build:packages` builds them; publishing is done by the owner.
+- The repo is MIT-licensed (`LICENSE`).
 - `App.tsx` only composes sections; each section lives in
   `src/components/<Section>.tsx`. Style with the semantic shadcn tokens in
   `src/index.css`, not hard-coded colors. Animation via `motion/react`.

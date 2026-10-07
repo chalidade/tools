@@ -1,0 +1,54 @@
+{
+  "name": "@chalidade/screen-recorder",
+  "version": "0.1.0",
+  "description": "Rekam layar di website mana pun: elemen <screen-recorder> siap pakai plus API kecil. Semua berjalan di browser — tidak ada yang di-upload.",
+  "keywords": [
+    "screen recorder",
+    "screen recording",
+    "rekam layar",
+    "getDisplayMedia",
+    "MediaRecorder",
+    "web component",
+    "custom element",
+    "webm",
+    "mp4"
+  ],
+  "license": "MIT",
+  "author": "Chalid Ade Rahman",
+  "homepage": "https://chalidade.github.io/tools/#/screen-recorder",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chalidade/tools.git",
+    "directory": "packages/screen-recorder"
+  },
+  "bugs": "https://github.com/chalidade/tools/issues",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "jsdelivr": "./dist/element.js",
+  "unpkg": "./dist/element.js",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./element": {
+      "types": "./dist/element.d.ts",
+      "import": "./dist/element.js"
+    }
+  },
+  "sideEffects": [
+    "./dist/element.js"
+  ],
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "THIRD-PARTY-NOTICES.md"
+  ],
+  "scripts": {
+    "build": "tsc --noEmit -p . && vite build && cp types/*.d.ts dist/",
+    "prepublishOnly": "npm run build"
+  }
+}

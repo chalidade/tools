@@ -20,3 +20,9 @@ export function useHashRoute() {
 
   return route
 }
+
+/** Query parameters after the route: #/<slug>?embed&theme=light → { embed: '', theme: 'light' }. */
+export function hashQuery() {
+  const query = window.location.hash.split('?')[1] ?? ''
+  return new URLSearchParams(query)
+}

@@ -2,13 +2,15 @@
   "name": "tools",
   "private": true,
   "version": "0.0.0",
+  "license": "MIT",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "oxlint",
     "preview": "vite preview",
-    "og": "bash og/render.sh"
+    "og": "bash og/render.sh",
+    "build:packages": "npm run build --prefix packages/screen-recorder"
   },
   "dependencies": {
     "@jvmr/pptx-to-html": "^1.1.2",

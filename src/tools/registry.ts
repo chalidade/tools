@@ -55,6 +55,19 @@ export interface Tool {
   keywords: string[]
   /** Lazy so each tool's libraries load only when that tool is opened. */
   component: LazyExoticComponent<ComponentType>
+  /** The tool as an installable npm package (packages/<dir>/), shown under "Pasang di situsmu". */
+  package?: ToolPackage
+}
+
+export interface ToolPackage {
+  /** npm name, e.g. "@chalidade/screen-recorder". */
+  name: string
+  /** The custom element it registers, e.g. "screen-recorder". */
+  element: string
+  /** Folder under packages/ (for the README link). */
+  dir: string
+  /** Live on npm yet? Until then only the iframe embed is offered. */
+  published: boolean
 }
 
 export type CategoryId = 'to-pdf' | 'from-pdf' | 'pdf' | 'media' | 'dev'
@@ -415,6 +428,7 @@ export const TOOLS: Tool[] = [
     formats: 'Layar → WebM / MP4',
     badge: 'Baru',
     component: lazy(() => import('./screen-recorder/ScreenRecorder')),
+    package: { name: '@chalidade/screen-recorder', element: 'screen-recorder', dir: 'screen-recorder', published: false },
   },
   {
     slug: 'audio-recorder',

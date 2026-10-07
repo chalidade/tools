@@ -9,14 +9,16 @@ import { fixRecordedDuration, newId, safeFileName } from '@/lib/local-store'
 import { formatDuration, formatSize, hasWebCodecs, isCanceled } from '@/lib/media'
 import {
   canRecordScreen,
+  captureScreen,
   defaultScreenName,
   deleteScreenRecording,
   listScreenRecordings,
-  mixAudio,
-  pickVideoMimeType,
   saveScreenRecording,
   toMp4,
   videoExtension,
+  type Capture,
+  type CaptureWarning,
+  type RecordingResult,
   type ScreenRecording,
 } from './screen'
 
@@ -36,7 +38,22 @@ function captureError(e: unknown) {
   return 'Perekaman layar tidak bisa dimulai di browser ini.'
 }
 
-export default function ScreenRecorder() {
+const WARNINGS: Record<CaptureWarning, string> = {
+  'system-audio-missing':
+    'Suara tab/sistem tidak ikut terekam — centang "Bagikan audio" di jendela pilihan untuk menyertakannya.',
+  'microphone-unavailable': 'Mikrofon tidak bisa dibuka, jadi rekaman ini tanpa suara mikrofon.',
+}
+
+export interface ScreenRecorderProps {
+  /** Keep recordings in this browser (IndexedDB) and list them. Default true. */
+  persist?: boolean
+  /** Called with every finished recording — e.g. to upload it to your own server. */
+  onRecording?: (recording: RecordingResult) => void
+  /** Show "● Merekam 0:42" in the tab title while recording. Default true. */
+  showInTitle?: boolean
+}
+
+export default function ScreenRecorder({ persist = true, onRecording, showInTitle = true }: ScreenRecorderProps = {}) {
   const supported = useMemo(canRecordScreen, [])
   const pipSupported = typeof document !== 'undefined' && !!document.pictureInPictureEnabled
 
@@ -54,46 +71,31 @@ export default function ScreenRecorder() {
 
   const previewRef = useRef<HTMLVideoElement>(null)
   const cameraRef = useRef<HTMLVideoElement>(null)
-  const streams = useRef<MediaStream[]>([])
   const cameraStream = useRef<MediaStream | null>(null)
-  const closeMix = useRef<() => void>(() => {})
-  const recorderRef = useRef<MediaRecorder | null>(null)
-  const chunks = useRef<Blob[]>([])
-  const discard = useRef(false)
-  const size = useRef({ width: 0, height: 0 })
-  const clock = useRef({ done: 0, since: 0 })
+  const captureRef = useRef<Capture | null>(null)
   const ticker = useRef(0)
+  const onRecordingRef = useRef(onRecording)
+  onRecordingRef.current = onRecording
 
   const refresh = useCallback(() => {
+    if (!persist) return
     listScreenRecordings()
       .then(setRecordings)
       .catch(() => setError('Penyimpanan browser tidak bisa dibuka (mode privat?). Rekaman tetap bisa diunduh.'))
-  }, [])
+  }, [persist])
   useEffect(refresh, [refresh])
-
-  const seconds = () => {
-    const c = clock.current
-    return (c.done + (c.since ? performance.now() - c.since : 0)) / 1000
-  }
-
-  const release = useCallback(() => {
-    clearInterval(ticker.current)
-    streams.current.forEach((s) => s.getTracks().forEach((t) => t.stop()))
-    streams.current = []
-    closeMix.current()
-    closeMix.current = () => {}
-    if (previewRef.current) previewRef.current.srcObject = null
-  }, [])
 
   // Leaving the page mid-take stops and keeps it; the floating camera closes too.
   useEffect(
     () => () => {
-      if (recorderRef.current && recorderRef.current.state !== 'inactive') recorderRef.current.stop()
-      else release()
+      clearInterval(ticker.current)
+      const capture = captureRef.current
+      if (capture && capture.state !== 'ready') void capture.stop().then((r) => r && keep(r))
+      else capture?.cancel()
       cameraStream.current?.getTracks().forEach((t) => t.stop())
       if (document.pictureInPictureElement) void document.exitPictureInPicture()
     },
-    [release],
+    [],
   )
 
   // Closing the tab mid-take would lose it.
@@ -106,13 +108,13 @@ export default function ScreenRecorder() {
 
   // The tab title shows the take while you're looking at another window.
   useEffect(() => {
-    if (phase !== 'recording' && phase !== 'paused') return
+    if (!showInTitle || (phase !== 'recording' && phase !== 'paused')) return
     const original = document.title
     document.title = `${phase === 'recording' ? '● Merekam' : '❚❚ Dijeda'} ${formatDuration(elapsed)} — Rekam Layar`
     return () => {
       document.title = original
     }
-  }, [phase, elapsed])
+  }, [phase, elapsed, showInTitle])
 
   // ------------------------------------------------------------- floating camera
 
@@ -160,101 +162,22 @@ export default function ScreenRecorder() {
 
   // ------------------------------------------------------------- recording
 
-  async function start() {
-    setError('')
-    setNotice('')
-    setPhase('picking')
-    try {
-      const display = await navigator.mediaDevices.getDisplayMedia({
-        video: { frameRate: { ideal: fps }, width: { ideal: 1920 }, height: { ideal: 1080 } },
-        audio: systemAudio,
-        // Chrome: offer "share system audio" and let the visitor switch tabs mid-share.
-        ...({ systemAudio: 'include', surfaceSwitching: 'include' } as object),
-      } as DisplayMediaStreamOptions)
-      streams.current = [display]
-
-      const audioTracks = [...display.getAudioTracks()]
-      if (systemAudio && !audioTracks.length)
-        setNotice('Suara tab/sistem tidak ikut terekam — centang "Bagikan audio" di jendela pilihan untuk menyertakannya.')
-      if (mic) {
-        try {
-          const voice = await navigator.mediaDevices.getUserMedia({
-            audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true },
-          })
-          streams.current.push(voice)
-          audioTracks.push(...voice.getAudioTracks())
-        } catch {
-          setNotice('Mikrofon tidak bisa dibuka, jadi rekaman ini tanpa suara mikrofon.')
-        }
-      }
-
-      const [video] = display.getVideoTracks()
-      const settings = video.getSettings()
-      size.current = { width: settings.width ?? 0, height: settings.height ?? 0 }
-      // "Stop sharing" in the browser's own bar ends the take.
-      video.addEventListener('ended', () => stop(true))
-
-      const mixed = mixAudio(audioTracks)
-      closeMix.current = mixed.close
-      const stream = new MediaStream([video, ...(mixed.track ? [mixed.track] : [])])
-      if (previewRef.current) {
-        previewRef.current.srcObject = display
-        void previewRef.current.play().catch(() => {})
-      }
-
-      const mimeType = pickVideoMimeType()
-      const recorder = new MediaRecorder(stream, {
-        ...(mimeType ? { mimeType } : {}),
-        videoBitsPerSecond: fps === 60 ? 8_000_000 : 5_000_000,
-        audioBitsPerSecond: 128_000,
-      })
-      chunks.current = []
-      discard.current = false
-      recorder.ondataavailable = (e) => e.data.size && chunks.current.push(e.data)
-      recorder.onstop = () => void finish(recorder.mimeType || mimeType || 'video/webm')
-      recorderRef.current = recorder
-
-      // A few seconds to switch to the window being recorded.
-      if (useCountdown) {
-        setPhase('countdown')
-        for (let n = 3; n > 0; n--) {
-          setCountdown(n)
-          await new Promise((r) => setTimeout(r, 1000))
-          if (video.readyState === 'ended') return
-        }
-      }
-      clock.current = { done: 0, since: performance.now() }
-      setElapsed(0)
-      recorder.start(1000)
-      setPhase('recording')
-      ticker.current = window.setInterval(() => setElapsed(seconds()), 250)
-    } catch (e) {
-      release()
-      setPhase('idle')
-      const message = captureError(e)
-      if (message) setError(message)
-    }
-  }
-
-  async function finish(mimeType: string) {
-    const duration = seconds()
-    clock.current = { done: 0, since: 0 }
-    release()
+  function reset() {
+    clearInterval(ticker.current)
+    captureRef.current = null
+    if (previewRef.current) previewRef.current.srcObject = null
     setPhase('idle')
     setElapsed(0)
-    const blob = new Blob(chunks.current, { type: mimeType })
-    chunks.current = []
-    recorderRef.current = null
-    if (discard.current || !blob.size) return
-    const recording: ScreenRecording = {
-      id: newId(),
-      name: defaultScreenName(),
-      createdAt: Date.now(),
-      duration,
-      mimeType,
-      ...size.current,
-      blob,
+  }
+
+  async function keep(result: RecordingResult) {
+    onRecordingRef.current?.(result)
+    if (!persist) {
+      // Without storage the file only lives in this list until the page closes.
+      setRecordings((list) => [{ ...result, id: newId(), name: defaultScreenName(), createdAt: Date.now() }, ...list])
+      return
     }
+    const recording: ScreenRecording = { ...result, id: newId(), name: defaultScreenName(), createdAt: Date.now() }
     setRecordings((list) => [recording, ...list])
     try {
       await saveScreenRecording(recording)
@@ -263,42 +186,67 @@ export default function ScreenRecorder() {
     }
   }
 
+  async function start() {
+    setError('')
+    setNotice('')
+    setPhase('picking')
+    let capture: Capture
+    try {
+      capture = await captureScreen({ systemAudio, microphone: mic, fps })
+    } catch (e) {
+      reset()
+      const message = captureError(e)
+      if (message) setError(message)
+      return
+    }
+    captureRef.current = capture
+    setNotice(capture.warnings.map((w) => WARNINGS[w]).join(' '))
+    // "Stop sharing" in the browser's own bar ends the take.
+    capture.onended = () => void stop(true)
+    if (previewRef.current) {
+      previewRef.current.srcObject = capture.stream
+      void previewRef.current.play().catch(() => {})
+    }
+
+    // A few seconds to switch to the window being recorded.
+    if (useCountdown) {
+      setPhase('countdown')
+      for (let n = 3; n > 0; n--) {
+        setCountdown(n)
+        await new Promise((r) => setTimeout(r, 1000))
+        if (capture.state === 'stopped') return
+      }
+    }
+    capture.start()
+    setPhase('recording')
+    ticker.current = window.setInterval(() => setElapsed(capture.elapsed()), 250)
+  }
+
   function pause() {
-    const r = recorderRef.current
-    if (r?.state !== 'recording') return
-    r.pause()
-    clock.current = { done: seconds() * 1000, since: 0 }
+    captureRef.current?.pause()
     setPhase('paused')
   }
   function resume() {
-    const r = recorderRef.current
-    if (r?.state !== 'paused') return
-    r.resume()
-    clock.current.since = performance.now()
+    captureRef.current?.resume()
     setPhase('recording')
   }
-  function stop(keep: boolean) {
-    const r = recorderRef.current
-    if (!r || r.state === 'inactive') {
-      // Ended during the countdown: nothing was recorded yet.
-      release()
-      recorderRef.current = null
-      setPhase('idle')
-      return
-    }
-    discard.current = !keep
-    if (r.state === 'recording') clock.current = { done: seconds() * 1000, since: 0 }
-    r.stop()
+  async function stop(save: boolean) {
+    const capture = captureRef.current
+    if (!capture) return
+    reset()
+    if (!save) return capture.cancel()
+    const result = await capture.stop()
+    if (result) await keep(result)
   }
 
   const rename = (r: ScreenRecording, name: string) => {
     const next = { ...r, name: name.trim() || r.name }
     setRecordings((list) => list.map((x) => (x.id === r.id ? next : x)))
-    void saveScreenRecording(next).catch(() => {})
+    if (persist) void saveScreenRecording(next).catch(() => {})
   }
   const remove = (r: ScreenRecording) => {
     setRecordings((list) => list.filter((x) => x.id !== r.id))
-    void deleteScreenRecording(r.id).catch(() => {})
+    if (persist) void deleteScreenRecording(r.id).catch(() => {})
   }
 
   if (!supported)
@@ -434,7 +382,7 @@ export default function ScreenRecorder() {
       <section>
         <div className="flex items-baseline justify-between gap-3">
           <h2 className="text-lg font-semibold tracking-tight">Rekaman</h2>
-          <p className="text-xs text-muted-foreground">Tersimpan di browser ini saja</p>
+          <p className="text-xs text-muted-foreground">{persist ? 'Tersimpan di browser ini saja' : 'Hilang saat halaman ditutup — unduh dulu'}</p>
         </div>
         {recordings.length === 0 ? (
           <p className="mt-3 rounded-2xl border border-dashed p-8 text-center text-sm text-muted-foreground">
@@ -511,7 +459,7 @@ function RecordingCard({
     setError('')
     setProgress(0)
     try {
-      const blob = await toMp4(recording, setProgress, (c) => (cancel.current = c))
+      const blob = await toMp4(recording.blob, setProgress, (c) => (cancel.current = c))
       downloadBlob(blob, `${file}.mp4`)
     } catch (e) {
       if (!isCanceled(e)) setError(`Gagal mengubah ke MP4. Unduh format aslinya (.${ext}) sebagai gantinya.`)

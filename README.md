@@ -67,6 +67,19 @@ Minimap kota dan "paspor" (jumlah tool yang sudah dikunjungi) ada di pojok
 kanan atas. Kartu pembuka bisa disembunyikan (tombol ×). Daftar tools biasa
 tetap ada di bawahnya.
 
+## Pasang tools ini di situsmu
+
+Repo ini berlisensi **MIT**. Setiap tool bisa dipasang di website lain:
+
+- **Iframe (semua tool):** buka halaman tool, lalu salin kode di bagian
+  **Pasang di situsmu**. Tool tampil lewat `#/<tool>?embed` (tambahkan
+  `&theme=light` atau `&theme=dark` bila perlu).
+- **Paket npm / satu tag script:** dimulai dari
+  [`@chalidade/screen-recorder`](packages/screen-recorder). Paket ini berisi
+  elemen `<screen-recorder>` siap pakai dan API tanpa UI, dan dibangun dari kode
+  yang sama dengan situs ini. Cara kerja, build, publikasi, dan cara menambah
+  paket untuk tool lain ada di [packages/README.md](packages/README.md).
+
 ## Menjalankan
 
 ```bash
