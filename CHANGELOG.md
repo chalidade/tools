@@ -27,6 +27,11 @@ terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 - **Gitar Online** (`#/guitar`): genjreng chord dengan usapan jari, petik bebas
   di fretboard, capo, suara akustik/listrik/distorsi, dan iringan otomatis dengan
   6 pola genjrengan.
+- **Piano Online** diperluas: 88 tuts penuh dengan peta mini dan pilihan
+  lebar tampilan, 6 pilihan suara (grand, elektrik, organ, harpsichord, string,
+  kotak musik), dan mode **Latihan** dengan 7 lagu domain publik, tangga nada,
+  serta impor file MIDI. Tuts berikutnya menyala dan menunggu ditekan, ada demo,
+  dan ada skor.
 
 **Perbaikan**
 - Tuner Gitar: nada sangat tinggi (di atas ~1 kHz, mode kromatik) kadang terbaca

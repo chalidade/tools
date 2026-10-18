@@ -70,7 +70,7 @@ All 44, grouped the way the home page groups them. Each name links to the live t
 - [Metronome](https://chalidade.github.io/tools/#/metronome): 30–300 BPM on a lookahead Web Audio scheduler, accents, beats per bar, subdivisions, tap tempo
 - [Chord Finder & Transpose](https://chalidade.github.io/tools/#/chords): guitar and ukulele shapes generated for every root and 16 chord types, playable (Karplus–Strong); transposes a pasted song sheet keeping chords aligned to the lyrics
 - [BPM & Key Finder](https://chalidade.github.io/tools/#/bpm-key): tempo from an onset-envelope comb search, key from a chromagram against Krumhansl profiles, Camelot code and diatonic chords; runs in a Web Worker
-- [Online Piano](https://chalidade.github.io/tools/#/piano): synthesised in the browser (no samples), multi-touch with glissando, two-row computer-keyboard layout, Web MIDI input, sustain, live chord names
+- [Online Piano](https://chalidade.github.io/tools/#/piano): all 88 keys with a minimap and 1–7 octave views; six synthesised voices (grand, electric piano, organ, harpsichord, strings, music box); practice mode with public-domain pieces, scales and any MIDI file you open (parsed in the browser), next-key highlighting, demo playback and a score; multi-touch, computer keyboard, Web MIDI, sustain, chord names
 - [Online Guitar](https://chalidade.github.io/tools/#/guitar): Karplus–Strong strings with a fractional-delay all-pass (in tune to ~2 cents) and pick-position excitation, acoustic body / clean / overdriven amp; swipe-to-strum over generated chord shapes, capo, free fretboard, auto accompaniment patterns
 
 **Developer & Design**
