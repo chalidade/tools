@@ -37,6 +37,17 @@ terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
   aksen, swing, dan 9 pola siap pakai (rock, pop, disco, funk, hip-hop, shuffle,
   bossa nova, reggae, dangdut).
 
+**Aplikasi & layar penuh**
+- Situs bisa **dipasang sebagai aplikasi** di HP dan komputer lewat tombol
+  "Pasang aplikasi" di header (di iPhone: Bagikan → Tambahkan ke Layar Utama).
+  Aplikasinya terbuka tanpa bilah browser, dan tool yang pernah dibuka tetap
+  jalan saat offline.
+- **Layar penuh** untuk Piano, Gitar, dan Drum. Di HP layar diputar ke posisi
+  mendatar, dan instrumen mengisi seluruh layar (piano: 2 oktaf dengan tuts
+  besar di HP).
+- Tool yang gagal dimuat (offline, atau tab lama setelah update) sekarang
+  menampilkan pesan dan tombol muat ulang, bukan halaman kosong.
+
 **Perbaikan**
 - Tuner Gitar: nada sangat tinggi (di atas ~1 kHz, mode kromatik) kadang terbaca
   satu kuint lebih rendah. Penyebabnya sinyal di-downsample terlalu jauh sebelum

@@ -3,6 +3,7 @@ import { ChevronLeft, ChevronRight, Piano as PianoIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Segmented } from '@/components/tool/Segmented'
+import { Stage, StageButton, useStage } from '@/components/tool/Stage'
 import { SHARPS, noteName, pc } from '@/lib/music'
 import { useLang, useT } from '@/lib/i18n'
 import { CHORD_TYPES } from '@/tools/chords/theory'
@@ -69,11 +70,22 @@ export default function Piano() {
   const [volume, setVolume] = useState(0.8)
   const [midiInfo, setMidiInfo] = useState('')
 
+  const stage = useStage()
+  // Full screen picks its own width: as many octaves as fit at ~46 px a key.
+  const [fit, setFit] = useState(2)
+  useEffect(() => {
+    if (!stage.full) return
+    const update = () => setFit(Math.max(1, Math.min(5, Math.floor(window.innerWidth / (7 * 46)))))
+    update()
+    window.addEventListener('resize', update)
+    return () => window.removeEventListener('resize', update)
+  }, [stage.full])
+  const view = stage.full ? fit : zoom
   const synthRef = useRef<PianoSynth | null>(null)
   const held = useRef(new Map<string, number>()) // source (pointer id, key code, midi) → note
   const listeners = useRef(new Set<(midi: number) => void>())
 
-  const count = widthOf(zoom)
+  const count = widthOf(view)
   const start = Math.max(0, Math.min(first, WHITES.length - count))
   const visible = WHITES.slice(start, start + count)
   const lo = visible[0]
@@ -260,7 +272,7 @@ export default function Piano() {
     if (labels === 'solfa') return SOLFA[pc(m)]
     // Every letter while keys are wide enough to read them; otherwise only the Cs.
     if (pc(m) === 0) return noteName(m)
-    return count <= 15 || (zoom <= 3 && window.innerWidth >= 900) ? SHARPS[pc(m)] : ''
+    return count <= 15 || (view <= 3 && window.innerWidth >= 900) ? SHARPS[pc(m)] : ''
   }
 
   // What practice can do with the keyboard.
@@ -303,8 +315,8 @@ export default function Piano() {
 
   return (
     <div className="space-y-6">
-      <div className="rounded-3xl border bg-card p-4 shadow-xs sm:p-6">
-        <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
+      <Stage stage={stage} title={t('Piano Online', 'Online Piano')} className="rounded-3xl border bg-card p-4 shadow-xs sm:p-6">
+        <div className={cn('flex flex-wrap items-center justify-between gap-3', stage.full ? 'shrink-0' : 'mb-3')}>
           <div className="flex items-center gap-1">
             <Button variant="outline" size="icon" aria-label={t('Geser ke kiri', 'Move left')} disabled={start <= 0} onClick={() => shift(-7)}>
               <ChevronLeft />
@@ -342,7 +354,10 @@ export default function Piano() {
             jump(e.clientX)
           }}
           onPointerMove={(e) => e.buttons && jump(e.clientX)}
-          className="relative mb-3 h-7 cursor-pointer touch-none overflow-hidden rounded-md border select-none"
+          className={cn(
+            'relative h-7 shrink-0 cursor-pointer touch-none overflow-hidden rounded-md border select-none',
+            stage.full ? 'h-6' : 'mb-3',
+          )}
           aria-label={t('Peta 88 tuts', '88-key map')}
           role="slider"
           aria-valuemin={0}
@@ -381,7 +396,7 @@ export default function Piano() {
           onPointerUp={onUp}
           onPointerCancel={onUp}
           onContextMenu={(e) => e.preventDefault()}
-          className="relative h-48 touch-none select-none sm:h-56"
+          className={cn('relative touch-none select-none', stage.full ? 'min-h-0 flex-1' : 'h-48 sm:h-56')}
           role="application"
           aria-label={t('Keyboard piano', 'Piano keyboard')}
         >
@@ -437,7 +452,8 @@ export default function Piano() {
           })}
         </div>
 
-        <div className="mt-4 flex flex-wrap items-center gap-3">
+        <div className={cn('flex flex-wrap items-center gap-3', stage.full ? 'shrink-0' : 'mt-4')}>
+          {!stage.full && <StageButton onClick={stage.enter} />}
           <label className="flex items-center gap-2 text-sm text-muted-foreground">
             {t('Suara', 'Sound')}
             <select
@@ -455,6 +471,8 @@ export default function Piano() {
           <Button variant={pedal ? 'default' : 'outline'} onClick={() => setSustain(!pedal)} aria-pressed={pedal}>
             {t('Sustain', 'Sustain')} {pedal ? t('aktif', 'on') : t('mati', 'off')}
           </Button>
+          {!stage.full && (
+            <>
           <label className="flex items-center gap-2 text-sm text-muted-foreground">
             {t('Volume', 'Volume')}
             <input
@@ -473,8 +491,10 @@ export default function Piano() {
             </Button>
           )}
           {midiInfo && <span className="text-sm text-muted-foreground">{midiInfo}</span>}
+            </>
+          )}
         </div>
-      </div>
+      </Stage>
 
       <div className="flex flex-wrap gap-6">
         <Segmented

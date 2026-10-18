@@ -25,6 +25,8 @@ browser's own media encoders, and a library is downloaded only when you open the
 
 - **Free and open source** (MIT)
 - **Bilingual UI**: English and Indonesian, with a toggle in the header
+- **Installable app**: add it to a phone's home screen or a desktop ("Install app" in the header); it opens without browser bars, and every tool you have opened once keeps working offline
+- **Full screen instruments**: piano, guitar and drums have a full-screen mode that turns a phone sideways
 - **Embeddable**: any tool can go on your own site through an iframe, and the first tool is packaged
   as a web component ([below](#embed-a-tool-on-your-site))
 

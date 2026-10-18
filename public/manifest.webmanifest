@@ -1,0 +1,25 @@
+{
+  "id": "./",
+  "name": "Tools — tools gratis di browser",
+  "short_name": "Tools",
+  "description": "Kumpulan tools gratis untuk dokumen, PDF, gambar, video, audio, musik, sampai data developer — semuanya berjalan di perangkatmu.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#09090b",
+  "theme_color": "#09090b",
+  "lang": "id",
+  "categories": ["productivity", "utilities", "music"],
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Piano", "url": "./#/piano", "icons": [{ "src": "icon-192.png", "sizes": "192x192" }] },
+    { "name": "Gitar", "url": "./#/guitar", "icons": [{ "src": "icon-192.png", "sizes": "192x192" }] },
+    { "name": "Drum", "url": "./#/drums", "icons": [{ "src": "icon-192.png", "sizes": "192x192" }] },
+    { "name": "Tuner Gitar", "url": "./#/guitar-tuner", "icons": [{ "src": "icon-192.png", "sizes": "192x192" }] }
+  ]
+}

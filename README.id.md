@@ -103,6 +103,32 @@ Halaman depan sengaja dibuat ringan: judul singkat, kotak pencarian (tekan
 **/** untuk langsung mencari), pilihan kategori, dan kartu tiap tool — tanpa
 animasi berat, jadi cepat dibuka bahkan di ponsel.
 
+## Pasang sebagai aplikasi
+
+Situs ini bisa dipasang di HP atau komputer seperti aplikasi biasa: terbuka
+tanpa bilah browser, punya ikon di layar utama, dan tool yang sudah pernah
+dibuka tetap bisa dipakai tanpa internet.
+
+- **Android / Chrome / Edge (komputer):** ketuk **Pasang aplikasi** di header,
+  lalu **Pasang**.
+- **iPhone / iPad:** buka di Safari, ketuk **Bagikan**, lalu
+  **Tambahkan ke Layar Utama**. Tombol **Pasang** di header menampilkan
+  langkah ini.
+
+Di balik layar: `public/manifest.webmanifest` dan service worker `sw.js`.
+Service worker itu dibuat saat build dari `pwa/sw.js` oleh plugin di
+`vite.config.ts`. Halaman diambil dari jaringan dulu (jadi update langsung
+terlihat), sedangkan file build di-cache saat pertama kali dipakai. Instalasi
+tidak mengunduh semua tool sekaligus.
+
+## Layar penuh untuk alat musik
+
+Piano, Gitar, dan Drum punya tombol **Layar penuh**. Di HP layar dicoba diputar
+ke posisi mendatar, dan instrumen mengisi seluruh layar: piano otomatis
+menampilkan oktaf sebanyak yang muat dengan tuts selebar ±46 px. Di iPhone
+(Safari tidak mengizinkan layar penuh selain untuk video), tampilannya berupa
+lapisan yang menutupi halaman, dengan petunjuk untuk memutar HP.
+
 ## Menjalankan
 
 ```bash

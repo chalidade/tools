@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState, type PointerEvent as ReactPoi
 import { Eraser, Pause, Play, Piano as MidiIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
+import { Stage, StageButton, useStage } from '@/components/tool/Stage'
 import { useLang, useT } from '@/lib/i18n'
 import { DrumKit, type Piece } from './sound'
 
@@ -123,6 +124,7 @@ export default function Drums() {
   const [step, setStep] = useState(-1)
   const [volume, setVolume] = useState(0.8)
   const [midiInfo, setMidiInfo] = useState('')
+  const stage = useStage()
   const kitRef = useRef<DrumKit | null>(null)
   const padEls = useRef(new Map<Piece, HTMLElement>())
   const loop = useRef<{ timer: number; raf: number } | null>(null)
@@ -283,8 +285,8 @@ export default function Drums() {
 
   return (
     <div className="space-y-6">
-      <div className="rounded-3xl border bg-card p-4 shadow-xs sm:p-6">
-        <div className="grid grid-cols-4 gap-2 sm:gap-3">
+      <Stage stage={stage} title={t('Drum Online', 'Online Drums')} className="rounded-3xl border bg-card p-4 shadow-xs sm:p-6">
+        <div className={cn('grid grid-cols-4 gap-2 sm:gap-3', stage.full && 'min-h-0 flex-1 grid-rows-[1fr_1fr_0.8fr]')}>
           {PADS.map((p) => (
             <button
               key={p.id}
@@ -296,7 +298,8 @@ export default function Drums() {
               onContextMenu={(e) => e.preventDefault()}
               className={cn(
                 'flex touch-none flex-col items-center justify-center rounded-2xl border bg-background select-none transition-[background-color,transform] duration-75 data-[hit]:scale-[0.97] data-[hit]:bg-brand-2/30',
-                p.id === 'kick' ? 'col-span-4 h-20 sm:h-24' : 'h-24 sm:h-28',
+                p.id === 'kick' && 'col-span-4',
+                stage.full ? 'h-full min-h-0' : p.id === 'kick' ? 'h-20 sm:h-24' : 'h-24 sm:h-28',
                 (p.id === 'crash' || p.id === 'ride') && 'rounded-full',
               )}
             >
@@ -305,7 +308,8 @@ export default function Drums() {
             </button>
           ))}
         </div>
-        <div className="mt-4 flex flex-wrap items-center gap-3">
+        <div className={cn('flex-wrap items-center gap-3', stage.full ? 'hidden' : 'mt-4 flex')}>
+          {!stage.full && <StageButton onClick={stage.enter} />}
           <label className="flex items-center gap-2 text-sm text-muted-foreground">
             {t('Volume', 'Volume')}
             <input
@@ -325,7 +329,7 @@ export default function Drums() {
           )}
           {midiInfo && <span className="text-sm text-muted-foreground">{midiInfo}</span>}
         </div>
-      </div>
+      </Stage>
 
       <div className="rounded-3xl border bg-card p-4 shadow-xs sm:p-6">
         <div className="flex flex-wrap items-end gap-3">

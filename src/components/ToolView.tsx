@@ -1,6 +1,7 @@
 import { Suspense, useEffect } from 'react'
 import { ArrowLeft, Loader2, ShieldCheck } from 'lucide-react'
 import { InstallCard } from '@/components/InstallCard'
+import { ToolBoundary } from '@/components/tool/ToolBoundary'
 import { toolText, type Tool } from '@/tools/registry'
 import { useLang, useT } from '@/lib/i18n'
 
@@ -28,9 +29,11 @@ export function ToolView({ tool, embed = false }: { tool: Tool; embed?: boolean 
   if (embed)
     return (
       <div className="bg-background p-3 sm:p-4">
-        <Suspense fallback={loading}>
-          <Component key={tool.slug} />
-        </Suspense>
+        <ToolBoundary key={tool.slug}>
+          <Suspense fallback={loading}>
+            <Component key={tool.slug} />
+          </Suspense>
+        </ToolBoundary>
         <p className="mt-4 text-center text-xs text-muted-foreground">
           <a href={`https://chalidade.github.io/tools/#/${tool.slug}`} target="_blank" rel="noreferrer" className="hover:text-foreground">
             {text.title} · Tools — {t('berjalan di browsermu, tanpa upload', 'runs in your browser, no upload')} ↗
@@ -70,9 +73,11 @@ export function ToolView({ tool, embed = false }: { tool: Tool; embed?: boolean 
         </div>
 
         <div className="mt-10">
-          <Suspense fallback={loading}>
-            <Component key={tool.slug} />
-          </Suspense>
+          <ToolBoundary key={tool.slug}>
+            <Suspense fallback={loading}>
+              <Component key={tool.slug} />
+            </Suspense>
+          </ToolBoundary>
         </div>
         <InstallCard tool={tool} />
       </div>

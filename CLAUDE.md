@@ -52,6 +52,22 @@ picture; the rules that matter when editing:
   (newest first, Indonesian). Planned tools live in `ROADMAP.md`, grouped by
   day — take the next day's batch from there and move it into the changelog
   when it ships.
+- **Installable app (PWA):** `public/manifest.webmanifest` (relative URLs, so it
+  works under `/tools/`), icons `icon-192/512/maskable-512.png`, and a service
+  worker generated at build time from `pwa/sw.js` by the `serviceWorker()`
+  plugin in `vite.config.ts` (it fills in the app-shell file list and a build
+  version). Pages are network-first; hashed `/assets/` files are cache-first
+  and cached on first use — never precache every tool. Registered in
+  `main.tsx` for production only and never inside an embed. The header's
+  `InstallButton` replays `beforeinstallprompt` (`src/lib/install.ts`) or shows
+  the iOS "Add to Home Screen" steps. `ToolView` wraps each tool in
+  `ToolBoundary`, so a chunk that cannot load (offline, stale tab after a
+  deploy) shows a message instead of blanking the page.
+- **Full screen:** `src/components/tool/Stage.tsx` (`useStage`, `Stage`,
+  `StageButton`) — Fullscreen API plus a landscape orientation lock, falling
+  back to a fixed overlay where element full screen does not exist (iPhone).
+  Piano, guitar and drums put their playing surface in a `Stage`; in full
+  screen they stretch it with `flex-1` and hide secondary controls.
 - **Hash routing** (`#/<slug>`, `src/lib/use-hash-route.ts`) — do not switch to
   path routing; it 404s on reload under the Pages sub-path.
 - The home page is deliberately light: a small static `Hero`, then

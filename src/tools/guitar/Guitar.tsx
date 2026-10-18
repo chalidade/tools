@@ -3,6 +3,7 @@ import { ArrowDown, ArrowUp, Hand, Pause, Play, Plus, Repeat, X } from 'lucide-r
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Segmented } from '@/components/tool/Segmented'
+import { Stage, StageButton, useStage } from '@/components/tool/Stage'
 import { SHARPS, pc } from '@/lib/music'
 import { useLang, useT } from '@/lib/i18n'
 import { CHORD_TYPES, INSTRUMENTS, voicings, type Voicing } from '@/tools/chords/theory'
@@ -75,6 +76,7 @@ export default function Guitar() {
   const [lit, setLit] = useState<(number | null)[]>(() => OPEN.map(() => null))
   const [adding, setAdding] = useState<{ root: number; suffix: string } | null>(null)
 
+  const stage = useStage()
   const synthRef = useRef<GuitarSynth | null>(null)
   const timers = useRef<number[]>([])
   const pointers = useRef(new Map<number, string>())
@@ -324,11 +326,14 @@ export default function Guitar() {
             </button>
           </div>
         </div>
+        <div className="self-end">
+          <StageButton onClick={stage.enter} />
+        </div>
       </div>
 
-      <div className="rounded-3xl border bg-card p-4 shadow-xs sm:p-6">
+      <Stage stage={stage} title={t('Gitar Online', 'Online Guitar')} className="rounded-3xl border bg-card p-4 shadow-xs sm:p-6">
         {mode === 'strum' && (
-          <div className="mb-4 flex flex-wrap items-center gap-2">
+          <div className={cn('flex flex-wrap items-center gap-2', stage.full ? 'shrink-0' : 'mb-4')}>
             {tray.map((c, i) => (
               <span key={i} className="group relative">
                 <button
@@ -435,7 +440,10 @@ export default function Guitar() {
           onContextMenu={(e) => e.preventDefault()}
           role="application"
           aria-label={t('Leher gitar', 'Guitar neck')}
-          className="relative touch-none overflow-hidden rounded-xl bg-amber-950/90 select-none dark:bg-amber-950/60"
+          className={cn(
+            'relative touch-none overflow-hidden rounded-xl bg-amber-950/90 select-none dark:bg-amber-950/60',
+            stage.full && 'flex min-h-0 flex-1 flex-col',
+          )}
         >
           {/* Fret wires and inlays. */}
           <div className="pointer-events-none absolute inset-0 grid" style={{ gridTemplateColumns: `0.7fr repeat(${FRETS}, 1fr)` }}>
@@ -459,7 +467,7 @@ export default function Guitar() {
             ))}
           </div>
           {[5, 4, 3, 2, 1, 0].map((s) => (
-            <div key={s} data-s={s} className="relative grid h-9 sm:h-10" style={{ gridTemplateColumns: `0.7fr repeat(${FRETS}, 1fr)` }}>
+            <div key={s} data-s={s} className={cn('relative grid', stage.full ? 'min-h-0 flex-1' : 'h-9 sm:h-10')} style={{ gridTemplateColumns: `0.7fr repeat(${FRETS}, 1fr)` }}>
               <span
                 className={cn(
                   'pointer-events-none absolute inset-x-0 top-1/2 -translate-y-1/2 transition-colors',
@@ -494,7 +502,7 @@ export default function Guitar() {
             </div>
           ))}
         </div>
-        <div className="mt-1 grid font-mono text-[10px] text-muted-foreground" style={{ gridTemplateColumns: `0.7fr repeat(${FRETS}, 1fr)` }}>
+        <div className="mt-1 grid shrink-0 font-mono text-[10px] text-muted-foreground" style={{ gridTemplateColumns: `0.7fr repeat(${FRETS}, 1fr)` }}>
           {Array.from({ length: FRETS + 1 }, (_, f) => (
             <span key={f} className="text-center">
               {f === 0 ? '' : f}
@@ -503,7 +511,7 @@ export default function Guitar() {
         </div>
 
         {mode === 'strum' && (
-          <div className="mt-4 flex flex-wrap items-center gap-2">
+          <div className={cn('flex flex-wrap items-center gap-2', stage.full ? 'shrink-0' : 'mt-4')}>
             <Button size="lg" onClick={() => strum('down')}>
               <ArrowDown /> {t('Genjreng bawah', 'Down')}
             </Button>
@@ -513,7 +521,7 @@ export default function Guitar() {
             <Button size="lg" variant="ghost" onClick={mute}>
               <Hand /> {t('Redam', 'Mute')}
             </Button>
-            <label className="ml-auto flex items-center gap-2 text-sm text-muted-foreground">
+            <label className={cn('ml-auto items-center gap-2 text-sm text-muted-foreground', stage.full ? 'hidden' : 'flex')}>
               {t('Volume', 'Volume')}
               <input
                 type="range"
@@ -527,7 +535,7 @@ export default function Guitar() {
             </label>
           </div>
         )}
-      </div>
+      </Stage>
 
       {mode === 'strum' && (
         <div className="rounded-3xl border bg-card p-4 shadow-xs sm:p-6">

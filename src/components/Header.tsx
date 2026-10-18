@@ -1,4 +1,5 @@
 import { Github, Languages, Moon, Sun } from 'lucide-react'
+import { InstallButton } from '@/components/InstallButton'
 import { Logo } from '@/components/Logo'
 import { useTheme } from '@/lib/use-theme'
 import { setLang, useLang, useT } from '@/lib/i18n'
@@ -18,6 +19,7 @@ export function Header() {
         </a>
 
         <nav className="flex items-center gap-1">
+          <InstallButton />
           <a
             href="#/"
             className="hidden rounded-lg px-3 py-2 text-sm text-muted-foreground transition-colors hover:text-foreground sm:block"
