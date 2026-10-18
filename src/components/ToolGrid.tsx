@@ -1,16 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { motion } from 'motion/react'
 import { ArrowUpRight, Search, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { CATEGORIES, TOOLS, categoryText, toolText, type CategoryId, type Tool } from '@/tools/registry'
 import { searchTools } from '@/tools/search'
 import { useLang, useT } from '@/lib/i18n'
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] as const } },
-}
-const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } }
 
 export function ToolGrid() {
   const t = useT()
@@ -127,17 +120,11 @@ export function ToolGrid() {
         </div>
       ) : searching || category !== 'all' ? (
         // A search or one category: one flat grid, best matches first.
-        <motion.div
-          key={`${query}|${category}`}
-          initial="hidden"
-          animate="show"
-          variants={stagger}
-          className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
-        >
+        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {results.map((tool) => (
             <ToolCard key={tool.slug} tool={tool} />
           ))}
-        </motion.div>
+        </div>
       ) : (
         // Everything, grouped by category.
         <div className="mt-10 space-y-14">
@@ -149,17 +136,11 @@ export function ToolGrid() {
                   <h3 className="text-lg font-semibold tracking-tight">{categoryText(c.id, lang).title}</h3>
                   <p className="text-sm text-muted-foreground">{categoryText(c.id, lang).description}</p>
                 </div>
-                <motion.div
-                  initial="hidden"
-                  whileInView="show"
-                  viewport={{ once: true, margin: '-40px' }}
-                  variants={stagger}
-                  className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
-                >
+                <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                   {tools.map((tool) => (
                     <ToolCard key={tool.slug} tool={tool} />
                   ))}
-                </motion.div>
+                </div>
               </div>
             )
           })}
@@ -204,23 +185,12 @@ function ToolCard({ tool }: { tool: Tool }) {
   const lang = useLang()
   const text = toolText(tool, lang)
   return (
-    <motion.a
-      variants={fadeUp}
+    <a
       href={`#/${tool.slug}`}
-      className="group relative flex flex-col overflow-hidden rounded-2xl border bg-card p-6 shadow-xs transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-brand-2/10"
+      className="group flex flex-col rounded-2xl border bg-card p-6 shadow-xs transition-colors hover:border-brand-2/50"
     >
-      {/* Gradient hairline that lights up on hover. */}
-      <span
-        aria-hidden
-        className="pointer-events-none absolute inset-0 rounded-2xl bg-gradient-brand p-px opacity-0 transition-opacity duration-300 [mask:linear-gradient(#000_0_0)_content-box_exclude,linear-gradient(#000_0_0)] group-hover:opacity-100"
-      />
-      <span
-        aria-hidden
-        className="pointer-events-none absolute -top-20 -right-20 size-48 rounded-full bg-gradient-brand opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-20"
-      />
-
       <div className="flex items-start justify-between">
-        <span className="grid size-11 place-items-center rounded-xl bg-gradient-brand text-white shadow-md shadow-brand-2/25">
+        <span className="grid size-11 place-items-center rounded-xl bg-gradient-brand text-white">
           <tool.icon className="size-5" />
         </span>
         <div className="flex items-center gap-2">
@@ -229,7 +199,7 @@ function ToolCard({ tool }: { tool: Tool }) {
               {tool.badge === 'Baru' && lang === 'en' ? 'New' : tool.badge}
             </span>
           )}
-          <ArrowUpRight className="size-4 text-muted-foreground transition-all group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-foreground" />
+          <ArrowUpRight className="size-4 text-muted-foreground transition-colors group-hover:text-foreground" />
         </div>
       </div>
 
@@ -244,6 +214,6 @@ function ToolCard({ tool }: { tool: Tool }) {
           </span>
         ))}
       </div>
-    </motion.a>
+    </a>
   )
 }

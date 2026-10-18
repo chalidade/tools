@@ -1,4 +1,3 @@
-import { motion } from 'motion/react'
 import { Cpu, Download, FileUp } from 'lucide-react'
 import { useT } from '@/lib/i18n'
 
@@ -29,11 +28,6 @@ const STEPS = [
   },
 ] as const
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] as const } },
-}
-
 export function HowItWorks() {
   const t = useT()
   return (
@@ -56,17 +50,10 @@ export function HowItWorks() {
             </div>
           </div>
 
-          <motion.ol
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true, margin: '-60px' }}
-            variants={{ hidden: {}, show: { transition: { staggerChildren: 0.1 } } }}
-            className="grid sm:grid-cols-3"
-          >
+          <ol className="grid sm:grid-cols-3">
             {STEPS.map((step, i) => (
-              <motion.li
+              <li
                 key={step.title[0]}
-                variants={fadeUp}
                 className="border-b p-8 last:border-b-0 sm:border-r sm:border-b-0 sm:last:border-r-0"
               >
                 <div className="flex items-center justify-between">
@@ -77,9 +64,9 @@ export function HowItWorks() {
                 </div>
                 <h3 className="mt-6 font-semibold tracking-tight">{t(step.title[0], step.title[1])}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{t(step.body[0], step.body[1])}</p>
-              </motion.li>
+              </li>
             ))}
-          </motion.ol>
+          </ol>
         </div>
       </div>
     </section>

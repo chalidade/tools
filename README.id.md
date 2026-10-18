@@ -90,28 +90,11 @@ dan mengirim event berisi file rekaman. Ada juga API tanpa UI untuk developer.
 | Kalkulator | [`#/calculator`](https://chalidade.github.io/tools/#/calculator) | Kalkulator biasa dan ilmiah (sin/cos/tan dan inversnya, ln, log, pangkat, akar, faktorial, π, e, Ans) dengan derajat/radian. Parser sendiri (bukan `eval`): perkalian tersirat (2π, 3(4+5)), persen ala kalkulator HP (200 + 10% = 220), koma atau titik sebagai desimal, dan pembulatan 12 digit agar 0,1 + 0,2 = 0,3. Pratinjau hasil saat mengetik, bisa diketik dari keyboard, riwayat yang bisa dipakai ulang. |
 | Papan Tulis | [`#/whiteboard`](https://chalidade.github.io/tools/#/whiteboard) | Whiteboard / blackboard (pola polos, kotak, garis, titik) dengan pena peka tekanan stylus (perfect-freehand), stabilo, penghapus sebagian atau per objek, garis, panah, kotak, lingkaran (Shift = lurus/bujur sangkar), dan teks. Pilih & geser objek, undo/redo, banyak halaman, geser/zoom (scroll, Ctrl+scroll, cubit dua jari), layar penuh. Warna mengikuti papan, jadi tetap terbaca saat papan dibalik. Tersimpan otomatis di browser; unduh PNG (halaman) atau PDF (semua halaman), simpan/buka file `.board.json`. |
 
-## Beranda: kota kecil yang bisa dijelajahi
+## Beranda
 
-Halaman depan adalah kota kecil bergaya game RPG. Setiap kategori punya
-bangunannya sendiri — Percetakan, Perpustakaan, Brankas, Studio, dan Lab —
-dan di dalamnya setiap tool dijaga seorang tokoh kartun berseragam yang
-memperkenalkan diri, menjelaskan guna dan batasan tool-nya, lalu menawarkan
-"Buka" atau "Nanti saja". Di luar, warga kota berkeliaran: ada yang
-mengobrol, mengajak anjingnya jalan-jalan, atau berkebun; jalan setapak
-berkelok, kolam beriak, rumput tinggi bergoyang saat dilewati, dan malamnya
-lampu taman serta kunang-kunang menyala (mode gelap).
-
-- **WASD / panah** untuk jalan, **Shift** untuk lari.
-- Jalan ke pintu bangunan (atau tekan **E**) untuk masuk; injak keset
-  "KELUAR" di dalam untuk kembali ke kota.
-- **E / Enter** di dekat penjaga untuk mengobrol, panah untuk memilih
-  jawaban, **Esc** untuk pergi.
-- Mouse / ponsel: klik atau ketuk tanah, bangunan, atau tokoh — karakter
-  mencari jalannya sendiri ke sana.
-
-Minimap kota dan "paspor" (jumlah tool yang sudah dikunjungi) ada di pojok
-kanan atas. Kartu pembuka bisa disembunyikan (tombol ×). Daftar tools biasa
-tetap ada di bawahnya.
+Halaman depan sengaja dibuat ringan: judul singkat, kotak pencarian (tekan
+**/** untuk langsung mencari), pilihan kategori, dan kartu tiap tool — tanpa
+animasi berat, jadi cepat dibuka bahkan di ponsel.
 
 ## Menjalankan
 
@@ -163,6 +146,5 @@ belum pernah dibagikan (atau setelah cache-nya kedaluwarsa).
 
 ## Stack
 
-Vite + React 19 + TypeScript, Tailwind CSS v4, shadcn/ui, Motion
-(`motion/react`), ikon lucide-react, font Geist. Tema gelap secara default;
+Vite + React 19 + TypeScript, Tailwind CSS v4, shadcn/ui, ikon lucide-react, font Geist. Tema gelap secara default;
 pengunjung bisa beralih ke terang dari header.

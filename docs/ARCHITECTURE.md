@@ -14,7 +14,7 @@ A deeper look at how the site is put together. For the overview, see the [README
 
 ## App shell
 
-- `src/App.tsx` only composes sections (`Header`, `Playground`, `ToolGrid`, `HowItWorks`,
+- `src/App.tsx` only composes sections (`Header`, `Hero`, `ToolGrid`, `HowItWorks`,
   `ToolView`, `Footer`); each section is its own file in `src/components/`.
 - **Routing** is a small hook, `src/lib/use-hash-route.ts`. The route is `#/<slug>` and query
   parameters live after the hash (`#/<slug>?embed&theme=light&lang=en`). Path routing would 404 on
@@ -34,7 +34,6 @@ component; English text sits in `registry-en.ts`. From that list the app derives
 - search (`src/tools/search.ts`): accent-insensitive word-prefix matching across both languages,
   ranked title > keywords/formats > description, so "word" finds Word to PDF but not "password"
 - the `#/<slug>` routes
-- the town on the home page (one building per category, one keeper per tool)
 - the install/embed card on each tool page, and package metadata for tools that have one
 
 ## Shared engines (`src/lib/`)
@@ -74,21 +73,12 @@ Files are parsed in the page's origin, so their contents are treated as hostile 
   unsandboxed iframe, and strips hyperlinks that are not `http(s)`, `mailto` or in-document anchors
   (fixed in [68db1ae](https://github.com/chalidade/tools/commit/68db1ae)).
 
-## Home page: the town
+## Home page
 
-`src/components/Playground.tsx` and `src/components/playground/`:
-
-- `scenes.ts` lays out the town (paths, plaza, pond, tall grass, benches, lamps, trees) and the
-  inside of each building **from the registry**, handles collision, and does click-to-walk with A\*
-  on a 20 px grid followed by path straightening.
-- `Buildings.tsx` draws one style per category, in category order: print shop, library, vault,
-  studio, lab, office. `Person.tsx` draws the chibi keepers from front, back and side.
-- `dialog.ts` holds what each keeper says, per language; a tool without lines explains itself from
-  its registry description. `residents.ts` holds the townsfolk, their dog and their chatter.
-- The game loop moves sprites by mutating `style.transform` on refs, never through React state per
-  frame.
-- The world is `aria-hidden`. The searchable `ToolGrid` below it is the accessible path to every
-  tool. Visited tools are stamped in `localStorage` (`tools:visited`).
+Kept deliberately light: `Hero.tsx` is a short static intro, then `ToolGrid` (search, category
+chips, cards) and `HowItWorks`. There is no animation library and no per-frame JavaScript; cards
+use plain CSS transitions. An earlier walkable RPG town lived here and was removed because it
+nearly doubled the main bundle and got in the way of simply finding a tool.
 
 ## Internationalisation
 

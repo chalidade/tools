@@ -13,7 +13,7 @@ Your files are never uploaded.
 ![React](https://img.shields.io/badge/React-19-61dafb?logo=react&logoColor=black)
 ![Vite](https://img.shields.io/badge/Vite-8-646cff?logo=vite&logoColor=white)
 
-[![The tools home page: a small walkable RPG town with one building per tool category](docs/screenshot.png)](https://chalidade.github.io/tools/)
+[![The tools home page: a short intro, a search box and the tool cards grouped by category](docs/screenshot.png)](https://chalidade.github.io/tools/)
 
 ## Why
 
@@ -89,12 +89,11 @@ src/
 ├── lib/                   shared engines: pdf-text, pdf-doc, qpdf, media, image, i18n, routing
 └── components/
     ├── tool/              shared tool UI: FileDrop, MediaRange, SizeResult, ...
-    └── playground/        the walkable town on the home page
 packages/screen-recorder/  the same tool source built as an npm package / web component
 ```
 
 - **One folder per tool, one registry entry.** Adding an entry is all it takes: the home-page card,
-  the search index, the `#/<slug>` route and the tool's spot in the town are all derived from the
+  the search index and the `#/<slug>` route are all derived from the
   registry. Each tool is `React.lazy`-loaded, and heavy libraries (pdf.js, ExcelJS, Mediabunny…)
   are dynamic `import()`s inside the tool, so the home page never pays for them.
 - **Shared engines instead of copy-paste.** PDF text extraction (`lib/pdf-text.ts`) feeds PDF to
@@ -107,11 +106,9 @@ packages/screen-recorder/  the same tool source built as an npm package / web co
   fallbacks registered only when the browser has no native encoder.
 - **Hash routing under `/tools/`.** Routes are `#/<slug>` so a reload on GitHub Pages' sub-path never
   404s and no server rewrite is needed.
-- **The home page is a small RPG town.** Each category is a building (print shop, library, vault,
-  studio, lab, office) and each tool is a keeper you can talk to. Walk with WASD or the arrow keys,
-  or click to walk (A\* pathfinding). Sprites move by writing `style.transform` on refs rather than
-  setting React state every frame. The town is `aria-hidden`; the searchable tool grid below it is
-  the accessible way in.
+- **A light home page.** A short static intro, then the searchable tool grid (press `/` to
+  search) grouped by category. No animation library and no per-frame JavaScript, so it opens fast
+  even on a phone.
 - **Bilingual by construction.** Every string is written in both languages at the point of use
   (`t('Indonesian', 'English')`). English is the default unless the browser language is Indonesian
   or Malay; `?lang=en` in a link forces it.
@@ -123,7 +120,7 @@ More detail, including how the npm package isolates its styles in a Shadow DOM, 
 
 | Area | Libraries |
 | --- | --- |
-| App | React 19, TypeScript 6, Vite 8, Tailwind CSS v4, shadcn/ui, Motion, lucide-react, Geist font |
+| App | React 19, TypeScript 6, Vite 8, Tailwind CSS v4, shadcn/ui, lucide-react, Geist font |
 | PDF | pdf.js (legacy build), pdf-lib, qpdf (wasm), jsPDF + jspdf-autotable |
 | Office | docx-preview, docx, ExcelJS + numfmt, pptxgenjs, @jvmr/pptx-to-html, html2canvas-pro, DOMPurify |
 | Audio / video | Mediabunny on WebCodecs, @mediabunny/aac-encoder and mp3-encoder (wasm), gifenc, gifuct-js |
@@ -159,8 +156,6 @@ Every push to `main` is built and deployed to GitHub Pages by
    `src/components/tool/` and keep heavy libraries behind a dynamic `import()`.
 2. Add one entry to `src/tools/registry.ts` (category, icon, formats, search keywords, lazy import)
    and its English text to `src/tools/registry-en.ts`.
-3. Optionally give its town keeper some lines in `src/components/playground/dialog.ts`; without them
-   the keeper explains the tool from its registry description.
 
 The one rule: **all processing stays on the client.** No backend, and no sending user files to a
 third-party service.

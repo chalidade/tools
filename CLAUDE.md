@@ -45,23 +45,10 @@ picture; the rules that matter when editing:
   `src/components/tool/MediaRange.tsx` (`MediaRange`, `Filmstrip`, `Waveform`).
 - **Hash routing** (`#/<slug>`, `src/lib/use-hash-route.ts`) — do not switch to
   path routing; it 404s on reload under the Pages sub-path.
-- The home page opens with a walkable RPG town (`src/components/Playground.tsx`):
-  one building per category, each in its own style (`playground/Buildings.tsx`:
-  print shop, library, vault, studio, lab — assigned in category order).
-  Walking into a door enters it; inside, each tool is a cartoon keeper
-  (`playground/Person.tsx`: chibi style with dark outlines, drawn from the
-  front, back and a right-facing profile; the sprite's `data-dir` picks one) in that building's uniform who explains the tool
-  in a dialog (`playground/Dialog.tsx`) and offers to open it. Town layout
-  (winding paths, plaza, pond, tall grass, benches, lamps, trees), collision
-  and A* click-to-walk live in `playground/scenes.ts`, all laid out from the
-  registry — a new tool appears automatically. Townsfolk, their dog and their
-  chatter are in `playground/residents.ts`; what a keeper says is in
-  `playground/dialog.ts` (add lines for a new tool there; without them it
-  explains itself from its registry description). The loop moves sprites by
-  mutating `style.transform` on refs (never React state per frame); `.pg-*`
-  styles and animations live in `src/index.css`. The world is `aria-hidden`;
-  the ToolGrid below stays the accessible way in. Visited stamps persist in
-  localStorage (`tools:visited`).
+- The home page is deliberately light: a small static `Hero`, then
+  `ToolGrid` (search + category chips + cards) and `HowItWorks`. No animation
+  library and no per-frame JS on the home page — the walkable town that used
+  to be here was removed to keep it fast; don't bring heavy visuals back.
 - **Installable packages** live in `packages/<tool>/` (see packages/README.md):
   each builds the site's own tool source (alias `@` → `../../src`, never a
   copy) into an npm package with a custom element rendering the React UI in a
@@ -77,7 +64,8 @@ picture; the rules that matter when editing:
 - The repo is MIT-licensed (`LICENSE`).
 - `App.tsx` only composes sections; each section lives in
   `src/components/<Section>.tsx`. Style with the semantic shadcn tokens in
-  `src/index.css`, not hard-coded colors. Animation via `motion/react`.
+  `src/index.css`, not hard-coded colors. Prefer plain CSS transitions; there is no animation
+  library.
 - **UI copy is bilingual — Indonesian and English** (`src/lib/i18n.ts`). Write
   both languages where the text is used: `const t = useT()` then
   `t('Teks Indonesia', 'English text')` in components; `tr(id, en)` in plain

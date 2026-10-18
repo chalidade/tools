@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { Header } from '@/components/Header'
-import { Playground } from '@/components/Playground'
+import { Hero } from '@/components/Hero'
 import { ToolGrid } from '@/components/ToolGrid'
 import { HowItWorks } from '@/components/HowItWorks'
 import { ToolView } from '@/components/ToolView'
@@ -43,7 +43,7 @@ function App() {
           <ToolView tool={tool} />
         ) : (
           <>
-            <Playground />
+            <Hero />
             <ToolGrid />
             <HowItWorks />
           </>
