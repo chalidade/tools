@@ -3,7 +3,7 @@
 **English** · [Bahasa Indonesia](README.id.md)
 
 **My everyday file toolbox, built for the file work I do every day and published free for everyone.**
-39 tools for PDF, Office files, images, video, audio and QR codes, and every one of them runs entirely in your browser.
+42 tools for PDF, Office files, images, video, audio and QR codes, and every one of them runs entirely in your browser.
 Your files are never uploaded.
 
 [![Live demo](https://img.shields.io/badge/live%20demo-chalidade.github.io%2Ftools-6366f1)](https://chalidade.github.io/tools/)
@@ -30,7 +30,7 @@ browser's own media encoders, and a library is downloaded only when you open the
 
 ## Tools
 
-All 39, grouped the way the home page groups them. Each name links to the live tool.
+All 42, grouped the way the home page groups them. Each name links to the live tool.
 
 **To PDF**
 - [Word to PDF](https://chalidade.github.io/tools/#/doc-to-pdf): `.docx` to PDF, paginated without cutting through lines of text
@@ -63,7 +63,13 @@ All 39, grouped the way the home page groups them. Each name links to the live t
 - [Merge Audio](https://chalidade.github.io/tools/#/merge-audio), [Compress Audio](https://chalidade.github.io/tools/#/compress-audio) (MP3, AAC or Opus)
 - [Screen Recorder](https://chalidade.github.io/tools/#/screen-recorder): screen, window or tab, with mic and tab audio mixed, a floating camera, and WebM or MP4 export
 - [Voice Recorder](https://chalidade.github.io/tools/#/audio-recorder): live waveform, recordings kept in IndexedDB, export to MP3/M4A/WAV
+
+**Music**
+
 - [Guitar Tuner](https://chalidade.github.io/tools/#/guitar-tuner): microphone pitch detection (McLeod method), auto string detection, guitar/bass/ukulele tunings, reference tones, adjustable A4
+- [Metronome](https://chalidade.github.io/tools/#/metronome): 30–300 BPM on a lookahead Web Audio scheduler, accents, beats per bar, subdivisions, tap tempo
+- [Chord Finder & Transpose](https://chalidade.github.io/tools/#/chords): guitar and ukulele shapes generated for every root and 16 chord types, playable (Karplus–Strong); transposes a pasted song sheet keeping chords aligned to the lyrics
+- [BPM & Key Finder](https://chalidade.github.io/tools/#/bpm-key): tempo from an onset-envelope comb search, key from a chromagram against Krumhansl profiles, Camelot code and diatonic chords; runs in a Web Worker
 
 **Developer & Design**
 - [QR Code Generator](https://chalidade.github.io/tools/#/qr-generator): links, Wi-Fi, WhatsApp, vCard and more, with logo and styles; every code is scanned back to confirm it reads
@@ -126,6 +132,7 @@ More detail, including how the npm package isolates its styles in a Shadow DOM, 
 | Office | docx-preview, docx, ExcelJS + numfmt, pptxgenjs, @jvmr/pptx-to-html, html2canvas-pro, DOMPurify |
 | Audio / video | Mediabunny on WebCodecs, @mediabunny/aac-encoder and mp3-encoder (wasm), gifenc, gifuct-js |
 | Images / QR | Canvas 2D, zxing-wasm, node-qrcode |
+| Music | Web Audio API only — pitch, tempo and key detection and the chord shapes are written in-house |
 | Other | marked + DOMPurify (Notes), perfect-freehand (Whiteboard), JSZip |
 
 ## Getting started

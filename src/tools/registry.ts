@@ -22,8 +22,11 @@ import {
   FileType,
   FileVideo,
   Film,
+  AudioWaveform,
+  Drum,
   Gauge,
   Guitar,
+  Music4,
   ImageDown,
   Images,
   ListMusic,
@@ -75,7 +78,7 @@ export interface ToolPackage {
   published: boolean
 }
 
-export type CategoryId = 'to-pdf' | 'from-pdf' | 'pdf' | 'media' | 'dev' | 'productivity'
+export type CategoryId = 'to-pdf' | 'from-pdf' | 'pdf' | 'media' | 'music' | 'dev' | 'productivity'
 
 /** Home page groups, in display order. */
 export const CATEGORIES: { id: CategoryId; title: string; description: string }[] = [
@@ -94,6 +97,11 @@ export const CATEGORIES: { id: CategoryId; title: string; description: string }[
     id: 'media',
     title: 'Gambar & Media',
     description: 'Edit dan perkecil foto, video, dan audio: potong, ubah kecepatan, gabung, GIF, dan lainnya.',
+  },
+  {
+    id: 'music',
+    title: 'Musik',
+    description: 'Stem gitar, jaga tempo, cari chord, dan ketahui BPM serta kunci lagu.',
   },
   {
     id: 'dev',
@@ -486,7 +494,7 @@ export const TOOLS: Tool[] = [
   },
   {
     slug: 'guitar-tuner',
-    category: 'media',
+    category: 'music',
     keywords: [
       'tuner',
       'stem',
@@ -509,6 +517,53 @@ export const TOOLS: Tool[] = [
     formats: 'Mikrofon → Nada',
     badge: 'Baru',
     component: lazy(() => import('./guitar-tuner/GuitarTuner')),
+  },
+  {
+    slug: 'metronome',
+    category: 'music',
+    keywords: ['metronom', 'metronome', 'tempo', 'bpm', 'ketukan', 'beat', 'latihan', 'drum', 'tap tempo', 'birama', 'klik'],
+    title: 'Metronom',
+    description: 'Ketukan presisi 30–300 BPM dengan aksen, birama, pembagian ketukan, dan ketuk tempo.',
+    icon: Drum,
+    formats: 'BPM → Klik',
+    badge: 'Baru',
+    component: lazy(() => import('./metronome/Metronome')),
+  },
+  {
+    slug: 'chords',
+    category: 'music',
+    keywords: [
+      'chord',
+      'kord',
+      'kunci gitar',
+      'kunci',
+      'gitar',
+      'ukulele',
+      'transpose',
+      'capo',
+      'lirik',
+      'lagu',
+      'mayor',
+      'minor',
+      'diagram',
+    ],
+    title: 'Kamus Chord & Transpose',
+    description: 'Diagram chord gitar dan ukulele untuk semua kunci, bisa dibunyikan — plus transpose chord lagu sekali klik.',
+    icon: Music4,
+    formats: 'Chord → Diagram',
+    badge: 'Baru',
+    component: lazy(() => import('./chords/Chords')),
+  },
+  {
+    slug: 'bpm-key',
+    category: 'music',
+    keywords: ['bpm', 'tempo', 'kunci lagu', 'key', 'nada dasar', 'camelot', 'dj', 'lagu', 'mp3', 'analisis', 'ketukan'],
+    title: 'Deteksi BPM & Kunci Lagu',
+    description: 'Ketahui tempo (BPM) dan kunci sebuah lagu dari file audio — lengkap dengan kode Camelot dan chord yang cocok.',
+    icon: AudioWaveform,
+    formats: 'MP3 / WAV → BPM + Kunci',
+    badge: 'Baru',
+    component: lazy(() => import('./bpm-key/BpmKey')),
   },
   {
     slug: 'compress-audio',

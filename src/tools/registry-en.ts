@@ -12,6 +12,7 @@ export const CATEGORIES_EN: Record<CategoryId, { title: string; description: str
     title: 'Images & Media',
     description: 'Edit and shrink photos, video and audio: trim, speed up, merge, GIF and more.',
   },
+  music: { title: 'Music', description: 'Tune a guitar, keep time, look up chords, and find a song’s BPM and key.' },
   dev: { title: 'Developer & Design', description: 'QR codes, favicons, Base64, colors and tidy data.' },
   productivity: { title: 'Productivity', description: 'Take notes, calculate and sketch.' },
 }
@@ -89,6 +90,24 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
     description: 'Tune a guitar, bass or ukulele with your microphone — the string is detected automatically, with reference tones.',
     formats: 'Microphone → Pitch',
     keywords: ['tuner', 'tune', 'guitar', 'pitch', 'string', 'chromatic'],
+  },
+  metronome: {
+    title: 'Metronome',
+    description: 'A precise click from 30–300 BPM with accents, time signatures, subdivisions and tap tempo.',
+    formats: 'BPM → Click',
+    keywords: ['metronome', 'tempo', 'beat', 'practice', 'click'],
+  },
+  chords: {
+    title: 'Chord Finder & Transpose',
+    description: 'Guitar and ukulele chord diagrams in every key, playable — plus one-click transposing of a song’s chords.',
+    formats: 'Chord → Diagram',
+    keywords: ['chord', 'chords', 'guitar', 'ukulele', 'transpose', 'capo', 'lyrics', 'song'],
+  },
+  'bpm-key': {
+    title: 'BPM & Key Finder',
+    description: 'Find a song’s tempo (BPM) and key from an audio file — with its Camelot code and the chords that fit.',
+    formats: 'MP3 / WAV → BPM + Key',
+    keywords: ['bpm', 'tempo', 'key', 'camelot', 'dj', 'song', 'analyze'],
   },
   'compress-audio': { title: 'Compress Audio', description: 'Shrink audio to MP3, AAC or Opus — or pull the sound out of a video.', keywords: ['shrink', 'mp3', 'reduce'] },
   'qr-generator': {

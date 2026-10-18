@@ -4,7 +4,8 @@ import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { ErrorNote } from '@/components/tool/ErrorNote'
 import { tr, useLang, useT } from '@/lib/i18n'
-import { TUNINGS, detectPitch, freqToMidi, midiToFreq, noteLetter, noteName } from './pitch'
+import { freqToMidi, midiToFreq, noteLetter, noteName } from '@/lib/music'
+import { TUNINGS, detectPitch } from './pitch'
 
 /** Within this many cents counts as in tune. */
 const IN_TUNE = 5
@@ -351,7 +352,7 @@ export default function GuitarTuner() {
             {TUNINGS.map((x) => (
               <option key={x.id} value={x.id}>
                 {lang === 'en' ? x.label[1] : x.label[0]}
-                {x.strings.length ? ` — ${x.strings.map(noteLetter).join(' ')}` : ''}
+                {x.strings.length ? ` — ${x.strings.map((m) => noteLetter(m)).join(' ')}` : ''}
               </option>
             ))}
           </select>

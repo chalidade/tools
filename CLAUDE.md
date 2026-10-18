@@ -43,6 +43,15 @@ picture; the rules that matter when editing:
   `hasWebCodecs()`. A cut, speed change, or merge re-encodes audio, so call
   `ensureAudioEncoder` first for MP3/AAC. Trim timelines use
   `src/components/tool/MediaRange.tsx` (`MediaRange`, `Filmstrip`, `Waveform`).
+- Music tools (`guitar-tuner`, `metronome`, `chords`, `bpm-key`) use only the
+  Web Audio API plus in-house DSP; shared note/frequency helpers and the
+  Karplus–Strong `pluck()` live in `src/lib/music.ts`. Heavy analysis runs in a
+  Web Worker (`bpm-key/worker.ts`); decoding stays on the main thread because
+  workers have no `OfflineAudioContext`.
+- **Daily update log:** each working day adds a dated entry to `CHANGELOG.md`
+  (newest first, Indonesian). Planned tools live in `ROADMAP.md`, grouped by
+  day — take the next day's batch from there and move it into the changelog
+  when it ships.
 - **Hash routing** (`#/<slug>`, `src/lib/use-hash-route.ts`) — do not switch to
   path routing; it 404s on reload under the Pages sub-path.
 - The home page is deliberately light: a small static `Hero`, then

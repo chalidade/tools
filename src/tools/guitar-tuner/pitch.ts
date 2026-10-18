@@ -4,8 +4,6 @@
  * fundamental of a plucked string instead of its louder second harmonic.
  */
 
-const NOTE_NAMES = ['C', 'C♯', 'D', 'D♯', 'E', 'F', 'F♯', 'G', 'G♯', 'A', 'A♯', 'B'] as const
-
 export interface Pitch {
   /** Fundamental frequency in Hz. */
   freq: number
@@ -85,18 +83,6 @@ function decimate(input: Float32Array, factor: number) {
   }
   return out
 }
-
-/** Frequency of a MIDI note number for a given A4 reference. */
-export const midiToFreq = (midi: number, a4 = 440) => a4 * 2 ** ((midi - 69) / 12)
-
-/** Fractional MIDI note number of a frequency. */
-export const freqToMidi = (freq: number, a4 = 440) => 69 + 12 * Math.log2(freq / a4)
-
-/** "E2", "A♯3"… */
-export const noteName = (midi: number) => `${NOTE_NAMES[((midi % 12) + 12) % 12]}${Math.floor(midi / 12) - 1}`
-
-/** Just the letter, without the octave. */
-export const noteLetter = (midi: number) => NOTE_NAMES[((midi % 12) + 12) % 12]
 
 export interface Tuning {
   id: string
