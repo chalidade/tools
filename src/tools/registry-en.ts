@@ -84,6 +84,12 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
     formats: 'Microphone → MP3 / M4A / WAV',
     keywords: ['record', 'voice', 'microphone', 'memo'],
   },
+  'guitar-tuner': {
+    title: 'Guitar Tuner',
+    description: 'Tune a guitar, bass or ukulele with your microphone — the string is detected automatically, with reference tones.',
+    formats: 'Microphone → Pitch',
+    keywords: ['tuner', 'tune', 'guitar', 'pitch', 'string', 'chromatic'],
+  },
   'compress-audio': { title: 'Compress Audio', description: 'Shrink audio to MP3, AAC or Opus — or pull the sound out of a video.', keywords: ['shrink', 'mp3', 'reduce'] },
   'qr-generator': {
     title: 'QR Code Generator',
