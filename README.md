@@ -1,166 +1,245 @@
 # tools
 
-Kumpulan tools gratis yang jalan **sepenuhnya di browser**. File diproses di
-perangkat pengguna: tidak di-upload ke server dan tidak disimpan di mana pun.
+**English** · [Bahasa Indonesia](README.id.md)
 
-**Live:** https://chalidade.github.io/tools/
+**My everyday file toolbox, built for the file work I do every day and published free for everyone.**
+38 tools for PDF, Office files, images, video, audio and QR codes, and every one of them runs entirely in your browser.
+Your files are never uploaded.
 
-Tersedia dalam **Bahasa Indonesia dan English** — ganti lewat tombol ID/EN di
-header (atau `#/<tool>?lang=en` di tautan).
+[![Live demo](https://img.shields.io/badge/live%20demo-chalidade.github.io%2Ftools-6366f1)](https://chalidade.github.io/tools/)
+[![Deploy to GitHub Pages](https://github.com/chalidade/tools/actions/workflows/pages.yml/badge.svg)](https://github.com/chalidade/tools/actions/workflows/pages.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+![TypeScript](https://img.shields.io/badge/TypeScript-6-3178c6?logo=typescript&logoColor=white)
+![React](https://img.shields.io/badge/React-19-61dafb?logo=react&logoColor=black)
+![Vite](https://img.shields.io/badge/Vite-8-646cff?logo=vite&logoColor=white)
 
-## Pasang di situsmu
+[![The tools home page: a small walkable RPG town with one building per tool category](docs/screenshot.png)](https://chalidade.github.io/tools/)
 
-Lisensinya **MIT**, jadi setiap tool boleh dipasang di website-mu sendiri,
-gratis. Tool tetap berjalan di browser pengunjungmu, tanpa server.
+## Why
 
-**1. Iframe (semua tool, bisa dipakai sekarang).** Ganti `screen-recorder`
-dengan alamat tool mana pun dari tabel di bawah, misalnya `whiteboard`,
-`compress-image`, atau `qr-generator`:
+Most "free online converters" upload your file to someone else's server. For a contract, a payslip
+or an ID scan, that is a bad trade. This site makes one promise and is built around it:
+**everything happens on your device.** There is no backend, no account, no upload and no
+third-party processing API. Heavy work is done with libraries compiled to WebAssembly or with the
+browser's own media encoders, and a library is downloaded only when you open the tool that needs it.
+
+- **Free and open source** (MIT)
+- **Bilingual UI**: English and Indonesian, with a toggle in the header
+- **Embeddable**: any tool can go on your own site through an iframe, and the first tool is packaged
+  as a web component ([below](#embed-a-tool-on-your-site))
+
+## Tools
+
+All 38, grouped the way the home page groups them. Each name links to the live tool.
+
+**To PDF**
+- [Word to PDF](https://chalidade.github.io/tools/#/doc-to-pdf): `.docx` to PDF, paginated without cutting through lines of text
+- [Images to PDF](https://chalidade.github.io/tools/#/image-to-pdf): reorder, rotate, A4/Letter/fit-to-image; phone EXIF rotation applied
+- [PowerPoint to PDF](https://chalidade.github.io/tools/#/ppt-to-pdf): `.pptx` to PDF, one page per slide
+- [Excel to PDF](https://chalidade.github.io/tools/#/excel-to-pdf): `.xlsx`/`.csv` to a selectable-text PDF table, with theme colors, borders, merged cells and number formats
+
+**From PDF**
+- [PDF to Word](https://chalidade.github.io/tools/#/pdf-to-word): editable `.docx`, keeping font size, bold/italic, tabs and page breaks
+- [PDF to Excel](https://chalidade.github.io/tools/#/pdf-to-excel): tables rebuilt from text positions; currencies and percentages become real numbers
+- [PDF to PowerPoint](https://chalidade.github.io/tools/#/pdf-to-ppt): one slide per page, with the text as editable text boxes
+- [PDF to Images](https://chalidade.github.io/tools/#/pdf-to-image): PNG/JPG at 72, 150 or 300 dpi, zipped when there are several
+- [PDF to Markdown](https://chalidade.github.io/tools/#/pdf-to-markdown): headings, emphasis, lists and tables, with tables joined across pages
+
+**Edit & Secure PDF**
+- [Merge PDF](https://chalidade.github.io/tools/#/merge-pdf), [Split PDF](https://chalidade.github.io/tools/#/split-pdf) (pages, ranges like `1-3, 5, 8-`, or every N pages)
+- [Watermark PDF](https://chalidade.github.io/tools/#/watermark-pdf): text or logo, centred or tiled, correct on rotated pages
+- [Sign PDF](https://chalidade.github.io/tools/#/sign-pdf): draw (pressure-sensitive) or upload a signature, then place it anywhere
+- [Compress PDF](https://chalidade.github.io/tools/#/compress-pdf): re-encodes embedded JPEGs and optimises the structure with qpdf; never returns a larger file
+- [Protect PDF](https://chalidade.github.io/tools/#/protect-pdf) (AES-256 password and permissions) and [Unlock PDF](https://chalidade.github.io/tools/#/unlock-pdf)
+
+**Images & Media**
+- [Compress Images](https://chalidade.github.io/tools/#/compress-image): batch JPG/WebP, metadata (including GPS) stripped
+- [Crop & Resize Image](https://chalidade.github.io/tools/#/crop-resize-image): free or fixed ratios, rotate, flip, exact pixels
+- [Remove Background](https://chalidade.github.io/tools/#/remove-background): magic wand, color select, lasso and brush, with no AI model to download
+- [Compress Video](https://chalidade.github.io/tools/#/compress-video): MP4 output using the device's own encoder, with a size estimate up front
+- [Trim Video & Audio](https://chalidade.github.io/tools/#/trim-media): filmstrip/waveform timeline; untouched parts are copied without re-encoding
+- [GIF ⇄ MP4](https://chalidade.github.io/tools/#/gif-mp4), [Extract Video Frames](https://chalidade.github.io/tools/#/extract-frames)
+- [Change Speed](https://chalidade.github.io/tools/#/change-speed): 0.25× to 4× with the pitch kept natural (a hand-written WSOLA time-stretch)
+- [Merge Audio](https://chalidade.github.io/tools/#/merge-audio), [Compress Audio](https://chalidade.github.io/tools/#/compress-audio) (MP3, AAC or Opus)
+- [Screen Recorder](https://chalidade.github.io/tools/#/screen-recorder): screen, window or tab, with mic and tab audio mixed, a floating camera, and WebM or MP4 export
+- [Voice Recorder](https://chalidade.github.io/tools/#/audio-recorder): live waveform, recordings kept in IndexedDB, export to MP3/M4A/WAV
+
+**Developer & Design**
+- [QR Code Generator](https://chalidade.github.io/tools/#/qr-generator): links, Wi-Fi, WhatsApp, vCard and more, with logo and styles; every code is scanned back to confirm it reads
+- [QR & Barcode Reader](https://chalidade.github.io/tools/#/qr-reader): from an image, a pasted screenshot or the camera (QR, Data Matrix, Aztec, PDF417, EAN/UPC, Code 128…)
+- [JSON Beautifier](https://chalidade.github.io/tools/#/json-beautify) and [JSON Minify](https://chalidade.github.io/tools/#/json-minify): a custom parser that keeps numbers exactly as written
+- [Favicon Generator](https://chalidade.github.io/tools/#/favicon-generator): `.ico`, iOS/Android icons, web manifest and the `<head>` snippet
+- [Image ⇄ Base64](https://chalidade.github.io/tools/#/image-to-base64), [Color Picker](https://chalidade.github.io/tools/#/color-picker) (HEX/RGB/HSL/OKLCH, WCAG contrast, 50–950 shades)
+
+**Productivity**
+- [Notes](https://chalidade.github.io/tools/#/notes): Markdown with live checklists, saved in the browser, JSON backup/restore
+- [Calculator](https://chalidade.github.io/tools/#/calculator): basic and scientific, with its own expression parser (no `eval`)
+- [Whiteboard](https://chalidade.github.io/tools/#/whiteboard): pressure-sensitive pen, shapes, text, multiple pages, export to PNG/PDF
+
+The [Indonesian README](README.id.md) has a longer per-tool table with every option and limitation.
+
+## How it works
+
+```
+src/
+├── tools/
+│   ├── registry.ts        one entry per tool: slug, category, icon, keywords, lazy(() => import(...))
+│   ├── registry-en.ts     English titles and descriptions
+│   └── <slug>/            one folder per tool, default-exported React component
+├── lib/                   shared engines: pdf-text, pdf-doc, qpdf, media, image, i18n, routing
+└── components/
+    ├── tool/              shared tool UI: FileDrop, MediaRange, SizeResult, ...
+    └── playground/        the walkable town on the home page
+packages/screen-recorder/  the same tool source built as an npm package / web component
+```
+
+- **One folder per tool, one registry entry.** Adding an entry is all it takes: the home-page card,
+  the search index, the `#/<slug>` route and the tool's spot in the town are all derived from the
+  registry. Each tool is `React.lazy`-loaded, and heavy libraries (pdf.js, ExcelJS, Mediabunny…)
+  are dynamic `import()`s inside the tool, so the home page never pays for them.
+- **Shared engines instead of copy-paste.** PDF text extraction (`lib/pdf-text.ts`) feeds PDF to
+  Word, Excel, PowerPoint and Markdown; PDF editing (`lib/pdf-doc.ts`, pdf-lib) handles rotated
+  pages and restriction-only encryption for merge, split, watermark and sign; all audio/video goes
+  through `lib/media.ts` on Mediabunny.
+- **WebAssembly, self-hosted.** qpdf 12 compiled to wasm handles encryption and structural
+  optimisation (a fresh module per command, files in its in-memory FS). zxing-wasm reads barcodes,
+  with its `.wasm` bundled by Vite instead of fetched from a CDN. MP3 and AAC encoders are wasm
+  fallbacks registered only when the browser has no native encoder.
+- **Hash routing under `/tools/`.** Routes are `#/<slug>` so a reload on GitHub Pages' sub-path never
+  404s and no server rewrite is needed.
+- **The home page is a small RPG town.** Each category is a building (print shop, library, vault,
+  studio, lab, office) and each tool is a keeper you can talk to. Walk with WASD or the arrow keys,
+  or click to walk (A\* pathfinding). Sprites move by writing `style.transform` on refs rather than
+  setting React state every frame. The town is `aria-hidden`; the searchable tool grid below it is
+  the accessible way in.
+- **Bilingual by construction.** Every string is written in both languages at the point of use
+  (`t('Indonesian', 'English')`). English is the default unless the browser language is Indonesian
+  or Malay; `?lang=en` in a link forces it.
+
+More detail, including how the npm package isolates its styles in a Shadow DOM, is in
+[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+
+## Tech stack
+
+| Area | Libraries |
+| --- | --- |
+| App | React 19, TypeScript 6, Vite 8, Tailwind CSS v4, shadcn/ui, Motion, lucide-react, Geist font |
+| PDF | pdf.js (legacy build), pdf-lib, qpdf (wasm), jsPDF + jspdf-autotable |
+| Office | docx-preview, docx, ExcelJS + numfmt, pptxgenjs, @jvmr/pptx-to-html, html2canvas-pro, DOMPurify |
+| Audio / video | Mediabunny on WebCodecs, @mediabunny/aac-encoder and mp3-encoder (wasm), gifenc, gifuct-js |
+| Images / QR | Canvas 2D, zxing-wasm, node-qrcode |
+| Other | marked + DOMPurify (Notes), perfect-freehand (Whiteboard), JSZip |
+
+## Getting started
+
+Requires Node.js 22 (the version CI uses).
+
+```bash
+npm ci
+npm run dev              # dev server
+npm run build            # type-check (tsc -b) + production build
+npm run preview          # serve the production build
+npm run lint             # oxlint
+npm run build:packages   # build the embeddable npm package(s)
+npm run og               # re-render the Open Graph image (needs Chrome/Chromium)
+```
+
+A local build uses base `/`. To reproduce the GitHub Pages build exactly:
+
+```bash
+npx tsc -b && npx vite build --base=/tools/ && npx vite preview --base=/tools/
+```
+
+Every push to `main` is built and deployed to GitHub Pages by
+[`.github/workflows/pages.yml`](.github/workflows/pages.yml).
+
+## Adding a tool
+
+1. Create `src/tools/<slug>/` with a default-exported component. Reuse the shared UI in
+   `src/components/tool/` and keep heavy libraries behind a dynamic `import()`.
+2. Add one entry to `src/tools/registry.ts` (category, icon, formats, search keywords, lazy import)
+   and its English text to `src/tools/registry-en.ts`.
+3. Optionally give its town keeper some lines in `src/components/playground/dialog.ts`; without them
+   the keeper explains the tool from its registry description.
+
+The one rule: **all processing stays on the client.** No backend, and no sending user files to a
+third-party service.
+
+## Quality gates
+
+- **`npm run build` is the gate.** It runs `tsc -b` (strict TypeScript) before `vite build`, and CI
+  runs the same type-check before every deploy, so a type error never ships.
+- **Lint** with oxlint (`npm run lint`).
+- **There is no automated test suite.** Tools are verified by using them and by inspecting the
+  files they produce, which has caught bugs a click-through could not (see the lessons below).
+- The npm package's hand-written public types are checked against the source at build time
+  (`packages/screen-recorder/types/check.ts`).
+
+## Browser support
+
+- **Video and audio tools need WebCodecs.** The UI checks for `VideoEncoder`/`AudioEncoder` first
+  and names the browsers that support them when they are missing. AAC falls back to a wasm
+  encoder where the browser has none (Firefox, Chrome on Linux); MP3 always uses the wasm encoder.
+- **PDF tools use pdf.js's legacy build.** pdf.js 6 relies on very recent JavaScript, and the modern
+  build made every PDF tool fail on older Chromium.
+- **Screen Recorder** needs a desktop browser (`getDisplayMedia`); it records VP9/Opus WebM, or MP4
+  on Safari, and can convert WebM to MP4.
+- **Smaller notes:** the Color Picker's screen eyedropper needs the EyeDropper API (Chrome/Edge);
+  HEIC images open only in Safari.
+
+**Known limitations**, also stated in each tool: scanned PDFs are not supported (that needs OCR);
+legacy `.doc`, `.ppt` and `.xls` are not supported; Excel to PDF and Watermark PDF write text with
+PDF's built-in Helvetica, so non-Latin scripts do not render correctly.
+
+## Embed a tool on your site
+
+Any tool can be embedded. `?embed` renders the tool alone, without the site header and footer;
+add `&theme=light|dark` and `&lang=en|id` as needed.
 
 ```html
 <iframe
-  src="https://chalidade.github.io/tools/#/screen-recorder?embed"
-  title="Rekam Layar"
+  src="https://chalidade.github.io/tools/#/screen-recorder?embed&lang=en"
+  title="Screen Recorder"
   style="width: 100%; height: 760px; border: 0; border-radius: 16px"
   allow="display-capture; microphone; camera; clipboard-write; fullscreen; picture-in-picture"
 ></iframe>
 ```
 
-`?embed` menampilkan tool saja, tanpa header dan footer. Tambahkan
-`&theme=light` atau `&theme=dark` untuk memaksa tema. Atribut `allow` hanya
-dibutuhkan oleh tool yang memakai layar, mikrofon, atau kamera. Kode siap salin
-juga ada di bagian **Pasang di situsmu** di halaman setiap tool.
+[`packages/screen-recorder`](packages/screen-recorder) builds the Screen Recorder from the same
+source into a `<screen-recorder>` custom element (React and CSS bundled, rendered in a Shadow DOM)
+plus a headless API. It is ready to publish to npm as `@chalidade/screen-recorder` but has not been
+published yet; until then, use the iframe.
 
-**2. Paket npm / satu tag script** (dimulai dari Rekam Layar,
-[`@chalidade/screen-recorder`](packages/screen-recorder)): elemen
-`<screen-recorder>` yang gayanya terisolasi (Shadow DOM), bisa diatur warnanya,
-dan mengirim event berisi file rekaman. Ada juga API tanpa UI untuk developer.
+## Engineering notes
 
-```html
-<script type="module" src="https://cdn.jsdelivr.net/npm/@chalidade/screen-recorder@0/dist/element.js"></script>
-<screen-recorder theme="auto"></screen-recorder>
-```
+Things this project taught me, with the longer write-ups on my [devlog](https://github.com/chalidade/devlog):
 
-> Paket npm-nya sedang menunggu diterbitkan. Sampai saat itu, pakai iframe di
-> atas. Cara kerja, build, dan cara menambah paket untuk tool lain ada di
-> [packages/README.md](packages/README.md).
+- **[Paginating a .docx in the browser without cutting lines](https://github.com/chalidade/devlog/blob/main/notes/paginating-docx-in-the-browser.md).**
+  CVs built as one big layout table were sliced through a line of text at the page break. The fix
+  measures real rendered lines with `Range.getClientRects()` and moves the cut into a gap; margins
+  moved to `@page` so continuation pages keep them.
+- **[Rebuilding tables from PDF text](https://github.com/chalidade/devlog/blob/main/notes/rebuilding-tables-from-pdf-text.md).**
+  A PDF has no tables, only positioned text. Rows come from shared baselines and columns from
+  vertical gutters no text crosses, with a tolerance so one long cell cannot erase a column.
+- **[Time-stretching audio in the browser](https://github.com/chalidade/devlog/blob/main/notes/time-stretching-audio-in-the-browser.md).**
+  A streaming WSOLA implementation for speed changes without the chipmunk effect, with memory
+  bounded no matter how long the file is.
+- **Measure the output, not the click-through.** Every tool passed a click-through, yet probing
+  the files found a 2× video with 81 frames instead of 120 and a GIF playing 4% fast.
+- **File contents are untrusted input.** Slide HTML is sanitised with DOMPurify, the QR reader only
+  makes `http(s)`, `mailto`, `tel` and `sms` links clickable, and a crafted-`.docx` XSS in Word to
+  PDF (docx-preview rendering embedded HTML in an unsandboxed iframe) was fixed in
+  [68db1ae](https://github.com/chalidade/tools/commit/68db1ae).
+- **Scope calls follow from the promise.** Background removal uses manual selection tools instead
+  of a ~100 MB AI model download, and a YouTube/Instagram downloader was turned down because it
+  cannot work without a server-side proxy.
 
-## Daftar tools
+## How this was built
 
-| Tool | Alamat | Keterangan |
-| --- | --- | --- |
-| Word ke PDF | [`#/doc-to-pdf`](https://chalidade.github.io/tools/#/doc-to-pdf) | `.docx` → PDF (docx-preview + jsPDF). `.doc` lama belum didukung. |
-| PDF ke Word | [`#/pdf-to-word`](https://chalidade.github.io/tools/#/pdf-to-word) | PDF → `.docx` yang bisa diedit (pdf.js + docx). Teks, ukuran, tebal/miring, font, tab, dan pemisah halaman ikut; gambar dan garis tabel tidak. PDF hasil scan belum didukung (butuh OCR). |
-| Gambar ke PDF | [`#/image-to-pdf`](https://chalidade.github.io/tools/#/image-to-pdf) | JPG/PNG/WebP/GIF/BMP → satu PDF (jsPDF). Banyak gambar sekaligus, urutan bisa diatur, putar 90°, ukuran A4/Letter/sesuai gambar, orientasi, margin. Rotasi EXIF foto ponsel ikut. HEIC hanya terbaca di Safari. |
-| PowerPoint ke PDF | [`#/ppt-to-pdf`](https://chalidade.github.io/tools/#/ppt-to-pdf) | `.pptx` → PDF, satu halaman per slide (@jvmr/pptx-to-html + jsPDF, HTML slide disanitasi dengan DOMPurify). Teks, bentuk, tabel, grafik, dan gambar ikut; animasi, transisi, dan video tidak. `.ppt` lama belum didukung. |
-| Excel ke PDF | [`#/excel-to-pdf`](https://chalidade.github.io/tools/#/excel-to-pdf) | `.xlsx`/`.csv` → PDF tabel dengan teks yang bisa diseleksi (ExcelJS + numfmt + jsPDF autotable). Warna (termasuk warna tema), tebal/miring, border, sel gabungan, format angka/tanggal/persen, teks terbungkus; baris/kolom/sheet tersembunyi dilewati. Pilihan kertas, orientasi, muat-ke-lebar atau ukuran asli, garis bantu, dan sheet mana yang dicetak. `.xls`/`.ods` belum didukung; huruf di luar Latin (mis. aksara CJK) belum tampil benar karena PDF memakai font Helvetica bawaan. |
-| PDF ke Excel | [`#/pdf-to-excel`](https://chalidade.github.io/tools/#/pdf-to-excel) | Tabel di PDF → `.xlsx` (pdf.js + ExcelJS). Baris dari garis dasar teks, kolom dari celah vertikal yang kosong; sel yang terbungkus digabung kembali; header yang berulang tiap halaman diambil sekali. Angka (Rp, ribuan, desimal koma/titik, persen, negatif dalam kurung) jadi angka sungguhan dengan format Excel; nomor berawalan 0 tetap teks. Satu sheet gabungan atau satu per halaman. PDF hasil scan belum didukung. |
-| PDF ke PowerPoint | [`#/pdf-to-ppt`](https://chalidade.github.io/tools/#/pdf-to-ppt) | Tiap halaman PDF → satu slide `.pptx` seukuran halaman (pdf.js + pptxgenjs). Mode **teks bisa diedit**: latar slide = halaman tanpa teks (bentuk, warna, gambar), teks jadi kotak teks di posisi aslinya dengan ukuran, tebal/miring, font, dan warna (warna dibaca dari selisih piksel render dengan/tanpa teks). Mode **persis seperti PDF**: tiap slide berupa gambar halaman. |
-| PDF ke Gambar | [`#/pdf-to-image`](https://chalidade.github.io/tools/#/pdf-to-image) | Halaman PDF → PNG/JPG pada 72/150/300 dpi (pdf.js). Pilih halaman lewat pratinjau; satu halaman jadi gambar, beberapa jadi ZIP (jszip). |
-| Gabung PDF | [`#/merge-pdf`](https://chalidade.github.io/tools/#/merge-pdf) | Beberapa PDF → satu PDF (pdf-lib). Urutan diatur dengan seret atau tombol kiri/kanan; pratinjau halaman pertama dan jumlah halaman tiap file. |
-| Pisah PDF | [`#/split-pdf`](https://chalidade.github.io/tools/#/split-pdf) | Ambil halaman terpilih jadi satu PDF, pisah per rentang (`1-3, 5, 8-`), atau pecah tiap N halaman (pdf-lib). Lebih dari satu hasil diunduh sebagai ZIP. |
-| Watermark PDF | [`#/watermark-pdf`](https://chalidade.github.io/tools/#/watermark-pdf) | Teks atau gambar/logo di semua halaman (pdf-lib): satu di tengah atau berulang, diagonal/mendatar, ukuran, warna, ketebalan; pratinjau memakai perhitungan tata letak yang sama dengan PDF-nya. Halaman yang diputar ikut benar. Teks memakai Helvetica bawaan, jadi hanya huruf Latin. |
-| Tanda Tangan PDF | [`#/sign-pdf`](https://chalidade.github.io/tools/#/sign-pdf) | Gambar tanda tangan (mouse, jari, atau pena dengan tekanan) atau unggah fotonya — latar kertas dijadikan transparan — lalu tempel, geser, dan ubah ukurannya di halaman mana pun (pdf-lib). Tanda tangan berupa gambar, bukan TTE bersertifikat. |
-| Kompres PDF | [`#/compress-pdf`](https://chalidade.github.io/tools/#/compress-pdf) | Foto JPEG di dalam PDF diperkecil dan dikodekan ulang (Ringan/Sedang/Kuat), lalu struktur PDF dioptimasi dengan qpdf (object stream, rekompresi). Teks tetap teks. Gambar non-JPEG/CMYK tidak disentuh; hasil tidak pernah lebih besar dari aslinya. |
-| PDF ke Markdown | [`#/pdf-to-markdown`](https://chalidade.github.io/tools/#/pdf-to-markdown) | Judul dari ukuran huruf, **tebal**/*miring*, daftar, dan tabel Markdown (mesin tabel PDF ke Excel + mesin paragraf PDF ke Word); tabel yang bersambung antar-halaman digabung. |
-| Proteksi PDF | [`#/protect-pdf`](https://chalidade.github.io/tools/#/protect-pdf) | Password buka + izin cetak/salin/ubah, enkripsi AES-256 (qpdf). |
-| Buka Proteksi PDF | [`#/unlock-pdf`](https://chalidade.github.io/tools/#/unlock-pdf) | Hapus password (dengan password yang benar) atau batasan cetak/salin/ubah dari PDF milik sendiri (qpdf). |
-| Kompres Video | [`#/compress-video`](https://chalidade.github.io/tools/#/compress-video) | MP4/MOV/WebM/MKV → MP4 (Mediabunny + WebCodecs, encoder bawaan perangkat — biasanya lebih cepat dari durasi videonya). Kualitas Ringan/Sedang/Kuat (bitrate dari resolusi × fps), resolusi 1080p/720p/480p, audio dipertahankan atau dihapus; perkiraan ukuran sebelum mulai, progress + bisa dibatalkan. Butuh browser dengan WebCodecs. |
-| Crop & Resize Gambar | [`#/crop-resize-image`](https://chalidade.github.io/tools/#/crop-resize-image) | Kotak potong yang bisa digeser/ditarik dengan rasio bebas, asli, 1:1, 4:3, 3:2, 16:9, 4:5, 9:16; putar 90° dan balik; ukuran hasil 100/75/50/25% atau piksel kustom (rasio bisa dikunci); simpan sebagai JPG/PNG/WebP. Rotasi EXIF foto ponsel ikut. |
-| Hapus Latar Gambar | [`#/remove-background`](https://chalidade.github.io/tools/#/remove-background) | Tanpa AI — pengguna yang memilih latarnya: tongkat ajaib (area bersambung dengan warna mirip, toleransi diatur), pilih warna (semua piksel serupa di seluruh gambar), lasso, kotak (dalam/luar seleksi), dan kuas hapus/pulihkan; urungkan (Ctrl/⌘+Z), balik seleksi, zoom sampai 400%, mode tinjau. Tepi bisa dikikis (hilangkan sisa warna latar) dan dihaluskan. Hasil PNG transparan atau latar putih/merah/biru/warna lain (PNG/JPG). Cocok untuk latar polos; rambut dan latar ramai perlu dirapikan manual. Gambar di atas 3000 px diperkecil agar tiap langkah tetap cepat. |
-| Kompres Gambar | [`#/compress-image`](https://chalidade.github.io/tools/#/compress-image) | Banyak gambar sekaligus → JPG/WebP (atau format asli), kualitas dan ukuran maksimum diatur; rotasi EXIF diterapkan, metadata (termasuk GPS) dihapus, transparansi terjaga di WebP. Hasil yang tidak lebih kecil disimpan apa adanya. |
-| Rekam Layar | [`#/screen-recorder`](https://chalidade.github.io/tools/#/screen-recorder) | Rekam seluruh layar, satu jendela, atau satu tab (getDisplayMedia + MediaRecorder, VP9/Opus WebM; MP4 di Safari). Suara tab/sistem dan mikrofon bisa dipakai bersamaan (dicampur lewat Web Audio), 30/60 fps, hitung mundur 3 detik, jeda/lanjut/batal, judul tab menunjukkan durasi rekaman, dan berhenti otomatis saat "Berhenti berbagi" ditekan. Kamera melayang lewat picture-in-picture (ikut terekam saat merekam seluruh layar). Rekaman tersimpan di IndexedDB browser ini; unduh WebM atau ubah ke MP4 (H.264/AAC, Mediabunny). Hanya di browser komputer. |
-| Perekam Suara | [`#/audio-recorder`](https://chalidade.github.io/tools/#/audio-recorder) | Rekam dari mikrofon dengan MediaRecorder bawaan browser (Opus/WebM; AAC/M4A di Safari): jeda/lanjut/batal, timer, gelombang suara langsung, pilihan mikrofon, mode suara bicara (peredam bising, gema, volume otomatis) atau asli/stereo. Rekaman tersimpan di IndexedDB browser ini (tetap ada setelah reload), bisa diberi nama, diputar, dan diunduh asli atau diubah ke MP3 / M4A / WAV (Mediabunny). Pindah halaman saat merekam tetap menyimpan rekamannya. |
-| Kompres Audio | [`#/compress-audio`](https://chalidade.github.io/tools/#/compress-audio) | Audio (atau suara dari video) → MP3 / AAC (M4A) / Opus (OGG), 64–192 kbps, stereo/mono. MP3 dan AAC memakai encoder wasm Mediabunny bila browser tidak punya encoder bawaan. |
-| Potong Video & Audio | [`#/trim-media`](https://chalidade.github.io/tools/#/trim-media) | Timeline dengan dua penanda (filmstrip untuk video, gelombang suara untuk audio), waktu bisa diketik, "putar bagian ini", ambil posisi putar sebagai awal/akhir. Hasil memakai format yang sama (MP4/MOV/WebM/MKV/MP3/M4A/WAV/OGG/FLAC/AAC); bagian yang tidak tersentuh disalin tanpa encode ulang, hanya tepi potongan yang di-encode ulang agar presisi (Mediabunny). |
-| GIF ⇄ MP4 | [`#/gif-mp4`](https://chalidade.github.io/tools/#/gif-mp4) | GIF → MP4 (gifuct-js + Mediabunny): frame disusun persis seperti di browser (disposal), latar putih/hitam untuk bagian transparan, animasi bisa diulang 1–5× karena banyak aplikasi menolak video di bawah ~3 detik. Video → GIF (gifenc): pilih bagian, 8–24 fps, lebar 240–800 px, palet 256 warna per frame, delay disusun agar durasinya tepat. |
-| Ekstrak Frame Video | [`#/extract-frames`](https://chalidade.github.io/tools/#/extract-frames) | Ambil frame di posisi putar (maju/mundur per frame), atau otomatis tiap N detik / N frame merata (maks. 300). Resolusi asli, PNG/JPG/WebP, unduh satuan atau ZIP. |
-| Ubah Kecepatan | [`#/change-speed`](https://chalidade.github.io/tools/#/change-speed) | 0,25×–4× untuk video dan audio. Nada suara tetap normal (time-stretch WSOLA sendiri, streaming per potongan) atau ikut berubah. Video jadi MP4 dengan frame rate tetap saat dipercepat; audio jadi MP3/M4A/WAV. Pratinjau langsung memakai kecepatan yang dipilih. |
-| Gabung Audio | [`#/merge-audio`](https://chalidade.github.io/tools/#/merge-audio) | Banyak file audio (atau suara dari video), boleh beda format/sample rate/kanal, digabung berurutan dengan jeda 0–2 detik → MP3/M4A/WAV. Tiap file di-decode dan di-resample oleh Mediabunny lalu dialirkan ke satu encoder, jadi file panjang tidak dimuat utuh ke memori. |
-| Generator QR Code | [`#/qr-generator`](https://chalidade.github.io/tools/#/qr-generator) | Tautan, teks, Wi-Fi (langsung tersambung saat dipindai), WhatsApp (nomor 08… jadi +62), kontak vCard, email, telepon (node-qrcode). Bentuk kotak/membulat/titik, warna, tepi kosong, logo di tengah (koreksi kesalahan otomatis H), unduh PNG 512–2048 px atau SVG. Hasil langsung dipindai ulang (zxing-wasm) untuk memastikan terbaca; peringatan untuk warna terbalik atau kontras rendah. |
-| Pembaca QR & Barcode | [`#/qr-reader`](https://chalidade.github.io/tools/#/qr-reader) | Dari gambar, screenshot yang ditempel, atau kamera (zxing-wasm, wasm-nya ikut di-host situs — tidak dari CDN). Membaca QR, Micro QR, Data Matrix, Aztec, PDF417, dan barcode EAN/UPC/Code 128/Code 39/ITF; beberapa kode dalam satu gambar; kode terbalik warna dan miring. Isi Wi-Fi, kontak, WhatsApp, email, dan tautan ditampilkan per kolom dengan tombol salin; password Wi-Fi disembunyikan dulu. Tautan tidak pernah dibuka otomatis, dan hanya http/https/mailto/tel/sms yang bisa diklik. |
-| JSON Beautifier | [`#/json-beautify`](https://chalidade.github.io/tools/#/json-beautify) | Indentasi 2/4/tab, urutkan key, kesalahan sintaks dengan baris:kolom dan lompat ke posisinya. Parser sendiri: angka dan teks disalin persis (tidak ada pembulatan seperti `JSON.parse`). |
-| JSON Minify | [`#/json-minify`](https://chalidade.github.io/tools/#/json-minify) | Hapus semua spasi di luar teks; angka dan teks tidak berubah. |
-| Generator Favicon | [`#/favicon-generator`](https://chalidade.github.io/tools/#/favicon-generator) | Dari gambar/logo (termasuk SVG) atau huruf/emoji: bentuk persegi/membulat/lingkaran, latar warna atau transparan, jarak tepi. ZIP berisi `favicon.ico` (16/32/48), PNG 16 & 32, `apple-touch-icon` 180, `android-chrome` 192 & 512, `site.webmanifest`, dan potongan HTML untuk `<head>`. |
-| Gambar ⇄ Base64 | [`#/image-to-base64`](https://chalidade.github.io/tools/#/image-to-base64) | Gambar (atau tempel dari clipboard) → data URL, Base64 saja, `<img>`, CSS, atau Markdown, tanpa encode ulang. Arah sebaliknya menerima data URL atau Base64 biasa/URL-safe, mengenali jenis gambar dari byte-nya, lalu bisa diunduh. |
-| Color Picker | [`#/color-picker`](https://chalidade.github.io/tools/#/color-picker) | Ketik warna (HEX/rgb/hsl/oklch), pakai pemilih warna, ambil dari layar (EyeDropper, Chrome/Edge), atau klik piksel gambar dengan kaca pembesar; warna utama gambar otomatis. Nilai HEX/RGB/HSL/OKLCH/HSV/CMYK siap salin, kontras WCAG terhadap teks putih/hitam, dan gradasi 50–950 (OKLCH). |
-| Catatan | [`#/notes`](https://chalidade.github.io/tools/#/notes) | Catatan dengan Markdown (judul, tebal/miring, daftar, kutipan, kode, tautan): toolbar dan Ctrl+B/I/K, daftar dan checklist berlanjut sendiri saat Enter, checklist bisa dicentang langsung di Pratinjau (marked + DOMPurify). Cari, sematkan, beri warna, unduh .md. Tersimpan otomatis di IndexedDB browser ini; Cadangkan/Pulihkan semua catatan lewat file .json untuk pindah perangkat. |
-| Kalkulator | [`#/calculator`](https://chalidade.github.io/tools/#/calculator) | Kalkulator biasa dan ilmiah (sin/cos/tan dan inversnya, ln, log, pangkat, akar, faktorial, π, e, Ans) dengan derajat/radian. Parser sendiri (bukan `eval`): perkalian tersirat (2π, 3(4+5)), persen ala kalkulator HP (200 + 10% = 220), koma atau titik sebagai desimal, dan pembulatan 12 digit agar 0,1 + 0,2 = 0,3. Pratinjau hasil saat mengetik, bisa diketik dari keyboard, riwayat yang bisa dipakai ulang. |
-| Papan Tulis | [`#/whiteboard`](https://chalidade.github.io/tools/#/whiteboard) | Whiteboard / blackboard (pola polos, kotak, garis, titik) dengan pena peka tekanan stylus (perfect-freehand), stabilo, penghapus sebagian atau per objek, garis, panah, kotak, lingkaran (Shift = lurus/bujur sangkar), dan teks. Pilih & geser objek, undo/redo, banyak halaman, geser/zoom (scroll, Ctrl+scroll, cubit dua jari), layar penuh. Warna mengikuti papan, jadi tetap terbaca saat papan dibalik. Tersimpan otomatis di browser; unduh PNG (halaman) atau PDF (semua halaman), simpan/buka file `.board.json`. |
+Built with [Claude Code](https://claude.com/claude-code) as the coding assistant. I decided what to
+build and where to draw the scope lines, reviewed and merged every change, and tested the tools on
+real files and on the outputs they produce.
 
-## Beranda: kota kecil yang bisa dijelajahi
+## License
 
-Halaman depan adalah kota kecil bergaya game RPG. Setiap kategori punya
-bangunannya sendiri — Percetakan, Perpustakaan, Brankas, Studio, dan Lab —
-dan di dalamnya setiap tool dijaga seorang tokoh kartun berseragam yang
-memperkenalkan diri, menjelaskan guna dan batasan tool-nya, lalu menawarkan
-"Buka" atau "Nanti saja". Di luar, warga kota berkeliaran: ada yang
-mengobrol, mengajak anjingnya jalan-jalan, atau berkebun; jalan setapak
-berkelok, kolam beriak, rumput tinggi bergoyang saat dilewati, dan malamnya
-lampu taman serta kunang-kunang menyala (mode gelap).
-
-- **WASD / panah** untuk jalan, **Shift** untuk lari.
-- Jalan ke pintu bangunan (atau tekan **E**) untuk masuk; injak keset
-  "KELUAR" di dalam untuk kembali ke kota.
-- **E / Enter** di dekat penjaga untuk mengobrol, panah untuk memilih
-  jawaban, **Esc** untuk pergi.
-- Mouse / ponsel: klik atau ketuk tanah, bangunan, atau tokoh — karakter
-  mencari jalannya sendiri ke sana.
-
-Minimap kota dan "paspor" (jumlah tool yang sudah dikunjungi) ada di pojok
-kanan atas. Kartu pembuka bisa disembunyikan (tombol ×). Daftar tools biasa
-tetap ada di bawahnya.
-
-## Menjalankan
-
-```bash
-npm install
-npm run dev       # dev server
-npm run build     # type-check + build (gerbang kebenaran)
-npm run lint      # oxlint
-```
-
-Setiap push ke `main` otomatis di-deploy ke GitHub Pages lewat
-`.github/workflows/pages.yml`.
-
-## Menambah tool baru
-
-1. Buat folder `src/tools/<slug>/` berisi komponen yang di-*export default*.
-   Taruh logika berat di file terpisah dan pakai `import()` dinamis, supaya
-   library-nya hanya dimuat saat tool itu dibuka.
-   Untuk antarmuka, pakai komponen bersama di `src/components/tool/`
-   (`FileDrop`, `ErrorNote`, `Segmented`, `PasswordInput`, `IconButton`, `CopyButton`, `SizeResult`/`ProgressCard`) dan `downloadBlob` dari `src/lib/download.ts`.
-   Tool yang membaca teks PDF memakai `src/lib/pdf-text.ts`; tool yang mengubah
-   PDF yang sudah ada (gabung, pisah, watermark, tanda tangan) memakai `src/lib/pdf-doc.ts`.
-2. Tambahkan satu entri di `src/tools/registry.ts`, lengkap dengan `category`
-   (grup di halaman depan) dan `keywords` (kata yang orang ketik saat mencari,
-   misalnya ekstensi file dan istilah sehari-hari) (slug, judul, deskripsi,
-   ikon lucide, format, `lazy(() => import(...))`).
-
-Kartu di halaman depan dan rute `#/<slug>` muncul otomatis. Routing sengaja
-memakai hash supaya jalan di sub-path Pages (dan di dalam APK) tanpa rewrite di
-server.
-
-**Aturan main:** semua pemrosesan wajib di sisi klien. Jangan menambahkan
-backend atau mengirim file pengguna ke layanan pihak ketiga.
-
-## Preview link (Open Graph)
-
-Saat tautan dibagikan (WhatsApp, Telegram, Slack, X, LinkedIn), gambar
-`public/og.png` (1200×630) tampil sebagai kartu. Meta tag-nya ada di
-`index.html`. Gambar itu dirender dari `og/og.html`; setelah mengubah
-templatenya, jalankan:
-
-```bash
-npm run og    # butuh Google Chrome/Chromium terpasang
-```
-
-Jaga ukurannya di bawah ~300 KB agar WhatsApp mau menampilkannya. Aplikasi
-chat menyimpan cache preview, jadi perubahan baru terlihat untuk tautan yang
-belum pernah dibagikan (atau setelah cache-nya kedaluwarsa).
-
-## Stack
-
-Vite + React 19 + TypeScript, Tailwind CSS v4, shadcn/ui, Motion
-(`motion/react`), ikon lucide-react, font Geist. Tema gelap secara default;
-pengunjung bisa beralih ke terang dari header.
+[MIT](LICENSE) © Chalid Ade Rahman · [chalidade.github.io](https://chalidade.github.io)
