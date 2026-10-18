@@ -10,7 +10,7 @@ terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
   pencarian, kategori, dan kartu tools.
 - Library animasi `motion` dilepas. JS utama 518 kB → 278 kB, CSS 95 kB → 65 kB.
 
-**Kategori baru: Musik** (6 tools, semuanya pakai Web Audio bawaan browser, tanpa library tambahan)
+**Kategori baru: Musik** (7 tools, semuanya pakai Web Audio bawaan browser, tanpa library tambahan)
 - **Tuner Gitar** (`#/guitar-tuner`): stem lewat mikrofon untuk gitar (Standar,
   Drop D, turun ½ nada, DADGAD, Open G), bass 4 senar, dan ukulele, plus mode kromatik.
   Senar dideteksi otomatis, ada nada acuan, dan A4 bisa diatur.
@@ -32,10 +32,14 @@ terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
   kotak musik), dan mode **Latihan** dengan 7 lagu domain publik, tangga nada,
   serta impor file MIDI. Tuts berikutnya menyala dan menunggu ditekan, ada demo,
   dan ada skor.
+- **Drum Online** (`#/drums`): 9 pad drum yang bisa dipukul dengan jari,
+  keyboard, atau drum elektrik (MIDI). Ada juga sequencer 16 langkah dengan
+  aksen, swing, dan 9 pola siap pakai (rock, pop, disco, funk, hip-hop, shuffle,
+  bossa nova, reggae, dangdut).
 
 **Perbaikan**
 - Tuner Gitar: nada sangat tinggi (di atas ~1 kHz, mode kromatik) kadang terbaca
   satu kuint lebih rendah. Penyebabnya sinyal di-downsample terlalu jauh sebelum
   dianalisis.
 
-Total tools: 38 → 44.
+Total tools: 38 → 45.

@@ -121,6 +121,12 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
     formats: 'Chord → Strum',
     keywords: ['guitar', 'strum', 'chords', 'fretboard', 'capo', 'acoustic', 'electric', 'distortion', 'accompaniment'],
   },
+  drums: {
+    title: 'Online Drums',
+    description: 'Hit 9 drum pads with your fingers, keyboard or an e-drum kit — plus a 16-step sequencer with rock, pop, funk, bossa, dangdut and more.',
+    formats: 'Pads → Beat',
+    keywords: ['drums', 'drum kit', 'pads', 'beat', 'sequencer', 'pattern', 'beatmaker'],
+  },
   'compress-audio': { title: 'Compress Audio', description: 'Shrink audio to MP3, AAC or Opus — or pull the sound out of a video.', keywords: ['shrink', 'mp3', 'reduce'] },
   'qr-generator': {
     title: 'QR Code Generator',
