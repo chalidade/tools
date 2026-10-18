@@ -109,6 +109,12 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
     formats: 'MP3 / WAV → BPM + Key',
     keywords: ['bpm', 'tempo', 'key', 'camelot', 'dj', 'song', 'analyze'],
   },
+  piano: {
+    title: 'Online Piano',
+    description: 'Play the piano in your browser — mouse, multi-touch, computer keyboard or a MIDI keyboard, with sustain and chord names.',
+    formats: 'Keys → Sound',
+    keywords: ['piano', 'keyboard', 'keys', 'play', 'midi', 'learn'],
+  },
   'compress-audio': { title: 'Compress Audio', description: 'Shrink audio to MP3, AAC or Opus — or pull the sound out of a video.', keywords: ['shrink', 'mp3', 'reduce'] },
   'qr-generator': {
     title: 'QR Code Generator',

@@ -55,6 +55,5 @@ upload, dan dwibahasa (ID/EN).
 
 ## Simpanan (belum dijadwalkan)
 
-- Musik lanjutan: piano virtual, pembuat progresi chord, dan perekam latihan
-  dengan metronom.
+- Musik lanjutan: pembuat progresi chord, dan perekam latihan dengan metronom.
 - Tuner: mode biola/cello, dan nada acuan berkelanjutan (drone).
