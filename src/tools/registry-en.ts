@@ -115,6 +115,12 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
     formats: 'Keys → Sound',
     keywords: ['piano', 'keyboard', 'keys', 'play', 'midi', 'learn'],
   },
+  guitar: {
+    title: 'Online Guitar',
+    description: 'Strum chords with a swipe, pick freely on the fretboard, capo, acoustic/electric/distortion sounds and auto accompaniment.',
+    formats: 'Chord → Strum',
+    keywords: ['guitar', 'strum', 'chords', 'fretboard', 'capo', 'acoustic', 'electric', 'distortion', 'accompaniment'],
+  },
   'compress-audio': { title: 'Compress Audio', description: 'Shrink audio to MP3, AAC or Opus — or pull the sound out of a video.', keywords: ['shrink', 'mp3', 'reduce'] },
   'qr-generator': {
     title: 'QR Code Generator',

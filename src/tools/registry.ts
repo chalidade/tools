@@ -578,6 +578,17 @@ export const TOOLS: Tool[] = [
     component: lazy(() => import('./piano/Piano')),
   },
   {
+    slug: 'guitar',
+    category: 'music',
+    keywords: ['gitar', 'guitar', 'genjreng', 'strum', 'kunci gitar', 'chord', 'fretboard', 'capo', 'akustik', 'listrik', 'distorsi', 'iringan', 'main gitar'],
+    title: 'Gitar Online',
+    description: 'Genjreng chord dengan usapan jari, petik bebas di fretboard, capo, suara akustik/listrik/distorsi, dan iringan otomatis.',
+    icon: Guitar,
+    formats: 'Chord → Genjreng',
+    badge: 'Baru',
+    component: lazy(() => import('./guitar/Guitar')),
+  },
+  {
     slug: 'compress-audio',
     category: 'media',
     keywords: [

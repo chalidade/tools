@@ -3,7 +3,7 @@
 **English** · [Bahasa Indonesia](README.id.md)
 
 **My everyday file toolbox, built for the file work I do every day and published free for everyone.**
-43 tools for PDF, Office files, images, video, audio and QR codes, and every one of them runs entirely in your browser.
+44 tools for PDF, Office files, images, video, audio and QR codes, and every one of them runs entirely in your browser.
 Your files are never uploaded.
 
 [![Live demo](https://img.shields.io/badge/live%20demo-chalidade.github.io%2Ftools-6366f1)](https://chalidade.github.io/tools/)
@@ -30,7 +30,7 @@ browser's own media encoders, and a library is downloaded only when you open the
 
 ## Tools
 
-All 43, grouped the way the home page groups them. Each name links to the live tool.
+All 44, grouped the way the home page groups them. Each name links to the live tool.
 
 **To PDF**
 - [Word to PDF](https://chalidade.github.io/tools/#/doc-to-pdf): `.docx` to PDF, paginated without cutting through lines of text
@@ -71,6 +71,7 @@ All 43, grouped the way the home page groups them. Each name links to the live t
 - [Chord Finder & Transpose](https://chalidade.github.io/tools/#/chords): guitar and ukulele shapes generated for every root and 16 chord types, playable (Karplus–Strong); transposes a pasted song sheet keeping chords aligned to the lyrics
 - [BPM & Key Finder](https://chalidade.github.io/tools/#/bpm-key): tempo from an onset-envelope comb search, key from a chromagram against Krumhansl profiles, Camelot code and diatonic chords; runs in a Web Worker
 - [Online Piano](https://chalidade.github.io/tools/#/piano): synthesised in the browser (no samples), multi-touch with glissando, two-row computer-keyboard layout, Web MIDI input, sustain, live chord names
+- [Online Guitar](https://chalidade.github.io/tools/#/guitar): Karplus–Strong strings with a fractional-delay all-pass (in tune to ~2 cents) and pick-position excitation, acoustic body / clean / overdriven amp; swipe-to-strum over generated chord shapes, capo, free fretboard, auto accompaniment patterns
 
 **Developer & Design**
 - [QR Code Generator](https://chalidade.github.io/tools/#/qr-generator): links, Wi-Fi, WhatsApp, vCard and more, with logo and styles; every code is scanned back to confirm it reads

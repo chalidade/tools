@@ -16,9 +16,10 @@ export interface Pitch {
  * `minFreq` and `maxFreq`. Returns null for silence or a non-periodic signal.
  */
 export function detectPitch(input: Float32Array, rate: number, minFreq: number, maxFreq: number): Pitch | null {
-  // The search is O(lags × window), so average down to ~8 samples per period
-  // of the highest note first: up to 16× less work, same accuracy.
-  const factor = Math.max(1, Math.min(4, Math.floor(rate / (maxFreq * 8))))
+  // The search is O(lags × window), so average down to fewer samples per period
+  // of the highest note first (at least 16 samples per period, or very high
+  // notes start to read a fifth low): up to 16× less work, same accuracy.
+  const factor = Math.max(1, Math.min(4, Math.floor(rate / (maxFreq * 16))))
   const buf = factor === 1 ? input : decimate(input, factor)
   const sampleRate = rate / factor
   let rms = 0
