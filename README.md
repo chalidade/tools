@@ -3,7 +3,7 @@
 **English** · [Bahasa Indonesia](README.id.md)
 
 **My everyday file toolbox, built for the file work I do every day and published free for everyone.**
-45 tools for PDF, Office files, images, video, audio and QR codes, and every one of them runs entirely in your browser.
+48 tools for PDF, Office files, images, video, audio and QR codes, and every one of them runs entirely in your browser.
 Your files are never uploaded.
 
 [![Live demo](https://img.shields.io/badge/live%20demo-chalidade.github.io%2Ftools-6366f1)](https://chalidade.github.io/tools/)
@@ -57,6 +57,9 @@ All 45, grouped the way the home page groups them. Each name links to the live t
 **Images & Media**
 - [Compress Images](https://chalidade.github.io/tools/#/compress-image): batch JPG/WebP, metadata (including GPS) stripped
 - [Crop & Resize Image](https://chalidade.github.io/tools/#/crop-resize-image): free or fixed ratios, rotate, flip, exact pixels
+- [Convert Image Format](https://chalidade.github.io/tools/#/convert-image): HEIC (iPhone), WebP, AVIF, PNG, JPG to JPG/PNG/WebP, in batches; HEIC decoded by a self-hosted libheif wasm
+- [ID Photo](https://chalidade.github.io/tools/#/pas-foto): 2×3 / 3×4 / 4×6 crop, red/blue/white backdrop, 4R or A4 print sheet (JPG/PNG/PDF)
+- [Remove Photo Metadata](https://chalidade.github.io/tools/#/strip-exif): shows camera, date and GPS; JPG/PNG are cleaned losslessly
 - [Remove Background](https://chalidade.github.io/tools/#/remove-background): magic wand, color select, lasso and brush, with no AI model to download
 - [Compress Video](https://chalidade.github.io/tools/#/compress-video): MP4 output using the device's own encoder, with a size estimate up front
 - [Trim Video & Audio](https://chalidade.github.io/tools/#/trim-media): filmstrip/waveform timeline; untouched parts are copied without re-encoding

@@ -62,6 +62,9 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
   },
   'compress-video': { title: 'Compress Video', description: "Shrink a video with your device's own encoder — fast, and nothing is uploaded.", keywords: ['shrink', 'reduce', 'smaller'] },
   'crop-resize-image': { title: 'Crop & Resize Image', description: 'Crop freely or to 1:1, 16:9, 4:5; rotate, flip and resize in pixels.', keywords: ['crop', 'resize', 'rotate'] },
+  'convert-image': { title: 'Convert Image Format', description: 'Turn HEIC (iPhone photos), WebP, AVIF, PNG or JPG into JPG, PNG or WebP — many files at once.', keywords: ['heic', 'convert', 'format'] },
+  'pas-foto': { title: 'ID Photo', description: 'Crop to 2×3, 3×4 or 4×6, swap the background to red/blue/white, then lay it out on 4R or A4 paper ready to print.', keywords: ['passport', 'id photo', 'visa', 'print'] },
+  'strip-exif': { title: 'Remove Photo Metadata', description: 'See a photo’s EXIF (camera, date, GPS location), then save it again without any metadata.', keywords: ['exif', 'gps', 'privacy', 'metadata'] },
   'remove-background': {
     title: 'Remove Background',
     description: 'Remove a background with a magic wand, color select, lasso or brush — then make it transparent or recolor it.',
