@@ -3,6 +3,24 @@
 Catatan harian apa yang berubah di [tools](https://chalidade.github.io/tools/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-10-19 — Foto & gambar
+
+Tiga tools baru di kategori Media; total sekarang **48 tools**.
+
+- **Ubah Format Gambar** (`#/convert-image`): HEIC (foto iPhone), WebP, AVIF,
+  PNG, JPG, GIF, BMP, dan SVG ke JPG, PNG, atau WebP, banyak file sekaligus
+  (diunduh sebagai ZIP). HEIC didekode libheif (wasm) yang dibundel dan
+  di-host sendiri, hanya dimuat saat ada file HEIC. Transparansi diratakan ke
+  putih untuk JPG.
+- **Pas Foto** (`#/pas-foto`): potong ke 2×3, 3×4, atau 4×6 dengan geser dan
+  zoom, ganti latar merah/biru/putih (dikenali dari warna tepi atas foto lewat
+  mesin `remove-background`, toleransi bisa diatur), lalu susun di kertas 4R
+  atau A4 pada 300 dpi dengan garis potong. Simpan sebagai JPG, PNG, atau PDF.
+- **Hapus Metadata Foto** (`#/strip-exif`): menampilkan EXIF (kamera, lensa,
+  tanggal, bukaan, ISO, lokasi GPS dengan peta teks), lalu menyimpan ulang tanpa
+  metadata. JPG dan PNG dibersihkan tanpa mengubah gambarnya; WebP dan foto
+  yang miring lewat tanda orientasi disimpan ulang.
+
 ## 2026-10-18 — Beranda ringan & kategori Musik
 
 **Beranda**

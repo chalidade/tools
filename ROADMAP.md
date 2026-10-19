@@ -9,14 +9,14 @@ upload, dan dwibahasa (ID/EN).
 
 ## Hari 2 — 2026-10-19 · Foto & gambar
 
-- [ ] **Ubah Format Gambar** (`#/convert-image`): HEIC/WebP/PNG/JPG/AVIF ke
+- [x] **Ubah Format Gambar** (`#/convert-image`): HEIC/WebP/PNG/JPG/AVIF ke
   JPG/PNG/WebP, banyak file sekaligus. HEIC (foto iPhone) butuh decoder wasm
   yang di-host sendiri, jangan dari CDN. Pakai `decodeImage`/`canvasBlob` dari
   `src/lib/image.ts`.
-- [ ] **Pas Foto** (`#/pas-foto`): potong ke 2×3, 3×4, 4×6 dengan latar
+- [x] **Pas Foto** (`#/pas-foto`): potong ke 2×3, 3×4, 4×6 dengan latar
   merah/biru/putih, lalu disusun di kertas 4R/A4 siap cetak. Pakai mesin
   `remove-background` yang sudah ada.
-- [ ] **Hapus Metadata Foto** (`#/strip-exif`): tampilkan EXIF (kamera,
+- [x] **Hapus Metadata Foto** (`#/strip-exif`): tampilkan EXIF (kamera,
   tanggal, lokasi GPS di peta teks), lalu simpan ulang tanpa metadata.
 
 ## Hari 3 — 2026-10-20 · PDF
