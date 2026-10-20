@@ -7,9 +7,9 @@ perangkat pengguna: tidak di-upload ke server dan tidak disimpan di mana pun.
 
 **Live:** https://chalidade.github.io/tools/
 
-<a href="docs/launch.mp4"><img src="docs/launch.webp" width="480" alt="Video launch: kontrak ditaruh ke halaman, diproses di perangkat dengan 0 B terkirim, ditandatangani, dikompres, lalu dinding berisi 45 tool"></a>
+<a href="docs/launch-id.mp4"><img src="docs/launch-id.webp" width="480" alt="Video launch: kontrak ditaruh ke halaman, diproses di perangkat dengan 0 B terkirim, ditandatangani, dikompres, lalu dinding berisi 45 tool"></a>
 
-[▶ Tonton video launch 16 detik (dengan suara)](docs/launch.mp4)
+[▶ Tonton video launch 16 detik (dengan suara)](docs/launch-id.mp4) · [versi English](docs/launch-en.mp4)
 
 Tersedia dalam **Bahasa Indonesia dan English** — ganti lewat tombol ID/EN di
 header (atau `#/<tool>?lang=en` di tautan).

@@ -13,9 +13,9 @@ Your files are never uploaded.
 ![React](https://img.shields.io/badge/React-19-61dafb?logo=react&logoColor=black)
 ![Vite](https://img.shields.io/badge/Vite-8-646cff?logo=vite&logoColor=white)
 
-<a href="docs/launch.mp4"><img src="docs/launch.webp" width="480" alt="Launch video: a contract dropped into the page, processed on the device with 0 B sent, signed, compressed, then a wall of all 45 tools"></a>
+<a href="docs/launch-en.mp4"><img src="docs/launch-en.webp" width="480" alt="Launch video: a contract dropped into the page, processed on the device with 0 B sent, signed, compressed, then a wall of all 50 tools"></a>
 
-[▶ Watch the 16-second launch video with sound](docs/launch.mp4)
+[▶ Watch the 16-second launch video with sound](docs/launch-en.mp4) · [Bahasa Indonesia version](docs/launch-id.mp4)
 
 ## Why
 
