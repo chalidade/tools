@@ -215,3 +215,50 @@ upload, dan dwibahasa (ID/EN).
 - [ ] **Edit Video Ringan** (`#/edit-video`): putar 90°, crop, hapus suara,
   dan gabung beberapa klip jadi satu MP4. Pakai Mediabunny lewat
   `src/lib/media.ts` (`probeMedia`, `convertMedia`), sama seperti Potong Video.
+
+## Hari 23 — 2026-11-09 · Dokumen kantor
+
+- [ ] **Hapus Metadata PDF & Office** (`#/strip-metadata`): tampilkan lalu
+  hapus penulis, perusahaan, software, tanggal, komentar, dan riwayat revisi
+  dari PDF, DOCX, XLSX, dan PPTX sebelum dikirim. PDF lewat pdf-lib (Info dan
+  XMP), Office dengan menyunting `docProps/` di dalam ZIP-nya. Pasangan dari
+  Hapus Metadata Foto.
+- [ ] **Kompres Word & PowerPoint** (`#/compress-office`): kecilkan gambar di
+  dalam `.docx`/`.pptx` (folder `media/` di ZIP-nya) dengan kualitas dan lebar
+  maksimum yang bisa dipilih, tanpa menyentuh isi dokumen. Tampilkan ukuran
+  sebelum/sesudah dengan `SizeResult`.
+
+## Hari 24 — 2026-11-10 · Dokumen
+
+- [ ] **Markdown & Teks ke PDF / Word** (`#/markdown-to-pdf`): tulis atau buka
+  Markdown/TXT, pratinjau, lalu unduh PDF atau DOCX. Pakai ulang mesin
+  paginasi Word ke PDF. Kebalikan dari PDF ke Markdown.
+- [ ] **Gabung & Pisah Excel/CSV** (`#/merge-excel`): gabung banyak file atau
+  sheet jadi satu (kolom dicocokkan dari judulnya), atau pecah satu sheet per
+  nilai sebuah kolom jadi beberapa file/sheet.
+
+## Hari 25 — 2026-11-11 · Foto
+
+- [ ] **Cari Foto Duplikat** (`#/duplicate-photos`): pilih banyak foto atau
+  satu folder, kelompokkan yang sama/mirip dengan perceptual hash (dHash) di Web
+  Worker, lalu pilih mana yang disimpan. Tool tidak bisa menghapus file di
+  perangkat; yang dipilih diunduh sebagai ZIP.
+- [ ] **Tanda Tangan ke PNG** (`#/signature-png`): gambar tanda tangan atau
+  foto tanda tangan di kertas, latarnya dibuang (ambang + pembersih noise),
+  warna tinta bisa diganti, lalu PNG transparan siap tempel. Pakai ulang kanvas
+  gambar dari Tanda Tangan PDF.
+
+## Hari 26 — 2026-11-12 · Audio
+
+- [ ] **Penghapus Vokal** (`#/vocal-remover`): hilangkan vokal yang ada di
+  tengah stereo (kiri − kanan, dengan bass dijaga lewat filter), pratinjau, lalu
+  simpan MP3/WAV. Jelaskan bahwa hasilnya bergantung pada cara lagu dimixing.
+- [ ] **Peredam Noise** (`#/denoise`): bersihkan dengung dan desis dari
+  rekaman suara dengan RNNoise (wasm kecil, di-host sendiri), bandingkan
+  sebelum/sesudah, lalu simpan.
+
+## Hari 27 — 2026-11-13 · Utilitas
+
+- [ ] **Ganti Nama Banyak File** (`#/batch-rename`): pola nama dengan nomor
+  urut, teks, tanggal file, atau tanggal foto dari EXIF, pratinjau nama baru,
+  lalu unduh sebagai ZIP (pakai tool ZIP dari Hari 21).
