@@ -123,3 +123,42 @@ upload, dan dwibahasa (ID/EN).
   N KB" (mis. 200 KB untuk CPNS/SNBT) yang mencari kualitas dan, bila perlu,
   dimensi terbesar yang masih di bawah batas. Pakai `canvasBlob` dari
   `src/lib/image.ts`.
+
+## Hari 14 — 2026-10-31 · Scan & OCR
+
+- [ ] **Scan Dokumen** (`#/scan`): foto kertas dari kamera atau galeri,
+  tarik empat sudut (deteksi tepi otomatis sebagai tebakan awal), luruskan
+  perspektif dengan homografi di canvas (tanpa OpenCV), mode hitam-putih
+  tajam/abu-abu/warna, lalu gabung beberapa halaman jadi satu PDF.
+- [ ] **OCR — Foto ke Teks** (`#/ocr`): Tesseract (wasm) dengan bahasa
+  Indonesia dan Inggris. Worker, core wasm, dan data bahasa di-host sendiri,
+  jangan dari CDN bawaannya, dan hanya dimuat saat tool dibuka. Hasil bisa
+  disalin atau diunduh sebagai TXT; nanti bisa dipakai juga oleh Scan Dokumen.
+
+## Hari 15 — 2026-11-01 · Barcode & subtitle
+
+- [ ] **Generator Barcode** (`#/barcode`): EAN-13, EAN-8, UPC-A, Code 128,
+  dan Code 39, dengan validasi digit cek, ukuran dan teks di bawahnya, unduh
+  PNG/SVG, dan lembar label banyak sekaligus siap cetak.
+- [ ] **Subtitle** (`#/subtitle`): buka SRT/VTT, geser semua waktu
+  (maju/mundur), regangkan untuk beda frame rate, gabung dua file, dan ubah
+  SRT ⇄ VTT, dengan pratinjau di atas video milik pengguna.
+
+## Hari 16 — 2026-11-02 · Bareng teman
+
+- [ ] **Undian & Arisan** (`#/undian`): acak nama dengan
+  `crypto.getRandomValues` dan animasi, mode arisan yang mengecualikan
+  pemenang sebelumnya sampai semua dapat giliran, riwayat tersimpan di
+  perangkat, dan hasil siap dibagikan.
+- [ ] **Patungan** (`#/patungan`): item per orang atau dibagi rata, pajak dan
+  service dibagi proporsional, pembulatan yang jumlahnya tetap pas, lalu
+  rangkuman siap kirim ke WhatsApp.
+
+## Hari 17 — 2026-11-03 · Waktu
+
+- [ ] **Timer Pomodoro** (`#/pomodoro`): fokus/istirahat yang bisa diatur,
+  hitungan dari jam (bukan interval, jadi tetap tepat saat tab di latar),
+  notifikasi dan bunyi saat sesi selesai, dan layar tetap menyala lewat Wake
+  Lock bila didukung.
+- [ ] **Stopwatch & Timer** (`#/stopwatch`): stopwatch dengan lap, timer
+  hitung mundur, dan tampilan layar penuh angka besar.
