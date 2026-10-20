@@ -17,8 +17,6 @@ Your files are never uploaded.
 
 [▶ Watch the 16-second launch video with sound](docs/launch.mp4)
 
-[![The tools home page: a short intro, a search box and the tool cards grouped by category](docs/screenshot.png)](https://chalidade.github.io/tools/)
-
 ## Why
 
 Most "free online converters" upload your file to someone else's server. For a contract, a payslip
