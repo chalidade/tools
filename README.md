@@ -13,6 +13,10 @@ Your files are never uploaded.
 ![React](https://img.shields.io/badge/React-19-61dafb?logo=react&logoColor=black)
 ![Vite](https://img.shields.io/badge/Vite-8-646cff?logo=vite&logoColor=white)
 
+<a href="docs/launch.mp4"><img src="docs/launch.webp" width="480" alt="Launch video: a contract dropped into the page, processed on the device with 0 B sent, signed, compressed, then a wall of all 45 tools"></a>
+
+[▶ Watch the 16-second launch video with sound](docs/launch.mp4)
+
 [![The tools home page: a short intro, a search box and the tool cards grouped by category](docs/screenshot.png)](https://chalidade.github.io/tools/)
 
 ## Why
