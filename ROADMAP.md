@@ -7,6 +7,33 @@ selesai. Setelah sebuah batch rilis, centang di sini dan catat di
 Aturan yang sama berlaku untuk semuanya: jalan penuh di browser, tanpa
 upload, dan dwibahasa (ID/EN).
 
+## Prioritas — bisa ditemukan dan langsung dipakai dari Google
+
+Dikerjakan sebelum batch harian berikutnya: sekarang semua tool ada di
+`#/<slug>`, yang bagi Google hanya satu halaman, tanpa sitemap dan robots.txt.
+Tujuannya: orang mencari "kompres pdf tanpa upload", mengklik hasil Google, dan
+tool-nya langsung terbuka siap dipakai.
+
+- [ ] **Satu halaman statis per tool** (`/tools/<slug>/index.html`, dibuat saat
+  build dari `registry.ts`): judul dan meta description sendiri, canonical, OG,
+  JSON-LD `WebApplication`, dan teks yang terbaca tanpa JavaScript (H1, cara
+  pakai, FAQ singkat, catatan privasi). Aplikasi membaca slug dari path lalu
+  membuka tool itu; link lama `#/<slug>` dialihkan ke path baru. GitHub Pages
+  menyajikan `index.html` per folder, jadi reload tidak 404.
+- [ ] **Versi English** di `/tools/en/<slug>/` dengan `hreflang` id/en dua arah.
+- [ ] **`sitemap.xml`** semua halaman (dibuat saat build), dan **`robots.txt`**
+  di repo `chalidade/chalidade.github.io` (robots hanya dibaca di root domain)
+  yang menunjuk ke sitemap itu.
+- [ ] **Google Search Console** (dikerjakan pemilik akun): verifikasi properti
+  `https://chalidade.github.io/tools/` lewat meta tag, kirim sitemap, minta
+  indexing untuk halaman utama dan tool terpenting.
+- [ ] **Kata kunci yang sering dicari** di `keywords` registry dan teks
+  halamannya: "vn", "voice note", "whatsapp" (Kompres Audio sudah bisa .opus ke
+  MP3), "video ke mp3", "rotate pdf", "jpg ke pdf", dan semacamnya.
+- [ ] **Cek kecepatan & mobile** halaman tool (Lighthouse/PageSpeed): halaman
+  harus cepat dan bisa langsung dipakai di HP, karena itu ikut menentukan
+  peringkat.
+
 ## Hari 2 — 2026-10-19 · Foto & gambar
 
 - [x] **Ubah Format Gambar** (`#/convert-image`): HEIC/WebP/PNG/JPG/AVIF ke
@@ -262,3 +289,32 @@ upload, dan dwibahasa (ID/EN).
 - [ ] **Ganti Nama Banyak File** (`#/batch-rename`): pola nama dengan nomor
   urut, teks, tanggal file, atau tanggal foto dari EXIF, pratinjau nama baru,
   lalu unduh sebagai ZIP (pakai tool ZIP dari Hari 21).
+
+## Hari 28 — 2026-11-14 · Edit PDF & WhatsApp
+
+- [ ] **Edit PDF** (`#/edit-pdf`): tambah teks (font, ukuran, warna), gambar,
+  kotak, garis, centang, dan coretan di halaman mana saja, untuk formulir yang
+  bukan AcroForm. Pakai ulang pratinjau dan penempatan dari Tanda Tangan PDF
+  (`uprightPage` di `src/lib/pdf-doc.ts`).
+- [ ] **Potong Video untuk Status WhatsApp** (`#/status-wa`): pecah video
+  panjang jadi potongan berurutan dengan durasi maksimal Status WhatsApp (cek
+  batas terbaru saat dibangun), kompres agar muat, lalu unduh semua sekaligus.
+  Pakai `convertMedia` dengan `trim` dari `src/lib/media.ts`.
+
+## Hari 29 — 2026-11-15 · Kreatif
+
+- [ ] **Kolase Foto** (`#/kolase`): 2–9 foto dengan beberapa tata letak
+  (grid, strip, satu besar), jarak dan sudut membulat, rasio 1:1/4:5/9:16, lalu
+  unduh JPG/PNG.
+- [ ] **Tulisan Keren** (`#/tulisan-keren`): ubah teks ke huruf Unicode
+  bergaya (tebal, miring, script, double-struck, bulat, dan lainnya) untuk bio
+  IG/TikTok, salin dengan satu ketukan. Beri tahu bahwa pembaca layar dan
+  pencarian tidak membacanya sebagai huruf biasa.
+
+## Hari 30 — 2026-11-16 · AI di perangkat
+
+- [ ] **Perjelas Foto** (`#/perjelas-foto`): upscale 2×/4× dengan model
+  super-resolution lewat ONNX Runtime Web (WebGPU bila ada, wasm sebagai
+  cadangan), model dan runtime di-host sendiri dan hanya diunduh saat tool
+  dibuka. Tampilkan ukuran unduhan model di awal dan peringatan bahwa di HP
+  lama prosesnya lambat.
