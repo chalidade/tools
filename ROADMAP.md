@@ -162,3 +162,56 @@ upload, dan dwibahasa (ID/EN).
   Lock bila didukung.
 - [ ] **Stopwatch & Timer** (`#/stopwatch`): stopwatch dengan lap, timer
   hitung mundur, dan tampilan layar penuh angka besar.
+
+## Hari 18 — 2026-11-04 · Privasi foto
+
+- [ ] **Watermark KTP & Dokumen Identitas** (`#/watermark-ktp`): teks
+  melintang berulang di foto KTP/SIM/paspor ("Hanya untuk verifikasi …",
+  tanggal otomatis), atur ukuran, sudut, dan transparansi, lalu simpan ulang
+  tanpa EXIF. Pakai `decodeImage`/`canvasBlob` dari `src/lib/image.ts`.
+- [ ] **Sensor Foto** (`#/sensor-foto`): tutup bagian foto (NIK, wajah, plat
+  nomor, alamat) dengan kotak atau kuas, model blok hitam, piksel besar, atau
+  blur. Gambar disimpan ulang sehingga bagian yang ditutup benar-benar hilang.
+  Beri peringatan bahwa blur tipis pada teks kecil bisa ditebak, jadi default
+  ke blok hitam.
+
+## Hari 19 — 2026-11-05 · Privasi file
+
+- [ ] **Redaksi PDF** (`#/redact-pdf`): tandai area di halaman, lalu halaman
+  yang ditandai dirender ulang jadi gambar (pdf.js) dengan area itu dihitamkan,
+  sehingga teks aslinya hilang dari file, bukan cuma tertutup. Halaman lain
+  tetap utuh. Beri tahu bahwa teks di halaman yang diredaksi tidak bisa
+  disalin lagi.
+- [ ] **Enkripsi & Dekripsi File** (`#/encrypt-file`): kunci file apa saja
+  dengan password lewat WebCrypto (AES-256-GCM, kunci dari PBKDF2-SHA-256
+  dengan iterasi tinggi dan salt acak), nama file asli disimpan di dalamnya,
+  dan buka lagi di tool yang sama. Tegaskan bahwa password yang lupa tidak bisa
+  dipulihkan.
+
+## Hari 20 — 2026-11-06 · PDF
+
+- [ ] **PDF Hemat Tinta** (`#/pdf-grayscale`): ubah ke abu-abu atau
+  hitam-putih (dengan ambang yang bisa diatur dan opsi latar jadi putih)
+  sebelum dicetak. Halaman dirender ulang, jadi beri tahu bahwa teksnya jadi
+  gambar.
+- [ ] **Ekstrak Gambar dari PDF** (`#/pdf-extract-images`): ambil semua
+  gambar yang tertanam di PDF. Gambar JPEG disimpan apa adanya (tanpa kompres
+  ulang), yang lain diekspor sebagai PNG; unduh satu per satu atau ZIP.
+
+## Hari 21 — 2026-11-07 · Arsip & suara
+
+- [ ] **ZIP** (`#/zip`): buat ZIP dari banyak file (atau satu folder), dan
+  buka ZIP untuk melihat dan mengambil isinya satu per satu. Pakai library
+  kecil yang di-bundel; RAR/7z menyusul lewat wasm yang di-host sendiri bila
+  ukurannya masuk akal.
+- [ ] **Teks ke Suara** (`#/text-to-speech`): bacakan teks dengan suara
+  bawaan perangkat (`speechSynthesis`), pilih suara, kecepatan, dan nada. Hanya
+  tampilkan suara dengan `localService === true`: suara "Google …" di Chrome
+  dikirim ke server dan melanggar janji tools. API ini tidak bisa merekam, jadi
+  hanya diputar, tanpa unduh audio.
+
+## Hari 22 — 2026-11-08 · Video
+
+- [ ] **Edit Video Ringan** (`#/edit-video`): putar 90°, crop, hapus suara,
+  dan gabung beberapa klip jadi satu MP4. Pakai Mediabunny lewat
+  `src/lib/media.ts` (`probeMedia`, `convertMedia`), sama seperti Potong Video.
