@@ -53,7 +53,22 @@ upload, dan dwibahasa (ID/EN).
 - [ ] **Bandingkan Teks** (`#/text-diff`): diff per baris/kata dengan warna,
   mode berdampingan atau gabung.
 
-## Simpanan (belum dijadwalkan)
+## Hari 7 — 2026-10-24 · Musik lanjutan
 
-- Musik lanjutan: pembuat progresi chord, dan perekam latihan dengan metronom.
-- Tuner: mode biola/cello, dan nada acuan berkelanjutan (drone).
+- [ ] **Progresi Chord** (`#/chord-progression`): susun progresi dari kunci
+  dan pola (I–V–vi–IV, ii–V–I, dan lainnya), dengar langsung dengan suara
+  gitar/piano yang sudah ada, transpose, lalu buka di Gitar atau Piano Online.
+  Pakai helper nada di `src/lib/music.ts`.
+- [ ] **Perekam Latihan** (`#/practice-recorder`): rekam dari mikrofon
+  sambil metronom berbunyi (klik tidak ikut terekam), putar ulang dengan
+  klik di atasnya, dan simpan sebagai MP3/WAV. Pakai penjadwal Metronom dan
+  encoder dari `src/lib/media.ts`.
+
+## Hari 8 — 2026-10-25 · Tuner lanjutan
+
+- [ ] **Tuner: biola & cello** di `#/guitar-tuner`: stem biola (G D A E),
+  viola, dan cello (C G D A), dengan rentang deteksi nada yang disesuaikan
+  untuk nada rendah cello.
+- [ ] **Tuner: nada acuan berkelanjutan (drone)**: nada senar atau nada
+  bebas yang terus berbunyi sampai dimatikan, untuk menyetem dengan telinga
+  atau latihan intonasi.
