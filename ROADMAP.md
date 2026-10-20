@@ -24,7 +24,7 @@ tool-nya langsung terbuka siap dipakai.
 - [x] **`sitemap.xml`** semua halaman (dibuat saat build), dan **`robots.txt`**
   di repo `chalidade/chalidade.github.io` (robots hanya dibaca di root domain)
   yang menunjuk ke sitemap itu.
-- [ ] **Google Search Console** (dikerjakan pemilik akun): verifikasi properti
+- [x] **Google Search Console** (dikerjakan pemilik akun): verifikasi properti
   `https://chalidade.github.io/tools/` lewat meta tag, kirim sitemap, minta
   indexing untuk halaman utama dan tool terpenting.
 - [x] **Kata kunci yang sering dicari** di `keywords` registry dan teks
