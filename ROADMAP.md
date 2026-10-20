@@ -72,3 +72,54 @@ upload, dan dwibahasa (ID/EN).
 - [ ] **Tuner: nada acuan berkelanjutan (drone)**: nada senar atau nada
   bebas yang terus berbunyi sampai dimatikan, untuk menyetem dengan telinga
   atau latihan intonasi.
+
+## Hari 9 — 2026-10-26 · Ibadah
+
+- [ ] **Jadwal Sholat** (`#/jadwal-sholat`): waktu sholat dihitung di
+  perangkat dari koordinat (sudut Subuh/Isya metode Kemenag, ihtiyat), tanpa
+  API. Lokasi dari GPS atau dari daftar kab/kota yang dibundel sebagai JSON;
+  tampilan harian dan sebulan, bisa dicetak.
+- [ ] **Arah Kiblat** (`#/arah-kiblat`): sudut kiblat dari lokasi, plus
+  kompas di HP lewat `DeviceOrientationEvent` (izin di iOS), dengan peringatan
+  kalibrasi bila sensor tidak akurat.
+- [ ] **Konversi Hijriah ⇄ Masehi** (`#/hijriah`): lewat kalender
+  `islamic-umalqura` bawaan `Intl`, plus hari besar Islam setahun. Beri catatan
+  bahwa tanggal resmi Kemenag (rukyat) bisa selisih satu hari.
+
+## Hari 10 — 2026-10-27 · Zakat, tasbih, terbilang
+
+- [ ] **Kalkulator Zakat** (`#/zakat`): zakat mal, emas/perak, penghasilan,
+  dan fitrah. Nisab dihitung dari harga emas yang diisi pengguna (tidak
+  diambil dari internet), dengan rumus dan sumber ketentuan yang ditampilkan.
+- [ ] **Tasbih Digital** (`#/tasbih`): penghitung besar dengan target
+  33/99/bebas, getar saat target tercapai (`navigator.vibrate`), pintasan
+  keyboard, dan riwayat tersimpan di perangkat.
+- [ ] **Terbilang** (`#/terbilang`): angka ke teks Indonesia ("satu juta dua
+  ratus ribu rupiah") dan Inggris, dengan pilihan huruf besar dan akhiran
+  rupiah, untuk kwitansi dan cek.
+
+## Hari 11 — 2026-10-28 · Usaha kecil
+
+- [ ] **QRIS Nominal** (`#/qris`): baca QRIS statis toko (dari gambar atau
+  kamera, pakai pembaca di `src/tools/qr/`), sisipkan nominal (tag 54), hitung
+  ulang CRC, lalu tampilkan QR baru siap dipindai. Tidak ada yang dikirim ke
+  mana pun.
+- [ ] **Kwitansi & Invoice** (`#/kwitansi`): isi penerima, item, dan total
+  (nominal terbilang otomatis dari tool Terbilang), lalu unduh PDF lewat
+  pdf-lib. Data terakhir tersimpan di perangkat untuk dipakai lagi.
+
+## Hari 12 — 2026-10-29 · Keuangan
+
+- [ ] **Kalkulator Cicilan** (`#/cicilan`): bunga flat dan anuitas
+  (efektif), tabel angsuran per bulan, total bunga, dan ekspor CSV.
+- [ ] **Kalkulator Gaji Bersih** (`#/gaji-bersih`): PPh 21 (tarif efektif
+  rata-rata) dan potongan BPJS Kesehatan serta Ketenagakerjaan. Semua tarif dan
+  batas upah di satu file dengan tanggal berlakunya, dan hasil diberi catatan
+  bahwa ini perkiraan, bukan nasihat pajak.
+
+## Hari 13 — 2026-10-30 · Foto untuk formulir
+
+- [ ] **Kompres ke Ukuran Target** di `#/compress-image`: mode "maksimal
+  N KB" (mis. 200 KB untuk CPNS/SNBT) yang mencari kualitas dan, bila perlu,
+  dimensi terbesar yang masih di bawah batas. Pakai `canvasBlob` dari
+  `src/lib/image.ts`.
