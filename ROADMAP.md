@@ -21,10 +21,10 @@ upload, dan dwibahasa (ID/EN).
 
 ## Hari 3 — 2026-10-20 · PDF
 
-- [ ] **Atur Halaman PDF** (`#/organize-pdf`): susun ulang (drag), hapus,
+- [x] **Atur Halaman PDF** (`#/organize-pdf`): susun ulang (drag), hapus,
   putar, dan duplikat halaman dengan thumbnail. Pakai `src/lib/pdf-doc.ts`
   (`pageThumbs`, `openPdfDoc`).
-- [ ] **Nomor Halaman PDF** (`#/page-numbers`): posisi, format ("1", "1 / 10",
+- [x] **Nomor Halaman PDF** (`#/page-numbers`): posisi, format ("1", "1 / 10",
   "Halaman 1"), dan halaman awal.
 
 ## Hari 4 — 2026-10-21 · Teks & keamanan

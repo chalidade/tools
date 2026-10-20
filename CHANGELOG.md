@@ -3,6 +3,19 @@
 Catatan harian apa yang berubah di [tools](https://chalidade.github.io/tools/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-10-20 — PDF
+
+Dua tools baru di kategori Edit & Amankan PDF; total sekarang **50 tools**.
+
+- **Atur Halaman PDF** (`#/organize-pdf`): thumbnail semua halaman yang bisa
+  diseret untuk mengubah urutan, lalu putar kiri/kanan, duplikat, atau hapus
+  per halaman, dan simpan sebagai PDF baru. Ada tombol “Kembalikan” untuk
+  mengulang dari awal. Pratinjau lewat pdf.js, penyusunan lewat pdf-lib.
+- **Nomor Halaman PDF** (`#/page-numbers`): nomor di enam posisi (atas/bawah ×
+  kiri/tengah/kanan), format `1`, `1 / 10`, `Halaman 1`, atau `- 1 -`, ukuran
+  huruf, halaman awal (sampul bisa dilewati), dan nomor pertama. Halaman yang
+  diputar ikut benar, dan pratinjau memakai perhitungan posisi yang sama.
+
 ## 2026-10-19 — Foto & gambar
 
 Tiga tools baru di kategori Media; total sekarang **48 tools**.
