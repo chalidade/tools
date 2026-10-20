@@ -3,7 +3,7 @@
 **English** · [Bahasa Indonesia](README.id.md)
 
 **My everyday file toolbox, built for the file work I do every day and published free for everyone.**
-48 tools for PDF, Office files, images, video, audio and QR codes, and every one of them runs entirely in your browser.
+50 tools for PDF, Office files, images, video, audio and QR codes, and every one of them runs entirely in your browser.
 Your files are never uploaded.
 
 [![Live demo](https://img.shields.io/badge/live%20demo-chalidade.github.io%2Ftools-6366f1)](https://chalidade.github.io/tools/)
@@ -50,6 +50,8 @@ All 45, grouped the way the home page groups them. Each name links to the live t
 **Edit & Secure PDF**
 - [Merge PDF](https://chalidade.github.io/tools/#/merge-pdf), [Split PDF](https://chalidade.github.io/tools/#/split-pdf) (pages, ranges like `1-3, 5, 8-`, or every N pages)
 - [Watermark PDF](https://chalidade.github.io/tools/#/watermark-pdf): text or logo, centred or tiled, correct on rotated pages
+- [Organize PDF Pages](https://chalidade.github.io/tools/#/organize-pdf): thumbnails you drag to reorder, rotate, duplicate or delete
+- [PDF Page Numbers](https://chalidade.github.io/tools/#/page-numbers): position, format (`1`, `1 / 10`, `Page 1`) and the first numbered page
 - [Sign PDF](https://chalidade.github.io/tools/#/sign-pdf): draw (pressure-sensitive) or upload a signature, then place it anywhere
 - [Compress PDF](https://chalidade.github.io/tools/#/compress-pdf): re-encodes embedded JPEGs and optimises the structure with qpdf; never returns a larger file
 - [Protect PDF](https://chalidade.github.io/tools/#/protect-pdf) (AES-256 password and permissions) and [Unlock PDF](https://chalidade.github.io/tools/#/unlock-pdf)

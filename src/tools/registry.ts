@@ -49,6 +49,8 @@ import {
   Sheet,
   Signature,
   Stamp,
+  LayoutGrid,
+  ListOrdered,
   type LucideIcon,
 } from 'lucide-react'
 
@@ -232,6 +234,28 @@ export const TOOLS: Tool[] = [
     formats: 'PDF → PDF + watermark',
     badge: 'Baru',
     component: lazy(() => import('./watermark-pdf/WatermarkPdf')),
+  },
+  {
+    slug: 'organize-pdf',
+    category: 'pdf',
+    keywords: ['atur halaman', 'susun ulang', 'urutkan', 'hapus halaman', 'putar', 'duplikat', 'organize', 'reorder', 'rotate', 'delete pages', 'halaman'],
+    title: 'Atur Halaman PDF',
+    description: 'Susun ulang dengan seret, hapus, putar, dan duplikat halaman — lengkap dengan thumbnail.',
+    icon: LayoutGrid,
+    formats: 'PDF → PDF',
+    badge: 'Baru',
+    component: lazy(() => import('./organize-pdf/OrganizePdf')),
+  },
+  {
+    slug: 'page-numbers',
+    category: 'pdf',
+    keywords: ['nomor halaman', 'penomoran', 'beri nomor', 'page number', 'numbering', 'paginasi', 'footer', 'halaman'],
+    title: 'Nomor Halaman PDF',
+    description: 'Tambah nomor halaman: pilih posisi, format (1, 1 / 10, Halaman 1), dan halaman awal.',
+    icon: ListOrdered,
+    formats: 'PDF → PDF + nomor',
+    badge: 'Baru',
+    component: lazy(() => import('./page-numbers/PageNumbers')),
   },
   {
     slug: 'sign-pdf',

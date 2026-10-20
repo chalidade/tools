@@ -37,6 +37,8 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
   'merge-pdf': { title: 'Merge PDF', description: 'Combine several PDFs into one file — drag to set the order.', keywords: ['combine', 'join'] },
   'split-pdf': { title: 'Split PDF', description: 'Take certain pages, split by range, or break every N pages into separate PDFs.', keywords: ['extract', 'pages', 'separate'] },
   'watermark-pdf': { title: 'Watermark PDF', description: 'Put a translucent text or logo on every page — centred or tiled.', keywords: ['stamp', 'logo', 'confidential'] },
+  'organize-pdf': { title: 'Organize PDF Pages', description: 'Reorder by dragging, delete, rotate and duplicate pages — with thumbnails.', keywords: ['reorder', 'rearrange', 'rotate', 'delete', 'duplicate', 'pages'] },
+  'page-numbers': { title: 'PDF Page Numbers', description: 'Add page numbers: pick the position, the format (1, 1 / 10, Page 1) and the first page.', keywords: ['numbering', 'pagination', 'footer', 'header'] },
   'sign-pdf': { title: 'Sign PDF', description: 'Draw or upload your signature, then place it on any page.', formats: 'PDF → PDF + signature', keywords: ['signature', 'sign'] },
   'compress-pdf': { title: 'Compress PDF', description: 'Shrink a PDF by downsizing the photos inside — text stays sharp.', keywords: ['shrink', 'reduce', 'smaller'] },
   'pdf-to-markdown': { title: 'PDF to Markdown', description: 'Turn a PDF into Markdown: headings, bold/italic, lists and tables.', keywords: ['text', 'notes'] },
