@@ -59,10 +59,20 @@ self.addEventListener('fetch', (event) => {
       (async () => {
         try {
           const res = await fetch(req)
-          if (res.ok) (await caches.open(SHELL)).put(scoped('index.html'), res.clone())
+          if (res.ok) {
+            // Each tool has its own page; keep it, and keep it as the shell too.
+            const shell = await caches.open(SHELL)
+            await shell.put(req, res.clone())
+            await shell.put(scoped('index.html'), res.clone())
+          }
           return res
         } catch {
-          return (await caches.match(scoped('index.html'))) ?? (await caches.match(scoped('./'))) ?? Response.error()
+          return (
+            (await caches.match(req)) ??
+            (await caches.match(scoped('index.html'))) ??
+            (await caches.match(scoped('./'))) ??
+            Response.error()
+          )
         }
       })(),
     )

@@ -14,20 +14,20 @@ Dikerjakan sebelum batch harian berikutnya: sekarang semua tool ada di
 Tujuannya: orang mencari "kompres pdf tanpa upload", mengklik hasil Google, dan
 tool-nya langsung terbuka siap dipakai.
 
-- [ ] **Satu halaman statis per tool** (`/tools/<slug>/index.html`, dibuat saat
+- [x] **Satu halaman statis per tool** (`/tools/<slug>/index.html`, dibuat saat
   build dari `registry.ts`): judul dan meta description sendiri, canonical, OG,
   JSON-LD `WebApplication`, dan teks yang terbaca tanpa JavaScript (H1, cara
   pakai, FAQ singkat, catatan privasi). Aplikasi membaca slug dari path lalu
   membuka tool itu; link lama `#/<slug>` dialihkan ke path baru. GitHub Pages
   menyajikan `index.html` per folder, jadi reload tidak 404.
-- [ ] **Versi English** di `/tools/en/<slug>/` dengan `hreflang` id/en dua arah.
-- [ ] **`sitemap.xml`** semua halaman (dibuat saat build), dan **`robots.txt`**
+- [x] **Versi English** di `/tools/en/<slug>/` dengan `hreflang` id/en dua arah.
+- [x] **`sitemap.xml`** semua halaman (dibuat saat build), dan **`robots.txt`**
   di repo `chalidade/chalidade.github.io` (robots hanya dibaca di root domain)
   yang menunjuk ke sitemap itu.
 - [ ] **Google Search Console** (dikerjakan pemilik akun): verifikasi properti
   `https://chalidade.github.io/tools/` lewat meta tag, kirim sitemap, minta
   indexing untuk halaman utama dan tool terpenting.
-- [ ] **Kata kunci yang sering dicari** di `keywords` registry dan teks
+- [x] **Kata kunci yang sering dicari** di `keywords` registry dan teks
   halamannya: "vn", "voice note", "whatsapp" (Kompres Audio sudah bisa .opus ke
   MP3), "video ke mp3", "rotate pdf", "jpg ke pdf", dan semacamnya.
 - [ ] **Cek kecepatan & mobile** halaman tool (Lighthouse/PageSpeed): halaman

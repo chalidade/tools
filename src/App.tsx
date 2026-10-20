@@ -5,32 +5,31 @@ import { ToolGrid } from '@/components/ToolGrid'
 import { HowItWorks } from '@/components/HowItWorks'
 import { ToolView } from '@/components/ToolView'
 import { Footer } from '@/components/Footer'
-import { hashQuery, useHashRoute } from '@/lib/use-hash-route'
+import { routeQuery, useLinkNavigation, useRoute } from '@/lib/route'
+import { applyHead, homeMeta } from '@/lib/seo'
 import { findTool } from '@/tools/registry'
 import { getLang, setLang, useLang } from '@/lib/i18n'
 
 function App() {
-  const tool = findTool(useHashRoute())
+  useLinkNavigation()
+  const route = useRoute()
+  const tool = findTool(route.slug)
 
-  // #/<tool>?embed — the tool alone, for an iframe on someone else's site.
-  const query = hashQuery()
-  // ?lang=en|id in the link picks the language (embeds use it); the first
-  // page load already read it in i18n.ts, this follows later hash changes.
-  const asked = query.get('lang')
+  // The address decides the language (/tools/en/… is English); a hash link
+  // without one, like an embed, keeps the visitor's own language.
   useEffect(() => {
-    if ((asked === 'en' || asked === 'id') && asked !== getLang()) setLang(asked)
-  }, [asked])
+    if (route.lang && route.lang !== getLang()) setLang(route.lang, { remember: false })
+  }, [route.lang])
   const lang = useLang()
   useEffect(() => {
     document.documentElement.lang = lang
   }, [lang])
   useEffect(() => {
-    if (!tool)
-      document.title =
-        lang === 'en' ? 'Tools — Free tools that run in your browser' : 'Tools — Kumpulan tools gratis, langsung di browser'
+    if (!tool) applyHead(homeMeta(lang))
   }, [tool, lang])
-  if (tool && query.has('embed')) {
-    const theme = query.get('theme')
+  // #/<tool>?embed — the tool alone, for an iframe on someone else's site.
+  if (tool && route.embed) {
+    const theme = routeQuery().get('theme')
     if (theme === 'light' || theme === 'dark') document.documentElement.classList.toggle('dark', theme === 'dark')
     return <ToolView tool={tool} embed />
   }

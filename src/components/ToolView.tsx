@@ -1,9 +1,12 @@
 import { Suspense, useEffect } from 'react'
 import { ArrowLeft, Loader2, ShieldCheck } from 'lucide-react'
 import { InstallCard } from '@/components/InstallCard'
+import { ToolAbout } from '@/components/ToolAbout'
 import { ToolBoundary } from '@/components/tool/ToolBoundary'
 import { toolText, type Tool } from '@/tools/registry'
 import { useLang, useT } from '@/lib/i18n'
+import { pageUrl } from '@/lib/route'
+import { absoluteUrl, applyHead, toolMeta } from '@/lib/seo'
 
 export function ToolView({ tool, embed = false }: { tool: Tool; embed?: boolean }) {
   const Component = tool.component
@@ -12,12 +15,15 @@ export function ToolView({ tool, embed = false }: { tool: Tool; embed?: boolean 
   const text = toolText(tool, lang)
 
   useEffect(() => {
-    const previous = document.title
-    document.title = `${text.title} — Tools`
-    return () => {
-      document.title = previous
+    if (embed) {
+      const previous = document.title
+      document.title = `${text.title} — Tools`
+      return () => {
+        document.title = previous
+      }
     }
-  }, [text.title])
+    applyHead(toolMeta(tool, lang))
+  }, [embed, tool, lang, text.title])
 
   const loading = (
     <div className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -35,7 +41,7 @@ export function ToolView({ tool, embed = false }: { tool: Tool; embed?: boolean 
           </Suspense>
         </ToolBoundary>
         <p className="mt-4 text-center text-xs text-muted-foreground">
-          <a href={`https://chalidade.github.io/tools/#/${tool.slug}`} target="_blank" rel="noreferrer" className="hover:text-foreground">
+          <a href={absoluteUrl(tool.slug, lang)} target="_blank" rel="noreferrer" className="hover:text-foreground">
             {text.title} · Tools — {t('berjalan di browsermu, tanpa upload', 'runs in your browser, no upload')} ↗
           </a>
         </p>
@@ -49,7 +55,7 @@ export function ToolView({ tool, embed = false }: { tool: Tool; embed?: boolean 
 
       <div className="mx-auto max-w-5xl px-5 py-10 sm:px-6 sm:py-14">
         <a
-          href="#/"
+          href={pageUrl('', lang)}
           className="inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
         >
           <ArrowLeft className="size-4" />
@@ -80,6 +86,7 @@ export function ToolView({ tool, embed = false }: { tool: Tool; embed?: boolean 
           </ToolBoundary>
         </div>
         <InstallCard tool={tool} />
+        <ToolAbout tool={tool} />
       </div>
     </section>
   )

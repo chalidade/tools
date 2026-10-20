@@ -5,7 +5,8 @@ import { Button } from '@/components/ui/button'
 import { ErrorNote } from '@/components/tool/ErrorNote'
 import { FileDrop } from '@/components/tool/FileDrop'
 import { FLATS, SHARPS, pc } from '@/lib/music'
-import { tr, useT } from '@/lib/i18n'
+import { getLang, tr, useT } from '@/lib/i18n'
+import { pageUrl } from '@/lib/route'
 import { decodeToMono, type Analysis } from './analyze'
 
 type Phase = { kind: 'idle' } | { kind: 'busy'; label: string } | { kind: 'done'; result: Analysis; file: File; url: string }
@@ -161,7 +162,7 @@ export default function BpmKey() {
           </div>
           {result.bpm > 0 && (
             <a
-              href={`#/metronome?bpm=${Math.round(bpm)}`}
+              href={pageUrl('metronome', getLang(), `bpm=${Math.round(bpm)}`)}
               className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-brand-2 hover:underline"
             >
               <Activity className="size-4" /> {t('Buka di Metronom', 'Open in Metronome')}

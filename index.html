@@ -24,6 +24,15 @@
     <meta name="twitter:description" content="Dokumen, PDF, gambar, video, audio, sampai data developer — semuanya berjalan di perangkatmu." />
     <meta name="twitter:image" content="https://chalidade.github.io/tools/og.png" />
 
+    <!-- Search engines: one address per page and language. scripts/seo.mjs
+         rewrites these (and the tags above) for every page it writes; the app
+         keeps them in step after an in-app navigation (src/lib/seo.ts). -->
+    <link rel="canonical" href="https://chalidade.github.io/tools/" />
+    <link rel="alternate" hreflang="id" href="https://chalidade.github.io/tools/" />
+    <link rel="alternate" hreflang="en" href="https://chalidade.github.io/tools/en/" />
+    <link rel="alternate" hreflang="x-default" href="https://chalidade.github.io/tools/" />
+    <script type="application/ld+json">{}</script>
+
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <!-- Installable app (PWA): manifest + iOS home-screen hints. -->

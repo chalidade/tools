@@ -16,6 +16,20 @@ Dua tools baru di kategori Edit & Amankan PDF; total sekarang **50 tools**.
   huruf, halaman awal (sampul bisa dilewati), dan nomor pertama. Halaman yang
   diputar ikut benar, dan pratinjau memakai perhitungan posisi yang sama.
 
+**Bisa ditemukan di Google**
+- Setiap tool sekarang punya alamat sendiri: `chalidade.github.io/tools/<tool>/`
+  (Indonesia) dan `chalidade.github.io/tools/en/<tool>/` (English), masing-masing
+  dengan judul, deskripsi, dan teks yang bisa dibaca mesin pencari. Klik hasil
+  Google langsung membuka tool-nya.
+- Bahasa halaman mengikuti alamatnya; tombol ID/EN pindah ke alamat bahasa
+  lain dan tetap diingat.
+- `sitemap.xml` untuk semua 102 halaman, dan bagian “Kenapa aman dipakai” plus
+  tautan ke tool sejenis di bawah setiap tool.
+- Tautan lama `#/<tool>` tetap jalan (dialihkan ke alamat baru), begitu juga
+  embed `#/<tool>?embed` di situs lain.
+- Kata kunci pencarian: “vn”, “voice note”, “whatsapp”, dan “video” kini
+  menemukan Kompres Audio (yang memang bisa mengubah voice note dan video ke MP3).
+
 ## 2026-10-19 — Foto & gambar
 
 Tiga tools baru di kategori Media; total sekarang **48 tools**.
