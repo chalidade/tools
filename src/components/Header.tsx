@@ -3,6 +3,7 @@ import { InstallButton } from '@/components/InstallButton'
 import { Logo } from '@/components/Logo'
 import { useTheme } from '@/lib/use-theme'
 import { setLang, useLang, useT } from '@/lib/i18n'
+import { getRoute, navigate, pageUrl } from '@/lib/route'
 
 const REPO = 'https://github.com/chalidade/tools'
 
@@ -14,14 +15,14 @@ export function Header() {
   return (
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/70 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5 sm:px-6">
-        <a href="#/" aria-label={t('Tools — beranda', 'Tools — home')} className="rounded-md outline-offset-4">
+        <a href={pageUrl('', lang)} aria-label={t('Tools — beranda', 'Tools — home')} className="rounded-md outline-offset-4">
           <Logo />
         </a>
 
         <nav className="flex items-center gap-1">
           <InstallButton />
           <a
-            href="#/"
+            href={pageUrl('', lang)}
             className="hidden rounded-lg px-3 py-2 text-sm text-muted-foreground transition-colors hover:text-foreground sm:block"
           >
             {t('Semua tools', 'All tools')}
@@ -38,7 +39,12 @@ export function Header() {
           {/* Language: shows the one you'd switch to. */}
           <button
             type="button"
-            onClick={() => setLang(lang === 'en' ? 'id' : 'en')}
+            onClick={() => {
+              // Remember the choice, then move to the same page in that language.
+              const next = lang === 'en' ? 'id' : 'en'
+              setLang(next)
+              navigate(pageUrl(getRoute().slug, next, location.search.slice(1)))
+            }}
             aria-label={lang === 'en' ? 'Ganti ke Bahasa Indonesia' : 'Switch to English'}
             title={lang === 'en' ? 'Bahasa Indonesia' : 'English'}
             className="flex h-9 items-center gap-1 rounded-lg px-2 font-mono text-xs text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"

@@ -34,7 +34,8 @@ jobs:
       - run: npm ci
 
       # tsc -b first: the type-check is the correctness gate.
-      - run: npx tsc -b && npx vite build --base=/tools/
+      # seo.mjs writes a real page per tool and language, plus sitemap.xml.
+      - run: npx tsc -b && npx vite build --base=/tools/ && node scripts/seo.mjs --base=/tools/
 
       - uses: actions/upload-pages-artifact@v5
         with:

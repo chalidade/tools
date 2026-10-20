@@ -16,11 +16,21 @@ A deeper look at how the site is put together. For the overview, see the [README
 
 - `src/App.tsx` only composes sections (`Header`, `Hero`, `ToolGrid`, `HowItWorks`,
   `ToolView`, `Footer`); each section is its own file in `src/components/`.
-- **Routing** is a small hook, `src/lib/use-hash-route.ts`. The route is `#/<slug>` and query
-  parameters live after the hash (`#/<slug>?embed&theme=light&lang=en`). Path routing would 404 on
-  reload under the Pages sub-path, and hash routing needs no rewrite rule.
-- **Embed mode:** with `?embed`, `App` renders only `ToolView` for that tool, so any tool can sit in
-  an iframe on another site. `theme` and `lang` can be forced from the URL.
+- **Routing** is `src/lib/route.ts`. Every page has a real address: `/tools/<slug>/` in
+  Indonesian and `/tools/en/<slug>/` in English, and the address decides the language, so a
+  crawler with an English browser still gets the Indonesian page it asked for. Same-site links
+  are plain `<a href>` (crawlable, work without JS) and switch pages with `pushState`. Reloads
+  don't 404 because the build writes an `index.html` into every page's folder (below). Old
+  `#/<slug>` links are rewritten to the path on load; a visitor's stored ID/EN choice moves them
+  to that language's address.
+- **Search pages:** `scripts/seo.mjs` runs after `vite build` and writes, from the registry and
+  `src/lib/seo.ts`, one page per tool and language with its own title, description, canonical,
+  `hreflang`, Open Graph and JSON-LD, plus the page text (description, privacy points, related
+  links) as static HTML inside `#root`; also `404.html` (noindex) and `sitemap.xml`. The app
+  renders the same text (`ToolAbout`) and updates `<head>` after in-app navigation.
+- **Embed mode:** `#/<slug>?embed` (the form already pasted on other sites) renders only
+  `ToolView` for that tool, so any tool can sit in an iframe on another site. `theme` and `lang`
+  can be forced from the URL.
 - **Theme:** dark by default. A pre-paint script in `index.html` applies a stored light choice
   before React mounts, so there is no flash.
 
@@ -33,7 +43,7 @@ component; English text sits in `registry-en.ts`. From that list the app derives
 - the home-page grid, grouped by category, with counts per category
 - search (`src/tools/search.ts`): accent-insensitive word-prefix matching across both languages,
   ranked title > keywords/formats > description, so "word" finds Word to PDF but not "password"
-- the `#/<slug>` routes
+- the `/<slug>/` and `/en/<slug>/` pages, their search text and the sitemap
 - the install/embed card on each tool page, and package metadata for tools that have one
 
 ## Shared engines (`src/lib/`)

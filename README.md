@@ -37,63 +37,63 @@ browser's own media encoders, and a library is downloaded only when you open the
 All 45, grouped the way the home page groups them. Each name links to the live tool.
 
 **To PDF**
-- [Word to PDF](https://chalidade.github.io/tools/#/doc-to-pdf): `.docx` to PDF, paginated without cutting through lines of text
-- [Images to PDF](https://chalidade.github.io/tools/#/image-to-pdf): reorder, rotate, A4/Letter/fit-to-image; phone EXIF rotation applied
-- [PowerPoint to PDF](https://chalidade.github.io/tools/#/ppt-to-pdf): `.pptx` to PDF, one page per slide
-- [Excel to PDF](https://chalidade.github.io/tools/#/excel-to-pdf): `.xlsx`/`.csv` to a selectable-text PDF table, with theme colors, borders, merged cells and number formats
+- [Word to PDF](https://chalidade.github.io/tools/en/doc-to-pdf/): `.docx` to PDF, paginated without cutting through lines of text
+- [Images to PDF](https://chalidade.github.io/tools/en/image-to-pdf/): reorder, rotate, A4/Letter/fit-to-image; phone EXIF rotation applied
+- [PowerPoint to PDF](https://chalidade.github.io/tools/en/ppt-to-pdf/): `.pptx` to PDF, one page per slide
+- [Excel to PDF](https://chalidade.github.io/tools/en/excel-to-pdf/): `.xlsx`/`.csv` to a selectable-text PDF table, with theme colors, borders, merged cells and number formats
 
 **From PDF**
-- [PDF to Word](https://chalidade.github.io/tools/#/pdf-to-word): editable `.docx`, keeping font size, bold/italic, tabs and page breaks
-- [PDF to Excel](https://chalidade.github.io/tools/#/pdf-to-excel): tables rebuilt from text positions; currencies and percentages become real numbers
-- [PDF to PowerPoint](https://chalidade.github.io/tools/#/pdf-to-ppt): one slide per page, with the text as editable text boxes
-- [PDF to Images](https://chalidade.github.io/tools/#/pdf-to-image): PNG/JPG at 72, 150 or 300 dpi, zipped when there are several
-- [PDF to Markdown](https://chalidade.github.io/tools/#/pdf-to-markdown): headings, emphasis, lists and tables, with tables joined across pages
+- [PDF to Word](https://chalidade.github.io/tools/en/pdf-to-word/): editable `.docx`, keeping font size, bold/italic, tabs and page breaks
+- [PDF to Excel](https://chalidade.github.io/tools/en/pdf-to-excel/): tables rebuilt from text positions; currencies and percentages become real numbers
+- [PDF to PowerPoint](https://chalidade.github.io/tools/en/pdf-to-ppt/): one slide per page, with the text as editable text boxes
+- [PDF to Images](https://chalidade.github.io/tools/en/pdf-to-image/): PNG/JPG at 72, 150 or 300 dpi, zipped when there are several
+- [PDF to Markdown](https://chalidade.github.io/tools/en/pdf-to-markdown/): headings, emphasis, lists and tables, with tables joined across pages
 
 **Edit & Secure PDF**
-- [Merge PDF](https://chalidade.github.io/tools/#/merge-pdf), [Split PDF](https://chalidade.github.io/tools/#/split-pdf) (pages, ranges like `1-3, 5, 8-`, or every N pages)
-- [Watermark PDF](https://chalidade.github.io/tools/#/watermark-pdf): text or logo, centred or tiled, correct on rotated pages
-- [Organize PDF Pages](https://chalidade.github.io/tools/#/organize-pdf): thumbnails you drag to reorder, rotate, duplicate or delete
-- [PDF Page Numbers](https://chalidade.github.io/tools/#/page-numbers): position, format (`1`, `1 / 10`, `Page 1`) and the first numbered page
-- [Sign PDF](https://chalidade.github.io/tools/#/sign-pdf): draw (pressure-sensitive) or upload a signature, then place it anywhere
-- [Compress PDF](https://chalidade.github.io/tools/#/compress-pdf): re-encodes embedded JPEGs and optimises the structure with qpdf; never returns a larger file
-- [Protect PDF](https://chalidade.github.io/tools/#/protect-pdf) (AES-256 password and permissions) and [Unlock PDF](https://chalidade.github.io/tools/#/unlock-pdf)
+- [Merge PDF](https://chalidade.github.io/tools/en/merge-pdf/), [Split PDF](https://chalidade.github.io/tools/en/split-pdf/) (pages, ranges like `1-3, 5, 8-`, or every N pages)
+- [Watermark PDF](https://chalidade.github.io/tools/en/watermark-pdf/): text or logo, centred or tiled, correct on rotated pages
+- [Organize PDF Pages](https://chalidade.github.io/tools/en/organize-pdf/): thumbnails you drag to reorder, rotate, duplicate or delete
+- [PDF Page Numbers](https://chalidade.github.io/tools/en/page-numbers/): position, format (`1`, `1 / 10`, `Page 1`) and the first numbered page
+- [Sign PDF](https://chalidade.github.io/tools/en/sign-pdf/): draw (pressure-sensitive) or upload a signature, then place it anywhere
+- [Compress PDF](https://chalidade.github.io/tools/en/compress-pdf/): re-encodes embedded JPEGs and optimises the structure with qpdf; never returns a larger file
+- [Protect PDF](https://chalidade.github.io/tools/en/protect-pdf/) (AES-256 password and permissions) and [Unlock PDF](https://chalidade.github.io/tools/en/unlock-pdf/)
 
 **Images & Media**
-- [Compress Images](https://chalidade.github.io/tools/#/compress-image): batch JPG/WebP, metadata (including GPS) stripped
-- [Crop & Resize Image](https://chalidade.github.io/tools/#/crop-resize-image): free or fixed ratios, rotate, flip, exact pixels
-- [Convert Image Format](https://chalidade.github.io/tools/#/convert-image): HEIC (iPhone), WebP, AVIF, PNG, JPG to JPG/PNG/WebP, in batches; HEIC decoded by a self-hosted libheif wasm
-- [ID Photo](https://chalidade.github.io/tools/#/pas-foto): 2×3 / 3×4 / 4×6 crop, red/blue/white backdrop, 4R or A4 print sheet (JPG/PNG/PDF)
-- [Remove Photo Metadata](https://chalidade.github.io/tools/#/strip-exif): shows camera, date and GPS; JPG/PNG are cleaned losslessly
-- [Remove Background](https://chalidade.github.io/tools/#/remove-background): magic wand, color select, lasso and brush, with no AI model to download
-- [Compress Video](https://chalidade.github.io/tools/#/compress-video): MP4 output using the device's own encoder, with a size estimate up front
-- [Trim Video & Audio](https://chalidade.github.io/tools/#/trim-media): filmstrip/waveform timeline; untouched parts are copied without re-encoding
-- [GIF ⇄ MP4](https://chalidade.github.io/tools/#/gif-mp4), [Extract Video Frames](https://chalidade.github.io/tools/#/extract-frames)
-- [Change Speed](https://chalidade.github.io/tools/#/change-speed): 0.25× to 4× with the pitch kept natural (a hand-written WSOLA time-stretch)
-- [Merge Audio](https://chalidade.github.io/tools/#/merge-audio), [Compress Audio](https://chalidade.github.io/tools/#/compress-audio) (MP3, AAC or Opus)
-- [Screen Recorder](https://chalidade.github.io/tools/#/screen-recorder): screen, window or tab, with mic and tab audio mixed, a floating camera, and WebM or MP4 export
-- [Voice Recorder](https://chalidade.github.io/tools/#/audio-recorder): live waveform, recordings kept in IndexedDB, export to MP3/M4A/WAV
+- [Compress Images](https://chalidade.github.io/tools/en/compress-image/): batch JPG/WebP, metadata (including GPS) stripped
+- [Crop & Resize Image](https://chalidade.github.io/tools/en/crop-resize-image/): free or fixed ratios, rotate, flip, exact pixels
+- [Convert Image Format](https://chalidade.github.io/tools/en/convert-image/): HEIC (iPhone), WebP, AVIF, PNG, JPG to JPG/PNG/WebP, in batches; HEIC decoded by a self-hosted libheif wasm
+- [ID Photo](https://chalidade.github.io/tools/en/pas-foto/): 2×3 / 3×4 / 4×6 crop, red/blue/white backdrop, 4R or A4 print sheet (JPG/PNG/PDF)
+- [Remove Photo Metadata](https://chalidade.github.io/tools/en/strip-exif/): shows camera, date and GPS; JPG/PNG are cleaned losslessly
+- [Remove Background](https://chalidade.github.io/tools/en/remove-background/): magic wand, color select, lasso and brush, with no AI model to download
+- [Compress Video](https://chalidade.github.io/tools/en/compress-video/): MP4 output using the device's own encoder, with a size estimate up front
+- [Trim Video & Audio](https://chalidade.github.io/tools/en/trim-media/): filmstrip/waveform timeline; untouched parts are copied without re-encoding
+- [GIF ⇄ MP4](https://chalidade.github.io/tools/en/gif-mp4/), [Extract Video Frames](https://chalidade.github.io/tools/en/extract-frames/)
+- [Change Speed](https://chalidade.github.io/tools/en/change-speed/): 0.25× to 4× with the pitch kept natural (a hand-written WSOLA time-stretch)
+- [Merge Audio](https://chalidade.github.io/tools/en/merge-audio/), [Compress Audio](https://chalidade.github.io/tools/en/compress-audio/) (MP3, AAC or Opus)
+- [Screen Recorder](https://chalidade.github.io/tools/en/screen-recorder/): screen, window or tab, with mic and tab audio mixed, a floating camera, and WebM or MP4 export
+- [Voice Recorder](https://chalidade.github.io/tools/en/audio-recorder/): live waveform, recordings kept in IndexedDB, export to MP3/M4A/WAV
 
 **Music**
 
-- [Guitar Tuner](https://chalidade.github.io/tools/#/guitar-tuner): microphone pitch detection (McLeod method), auto string detection, guitar/bass/ukulele tunings, reference tones, adjustable A4
-- [Metronome](https://chalidade.github.io/tools/#/metronome): 30–300 BPM on a lookahead Web Audio scheduler, accents, beats per bar, subdivisions, tap tempo
-- [Chord Finder & Transpose](https://chalidade.github.io/tools/#/chords): guitar and ukulele shapes generated for every root and 16 chord types, playable (Karplus–Strong); transposes a pasted song sheet keeping chords aligned to the lyrics
-- [BPM & Key Finder](https://chalidade.github.io/tools/#/bpm-key): tempo from an onset-envelope comb search, key from a chromagram against Krumhansl profiles, Camelot code and diatonic chords; runs in a Web Worker
-- [Online Piano](https://chalidade.github.io/tools/#/piano): all 88 keys with a minimap and 1–7 octave views; six synthesised voices (grand, electric piano, organ, harpsichord, strings, music box); practice mode with public-domain pieces, scales and any MIDI file you open (parsed in the browser), next-key highlighting, demo playback and a score; multi-touch, computer keyboard, Web MIDI, sustain, chord names
-- [Online Guitar](https://chalidade.github.io/tools/#/guitar): Karplus–Strong strings with a fractional-delay all-pass (in tune to ~2 cents) and pick-position excitation, acoustic body / clean / overdriven amp; swipe-to-strum over generated chord shapes, capo, free fretboard, auto accompaniment patterns
-- [Online Drums](https://chalidade.github.io/tools/#/drums): nine synthesised pads (808-style metal for hats and cymbals, hi-hat choke), multi-touch with centre-is-louder velocity, keyboard, General MIDI e-drum input; 16-step sequencer with accents, swing and nine preset grooves, saved in the browser
+- [Guitar Tuner](https://chalidade.github.io/tools/en/guitar-tuner/): microphone pitch detection (McLeod method), auto string detection, guitar/bass/ukulele tunings, reference tones, adjustable A4
+- [Metronome](https://chalidade.github.io/tools/en/metronome/): 30–300 BPM on a lookahead Web Audio scheduler, accents, beats per bar, subdivisions, tap tempo
+- [Chord Finder & Transpose](https://chalidade.github.io/tools/en/chords/): guitar and ukulele shapes generated for every root and 16 chord types, playable (Karplus–Strong); transposes a pasted song sheet keeping chords aligned to the lyrics
+- [BPM & Key Finder](https://chalidade.github.io/tools/en/bpm-key/): tempo from an onset-envelope comb search, key from a chromagram against Krumhansl profiles, Camelot code and diatonic chords; runs in a Web Worker
+- [Online Piano](https://chalidade.github.io/tools/en/piano/): all 88 keys with a minimap and 1–7 octave views; six synthesised voices (grand, electric piano, organ, harpsichord, strings, music box); practice mode with public-domain pieces, scales and any MIDI file you open (parsed in the browser), next-key highlighting, demo playback and a score; multi-touch, computer keyboard, Web MIDI, sustain, chord names
+- [Online Guitar](https://chalidade.github.io/tools/en/guitar/): Karplus–Strong strings with a fractional-delay all-pass (in tune to ~2 cents) and pick-position excitation, acoustic body / clean / overdriven amp; swipe-to-strum over generated chord shapes, capo, free fretboard, auto accompaniment patterns
+- [Online Drums](https://chalidade.github.io/tools/en/drums/): nine synthesised pads (808-style metal for hats and cymbals, hi-hat choke), multi-touch with centre-is-louder velocity, keyboard, General MIDI e-drum input; 16-step sequencer with accents, swing and nine preset grooves, saved in the browser
 
 **Developer & Design**
-- [QR Code Generator](https://chalidade.github.io/tools/#/qr-generator): links, Wi-Fi, WhatsApp, vCard and more, with logo and styles; every code is scanned back to confirm it reads
-- [QR & Barcode Reader](https://chalidade.github.io/tools/#/qr-reader): from an image, a pasted screenshot or the camera (QR, Data Matrix, Aztec, PDF417, EAN/UPC, Code 128…)
-- [JSON Beautifier](https://chalidade.github.io/tools/#/json-beautify) and [JSON Minify](https://chalidade.github.io/tools/#/json-minify): a custom parser that keeps numbers exactly as written
-- [Favicon Generator](https://chalidade.github.io/tools/#/favicon-generator): `.ico`, iOS/Android icons, web manifest and the `<head>` snippet
-- [Image ⇄ Base64](https://chalidade.github.io/tools/#/image-to-base64), [Color Picker](https://chalidade.github.io/tools/#/color-picker) (HEX/RGB/HSL/OKLCH, WCAG contrast, 50–950 shades)
+- [QR Code Generator](https://chalidade.github.io/tools/en/qr-generator/): links, Wi-Fi, WhatsApp, vCard and more, with logo and styles; every code is scanned back to confirm it reads
+- [QR & Barcode Reader](https://chalidade.github.io/tools/en/qr-reader/): from an image, a pasted screenshot or the camera (QR, Data Matrix, Aztec, PDF417, EAN/UPC, Code 128…)
+- [JSON Beautifier](https://chalidade.github.io/tools/en/json-beautify/) and [JSON Minify](https://chalidade.github.io/tools/en/json-minify/): a custom parser that keeps numbers exactly as written
+- [Favicon Generator](https://chalidade.github.io/tools/en/favicon-generator/): `.ico`, iOS/Android icons, web manifest and the `<head>` snippet
+- [Image ⇄ Base64](https://chalidade.github.io/tools/en/image-to-base64/), [Color Picker](https://chalidade.github.io/tools/en/color-picker/) (HEX/RGB/HSL/OKLCH, WCAG contrast, 50–950 shades)
 
 **Productivity**
-- [Notes](https://chalidade.github.io/tools/#/notes): Markdown with live checklists, saved in the browser, JSON backup/restore
-- [Calculator](https://chalidade.github.io/tools/#/calculator): basic and scientific, with its own expression parser (no `eval`)
-- [Whiteboard](https://chalidade.github.io/tools/#/whiteboard): pressure-sensitive pen, shapes, text, multiple pages, export to PNG/PDF
+- [Notes](https://chalidade.github.io/tools/en/notes/): Markdown with live checklists, saved in the browser, JSON backup/restore
+- [Calculator](https://chalidade.github.io/tools/en/calculator/): basic and scientific, with its own expression parser (no `eval`)
+- [Whiteboard](https://chalidade.github.io/tools/en/whiteboard/): pressure-sensitive pen, shapes, text, multiple pages, export to PNG/PDF
 
 The [Indonesian README](README.id.md) has a longer per-tool table with every option and limitation.
 

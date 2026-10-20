@@ -68,8 +68,18 @@ picture; the rules that matter when editing:
   back to a fixed overlay where element full screen does not exist (iPhone).
   Piano, guitar and drums put their playing surface in a `Stage`; in full
   screen they stretch it with `flex-1` and hide secondary controls.
-- **Hash routing** (`#/<slug>`, `src/lib/use-hash-route.ts`) — do not switch to
-  path routing; it 404s on reload under the Pages sub-path.
+- **Path routing for search engines** (`src/lib/route.ts`): `/tools/<slug>/`
+  (Indonesian) and `/tools/en/<slug>/` (English); the address decides the
+  language — never pick the language of an addressed page from the browser,
+  or a crawler gets the wrong one. Link with `pageUrl(slug, lang)` as plain
+  `<a href>` (intercepted for pushState); read query params with
+  `routeQuery()`. Reloads work because `scripts/seo.mjs` (run by `npm run
+  build` and CI after `vite build`) writes an `index.html` per page, plus
+  `sitemap.xml` and `404.html`, using the text in `src/lib/seo.ts`; keep
+  `seo.ts` the single source for titles/descriptions/about text. Old
+  `#/<slug>` links are rewritten on load; embeds keep `#/<slug>?embed`.
+  `robots.txt` lives in the `chalidade/chalidade.github.io` repo (domain
+  root). A new tool needs nothing extra: its pages come from the registry.
 - The home page is deliberately light: a small static `Hero`, then
   `ToolGrid` (search + category chips + cards) and `HowItWorks`. No animation
   library and no per-frame JS on the home page — the walkable town that used
@@ -100,7 +110,8 @@ picture; the rules that matter when editing:
   English go in `src/tools/registry-en.ts` (read via `toolText()` /
   `categoryText()`; search matches both languages). The header's ID/EN switch
   persists the choice; first visits get Indonesian only if the browser
-  language is Indonesian/Malay; `#/…?lang=en` forces a language (embeds).
+  language is Indonesian/Malay — but only where the address names no language
+  (hash embeds); `#/…?lang=en` forces a language there.
   Town text (keeper dialog, residents) lives in `playground/dialog.ts` and
   `residents.ts` per language. `setLang(x, { page: false })` is for the
   packages: it never touches the host page's `<html lang>` or storage.

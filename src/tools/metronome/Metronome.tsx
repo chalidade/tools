@@ -3,7 +3,7 @@ import { Hand, Minus, Pause, Play, Plus } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Segmented } from '@/components/tool/Segmented'
-import { hashQuery } from '@/lib/use-hash-route'
+import { routeQuery } from '@/lib/route'
 import { useT } from '@/lib/i18n'
 
 /*
@@ -57,8 +57,8 @@ function loadPrefs(): Prefs {
   } catch {
     /* keep defaults */
   }
-  // #/metronome?bpm=128 (the BPM detector links here) wins over the stored tempo.
-  const asked = Number(hashQuery().get('bpm'))
+  // /metronome/?bpm=128 (the BPM detector links here) wins over the stored tempo.
+  const asked = Number(routeQuery().get('bpm'))
   if (asked) prefs.bpm = asked
   return { ...prefs, bpm: clampBpm(prefs.bpm), beats: Math.min(12, Math.max(1, prefs.beats)) }
 }

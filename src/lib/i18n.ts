@@ -34,13 +34,14 @@ const listeners = new Set<() => void>()
 export const getLang = () => current
 
 /**
- * Switches the language. The site remembers the choice and marks <html lang>;
- * an embedded package passes `{ page: false }` so it never touches the host
- * page's attributes or storage.
+ * Switches the language. The site marks <html lang> and remembers the choice;
+ * following the language of an address passes `{ remember: false }`, so only
+ * the header switch is stored. An embedded package passes `{ page: false }` so
+ * it never touches the host page's attributes or storage.
  */
-export function setLang(next: Lang, { page = true }: { page?: boolean } = {}) {
-  if (page) {
-    document.documentElement.lang = next
+export function setLang(next: Lang, { page = true, remember = page }: { page?: boolean; remember?: boolean } = {}) {
+  if (page) document.documentElement.lang = next
+  if (remember) {
     try {
       localStorage.setItem(KEY, next)
     } catch {

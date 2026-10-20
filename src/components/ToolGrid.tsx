@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { ArrowUpRight, Search, X } from 'lucide-react'
+import { pageUrl } from '@/lib/route'
 import { cn } from '@/lib/utils'
 import { CATEGORIES, TOOLS, categoryText, toolText, type CategoryId, type Tool } from '@/tools/registry'
 import { searchTools } from '@/tools/search'
@@ -186,7 +187,7 @@ function ToolCard({ tool }: { tool: Tool }) {
   const text = toolText(tool, lang)
   return (
     <a
-      href={`#/${tool.slug}`}
+      href={pageUrl(tool.slug, lang)}
       className="group flex flex-col rounded-2xl border bg-card p-6 shadow-xs transition-colors hover:border-brand-2/50"
     >
       <div className="flex items-start justify-between">
