@@ -56,10 +56,10 @@ tool-nya langsung terbuka siap dipakai.
 
 ## Hari 4 — 2026-10-21 · Teks & keamanan
 
-- [ ] **Pembuat Password** (`#/password-generator`): panjang, jenis
+- [x] **Pembuat Password** (`#/password-generator`): panjang, jenis
   karakter, passphrase kata Indonesia/Inggris, dan pengecek kekuatan (estimasi
   waktu tebak). Gunakan `crypto.getRandomValues`.
-- [ ] **Penghitung Kata** (`#/word-counter`): kata, karakter (dengan/tanpa
+- [x] **Penghitung Kata** (`#/word-counter`): kata, karakter (dengan/tanpa
   spasi), kalimat, paragraf, waktu baca/bicara, dan batas karakter per platform
   (X, Instagram, meta description).
 

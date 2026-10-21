@@ -3,6 +3,20 @@
 Catatan harian apa yang berubah di [tools](https://chalidade.github.io/tools/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-10-21 — Teks & keamanan
+
+Dua tools baru di kategori Produktivitas; total sekarang **52 tools**.
+
+- **Pembuat Password** (`#/password-generator`): password acak 4–64 karakter
+  (huruf kecil/besar, angka, simbol, hindari karakter yang mirip) atau passphrase
+  3–10 kata Indonesia/Inggris. Memakai `crypto.getRandomValues` tanpa bias, ada
+  bar kekuatan dengan bit entropi dan estimasi waktu menebak, plus mode cek
+  password yang kamu ketik (tidak dikirim atau disimpan).
+- **Penghitung Kata** (`#/word-counter`): kata, karakter (dengan/tanpa spasi),
+  kalimat, paragraf, baris, waktu baca dan bicara, serta batas karakter X,
+  Instagram, TikTok, WhatsApp status, LinkedIn, SMS, judul SEO, dan meta
+  description.
+
 ## 2026-10-20 — PDF
 
 Dua tools baru di kategori Edit & Amankan PDF; total sekarang **50 tools**.

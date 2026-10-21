@@ -3,7 +3,7 @@
 **English** · [Bahasa Indonesia](README.id.md)
 
 **My everyday file toolbox, built for the file work I do every day and published free for everyone.**
-50 tools for PDF, Office files, images, video, audio and QR codes, and every one of them runs entirely in your browser.
+52 tools for PDF, Office files, images, video, audio and QR codes, and every one of them runs entirely in your browser.
 Your files are never uploaded.
 
 [![Live demo](https://img.shields.io/badge/live%20demo-chalidade.github.io%2Ftools-6366f1)](https://chalidade.github.io/tools/)
@@ -93,6 +93,8 @@ All 45, grouped the way the home page groups them. Each name links to the live t
 **Productivity**
 - [Notes](https://chalidade.github.io/tools/en/notes/): Markdown with live checklists, saved in the browser, JSON backup/restore
 - [Calculator](https://chalidade.github.io/tools/en/calculator/): basic and scientific, with its own expression parser (no `eval`)
+- [Password Generator](https://chalidade.github.io/tools/en/password-generator/): random passwords and Indonesian/English passphrases from `crypto.getRandomValues`, plus a strength check with estimated guessing time
+- [Word Counter](https://chalidade.github.io/tools/en/word-counter/): words, characters, sentences, paragraphs, reading/speaking time and per-platform character limits
 - [Whiteboard](https://chalidade.github.io/tools/en/whiteboard/): pressure-sensitive pen, shapes, text, multiple pages, export to PNG/PDF
 
 The [Indonesian README](README.id.md) has a longer per-tool table with every option and limitation.
