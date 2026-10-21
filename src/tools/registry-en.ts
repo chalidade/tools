@@ -50,6 +50,18 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
     formats: 'Text → Markdown',
     keywords: ['note', 'memo', 'todo', 'checklist', 'journal'],
   },
+  'password-generator': {
+    title: 'Password Generator',
+    description: 'Generate random passwords or Indonesian/English passphrases, and check how strong a password is with an estimated time to guess.',
+    formats: 'Options → Password',
+    keywords: ['password', 'passphrase', 'random', 'strong', 'secure', 'strength', 'security'],
+  },
+  'word-counter': {
+    title: 'Word Counter',
+    description: 'Count words, characters, sentences and paragraphs, estimate reading and speaking time, and check X, Instagram and meta description limits.',
+    formats: 'Text → Stats',
+    keywords: ['word count', 'character count', 'reading time', 'essay', 'twitter', 'caption', 'seo', 'meta description'],
+  },
   calculator: {
     title: 'Calculator',
     description: 'Basic and scientific calculator — percentages, powers, roots, trigonometry, with history.',
