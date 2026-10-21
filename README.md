@@ -13,9 +13,9 @@ Your files are never uploaded.
 ![React](https://img.shields.io/badge/React-19-61dafb?logo=react&logoColor=black)
 ![Vite](https://img.shields.io/badge/Vite-8-646cff?logo=vite&logoColor=white)
 
-https://github.com/user-attachments/assets/d0f73458-88ca-4a23-937d-e8166ab4079d
+<a href="https://github.com/user-attachments/assets/d0f73458-88ca-4a23-937d-e8166ab4079d"><img src="docs/launch-en.gif" alt="tools launch preview: search for a tool, open it, convert a file in the browser" width="480"></a>
 
-The 16-second launch video (sound on). [Bahasa Indonesia version](https://github.com/user-attachments/assets/4270efe2-2e7e-4d1a-a5db-766ac01e369b)
+▶ [Watch the 16-second launch video with sound](https://github.com/user-attachments/assets/d0f73458-88ca-4a23-937d-e8166ab4079d) · [Bahasa Indonesia version](https://github.com/user-attachments/assets/4270efe2-2e7e-4d1a-a5db-766ac01e369b)
 
 ## Why
 

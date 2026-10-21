@@ -7,9 +7,9 @@ perangkat pengguna: tidak di-upload ke server dan tidak disimpan di mana pun.
 
 **Live:** https://chalidade.github.io/tools/
 
-https://github.com/user-attachments/assets/4270efe2-2e7e-4d1a-a5db-766ac01e369b
+<a href="https://github.com/user-attachments/assets/4270efe2-2e7e-4d1a-a5db-766ac01e369b"><img src="docs/launch-id.gif" alt="Cuplikan launch tools: cari tool, buka, konversi file langsung di browser" width="480"></a>
 
-Video launch 16 detik (nyalakan suara). [Versi English](https://github.com/user-attachments/assets/d0f73458-88ca-4a23-937d-e8166ab4079d)
+▶ [Tonton video launch 16 detik dengan suara](https://github.com/user-attachments/assets/4270efe2-2e7e-4d1a-a5db-766ac01e369b) · [Versi English](https://github.com/user-attachments/assets/d0f73458-88ca-4a23-937d-e8166ab4079d)
 
 Tersedia dalam **Bahasa Indonesia dan English** — ganti lewat tombol ID/EN di
 header (atau lewat alamatnya: `/tools/en/<tool>/` selalu English).
