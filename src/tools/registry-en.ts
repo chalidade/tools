@@ -62,6 +62,18 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
     formats: 'Text → Stats',
     keywords: ['word count', 'character count', 'reading time', 'essay', 'twitter', 'caption', 'seo', 'meta description'],
   },
+  'unit-converter': {
+    title: 'Unit Converter',
+    description: 'Convert length, weight (ons, quintal), area (hectare, are, tumbak), volume, temperature, speed and data sizes.',
+    formats: 'Number → Other unit',
+    keywords: ['unit converter', 'length', 'weight', 'area', 'hectare', 'volume', 'temperature', 'celsius', 'fahrenheit', 'speed', 'knot', 'data', 'megabyte'],
+  },
+  'date-calculator': {
+    title: 'Date Calculator',
+    description: 'Work out exact age, days between dates, working days (with Indonesian public holidays), and add or subtract days, months and years.',
+    formats: 'Date → Result',
+    keywords: ['date calculator', 'age', 'days between', 'working days', 'public holidays', 'add days', 'subtract days', 'birthday'],
+  },
   calculator: {
     title: 'Calculator',
     description: 'Basic and scientific calculator — percentages, powers, roots, trigonometry, with history.',
