@@ -3,6 +3,21 @@
 Catatan harian apa yang berubah di [tools](https://chalidade.github.io/tools/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-10-23 — Developer
+
+Tiga tools baru di kategori Developer; total sekarang **57 tools**.
+
+- **Encode / Decode** (`#/encode-decode`): Base64 teks (UTF-8, opsi URL-safe),
+  URL encode (komponen atau seluruh URL), HTML entities, dan baca token JWT:
+  header, payload, waktu `iat`/`nbf`/`exp` beserta status kedaluwarsa. Tanda
+  tangan tidak diverifikasi, dan token tidak dikirim ke mana pun.
+- **Generator UUID** (`#/uuid`): UUID v4 (acak) dan v7 (urut waktu), 1–1000
+  sekaligus, huruf besar, tanpa tanda hubung, atau dengan kurung kurawal. Semua
+  lewat `crypto.getRandomValues`.
+- **Bandingkan Teks** (`#/text-diff`): diff per baris dengan sorotan per kata
+  pada baris yang berubah, tampilan gabung atau berdampingan, opsi abaikan huruf
+  besar/kecil dan spasi, serta tombol tukar kedua teks.
+
 ## 2026-10-22 — Hitung sehari-hari
 
 Dua tools baru di kategori Produktivitas; total sekarang **54 tools**.

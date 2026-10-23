@@ -177,6 +177,24 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
     formats: 'PNG / SVG / text → ICO + PNG',
     keywords: ['icon', 'favicon', 'website'],
   },
+  'encode-decode': {
+    title: 'Encode / Decode',
+    description: 'Base64, URL encode, HTML entities, and read the contents of a JWT (header + payload) right in your browser.',
+    formats: 'Text ⇄ Base64 / URL / HTML / JWT',
+    keywords: ['base64', 'url encode', 'html entities', 'jwt', 'token', 'percent encoding', 'escape'],
+  },
+  uuid: {
+    title: 'UUID Generator',
+    description: 'Generate UUID v4 (random) or v7 (time-ordered), in bulk, uppercase, without hyphens, or with braces.',
+    formats: 'Count → UUID',
+    keywords: ['uuid', 'guid', 'unique id', 'random', 'generator'],
+  },
+  'text-diff': {
+    title: 'Text Compare',
+    description: 'Compare two texts line by line and word by word with colours, unified or side by side.',
+    formats: 'Text + Text → Differences',
+    keywords: ['diff', 'compare', 'difference', 'text compare', 'code'],
+  },
   'image-to-base64': {
     title: 'Image ⇄ Base64',
     description: 'Turn an image into Base64 / a data URL ready for HTML, CSS or Markdown — and back.',

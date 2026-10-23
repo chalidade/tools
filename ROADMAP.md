@@ -73,11 +73,11 @@ tool-nya langsung terbuka siap dipakai.
 
 ## Hari 6 — 2026-10-23 · Developer
 
-- [ ] **Encode / Decode** (`#/encode-decode`): Base64 teks, URL encode,
+- [x] **Encode / Decode** (`#/encode-decode`): Base64 teks, URL encode,
   HTML entities, dan JWT decode (header + payload, tanpa verifikasi).
-- [ ] **Generator UUID** (`#/uuid`): v4/v7, banyak sekaligus, dan format
+- [x] **Generator UUID** (`#/uuid`): v4/v7, banyak sekaligus, dan format
   (huruf besar, tanpa tanda hubung).
-- [ ] **Bandingkan Teks** (`#/text-diff`): diff per baris/kata dengan warna,
+- [x] **Bandingkan Teks** (`#/text-diff`): diff per baris/kata dengan warna,
   mode berdampingan atau gabung.
 
 ## Hari 7 — 2026-10-24 · Musik lanjutan
