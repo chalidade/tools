@@ -3,7 +3,7 @@
 **English** · [Bahasa Indonesia](README.id.md)
 
 **My everyday file toolbox, built for the file work I do every day and published free for everyone.**
-54 tools for PDF, Office files, images, video, audio and QR codes, and every one of them runs entirely in your browser.
+57 tools for PDF, Office files, images, video, audio and QR codes, and every one of them runs entirely in your browser.
 Your files are never uploaded.
 
 [![Live demo](https://img.shields.io/badge/live%20demo-chalidade.github.io%2Ftools-6366f1)](https://chalidade.github.io/tools/)
@@ -97,6 +97,9 @@ All 45, grouped the way the home page groups them. Each name links to the live t
 - [Word Counter](https://chalidade.github.io/tools/en/word-counter/): words, characters, sentences, paragraphs, reading/speaking time and per-platform character limits
 - [Unit Converter](https://chalidade.github.io/tools/en/unit-converter/): length, weight (ons, quintal), area (hectare, are, tumbak), volume, temperature, speed and data
 - [Date Calculator](https://chalidade.github.io/tools/en/date-calculator/): exact age, days between dates, working days with bundled Indonesian public holidays, add/subtract time
+- [Encode / Decode](https://chalidade.github.io/tools/en/encode-decode/): Base64 (UTF-8, URL-safe), URL encode, HTML entities and JWT decoding (header + payload, no signature check)
+- [UUID Generator](https://chalidade.github.io/tools/en/uuid/): v4 and time-ordered v7 from `crypto.getRandomValues`, up to 1000 at once, with format options
+- [Text Compare](https://chalidade.github.io/tools/en/text-diff/): line and word diff with colours, unified or side by side
 - [Whiteboard](https://chalidade.github.io/tools/en/whiteboard/): pressure-sensitive pen, shapes, text, multiple pages, export to PNG/PDF
 
 The [Indonesian README](README.id.md) has a longer per-tool table with every option and limitation.
