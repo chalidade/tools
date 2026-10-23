@@ -3,6 +3,8 @@ import type { Lang } from '@/lib/i18n'
 import { CATEGORIES_EN, TOOLS_EN } from './registry-en'
 import {
   AppWindow,
+  CalendarDays,
+  Ruler,
   Binary,
   Braces,
   NotebookPen,
@@ -342,6 +344,28 @@ export const TOOLS: Tool[] = [
     formats: 'Teks → Statistik',
     badge: 'Baru',
     component: lazy(() => import('./word-counter/WordCounter')),
+  },
+  {
+    slug: 'unit-converter',
+    category: 'productivity',
+    keywords: ['satuan', 'konversi', 'konversi satuan', 'unit converter', 'panjang', 'berat', 'ons', 'kuintal', 'luas', 'hektare', 'are', 'tumbak', 'volume', 'suhu', 'celsius', 'fahrenheit', 'kecepatan', 'knot', 'data', 'megabyte', 'length', 'weight', 'temperature', 'speed'],
+    title: 'Konversi Satuan',
+    description: 'Ubah satuan panjang, berat (ons, kuintal), luas (hektare, are, tumbak), volume, suhu, kecepatan, dan ukuran data.',
+    icon: Ruler,
+    formats: 'Angka → Satuan lain',
+    badge: 'Baru',
+    component: lazy(() => import('./unit-converter/UnitConverter')),
+  },
+  {
+    slug: 'date-calculator',
+    category: 'productivity',
+    keywords: ['tanggal', 'kalkulator tanggal', 'date calculator', 'umur', 'hitung umur', 'age', 'selisih hari', 'hari kerja', 'working days', 'libur nasional', 'tanggal merah', 'cuti bersama', 'tambah hari', 'kurang hari', 'ulang tahun'],
+    title: 'Kalkulator Tanggal',
+    description: 'Hitung umur tepat, selisih hari, jumlah hari kerja (dengan libur nasional Indonesia), serta tambah atau kurang hari, bulan, dan tahun.',
+    icon: CalendarDays,
+    formats: 'Tanggal → Hasil',
+    badge: 'Baru',
+    component: lazy(() => import('./date-calculator/DateCalculator')),
   },
   {
     slug: 'calculator',

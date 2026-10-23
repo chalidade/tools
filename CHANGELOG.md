@@ -3,6 +3,21 @@
 Catatan harian apa yang berubah di [tools](https://chalidade.github.io/tools/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-10-22 — Hitung sehari-hari
+
+Dua tools baru di kategori Produktivitas; total sekarang **54 tools**.
+
+- **Konversi Satuan** (`#/unit-converter`): panjang, berat (termasuk ons dan
+  kuintal), luas (are, hektare, tumbak), volume, suhu (Celsius, Fahrenheit,
+  Kelvin, Reamur), kecepatan, dan data (KB/MB desimal dan KiB/MiB biner). Bisa
+  mengetik koma desimal, ada tombol tukar, dan tabel hasil ke semua satuan
+  sekaligus.
+- **Kalkulator Tanggal** (`#/date-calculator`): umur tepat (tahun, bulan, hari)
+  dengan hitung mundur ulang tahun, selisih dua tanggal, jumlah hari kerja
+  dengan libur nasional dan cuti bersama Indonesia 2025–2026 (dibundel sebagai
+  JSON, tanpa API luar), serta tambah/kurang hari, minggu, bulan, tahun, atau
+  hari kerja.
+
 ## 2026-10-21 — Teks & keamanan
 
 Dua tools baru di kategori Produktivitas; total sekarang **52 tools**.

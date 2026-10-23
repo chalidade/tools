@@ -65,9 +65,9 @@ tool-nya langsung terbuka siap dipakai.
 
 ## Hari 5 — 2026-10-22 · Hitung sehari-hari
 
-- [ ] **Konversi Satuan** (`#/unit-converter`): panjang, berat (termasuk
+- [x] **Konversi Satuan** (`#/unit-converter`): panjang, berat (termasuk
   ons, kuintal), luas (hektare, are, tumbak), volume, suhu, kecepatan, dan data.
-- [ ] **Kalkulator Tanggal** (`#/date-calculator`): umur tepat, selisih hari,
+- [x] **Kalkulator Tanggal** (`#/date-calculator`): umur tepat, selisih hari,
   hari kerja (dengan libur nasional Indonesia dibundel sebagai JSON), dan
   tambah/kurang hari.
 

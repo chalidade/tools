@@ -9,7 +9,7 @@ A deeper look at how the site is put together. For the overview, see the [README
    server-side proxy).
 2. **Static hosting under a sub-path.** The site is plain files on GitHub Pages at `/tools/`. Public
    assets are referenced through `import.meta.env.BASE_URL`, and CI builds with `--base=/tools/`.
-3. **Pay only for what you open.** 52 tools share one page, so nothing heavy may load until a tool
+3. **Pay only for what you open.** 54 tools share one page, so nothing heavy may load until a tool
    needs it.
 
 ## App shell
