@@ -132,6 +132,18 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
     formats: 'Chord → Diagram',
     keywords: ['chord', 'chords', 'guitar', 'ukulele', 'transpose', 'capo', 'lyrics', 'song'],
   },
+  'chord-progression': {
+    title: 'Chord Progression Builder',
+    description: 'Build a chord progression from a key and a popular pattern (I–V–vi–IV, ii–V–I, blues), hear it on guitar or piano, and transpose it.',
+    formats: 'Key + Pattern → Chords',
+    keywords: ['chord progression', 'progression', 'key', 'pop', 'blues', 'jazz', 'canon', 'transpose', 'guitar', 'piano', 'songwriting'],
+  },
+  'practice-recorder': {
+    title: 'Practice Recorder',
+    description: 'Record your playing with a metronome ticking (the click is not recorded), play it back with the click on top, and save as MP3 or WAV.',
+    formats: 'Microphone → MP3 / WAV',
+    keywords: ['practice', 'record', 'recorder', 'metronome', 'click', 'microphone', 'count-in', 'take', 'mp3', 'wav'],
+  },
   'bpm-key': {
     title: 'BPM & Key Finder',
     description: 'Find a song’s tempo (BPM) and key from an audio file — with its Camelot code and the chords that fit.',

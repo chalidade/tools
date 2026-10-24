@@ -82,11 +82,11 @@ tool-nya langsung terbuka siap dipakai.
 
 ## Hari 7 — 2026-10-24 · Musik lanjutan
 
-- [ ] **Progresi Chord** (`#/chord-progression`): susun progresi dari kunci
+- [x] **Progresi Chord** (`#/chord-progression`): susun progresi dari kunci
   dan pola (I–V–vi–IV, ii–V–I, dan lainnya), dengar langsung dengan suara
   gitar/piano yang sudah ada, transpose, lalu buka di Gitar atau Piano Online.
   Pakai helper nada di `src/lib/music.ts`.
-- [ ] **Perekam Latihan** (`#/practice-recorder`): rekam dari mikrofon
+- [x] **Perekam Latihan** (`#/practice-recorder`): rekam dari mikrofon
   sambil metronom berbunyi (klik tidak ikut terekam), putar ulang dengan
   klik di atasnya, dan simpan sebagai MP3/WAV. Pakai penjadwal Metronom dan
   encoder dari `src/lib/media.ts`.
