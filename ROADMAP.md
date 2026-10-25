@@ -93,10 +93,10 @@ tool-nya langsung terbuka siap dipakai.
 
 ## Hari 8 — 2026-10-25 · Tuner lanjutan
 
-- [ ] **Tuner: biola & cello** di `#/guitar-tuner`: stem biola (G D A E),
+- [x] **Tuner: biola & cello** di `#/guitar-tuner`: stem biola (G D A E),
   viola, dan cello (C G D A), dengan rentang deteksi nada yang disesuaikan
   untuk nada rendah cello.
-- [ ] **Tuner: nada acuan berkelanjutan (drone)**: nada senar atau nada
+- [x] **Tuner: nada acuan berkelanjutan (drone)**: nada senar atau nada
   bebas yang terus berbunyi sampai dimatikan, untuk menyetem dengan telinga
   atau latihan intonasi.
 

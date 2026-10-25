@@ -116,9 +116,9 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
   },
   'guitar-tuner': {
     title: 'Guitar Tuner',
-    description: 'Tune a guitar, bass or ukulele with your microphone — the string is detected automatically, with reference tones.',
+    description: 'Tune a guitar, bass, ukulele, violin, viola or cello with your microphone — the string is detected automatically, plus a reference drone that keeps sounding.',
     formats: 'Microphone → Pitch',
-    keywords: ['tuner', 'tune', 'guitar', 'pitch', 'string', 'chromatic'],
+    keywords: ['tuner', 'tune', 'guitar', 'pitch', 'string', 'chromatic', 'violin', 'viola', 'cello', 'drone', 'reference tone'],
   },
   metronome: {
     title: 'Metronome',
