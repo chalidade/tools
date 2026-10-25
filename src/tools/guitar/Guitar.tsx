@@ -4,7 +4,8 @@ import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Segmented } from '@/components/tool/Segmented'
 import { Stage, StageButton, useStage } from '@/components/tool/Stage'
-import { SHARPS, pc } from '@/lib/music'
+import { SHARPS, parseNote, pc } from '@/lib/music'
+import { routeQuery } from '@/lib/route'
 import { useLang, useT } from '@/lib/i18n'
 import { CHORD_TYPES, INSTRUMENTS, voicings, type Voicing } from '@/tools/chords/theory'
 import { GuitarSynth, type Tone } from './sound'
@@ -42,6 +43,17 @@ interface Prefs {
   bpm: number
 }
 
+/** /guitar/?chords=C,G,Am,F (the progression builder links here): up to 8 known chords. */
+function chordsFromQuery(): TrayChord[] | null {
+  const tray: TrayChord[] = []
+  for (const name of (routeQuery().get('chords') ?? '').split(',')) {
+    const m = /^([A-G][#b]?)(.*)$/.exec(name.trim())
+    const root = m ? parseNote(m[1]) : null
+    if (root !== null && CHORD_TYPES.some((c) => c.suffix === m![2])) tray.push({ root, suffix: m![2], shape: 0 })
+  }
+  return tray.length ? tray.slice(0, 8) : null
+}
+
 function loadPrefs(): Prefs {
   const fallback: Prefs = {
     tray: [
@@ -56,9 +68,9 @@ function loadPrefs(): Prefs {
   }
   try {
     const p = JSON.parse(localStorage.getItem(STORE) ?? '{}')
-    return { ...fallback, ...p, tray: Array.isArray(p.tray) && p.tray.length ? p.tray : fallback.tray }
+    return { ...fallback, ...p, tray: chordsFromQuery() ?? (Array.isArray(p.tray) && p.tray.length ? p.tray : fallback.tray) }
   } catch {
-    return fallback
+    return { ...fallback, tray: chordsFromQuery() ?? fallback.tray }
   }
 }
 

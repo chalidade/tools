@@ -3,6 +3,30 @@
 Catatan harian apa yang berubah di [tools](https://chalidade.github.io/tools/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-10-25 — Tuner lanjutan
+
+Tidak ada tool baru; Tuner Gitar (`#/guitar-tuner`) mendapat dua tambahan, total tetap **59 tools**.
+
+- **Biola, viola, dan cello**: tuning biola (G D A E), viola (C G D A), dan cello (C G D A). Untuk nada rendah cello (sampai C2) jendela analisis diperlebar otomatis supaya deteksi tetap stabil.
+- **Nada acuan (drone)**: nada senar atau nada bebas C2–C6 yang terus berbunyi sampai dimatikan, untuk menyetem dengan telinga atau latihan intonasi. Ikut menyesuaikan pengaturan A4.
+
+## 2026-10-24 — Musik lanjutan
+
+Dua tools baru di kategori Musik; total sekarang **59 tools**.
+
+- **Progresi Chord** (`#/chord-progression`): pilih pola (pop I–V–vi–IV, tahun
+  50-an, syahdu, canon, ii–V–I, blues 12 birama, serta empat pola minor) dan
+  kunci, lalu dengarkan dengan suara gitar atau piano pada tempo yang bisa
+  diatur, 1 atau 2 birama per chord. Kunci bisa digeser per setengah nada,
+  chord bisa disalin sebagai teks, dan tombol "Buka di Gitar Online" mengisi
+  nampan chord Gitar lewat `?chords=C,G,Am,F`.
+- **Perekam Latihan** (`#/practice-recorder`): rekam permainan dari mikrofon
+  sambil metronom berbunyi, dengan hitung masuk satu birama. Klik hanya keluar
+  lewat speaker sehingga tidak ikut terekam; saat putar ulang, klik dipasang
+  kembali di atas rekaman (bisa digeser ±200 ms untuk latensi). Simpan sebagai
+  WAV, MP3, atau M4A. Klik metronom dipindah ke `metronome/click.ts` agar
+  dipakai bersama.
+
 ## 2026-10-23 — Developer
 
 Tiga tools baru di kategori Developer; total sekarang **57 tools**.

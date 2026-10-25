@@ -116,9 +116,9 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
   },
   'guitar-tuner': {
     title: 'Guitar Tuner',
-    description: 'Tune a guitar, bass or ukulele with your microphone — the string is detected automatically, with reference tones.',
+    description: 'Tune a guitar, bass, ukulele, violin, viola or cello with your microphone — the string is detected automatically, plus a reference drone that keeps sounding.',
     formats: 'Microphone → Pitch',
-    keywords: ['tuner', 'tune', 'guitar', 'pitch', 'string', 'chromatic'],
+    keywords: ['tuner', 'tune', 'guitar', 'pitch', 'string', 'chromatic', 'violin', 'viola', 'cello', 'drone', 'reference tone'],
   },
   metronome: {
     title: 'Metronome',
@@ -131,6 +131,18 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
     description: 'Guitar and ukulele chord diagrams in every key, playable — plus one-click transposing of a song’s chords.',
     formats: 'Chord → Diagram',
     keywords: ['chord', 'chords', 'guitar', 'ukulele', 'transpose', 'capo', 'lyrics', 'song'],
+  },
+  'chord-progression': {
+    title: 'Chord Progression Builder',
+    description: 'Build a chord progression from a key and a popular pattern (I–V–vi–IV, ii–V–I, blues), hear it on guitar or piano, and transpose it.',
+    formats: 'Key + Pattern → Chords',
+    keywords: ['chord progression', 'progression', 'key', 'pop', 'blues', 'jazz', 'canon', 'transpose', 'guitar', 'piano', 'songwriting'],
+  },
+  'practice-recorder': {
+    title: 'Practice Recorder',
+    description: 'Record your playing with a metronome ticking (the click is not recorded), play it back with the click on top, and save as MP3 or WAV.',
+    formats: 'Microphone → MP3 / WAV',
+    keywords: ['practice', 'record', 'recorder', 'metronome', 'click', 'microphone', 'count-in', 'take', 'mp3', 'wav'],
   },
   'bpm-key': {
     title: 'BPM & Key Finder',

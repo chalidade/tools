@@ -99,6 +99,9 @@ export const TUNINGS: Tuning[] = [
   { id: 'dadgad', label: ['Gitar · DADGAD', 'Guitar · DADGAD'], strings: [38, 45, 50, 55, 57, 62] },
   { id: 'open-g', label: ['Gitar · Open G', 'Guitar · Open G'], strings: [38, 43, 50, 55, 59, 62] },
   { id: 'bass', label: ['Bass 4 senar', '4-string bass'], strings: [28, 33, 38, 43] },
+  { id: 'violin', label: ['Biola · G D A E', 'Violin · G D A E'], strings: [55, 62, 69, 76] },
+  { id: 'viola', label: ['Viola · C G D A', 'Viola · C G D A'], strings: [48, 55, 62, 69] },
+  { id: 'cello', label: ['Cello · C G D A', 'Cello · C G D A'], strings: [36, 43, 50, 57] },
   { id: 'ukulele', label: ['Ukulele', 'Ukulele'], strings: [67, 60, 64, 69] },
   { id: 'chromatic', label: ['Kromatik (semua nada)', 'Chromatic (any note)'], strings: [] },
 ]

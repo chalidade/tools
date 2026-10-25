@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Check, Mic, MicOff, Minus, Plus, Volume2 } from 'lucide-react'
+import { Check, Mic, MicOff, Minus, Plus, Square, Volume2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { ErrorNote } from '@/components/tool/ErrorNote'
@@ -14,6 +14,11 @@ const HOLD_MS = 600
 /** Analyse at most this often; the loop itself runs on requestAnimationFrame. */
 const STEP_MS = 45
 const STORE = 'tools:guitar-tuner'
+/** Drone note range (MIDI): C2 – C6. */
+const DRONE_MIN = 36
+const DRONE_MAX = 84
+/** Below this the analysis window doubles, so a low cello string still fits a few periods. */
+const LOW_HZ = 60
 
 interface Reading {
   freq: number
@@ -75,6 +80,9 @@ export default function GuitarTuner() {
   const streamRef = useRef<MediaStream | null>(null)
   const rafRef = useRef(0)
   const toneCtxRef = useRef<AudioContext | null>(null)
+  const droneRef = useRef<{ osc: OscillatorNode[]; gain: GainNode } | null>(null)
+  const [drone, setDrone] = useState<number | null>(null)
+  const [droneNote, setDroneNote] = useState(57)
   const inTuneSince = useRef<{ string: number; at: number } | null>(null)
 
   useEffect(() => {
@@ -106,12 +114,60 @@ export default function GuitarTuner() {
     setRunning(false)
   }, [])
 
+  const stopDrone = useCallback(() => {
+    const d = droneRef.current
+    const ctx = toneCtxRef.current
+    droneRef.current = null
+    setDrone(null)
+    if (!d || !ctx) return
+    const t0 = ctx.currentTime
+    d.gain.gain.cancelScheduledValues(t0)
+    d.gain.gain.setValueAtTime(d.gain.gain.value, t0)
+    d.gain.gain.linearRampToValueAtTime(0, t0 + 0.08)
+    d.osc.forEach((o) => o.stop(t0 + 0.1))
+  }, [])
+
+  const startDrone = (midi: number) => {
+    stopDrone()
+    const ctx = (toneCtxRef.current ??= new AudioContext())
+    void ctx.resume()
+    const gain = ctx.createGain()
+    const t0 = ctx.currentTime
+    gain.gain.setValueAtTime(0, t0)
+    gain.gain.linearRampToValueAtTime(0.25, t0 + 0.1)
+    gain.connect(ctx.destination)
+    // A soft triangle plus a quiet octave above: steady and easy to hear a beat against.
+    const osc = [
+      { type: 'triangle' as const, mul: 1, level: 1 },
+      { type: 'sine' as const, mul: 2, level: 0.25 },
+    ].map(({ type, mul, level }) => {
+      const o = ctx.createOscillator()
+      const g = ctx.createGain()
+      o.type = type
+      o.frequency.value = midiToFreq(midi, a4Ref.current) * mul
+      g.gain.value = level
+      o.connect(g).connect(gain)
+      o.start(t0)
+      return o
+    })
+    droneRef.current = { osc, gain }
+    setDrone(midi)
+  }
+
+  // Keep a running drone on pitch when the reference A4 changes.
+  useEffect(() => {
+    const d = droneRef.current
+    if (!d || drone === null) return
+    d.osc.forEach((o, i) => (o.frequency.value = midiToFreq(drone, prefs.a4) * (i + 1)))
+  }, [prefs.a4, drone])
+
   useEffect(
     () => () => {
       stop()
+      stopDrone()
       void toneCtxRef.current?.close().catch(() => {})
     },
-    [stop],
+    [stop, stopDrone],
   )
 
   const start = async () => {
@@ -125,9 +181,9 @@ export default function GuitarTuner() {
       const ctx = new AudioContext()
       ctxRef.current = ctx
       const analyser = ctx.createAnalyser()
-      analyser.fftSize = 4096
+      analyser.fftSize = 8192
       ctx.createMediaStreamSource(stream).connect(analyser)
-      const buf = new Float32Array(analyser.fftSize)
+      const full = new Float32Array(analyser.fftSize)
       const history: number[] = []
       let last = 0
       setRunning(true)
@@ -137,8 +193,10 @@ export default function GuitarTuner() {
         if (time - last < STEP_MS) return
         last = time
         setNow(time)
-        analyser.getFloatTimeDomainData(buf)
+        analyser.getFloatTimeDomainData(full)
         const { min, max } = rangeRef.current
+        // The newest 4096 samples, or all 8192 for very low notes.
+        const buf = full.subarray(min < LOW_HZ ? 0 : full.length >> 1)
         const pitch = detectPitch(buf, ctx.sampleRate, min, max)
         if (!pitch || pitch.clarity < 0.85) return
         // A jump of more than a semitone is a new note: start over.
@@ -337,6 +395,67 @@ export default function GuitarTuner() {
             </div>
           </div>
         )}
+      </div>
+
+      <div className="rounded-3xl border bg-card p-5 shadow-xs">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <p className="text-sm font-medium">{t('Nada acuan (drone)', 'Reference tone (drone)')}</p>
+            <p className="text-xs text-muted-foreground">
+              {t('Berbunyi terus sampai dimatikan — untuk menyetem dengan telinga.', 'Keeps sounding until you stop it — for tuning by ear.')}
+            </p>
+          </div>
+          {drone !== null ? (
+            <Button variant="outline" onClick={stopDrone}>
+              <Square /> {t('Matikan', 'Stop')} · {noteName(drone)}
+            </Button>
+          ) : (
+            <Button variant="outline" onClick={() => startDrone(droneNote)}>
+              <Volume2 /> {t('Bunyikan', 'Play')} · {noteName(droneNote)}
+            </Button>
+          )}
+        </div>
+        <div className="mt-4 flex flex-wrap items-center gap-2">
+          <select
+            aria-label={t('Nada drone', 'Drone note')}
+            value={droneNote}
+            onChange={(e) => {
+              const m = Number(e.target.value)
+              setDroneNote(m)
+              if (drone !== null) startDrone(m)
+            }}
+            className="h-10 rounded-xl border bg-background px-3 text-sm"
+          >
+            {Array.from({ length: DRONE_MAX - DRONE_MIN + 1 }, (_, i) => DRONE_MIN + i).map((m) => (
+              <option key={m} value={m}>
+                {noteName(m)} · {midiToFreq(m, prefs.a4).toFixed(1)} Hz
+              </option>
+            ))}
+          </select>
+          {!chromatic &&
+            tuning.strings.map((m, i) => (
+              <button
+                key={i}
+                type="button"
+                onClick={() => {
+                  setDroneNote(m)
+                  startDrone(m)
+                }}
+                className={cn(
+                  'h-10 min-w-10 rounded-xl border px-3 text-sm font-medium transition-colors',
+                  drone === m ? 'border-brand-2 ring-2 ring-brand-2/30' : 'hover:border-foreground/30',
+                )}
+              >
+                {noteLetter(m)}
+              </button>
+            ))}
+        </div>
+        <p className="mt-3 text-xs text-muted-foreground">
+          {t(
+            'Matikan drone sebelum memakai mikrofon, supaya suaranya tidak terbaca sebagai nada senar.',
+            'Stop the drone before using the microphone, so its sound is not read as the string.',
+          )}
+        </p>
       </div>
 
       {error && <ErrorNote message={error} />}

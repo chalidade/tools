@@ -3,7 +3,7 @@
 **English** · [Bahasa Indonesia](README.id.md)
 
 **My everyday file toolbox, built for the file work I do every day and published free for everyone.**
-57 tools for PDF, Office files, images, video, audio and QR codes, and every one of them runs entirely in your browser.
+59 tools for PDF, Office files, images, video, audio and QR codes, and every one of them runs entirely in your browser.
 Your files are never uploaded.
 
 [![Live demo](https://img.shields.io/badge/live%20demo-chalidade.github.io%2Ftools-6366f1)](https://chalidade.github.io/tools/)
@@ -75,9 +75,11 @@ All 45, grouped the way the home page groups them. Each name links to the live t
 
 **Music**
 
-- [Guitar Tuner](https://chalidade.github.io/tools/en/guitar-tuner/): microphone pitch detection (McLeod method), auto string detection, guitar/bass/ukulele tunings, reference tones, adjustable A4
+- [Guitar Tuner](https://chalidade.github.io/tools/en/guitar-tuner/): microphone pitch detection (McLeod method), auto string detection, guitar/bass/ukulele/violin/viola/cello tunings, reference tones, continuous drone, adjustable A4
 - [Metronome](https://chalidade.github.io/tools/en/metronome/): 30–300 BPM on a lookahead Web Audio scheduler, accents, beats per bar, subdivisions, tap tempo
 - [Chord Finder & Transpose](https://chalidade.github.io/tools/en/chords/): guitar and ukulele shapes generated for every root and 16 chord types, playable (Karplus–Strong); transposes a pasted song sheet keeping chords aligned to the lyrics
+- [Chord Progression Builder](https://chalidade.github.io/tools/en/chord-progression/): 12 patterns (pop, 50s, canon, ii–V–I, 12-bar blues, minor loops) in any key built from the chord dictionary's generated shapes; plays on the guitar or piano synth with a lookahead scheduler, transposes by semitone, opens the chords in Online Guitar
+- [Practice Recorder](https://chalidade.github.io/tools/en/practice-recorder/): raw microphone take over a lookahead metronome (the click is never recorded), count-in bar, playback with the click laid back on top and a nudge for latency, MP3/M4A/WAV export through Mediabunny
 - [BPM & Key Finder](https://chalidade.github.io/tools/en/bpm-key/): tempo from an onset-envelope comb search, key from a chromagram against Krumhansl profiles, Camelot code and diatonic chords; runs in a Web Worker
 - [Online Piano](https://chalidade.github.io/tools/en/piano/): all 88 keys with a minimap and 1–7 octave views; six synthesised voices (grand, electric piano, organ, harpsichord, strings, music box); practice mode with public-domain pieces, scales and any MIDI file you open (parsed in the browser), next-key highlighting, demo playback and a score; multi-touch, computer keyboard, Web MIDI, sustain, chord names
 - [Online Guitar](https://chalidade.github.io/tools/en/guitar/): Karplus–Strong strings with a fractional-delay all-pass (in tune to ~2 cents) and pick-position excitation, acoustic body / clean / overdriven amp; swipe-to-strum over generated chord shapes, capo, free fretboard, auto accompaniment patterns
