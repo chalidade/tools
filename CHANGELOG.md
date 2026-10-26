@@ -3,6 +3,22 @@
 Catatan harian apa yang berubah di [tools](https://chalidade.github.io/tools/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-10-26 — Ibadah
+
+Tiga tools baru di kategori Produktivitas; total sekarang **62 tools**.
+
+- **Jadwal Sholat** (`#/jadwal-sholat`): waktu Imsak, Subuh, Terbit, Dhuha,
+  Zuhur, Asar, Maghrib, dan Isya untuk 48 kota (bundel JSON) atau lokasi GPS,
+  tampilan harian dengan penanda sholat berikutnya dan tabel sebulan yang bisa
+  dicetak. Dihitung di perangkat dari posisi matahari dengan sudut Kemenag
+  (Subuh 20°, Isya 18°, Asar bayangan 1×, ihtiyat 2 menit), tanpa API.
+- **Arah Kiblat** (`#/arah-kiblat`): sudut kiblat dan jarak ke Ka'bah dari
+  lokasi, plus kompas HP langsung lewat `DeviceOrientationEvent` (izin sensor
+  di iOS) dengan petunjuk putar kiri/kanan dan peringatan kalibrasi.
+- **Konversi Hijriah ⇄ Masehi** (`#/hijriah`): dua arah lewat kalender
+  `islamic-umalqura` bawaan `Intl`, plus daftar hari besar Islam per tahun.
+  Diberi catatan bahwa tanggal resmi Kemenag (rukyat) bisa selisih sehari.
+
 ## 2026-10-25 — Tuner lanjutan
 
 Tidak ada tool baru; Tuner Gitar (`#/guitar-tuner`) mendapat dua tambahan, total tetap **59 tools**.

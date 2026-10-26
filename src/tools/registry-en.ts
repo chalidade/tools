@@ -68,6 +68,24 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
     formats: 'Number → Other unit',
     keywords: ['unit converter', 'length', 'weight', 'area', 'hectare', 'volume', 'temperature', 'celsius', 'fahrenheit', 'speed', 'knot', 'data', 'megabyte'],
   },
+  'jadwal-sholat': {
+    title: 'Prayer Times',
+    description: 'Daily and monthly prayer times for your city or location, computed on your device with the Kemenag method, no internet needed, printable.',
+    formats: 'Location → Prayer times',
+    keywords: ['prayer times', 'salah', 'salat', 'fajr', 'dhuhr', 'asr', 'maghrib', 'isha', 'adhan', 'azan', 'ramadan', 'iftar', 'muslim'],
+  },
+  'arah-kiblat': {
+    title: 'Qibla Direction',
+    description: 'Work out the Qibla bearing from your location and aim your phone with a live compass, with a calibration warning.',
+    formats: 'Location → Qibla',
+    keywords: ['qibla', 'kiblah', 'compass', 'kaaba', 'mecca', 'makkah', 'prayer', 'direction'],
+  },
+  hijriah: {
+    title: 'Hijri ⇄ Gregorian Converter',
+    description: 'Convert Gregorian dates to Hijri and back, plus a year of Islamic holidays, with a note on Kemenag’s moon-sighting differences.',
+    formats: 'Gregorian ⇄ Hijri',
+    keywords: ['hijri', 'islamic calendar', 'umm al-qura', 'date converter', 'eid', 'ramadan', 'mawlid', 'muharram', 'islamic holidays'],
+  },
   'date-calculator': {
     title: 'Date Calculator',
     description: 'Work out exact age, days between dates, working days (with Indonesian public holidays), and add or subtract days, months and years.',

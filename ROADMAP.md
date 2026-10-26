@@ -102,14 +102,14 @@ tool-nya langsung terbuka siap dipakai.
 
 ## Hari 9 — 2026-10-26 · Ibadah
 
-- [ ] **Jadwal Sholat** (`#/jadwal-sholat`): waktu sholat dihitung di
+- [x] **Jadwal Sholat** (`#/jadwal-sholat`): waktu sholat dihitung di
   perangkat dari koordinat (sudut Subuh/Isya metode Kemenag, ihtiyat), tanpa
   API. Lokasi dari GPS atau dari daftar kab/kota yang dibundel sebagai JSON;
   tampilan harian dan sebulan, bisa dicetak.
-- [ ] **Arah Kiblat** (`#/arah-kiblat`): sudut kiblat dari lokasi, plus
+- [x] **Arah Kiblat** (`#/arah-kiblat`): sudut kiblat dari lokasi, plus
   kompas di HP lewat `DeviceOrientationEvent` (izin di iOS), dengan peringatan
   kalibrasi bila sensor tidak akurat.
-- [ ] **Konversi Hijriah ⇄ Masehi** (`#/hijriah`): lewat kalender
+- [x] **Konversi Hijriah ⇄ Masehi** (`#/hijriah`): lewat kalender
   `islamic-umalqura` bawaan `Intl`, plus hari besar Islam setahun. Beri catatan
   bahwa tanggal resmi Kemenag (rukyat) bisa selisih satu hari.
 
