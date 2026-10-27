@@ -115,13 +115,13 @@ tool-nya langsung terbuka siap dipakai.
 
 ## Hari 10 — 2026-10-27 · Zakat, tasbih, terbilang
 
-- [ ] **Kalkulator Zakat** (`#/zakat`): zakat mal, emas/perak, penghasilan,
+- [x] **Kalkulator Zakat** (`#/zakat`): zakat mal, emas/perak, penghasilan,
   dan fitrah. Nisab dihitung dari harga emas yang diisi pengguna (tidak
   diambil dari internet), dengan rumus dan sumber ketentuan yang ditampilkan.
-- [ ] **Tasbih Digital** (`#/tasbih`): penghitung besar dengan target
+- [x] **Tasbih Digital** (`#/tasbih`): penghitung besar dengan target
   33/99/bebas, getar saat target tercapai (`navigator.vibrate`), pintasan
   keyboard, dan riwayat tersimpan di perangkat.
-- [ ] **Terbilang** (`#/terbilang`): angka ke teks Indonesia ("satu juta dua
+- [x] **Terbilang** (`#/terbilang`): angka ke teks Indonesia ("satu juta dua
   ratus ribu rupiah") dan Inggris, dengan pilihan huruf besar dan akhiran
   rupiah, untuk kwitansi dan cek.
 

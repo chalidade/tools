@@ -80,6 +80,24 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
     formats: 'Location → Qibla',
     keywords: ['qibla', 'kiblah', 'compass', 'kaaba', 'mecca', 'makkah', 'prayer', 'direction'],
   },
+  zakat: {
+    title: 'Zakat Calculator',
+    description: 'Work out zakat on income, wealth (mal), gold/silver and fitrah. The nisab comes from a gold price you enter, with the formulas shown.',
+    formats: 'Wealth → Zakat',
+    keywords: ['zakat', 'nisab', 'alms', 'fitrah', 'zakat al-fitr', 'income zakat', 'islamic charity', 'baznas'],
+  },
+  tasbih: {
+    title: 'Digital Tasbih',
+    description: 'A big dhikr counter with 33/99/free targets, vibration at the target, keyboard shortcuts and history kept on your device.',
+    formats: 'Tap → Count',
+    keywords: ['tasbih', 'dhikr', 'zikr', 'counter', 'tally', 'prayer beads', 'clicker'],
+  },
+  terbilang: {
+    title: 'Number to Words',
+    description: 'Turn a number into Indonesian or English words ("satu juta dua ratus ribu rupiah"), with letter-case options for receipts and cheques.',
+    formats: 'Number → Words',
+    keywords: ['number to words', 'spell number', 'cheque', 'check', 'receipt', 'rupiah', 'terbilang', 'amount in words'],
+  },
   hijriah: {
     title: 'Hijri ⇄ Gregorian Converter',
     description: 'Convert Gregorian dates to Hijri and back, plus a year of Islamic holidays, with a note on Kemenag’s moon-sighting differences.',

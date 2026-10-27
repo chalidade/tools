@@ -3,7 +3,7 @@
 **English** · [Bahasa Indonesia](README.id.md)
 
 **My everyday file toolbox, built for the file work I do every day and published free for everyone.**
-62 tools for PDF, Office files, images, video, audio and QR codes, and every one of them runs entirely in your browser.
+65 tools for PDF, Office files, images, video, audio and QR codes, and every one of them runs entirely in your browser.
 Your files are never uploaded.
 
 [![Live demo](https://img.shields.io/badge/live%20demo-chalidade.github.io%2Ftools-6366f1)](https://chalidade.github.io/tools/)
@@ -102,6 +102,9 @@ All 45, grouped the way the home page groups them. Each name links to the live t
 - [Prayer Times](https://chalidade.github.io/tools/en/jadwal-sholat/): daily and monthly times from a bundled city list or GPS, computed from the sun's position (Kemenag angles: Fajr 20°, Isha 18°, Asr 1×, 2-minute margin), printable; no API
 - [Qibla Direction](https://chalidade.github.io/tools/en/arah-kiblat/): great-circle bearing to the Kaaba plus a live phone compass via `DeviceOrientationEvent` (iOS permission, calibration warning)
 - [Hijri ⇄ Gregorian Converter](https://chalidade.github.io/tools/en/hijriah/): through the browser's `islamic-umalqura` Intl calendar, plus a year of Islamic holidays; notes that official Kemenag dates may differ by a day
+- [Zakat Calculator](https://chalidade.github.io/tools/en/zakat/): income, wealth, gold/silver and fitrah zakat; nisab from a gold price you enter (nothing fetched), formulas shown
+- [Digital Tasbih](https://chalidade.github.io/tools/en/tasbih/): big tap counter with 33/99/free/custom targets, vibration at the target, keyboard shortcuts, history in localStorage
+- [Number to Words](https://chalidade.github.io/tools/en/terbilang/): numbers to Indonesian or English words with rupiah/sen suffix and letter-case options
 - [Encode / Decode](https://chalidade.github.io/tools/en/encode-decode/): Base64 (UTF-8, URL-safe), URL encode, HTML entities and JWT decoding (header + payload, no signature check)
 - [UUID Generator](https://chalidade.github.io/tools/en/uuid/): v4 and time-ordered v7 from `crypto.getRandomValues`, up to 1000 at once, with format options
 - [Text Compare](https://chalidade.github.io/tools/en/text-diff/): line and word diff with colours, unified or side by side
