@@ -3,6 +3,14 @@
 Catatan harian apa yang berubah di [tools](https://chalidade.github.io/tools/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-10-27 — Zakat, tasbih, terbilang
+
+Tiga tools baru di kategori Produktivitas; total sekarang **65 tools**.
+
+- **Kalkulator Zakat** (`#/zakat`): zakat penghasilan (nisab seperduabelas per bulan), harta/mal, emas/perak (hasil dalam gram dan rupiah), dan fitrah (2,5 kg beras per jiwa). Nisab dihitung dari harga emas yang diisi pengguna, tanpa mengambil dari internet, dengan rumus tiap langkah ditampilkan.
+- **Tasbih Digital** (`#/tasbih`): penghitung besar dengan target 33/99/bebas/sendiri, getar saat target tercapai, pintasan Spasi/Enter (tambah) dan Backspace (batal satu), serta total dan riwayat putaran yang tersimpan di perangkat.
+- **Terbilang** (`#/terbilang`): angka ke teks Indonesia dan Inggris sampai 18 digit, termasuk desimal, akhiran rupiah dan sen, serta pilihan huruf untuk kwitansi dan cek. Titik/koma dikenali sebagai pemisah ribuan atau desimal dari polanya.
+
 ## 2026-10-26 — Ibadah
 
 Tiga tools baru di kategori Produktivitas; total sekarang **62 tools**.
