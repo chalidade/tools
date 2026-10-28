@@ -97,7 +97,7 @@ export default function QrReader() {
   )
 }
 
-function CameraScanner({ onFound }: { onFound: (scan: Scan) => void }) {
+export function CameraScanner({ onFound }: { onFound: (scan: Scan) => void }) {
   const videoRef = useRef<HTMLVideoElement>(null)
   const streamRef = useRef<MediaStream | null>(null)
   const [state, setState] = useState<'idle' | 'starting' | 'scanning'>('idle')

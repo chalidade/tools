@@ -3,7 +3,7 @@
 **English** · [Bahasa Indonesia](README.id.md)
 
 **My everyday file toolbox, built for the file work I do every day and published free for everyone.**
-65 tools for PDF, Office files, images, video, audio and QR codes, and every one of them runs entirely in your browser.
+67 tools for PDF, Office files, images, video, audio and QR codes, and every one of them runs entirely in your browser.
 Your files are never uploaded.
 
 [![Live demo](https://img.shields.io/badge/live%20demo-chalidade.github.io%2Ftools-6366f1)](https://chalidade.github.io/tools/)
@@ -105,6 +105,8 @@ All 45, grouped the way the home page groups them. Each name links to the live t
 - [Zakat Calculator](https://chalidade.github.io/tools/en/zakat/): income, wealth, gold/silver and fitrah zakat; nisab from a gold price you enter (nothing fetched), formulas shown
 - [Digital Tasbih](https://chalidade.github.io/tools/en/tasbih/): big tap counter with 33/99/free/custom targets, vibration at the target, keyboard shortcuts, history in localStorage
 - [Number to Words](https://chalidade.github.io/tools/en/terbilang/): numbers to Indonesian or English words with rupiah/sen suffix and letter-case options
+- [QRIS Amount](https://chalidade.github.io/tools/en/qris/): read your shop's static QRIS (image or camera) and add an amount (tag 54, dynamic flag, CRC-16 recomputed) for a ready-to-scan QR; PNG/SVG
+- [Receipt & Invoice](https://chalidade.github.io/tools/en/kwitansi/): PDF receipt or invoice with items, discount and tax, amount in words from Terbilang, last entry kept on the device (pdf-lib)
 - [Encode / Decode](https://chalidade.github.io/tools/en/encode-decode/): Base64 (UTF-8, URL-safe), URL encode, HTML entities and JWT decoding (header + payload, no signature check)
 - [UUID Generator](https://chalidade.github.io/tools/en/uuid/): v4 and time-ordered v7 from `crypto.getRandomValues`, up to 1000 at once, with format options
 - [Text Compare](https://chalidade.github.io/tools/en/text-diff/): line and word diff with colours, unified or side by side

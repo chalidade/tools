@@ -3,6 +3,13 @@
 Catatan harian apa yang berubah di [tools](https://chalidade.github.io/tools/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-10-28 — Usaha kecil
+
+Dua tools baru di kategori Produktivitas; total sekarang **67 tools**.
+
+- **QRIS Nominal** (`#/qris`): baca QRIS statis toko dari gambar, screenshot yang ditempel, atau kamera (pembaca QR yang sama dengan tool QR), isi nominal, lalu unduh QR baru sebagai PNG/SVG. Tag 54 disisipkan pada urutan yang benar, penanda tag 01 diubah ke dinamis, dan CRC-16 dihitung ulang; CRC asli diperiksa dan pengguna diberi peringatan bila tidak cocok. Tidak ada yang dikirim ke mana pun.
+- **Kwitansi & Invoice** (`#/kwitansi`): isian penerima, item (jumlah × harga), diskon, dan pajak menjadi PDF A4 lewat pdf-lib. Nominal terbilang ditulis otomatis dari mesin Terbilang. Data terakhir tersimpan di browser untuk dipakai lagi; "Dokumen baru" menyimpan data pengirim saja.
+
 ## 2026-10-27 — Zakat, tasbih, terbilang
 
 Tiga tools baru di kategori Produktivitas; total sekarang **65 tools**.
