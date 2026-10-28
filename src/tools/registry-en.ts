@@ -98,6 +98,18 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
     formats: 'Number → Words',
     keywords: ['number to words', 'spell number', 'cheque', 'check', 'receipt', 'rupiah', 'terbilang', 'amount in words'],
   },
+  qris: {
+    title: 'QRIS Amount',
+    description: 'Read your shop’s static QRIS and make a new QR with a set amount, CRC recomputed, ready for a customer to scan.',
+    formats: 'QRIS → QRIS + amount',
+    keywords: ['qris', 'payment qr', 'merchant', 'shop', 'amount', 'dynamic qris', 'static qris', 'small business', 'point of sale'],
+  },
+  kwitansi: {
+    title: 'Receipt & Invoice',
+    description: 'Make a PDF receipt or invoice: fill in payee, items and total; the amount in words is written for you and your last entry stays on this device.',
+    formats: 'Form → PDF',
+    keywords: ['receipt', 'invoice', 'bill', 'kwitansi', 'faktur', 'amount in words', 'small business', 'pdf'],
+  },
   hijriah: {
     title: 'Hijri ⇄ Gregorian Converter',
     description: 'Convert Gregorian dates to Hijri and back, plus a year of Islamic holidays, with a note on Kemenag’s moon-sighting differences.',

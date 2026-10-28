@@ -127,11 +127,11 @@ tool-nya langsung terbuka siap dipakai.
 
 ## Hari 11 — 2026-10-28 · Usaha kecil
 
-- [ ] **QRIS Nominal** (`#/qris`): baca QRIS statis toko (dari gambar atau
+- [x] **QRIS Nominal** (`#/qris`): baca QRIS statis toko (dari gambar atau
   kamera, pakai pembaca di `src/tools/qr/`), sisipkan nominal (tag 54), hitung
   ulang CRC, lalu tampilkan QR baru siap dipindai. Tidak ada yang dikirim ke
   mana pun.
-- [ ] **Kwitansi & Invoice** (`#/kwitansi`): isi penerima, item, dan total
+- [x] **Kwitansi & Invoice** (`#/kwitansi`): isi penerima, item, dan total
   (nominal terbilang otomatis dari tool Terbilang), lalu unduh PDF lewat
   pdf-lib. Data terakhir tersimpan di perangkat untuk dipakai lagi.
 
