@@ -101,6 +101,10 @@ picture; the rules that matter when editing:
   snippets once `published: true`, and always offers the iframe embed —
   `#/<tool>?embed[&theme=light|dark]` renders the tool alone (any tool).
   `npm run build:packages` builds them; publishing is done by the owner.
+- **Support link (Trakteer):** `SUPPORT_URL` in `src/components/SupportToast.tsx`
+  is used by the footer and by a once-per-session toast shown after the first
+  save (`downloadBlob` fires `tools:downloaded`). Plain links only — never
+  Trakteer's embed `<script>`, which would break the no-third-party promise.
 - The repo is MIT-licensed (`LICENSE`).
 - `App.tsx` only composes sections; each section lives in
   `src/components/<Section>.tsx`. Style with the semantic shadcn tokens in

@@ -1,4 +1,6 @@
+import { Coffee } from 'lucide-react'
 import { Logo } from '@/components/Logo'
+import { SUPPORT_URL } from '@/components/SupportToast'
 import { useT } from '@/lib/i18n'
 
 export function Footer() {
@@ -12,14 +14,25 @@ export function Footer() {
             {t('Semua diproses di browser — tidak ada yang di-upload.', 'Everything runs in your browser — nothing is uploaded.')}
           </span>
         </div>
-        <a
-          href="https://github.com/chalidade/tools"
-          target="_blank"
-          rel="noreferrer"
-          className="font-mono text-xs text-muted-foreground transition-colors hover:text-foreground"
-        >
-          github.com/chalidade/tools
-        </a>
+        <div className="flex items-center gap-5">
+          <a
+            href={SUPPORT_URL}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
+          >
+            <Coffee className="size-4" />
+            {t('Traktir kopi', 'Buy me a coffee')}
+          </a>
+          <a
+            href="https://github.com/chalidade/tools"
+            target="_blank"
+            rel="noreferrer"
+            className="font-mono text-xs text-muted-foreground transition-colors hover:text-foreground"
+          >
+            github.com/chalidade/tools
+          </a>
+        </div>
       </div>
     </footer>
   )
