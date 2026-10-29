@@ -144,6 +144,9 @@ tool-nya langsung terbuka siap dipakai.
   batas upah di satu file dengan tanggal berlakunya, dan hasil diberi catatan
   bahwa ini perkiraan, bukan nasihat pajak.
 
+Urutan di bawah ini menurut prioritas (2026-10-29): yang paling sering
+dibutuhkan sehari-hari dan paling banyak dicari di depan.
+
 ## Hari 13 — 2026-10-30 · Harian: chat & belanja
 
 - [ ] **Link WhatsApp** (`#/link-wa`): nomor (08…, +62…, spasi/strip
@@ -157,7 +160,43 @@ tool-nya langsung terbuka siap dipakai.
   isi, satuan g/kg/ml/L/pcs) → harga per satuan yang sama, termurah ditandai
   dan selisihnya dalam persen. Dibuat untuk dipakai satu tangan di minimarket.
 
-## Hari 14 — 2026-10-31 · Harian: listrik & gaji
+## Hari 14 — 2026-10-31 · Surat
+
+- [ ] **Generator Surat** (`#/surat`): surat lamaran kerja, izin sakit /
+  tidak masuk (kerja dan sekolah), surat kuasa, surat pernyataan, dan surat
+  pengunduran diri. Isi formulir → pratinjau langsung → unduh PDF (jsPDF) atau
+  Word (`docx`). Template di satu file data per jenis surat, isian terakhir
+  disimpan di perangkat untuk dipakai lagi.
+
+## Hari 15 — 2026-11-01 · Formulir & teks
+
+- [ ] **Kompres ke Ukuran Target** di `#/compress-image`: mode "maksimal
+  N KB" (mis. 200 KB untuk CPNS/SNBT) yang mencari kualitas dan, bila perlu,
+  dimensi terbesar yang masih di bawah batas. Pakai `canvasBlob` dari
+  `src/lib/image.ts`.
+- [ ] **Ubah Huruf** (`#/ubah-huruf`): HURUF BESAR, huruf kecil, Judul Tiap
+  Kata, Kalimat biasa, hapus spasi ganda/baris kosong, dan satukan baris;
+  sekali ketuk lalu salin. Tautkan dari Penghitung Kata.
+
+## Hari 16 — 2026-11-02 · Scan & OCR
+
+- [ ] **Scan Dokumen** (`#/scan`): foto kertas dari kamera atau galeri,
+  tarik empat sudut (deteksi tepi otomatis sebagai tebakan awal), luruskan
+  perspektif dengan homografi di canvas (tanpa OpenCV), mode hitam-putih
+  tajam/abu-abu/warna, lalu gabung beberapa halaman jadi satu PDF.
+- [ ] **OCR — Foto ke Teks** (`#/ocr`): Tesseract (wasm) dengan bahasa
+  Indonesia dan Inggris. Worker, core wasm, dan data bahasa di-host sendiri,
+  jangan dari CDN bawaannya, dan hanya dimuat saat tool dibuka. Hasil bisa
+  disalin atau diunduh sebagai TXT; nanti bisa dipakai juga oleh Scan Dokumen.
+
+## Hari 17 — 2026-11-03 · CV
+
+- [ ] **Pembuat CV** (`#/cv`): CV satu halaman yang ramah ATS (teks asli,
+  bukan gambar; satu kolom; heading standar), bagian yang bisa diurutkan,
+  2–3 tata letak, ekspor PDF dan Word. Data disimpan di perangkat dan bisa
+  diekspor/impor sebagai JSON. Contoh isian Indonesia dan Inggris.
+
+## Hari 18 — 2026-11-04 · Listrik & gaji
 
 - [ ] **Kalkulator Token Listrik** (`#/token-listrik`): nominal → kWh per
   golongan tarif PLN (R-1 900 VA, 1.300 VA, …) setelah PPJ (beda per daerah,
@@ -169,30 +208,35 @@ tool-nya langsung terbuka siap dipakai.
   1/173 upah sebulan; hari kerja vs hari libur, 5 atau 6 hari kerja), dengan
   rincian per jam. Aturan di satu file dengan sumbernya.
 
-## Hari 15 — 2026-11-01 · Harian: kalender
+## Hari 19 — 2026-11-05 · Edit PDF
+
+- [ ] **Edit PDF** (`#/edit-pdf`): tambah teks (font, ukuran, warna), gambar,
+  kotak, garis, centang, dan coretan di halaman mana saja, untuk formulir yang
+  bukan AcroForm. Pakai ulang pratinjau dan penempatan dari Tanda Tangan PDF
+  (`uprightPage` di `src/lib/pdf-doc.ts`).
+
+## Hari 20 — 2026-11-06 · Cek perangkat
+
+- [ ] **Cek HP/Laptop Bekas** (`#/cek-perangkat`): daftar tes yang dicentang
+  satu per satu — layar (warna penuh untuk dead pixel), sentuh (gambar di
+  seluruh layar), speaker kiri/kanan, mikrofon (rekam + putar), kamera depan/
+  belakang, getar, sensor gerak/orientasi, keyboard (tombol yang sudah ditekan
+  menyala), dan info yang bisa dibaca browser (resolusi, baterai bila ada).
+  Hasil akhir bisa disalin sebagai ringkasan. Juga berguna untuk tes kamera
+  dan mic sebelum rapat online.
+
+## Hari 21 — 2026-11-07 · Kesehatan
 
 - [ ] **Hitung HPL Kehamilan** (`#/hpl`): dari HPHT (rumus Naegele, panjang
   siklus bisa diatur) atau dari tanggal USG → HPL, usia kehamilan dalam
   minggu + hari, trimester, dan tonggak penting. Bilang bahwa ini perkiraan
   dan bidan/dokter yang menentukan.
-- [ ] **Hitung Weton** (`#/weton`): tanggal → hari pasaran Jawa (Legi,
-  Pahing, Pon, Wage, Kliwon), neptu hari + pasaran, wuku, dan tanggal Jawa;
-  plus kebalikannya (cari tanggal dengan weton tertentu). Hitungan kalender
-  murni, diuji dengan beberapa tanggal yang diketahui; bagian ramalan/primbon
-  tidak dibuat.
+- [ ] **BMI & Berat Ideal** (`#/bmi`): BMI dengan kategori Asia-Pasifik
+  (WHO 2000 / Kemenkes, beda dari ambang global), rentang berat ideal, dan
+  kebutuhan kalori harian (Mifflin-St Jeor × tingkat aktivitas). Sumber
+  ambang di satu file data; bilang bahwa ini skrining, bukan diagnosis.
 
-## Hari 16 — 2026-11-02 · Harian: teks & data
-
-- [ ] **Ubah Huruf** (`#/ubah-huruf`): HURUF BESAR, huruf kecil, Judul Tiap
-  Kata, Kalimat biasa, hapus spasi ganda/baris kosong, dan satukan baris;
-  sekali ketuk lalu salin. Tautkan dari Penghitung Kata.
-- [ ] **Cek NIK** (`#/cek-nik`): baca format NIK — kode provinsi/kabupaten/
-  kecamatan (data wilayah dibundel, nama di-title-case), tanggal lahir, dan
-  jenis kelamin (tanggal + 40 untuk perempuan). Jelas ditulis bahwa ini hanya
-  membaca format, bukan memastikan NIK terdaftar di Dukcapil, dan NIK tidak
-  pernah disimpan atau dikirim.
-
-## Hari 17 — 2026-11-03 · Darurat
+## Hari 22 — 2026-11-08 · Darurat
 
 Kategori baru **Darurat**. Halaman-halamannya harus tetap jalan offline
 (service worker sudah menyimpan app shell; tool ini jangan bergantung pada
@@ -209,7 +253,51 @@ jaringan) dan tombol utamanya besar, bisa ditekan tanpa membaca.
   "Bagikan lokasiku": koordinat GPS → teks siap kirim dengan link Maps,
   dibagikan lewat Web Share atau tautan WhatsApp; akurasi GPS ditampilkan.
 
-## Hari 18 — 2026-11-04 · Darurat lanjutan
+## Hari 23 — 2026-11-09 · WhatsApp & foto
+
+- [ ] **Potong Video untuk Status WhatsApp** (`#/status-wa`): pecah video
+  panjang jadi potongan berurutan dengan durasi maksimal Status WhatsApp (cek
+  batas terbaru saat dibangun), kompres agar muat, lalu unduh semua sekaligus.
+  Pakai `convertMedia` dengan `trim` dari `src/lib/media.ts`.
+- [ ] **Kolase Foto** (`#/kolase`): 2–9 foto dengan beberapa tata letak
+  (grid, strip, satu besar), jarak dan sudut membulat, rasio 1:1/4:5/9:16, lalu
+  unduh JPG/PNG.
+
+## Hari 24 — 2026-11-10 · Privasi foto
+
+- [ ] **Watermark KTP & Dokumen Identitas** (`#/watermark-ktp`): teks
+  melintang berulang di foto KTP/SIM/paspor ("Hanya untuk verifikasi …",
+  tanggal otomatis), atur ukuran, sudut, dan transparansi, lalu simpan ulang
+  tanpa EXIF. Pakai `decodeImage`/`canvasBlob` dari `src/lib/image.ts`.
+- [ ] **Sensor Foto** (`#/sensor-foto`): tutup bagian foto (NIK, wajah, plat
+  nomor, alamat) dengan kotak atau kuas, model blok hitam, piksel besar, atau
+  blur. Gambar disimpan ulang sehingga bagian yang ditutup benar-benar hilang.
+  Beri peringatan bahwa blur tipis pada teks kecil bisa ditebak, jadi default
+  ke blok hitam.
+
+## Hari 25 — 2026-11-11 · Bareng teman
+
+- [ ] **Patungan** (`#/patungan`): item per orang atau dibagi rata, pajak dan
+  service dibagi proporsional, pembulatan yang jumlahnya tetap pas, lalu
+  rangkuman siap kirim ke WhatsApp.
+- [ ] **Undian & Arisan** (`#/undian`): acak nama dengan
+  `crypto.getRandomValues` dan animasi, mode arisan yang mengecualikan
+  pemenang sebelumnya sampai semua dapat giliran, riwayat tersimpan di
+  perangkat, dan hasil siap dibagikan.
+
+## Hari 26 — 2026-11-12 · Kuliah & tabungan
+
+- [ ] **Hitung IPK** (`#/ipk`): IPS per semester dan IPK dari SKS × nilai
+  huruf (skala bisa diatur: A/AB/B/…, atau A/A-/B+/…), plus simulasi "butuh
+  rata-rata nilai berapa di sisa SKS supaya IPK jadi X". Nilai rapor (rata-rata
+  berbobot) sebagai mode kedua. Tersimpan di perangkat.
+- [ ] **Kalkulator Tabungan & Investasi** (`#/tabungan`): bunga majemuk
+  (deposito, frekuensi bunga bisa diatur, pajak bunga 20% bisa dinyalakan),
+  menabung rutin per bulan, dan target dana ("Rp100 juta dalam 5 tahun → nabung
+  berapa per bulan"), dengan grafik pertumbuhan (Recharts tidak ada di repo ini
+  — gambar SVG sendiri) dan tabel per tahun. Ditandai perkiraan.
+
+## Hari 27 — 2026-11-13 · Darurat: medis
 
 - [ ] **Kartu Medis / ICE** (`#/kartu-medis`): golongan darah, alergi, obat
   rutin, kondisi medis, dan kontak darurat — disimpan di perangkat saja
@@ -222,7 +310,124 @@ jaringan) dan tombol utamanya besar, bisa ditekan tanpa membaca.
   mengikuti pedoman resmi (AHA/PMI) dan bilang bahwa ini bukan pengganti
   pelatihan.
 
-## Hari 19 — 2026-11-05 · Darurat: arah & pesan
+## Hari 28 — 2026-11-14 · Darurat: P3K & aman
+
+- [ ] **Panduan P3K** (`#/p3k`): kartu langkah bergambar (SVG) untuk tersedak
+  (Heimlich, termasuk bayi), luka bakar, pendarahan, pingsan, kejang, gigitan
+  ular, dan patah tulang. Teks mengikuti pedoman PMI/WHO (sumber dan tanggal
+  di satu file data), tombol 112/119 selalu terlihat, dan bilang bahwa ini
+  bukan pengganti pelatihan. Tautkan dengan Panduan CPR.
+- [ ] **Panggilan Palsu** (`#/panggilan-palsu`): layar telepon masuk tiruan
+  (nama penelepon bisa diatur) dengan nada dering dari Web Audio dan getar,
+  dipicu langsung atau dengan timer. Layar penuh + Wake Lock; tombol angkat
+  menampilkan durasi panggilan berjalan.
+
+## Hari 29 — 2026-11-15 · Kalender & data
+
+- [ ] **Hitung Weton** (`#/weton`): tanggal → hari pasaran Jawa (Legi,
+  Pahing, Pon, Wage, Kliwon), neptu hari + pasaran, wuku, dan tanggal Jawa;
+  plus kebalikannya (cari tanggal dengan weton tertentu). Hitungan kalender
+  murni, diuji dengan beberapa tanggal yang diketahui; bagian ramalan/primbon
+  tidak dibuat.
+- [ ] **Cek NIK** (`#/cek-nik`): baca format NIK — kode provinsi/kabupaten/
+  kecamatan (data wilayah dibundel, nama di-title-case), tanggal lahir, dan
+  jenis kelamin (tanggal + 40 untuk perempuan). Jelas ditulis bahwa ini hanya
+  membaca format, bukan memastikan NIK terdaftar di Dukcapil, dan NIK tidak
+  pernah disimpan atau dikirim.
+
+## Hari 30 — 2026-11-16 · Tanda tangan & cetak
+
+- [ ] **Tanda Tangan ke PNG** (`#/signature-png`): gambar tanda tangan atau
+  foto tanda tangan di kertas, latarnya dibuang (ambang + pembersih noise),
+  warna tinta bisa diganti, lalu PNG transparan siap tempel. Pakai ulang kanvas
+  gambar dari Tanda Tangan PDF.
+- [ ] **PDF Hemat Tinta** (`#/pdf-grayscale`): ubah ke abu-abu atau
+  hitam-putih (dengan ambang yang bisa diatur dan opsi latar jadi putih)
+  sebelum dicetak. Halaman dirender ulang, jadi beri tahu bahwa teksnya jadi
+  gambar.
+
+## Hari 31 — 2026-11-17 · Privasi file
+
+- [ ] **Redaksi PDF** (`#/redact-pdf`): tandai area di halaman, lalu halaman
+  yang ditandai dirender ulang jadi gambar (pdf.js) dengan area itu dihitamkan,
+  sehingga teks aslinya hilang dari file, bukan cuma tertutup. Halaman lain
+  tetap utuh. Beri tahu bahwa teks di halaman yang diredaksi tidak bisa
+  disalin lagi.
+- [ ] **Enkripsi & Dekripsi File** (`#/encrypt-file`): kunci file apa saja
+  dengan password lewat WebCrypto (AES-256-GCM, kunci dari PBKDF2-SHA-256
+  dengan iterasi tinggi dan salt acak), nama file asli disimpan di dalamnya,
+  dan buka lagi di tool yang sama. Tegaskan bahwa password yang lupa tidak bisa
+  dipulihkan.
+
+## Hari 32 — 2026-11-18 · Darurat: dokumen
+
+- [ ] **Brankas Dokumen** (`#/brankas`): simpan foto/PDF KTP, KK, BPJS, polis
+  di perangkat (IndexedDB), terenkripsi dengan password — WebCrypto AES-GCM,
+  kunci dari PBKDF2 (≥ 600 ribu iterasi) dengan salt acak, IV baru tiap file.
+  Password tidak pernah disimpan; lupa password = data tidak bisa dibuka, dan
+  ini dikatakan dengan jelas sebelum brankas dibuat. Kunci otomatis saat tab
+  disembunyikan. Ekspor/impor brankas terenkripsi sebagai satu file untuk
+  cadangan di tempat lain. Tes enkripsi → dekripsi wajib sebelum rilis.
+
+## Hari 33 — 2026-11-19 · Dokumen
+
+- [ ] **Gabung & Pisah Excel/CSV** (`#/merge-excel`): gabung banyak file atau
+  sheet jadi satu (kolom dicocokkan dari judulnya), atau pecah satu sheet per
+  nilai sebuah kolom jadi beberapa file/sheet.
+- [ ] **Markdown & Teks ke PDF / Word** (`#/markdown-to-pdf`): tulis atau buka
+  Markdown/TXT, pratinjau, lalu unduh PDF atau DOCX. Pakai ulang mesin
+  paginasi Word ke PDF. Kebalikan dari PDF ke Markdown.
+
+## Hari 34 — 2026-11-20 · Dokumen kantor
+
+- [ ] **Kompres Word & PowerPoint** (`#/compress-office`): kecilkan gambar di
+  dalam `.docx`/`.pptx` (folder `media/` di ZIP-nya) dengan kualitas dan lebar
+  maksimum yang bisa dipilih, tanpa menyentuh isi dokumen. Tampilkan ukuran
+  sebelum/sesudah dengan `SizeResult`.
+- [ ] **Hapus Metadata PDF & Office** (`#/strip-metadata`): tampilkan lalu
+  hapus penulis, perusahaan, software, tanggal, komentar, dan riwayat revisi
+  dari PDF, DOCX, XLSX, dan PPTX sebelum dikirim. PDF lewat pdf-lib (Info dan
+  XMP), Office dengan menyunting `docProps/` di dalam ZIP-nya. Pasangan dari
+  Hapus Metadata Foto.
+
+## Hari 35 — 2026-11-21 · Barcode & konversi
+
+- [ ] **Generator Barcode** (`#/barcode`): EAN-13, EAN-8, UPC-A, Code 128,
+  dan Code 39, dengan validasi digit cek, ukuran dan teks di bawahnya, unduh
+  PNG/SVG, dan lembar label banyak sekaligus siap cetak.
+- [ ] **Angka Romawi & Ukuran Baju/Sepatu** di `#/unit-converter`: Romawi ⇄
+  angka (1–3999, validasi bentuk yang salah seperti IIII), dan tabel ukuran
+  sepatu (EU/US/UK/cm, pria/wanita/anak) serta baju (S–XXL ⇄ lingkar dada)
+  dengan catatan bahwa ukuran tiap merek bisa beda.
+
+## Hari 36 — 2026-11-22 · Waktu
+
+- [ ] **Timer Pomodoro** (`#/pomodoro`): fokus/istirahat yang bisa diatur,
+  hitungan dari jam (bukan interval, jadi tetap tepat saat tab di latar),
+  notifikasi dan bunyi saat sesi selesai, dan layar tetap menyala lewat Wake
+  Lock bila didukung.
+- [ ] **Stopwatch & Timer** (`#/stopwatch`): stopwatch dengan lap, timer
+  hitung mundur, dan tampilan layar penuh angka besar.
+
+## Hari 37 — 2026-11-23 · Arsip & suara
+
+- [ ] **ZIP** (`#/zip`): buat ZIP dari banyak file (atau satu folder), dan
+  buka ZIP untuk melihat dan mengambil isinya satu per satu. Pakai library
+  kecil yang di-bundel; RAR/7z menyusul lewat wasm yang di-host sendiri bila
+  ukurannya masuk akal.
+- [ ] **Teks ke Suara** (`#/text-to-speech`): bacakan teks dengan suara
+  bawaan perangkat (`speechSynthesis`), pilih suara, kecepatan, dan nada. Hanya
+  tampilkan suara dengan `localService === true`: suara "Google …" di Chrome
+  dikirim ke server dan melanggar janji tools. API ini tidak bisa merekam, jadi
+  hanya diputar, tanpa unduh audio.
+
+## Hari 38 — 2026-11-24 · Video
+
+- [ ] **Edit Video Ringan** (`#/edit-video`): putar 90°, crop, hapus suara,
+  dan gabung beberapa klip jadi satu MP4. Pakai Mediabunny lewat
+  `src/lib/media.ts` (`probeMedia`, `convertMedia`), sama seperti Potong Video.
+
+## Hari 39 — 2026-11-25 · Darurat: arah & pesan
 
 - [ ] **Kembali ke Titik** (`#/kembali-ke-titik`): simpan beberapa lokasi
   bernama (titik kumpul keluarga, mobil, tenda) di perangkat, lalu tampilkan
@@ -233,7 +438,7 @@ jaringan) dan tombol utamanya besar, bisa ditekan tanpa membaca.
   pakai ID/EN ("Tolong panggil ambulans", "Saya tuli", "Saya alergi …"), bisa
   menambah frasa sendiri (disimpan di perangkat), mode kontras tinggi, Wake Lock.
 
-## Hari 20 — 2026-11-06 · Darurat: siaga
+## Hari 40 — 2026-11-26 · Darurat: siaga
 
 - [ ] **Checklist Tas Siaga Bencana** (`#/tas-siaga`): daftar isi tas siaga
   mengikuti panduan BNPB (sebut sumber dan tanggalnya), bisa dicentang,
@@ -247,196 +452,39 @@ jaringan) dan tombol utamanya besar, bisa ditekan tanpa membaca.
   layar, atau senter (fungsi torch yang sama dengan SOS — taruh di satu
   modul bersama), kecepatan bisa diatur (WPM).
 
-## Hari 21 — 2026-11-07 · Darurat: P3K & aman
+## Hari 41 — 2026-11-27 · Foto & PDF
 
-- [ ] **Panduan P3K** (`#/p3k`): kartu langkah bergambar (SVG) untuk tersedak
-  (Heimlich, termasuk bayi), luka bakar, pendarahan, pingsan, kejang, gigitan
-  ular, dan patah tulang. Teks mengikuti pedoman PMI/WHO (sumber dan tanggal
-  di satu file data), tombol 112/119 selalu terlihat, dan bilang bahwa ini
-  bukan pengganti pelatihan. Tautkan dengan Panduan CPR.
-- [ ] **Panggilan Palsu** (`#/panggilan-palsu`): layar telepon masuk tiruan
-  (nama penelepon bisa diatur) dengan nada dering dari Web Audio dan getar,
-  dipicu langsung atau dengan timer. Layar penuh + Wake Lock; tombol angkat
-  menampilkan durasi panggilan berjalan.
-
-## Hari 22 — 2026-11-08 · Darurat: dokumen
-
-- [ ] **Brankas Dokumen** (`#/brankas`): simpan foto/PDF KTP, KK, BPJS, polis
-  di perangkat (IndexedDB), terenkripsi dengan password — WebCrypto AES-GCM,
-  kunci dari PBKDF2 (≥ 600 ribu iterasi) dengan salt acak, IV baru tiap file.
-  Password tidak pernah disimpan; lupa password = data tidak bisa dibuka, dan
-  ini dikatakan dengan jelas sebelum brankas dibuat. Kunci otomatis saat tab
-  disembunyikan. Ekspor/impor brankas terenkripsi sebagai satu file untuk
-  cadangan di tempat lain. Tes enkripsi → dekripsi wajib sebelum rilis.
-
-## Hari 23 — 2026-11-09 · Foto untuk formulir
-
-- [ ] **Kompres ke Ukuran Target** di `#/compress-image`: mode "maksimal
-  N KB" (mis. 200 KB untuk CPNS/SNBT) yang mencari kualitas dan, bila perlu,
-  dimensi terbesar yang masih di bawah batas. Pakai `canvasBlob` dari
-  `src/lib/image.ts`.
-
-## Hari 24 — 2026-11-10 · Scan & OCR
-
-- [ ] **Scan Dokumen** (`#/scan`): foto kertas dari kamera atau galeri,
-  tarik empat sudut (deteksi tepi otomatis sebagai tebakan awal), luruskan
-  perspektif dengan homografi di canvas (tanpa OpenCV), mode hitam-putih
-  tajam/abu-abu/warna, lalu gabung beberapa halaman jadi satu PDF.
-- [ ] **OCR — Foto ke Teks** (`#/ocr`): Tesseract (wasm) dengan bahasa
-  Indonesia dan Inggris. Worker, core wasm, dan data bahasa di-host sendiri,
-  jangan dari CDN bawaannya, dan hanya dimuat saat tool dibuka. Hasil bisa
-  disalin atau diunduh sebagai TXT; nanti bisa dipakai juga oleh Scan Dokumen.
-
-## Hari 25 — 2026-11-11 · Barcode & subtitle
-
-- [ ] **Generator Barcode** (`#/barcode`): EAN-13, EAN-8, UPC-A, Code 128,
-  dan Code 39, dengan validasi digit cek, ukuran dan teks di bawahnya, unduh
-  PNG/SVG, dan lembar label banyak sekaligus siap cetak.
-- [ ] **Subtitle** (`#/subtitle`): buka SRT/VTT, geser semua waktu
-  (maju/mundur), regangkan untuk beda frame rate, gabung dua file, dan ubah
-  SRT ⇄ VTT, dengan pratinjau di atas video milik pengguna.
-
-## Hari 26 — 2026-11-12 · Bareng teman
-
-- [ ] **Undian & Arisan** (`#/undian`): acak nama dengan
-  `crypto.getRandomValues` dan animasi, mode arisan yang mengecualikan
-  pemenang sebelumnya sampai semua dapat giliran, riwayat tersimpan di
-  perangkat, dan hasil siap dibagikan.
-- [ ] **Patungan** (`#/patungan`): item per orang atau dibagi rata, pajak dan
-  service dibagi proporsional, pembulatan yang jumlahnya tetap pas, lalu
-  rangkuman siap kirim ke WhatsApp.
-
-## Hari 27 — 2026-11-13 · Waktu
-
-- [ ] **Timer Pomodoro** (`#/pomodoro`): fokus/istirahat yang bisa diatur,
-  hitungan dari jam (bukan interval, jadi tetap tepat saat tab di latar),
-  notifikasi dan bunyi saat sesi selesai, dan layar tetap menyala lewat Wake
-  Lock bila didukung.
-- [ ] **Stopwatch & Timer** (`#/stopwatch`): stopwatch dengan lap, timer
-  hitung mundur, dan tampilan layar penuh angka besar.
-
-## Hari 28 — 2026-11-14 · Privasi foto
-
-- [ ] **Watermark KTP & Dokumen Identitas** (`#/watermark-ktp`): teks
-  melintang berulang di foto KTP/SIM/paspor ("Hanya untuk verifikasi …",
-  tanggal otomatis), atur ukuran, sudut, dan transparansi, lalu simpan ulang
-  tanpa EXIF. Pakai `decodeImage`/`canvasBlob` dari `src/lib/image.ts`.
-- [ ] **Sensor Foto** (`#/sensor-foto`): tutup bagian foto (NIK, wajah, plat
-  nomor, alamat) dengan kotak atau kuas, model blok hitam, piksel besar, atau
-  blur. Gambar disimpan ulang sehingga bagian yang ditutup benar-benar hilang.
-  Beri peringatan bahwa blur tipis pada teks kecil bisa ditebak, jadi default
-  ke blok hitam.
-
-## Hari 29 — 2026-11-15 · Privasi file
-
-- [ ] **Redaksi PDF** (`#/redact-pdf`): tandai area di halaman, lalu halaman
-  yang ditandai dirender ulang jadi gambar (pdf.js) dengan area itu dihitamkan,
-  sehingga teks aslinya hilang dari file, bukan cuma tertutup. Halaman lain
-  tetap utuh. Beri tahu bahwa teks di halaman yang diredaksi tidak bisa
-  disalin lagi.
-- [ ] **Enkripsi & Dekripsi File** (`#/encrypt-file`): kunci file apa saja
-  dengan password lewat WebCrypto (AES-256-GCM, kunci dari PBKDF2-SHA-256
-  dengan iterasi tinggi dan salt acak), nama file asli disimpan di dalamnya,
-  dan buka lagi di tool yang sama. Tegaskan bahwa password yang lupa tidak bisa
-  dipulihkan.
-
-## Hari 30 — 2026-11-16 · PDF
-
-- [ ] **PDF Hemat Tinta** (`#/pdf-grayscale`): ubah ke abu-abu atau
-  hitam-putih (dengan ambang yang bisa diatur dan opsi latar jadi putih)
-  sebelum dicetak. Halaman dirender ulang, jadi beri tahu bahwa teksnya jadi
-  gambar.
 - [ ] **Ekstrak Gambar dari PDF** (`#/pdf-extract-images`): ambil semua
   gambar yang tertanam di PDF. Gambar JPEG disimpan apa adanya (tanpa kompres
   ulang), yang lain diekspor sebagai PNG; unduh satu per satu atau ZIP.
-
-## Hari 31 — 2026-11-17 · Arsip & suara
-
-- [ ] **ZIP** (`#/zip`): buat ZIP dari banyak file (atau satu folder), dan
-  buka ZIP untuk melihat dan mengambil isinya satu per satu. Pakai library
-  kecil yang di-bundel; RAR/7z menyusul lewat wasm yang di-host sendiri bila
-  ukurannya masuk akal.
-- [ ] **Teks ke Suara** (`#/text-to-speech`): bacakan teks dengan suara
-  bawaan perangkat (`speechSynthesis`), pilih suara, kecepatan, dan nada. Hanya
-  tampilkan suara dengan `localService === true`: suara "Google …" di Chrome
-  dikirim ke server dan melanggar janji tools. API ini tidak bisa merekam, jadi
-  hanya diputar, tanpa unduh audio.
-
-## Hari 32 — 2026-11-18 · Video
-
-- [ ] **Edit Video Ringan** (`#/edit-video`): putar 90°, crop, hapus suara,
-  dan gabung beberapa klip jadi satu MP4. Pakai Mediabunny lewat
-  `src/lib/media.ts` (`probeMedia`, `convertMedia`), sama seperti Potong Video.
-
-## Hari 33 — 2026-11-19 · Dokumen kantor
-
-- [ ] **Hapus Metadata PDF & Office** (`#/strip-metadata`): tampilkan lalu
-  hapus penulis, perusahaan, software, tanggal, komentar, dan riwayat revisi
-  dari PDF, DOCX, XLSX, dan PPTX sebelum dikirim. PDF lewat pdf-lib (Info dan
-  XMP), Office dengan menyunting `docProps/` di dalam ZIP-nya. Pasangan dari
-  Hapus Metadata Foto.
-- [ ] **Kompres Word & PowerPoint** (`#/compress-office`): kecilkan gambar di
-  dalam `.docx`/`.pptx` (folder `media/` di ZIP-nya) dengan kualitas dan lebar
-  maksimum yang bisa dipilih, tanpa menyentuh isi dokumen. Tampilkan ukuran
-  sebelum/sesudah dengan `SizeResult`.
-
-## Hari 34 — 2026-11-20 · Dokumen
-
-- [ ] **Markdown & Teks ke PDF / Word** (`#/markdown-to-pdf`): tulis atau buka
-  Markdown/TXT, pratinjau, lalu unduh PDF atau DOCX. Pakai ulang mesin
-  paginasi Word ke PDF. Kebalikan dari PDF ke Markdown.
-- [ ] **Gabung & Pisah Excel/CSV** (`#/merge-excel`): gabung banyak file atau
-  sheet jadi satu (kolom dicocokkan dari judulnya), atau pecah satu sheet per
-  nilai sebuah kolom jadi beberapa file/sheet.
-
-## Hari 35 — 2026-11-21 · Foto
-
 - [ ] **Cari Foto Duplikat** (`#/duplicate-photos`): pilih banyak foto atau
   satu folder, kelompokkan yang sama/mirip dengan perceptual hash (dHash) di Web
   Worker, lalu pilih mana yang disimpan. Tool tidak bisa menghapus file di
   perangkat; yang dipilih diunduh sebagai ZIP.
-- [ ] **Tanda Tangan ke PNG** (`#/signature-png`): gambar tanda tangan atau
-  foto tanda tangan di kertas, latarnya dibuang (ambang + pembersih noise),
-  warna tinta bisa diganti, lalu PNG transparan siap tempel. Pakai ulang kanvas
-  gambar dari Tanda Tangan PDF.
 
-## Hari 36 — 2026-11-22 · Audio
+## Hari 42 — 2026-11-28 · Audio
 
-- [ ] **Penghapus Vokal** (`#/vocal-remover`): hilangkan vokal yang ada di
-  tengah stereo (kiri − kanan, dengan bass dijaga lewat filter), pratinjau, lalu
-  simpan MP3/WAV. Jelaskan bahwa hasilnya bergantung pada cara lagu dimixing.
 - [ ] **Peredam Noise** (`#/denoise`): bersihkan dengung dan desis dari
   rekaman suara dengan RNNoise (wasm kecil, di-host sendiri), bandingkan
   sebelum/sesudah, lalu simpan.
+- [ ] **Penghapus Vokal** (`#/vocal-remover`): hilangkan vokal yang ada di
+  tengah stereo (kiri − kanan, dengan bass dijaga lewat filter), pratinjau, lalu
+  simpan MP3/WAV. Jelaskan bahwa hasilnya bergantung pada cara lagu dimixing.
 
-## Hari 37 — 2026-11-23 · Utilitas
+## Hari 43 — 2026-11-29 · Utilitas
 
+- [ ] **Subtitle** (`#/subtitle`): buka SRT/VTT, geser semua waktu
+  (maju/mundur), regangkan untuk beda frame rate, gabung dua file, dan ubah
+  SRT ⇄ VTT, dengan pratinjau di atas video milik pengguna.
 - [ ] **Ganti Nama Banyak File** (`#/batch-rename`): pola nama dengan nomor
   urut, teks, tanggal file, atau tanggal foto dari EXIF, pratinjau nama baru,
   lalu unduh sebagai ZIP (pakai tool ZIP dari Hari 21).
-
-## Hari 38 — 2026-11-24 · Edit PDF & WhatsApp
-
-- [ ] **Edit PDF** (`#/edit-pdf`): tambah teks (font, ukuran, warna), gambar,
-  kotak, garis, centang, dan coretan di halaman mana saja, untuk formulir yang
-  bukan AcroForm. Pakai ulang pratinjau dan penempatan dari Tanda Tangan PDF
-  (`uprightPage` di `src/lib/pdf-doc.ts`).
-- [ ] **Potong Video untuk Status WhatsApp** (`#/status-wa`): pecah video
-  panjang jadi potongan berurutan dengan durasi maksimal Status WhatsApp (cek
-  batas terbaru saat dibangun), kompres agar muat, lalu unduh semua sekaligus.
-  Pakai `convertMedia` dengan `trim` dari `src/lib/media.ts`.
-
-## Hari 39 — 2026-11-25 · Kreatif
-
-- [ ] **Kolase Foto** (`#/kolase`): 2–9 foto dengan beberapa tata letak
-  (grid, strip, satu besar), jarak dan sudut membulat, rasio 1:1/4:5/9:16, lalu
-  unduh JPG/PNG.
 - [ ] **Tulisan Keren** (`#/tulisan-keren`): ubah teks ke huruf Unicode
   bergaya (tebal, miring, script, double-struck, bulat, dan lainnya) untuk bio
   IG/TikTok, salin dengan satu ketukan. Beri tahu bahwa pembaca layar dan
   pencarian tidak membacanya sebagai huruf biasa.
 
-## Hari 40 — 2026-11-26 · AI di perangkat
+## Hari 44 — 2026-11-30 · AI di perangkat
 
 - [ ] **Perjelas Foto** (`#/perjelas-foto`): upscale 2×/4× dengan model
   super-resolution lewat ONNX Runtime Web (WebGPU bila ada, wasm sebagai
@@ -444,7 +492,7 @@ jaringan) dan tombol utamanya besar, bisa ditekan tanpa membaca.
   dibuka. Tampilkan ukuran unduhan model di awal dan peringatan bahwa di HP
   lama prosesnya lambat.
 
-## Hari 41 — 2026-11-27 · Darurat: lokasi & bahasa
+## Hari 45 — 2026-12-01 · Darurat: lokasi & bahasa
 
 - [ ] **Koordinat Saya** (`#/koordinat`): lokasi dalam desimal, DMS, UTM,
   dan Plus Code sekaligus, plus ketinggian dan akurasi GPS, masing-masing
@@ -456,7 +504,7 @@ jaringan) dan tombol utamanya besar, bisa ditekan tanpa membaca.
   bahasa di satu file data. Bahasa tanpa suara di perangkat tetap tampil
   sebagai teks.
 
-## Hari 42 — 2026-11-28 · Darurat: posko
+## Hari 46 — 2026-12-02 · Darurat: posko
 
 - [ ] **Kalkulator Logistik Pengungsian** (`#/logistik-pengungsian`): jumlah
   orang (dengan bayi, lansia, perempuan) × hari → kebutuhan air, pangan,
