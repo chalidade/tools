@@ -3,7 +3,7 @@
 **English** · [Bahasa Indonesia](README.id.md)
 
 **My everyday file toolbox, built for the file work I do every day and published free for everyone.**
-67 tools for PDF, Office files, images, video, audio and QR codes, and every one of them runs entirely in your browser.
+69 tools for PDF, Office files, images, video, audio and QR codes, and every one of them runs entirely in your browser.
 Your files are never uploaded.
 
 [![Live demo](https://img.shields.io/badge/live%20demo-chalidade.github.io%2Ftools-6366f1)](https://chalidade.github.io/tools/)
@@ -107,6 +107,8 @@ All 45, grouped the way the home page groups them. Each name links to the live t
 - [Number to Words](https://chalidade.github.io/tools/en/terbilang/): numbers to Indonesian or English words with rupiah/sen suffix and letter-case options
 - [QRIS Amount](https://chalidade.github.io/tools/en/qris/): read your shop's static QRIS (image or camera) and add an amount (tag 54, dynamic flag, CRC-16 recomputed) for a ready-to-scan QR; PNG/SVG
 - [Receipt & Invoice](https://chalidade.github.io/tools/en/kwitansi/): PDF receipt or invoice with items, discount and tax, amount in words from Terbilang, last entry kept on the device (pdf-lib)
+- [Loan Instalment Calculator](https://chalidade.github.io/tools/en/cicilan/): flat or annuity interest, month-by-month schedule, total interest, CSV export
+- [Take-Home Pay Calculator](https://chalidade.github.io/tools/en/gaji-bersih/): gross to net salary with PPh 21 (Article 17 brackets, PTKP), BPJS health, JHT and pension; rates in one source file
 - [Encode / Decode](https://chalidade.github.io/tools/en/encode-decode/): Base64 (UTF-8, URL-safe), URL encode, HTML entities and JWT decoding (header + payload, no signature check)
 - [UUID Generator](https://chalidade.github.io/tools/en/uuid/): v4 and time-ordered v7 from `crypto.getRandomValues`, up to 1000 at once, with format options
 - [Text Compare](https://chalidade.github.io/tools/en/text-diff/): line and word diff with colours, unified or side by side

@@ -3,6 +3,13 @@
 Catatan harian apa yang berubah di [tools](https://chalidade.github.io/tools/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-10-29 — Keuangan
+
+Dua tools baru di kategori Produktivitas; total sekarang **69 tools**.
+
+- **Kalkulator Cicilan** (`#/cicilan`): cicilan pinjaman dengan bunga flat atau anuitas (efektif), tenor dalam bulan atau tahun. Menampilkan angsuran per bulan, total bunga, total dibayar, tabel angsuran lengkap (pokok, bunga, sisa), dan ekspor CSV.
+- **Kalkulator Gaji Bersih** (`#/gaji-bersih`): perkiraan gaji bersih dari gaji bruto: PPh 21 (tarif Pasal 17 atas penghasilan setahun, biaya jabatan, PTKP menurut status dan tanggungan, dirata-rata per bulan) serta potongan BPJS Kesehatan, JHT, dan JP. Semua tarif dan batas upah ada di satu berkas (`rates.ts`) bertanggal berlaku, dan hasil diberi catatan bahwa ini perkiraan, bukan nasihat pajak.
+
 ## 2026-10-28 — Usaha kecil
 
 Dua tools baru di kategori Produktivitas; total sekarang **67 tools**.

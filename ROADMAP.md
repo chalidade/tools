@@ -137,9 +137,9 @@ tool-nya langsung terbuka siap dipakai.
 
 ## Hari 12 — 2026-10-29 · Keuangan
 
-- [ ] **Kalkulator Cicilan** (`#/cicilan`): bunga flat dan anuitas
+- [x] **Kalkulator Cicilan** (`#/cicilan`): bunga flat dan anuitas
   (efektif), tabel angsuran per bulan, total bunga, dan ekspor CSV.
-- [ ] **Kalkulator Gaji Bersih** (`#/gaji-bersih`): PPh 21 (tarif efektif
+- [x] **Kalkulator Gaji Bersih** (`#/gaji-bersih`): PPh 21 (tarif efektif
   rata-rata) dan potongan BPJS Kesehatan serta Ketenagakerjaan. Semua tarif dan
   batas upah di satu file dengan tanggal berlakunya, dan hasil diberi catatan
   bahwa ini perkiraan, bukan nasihat pajak.

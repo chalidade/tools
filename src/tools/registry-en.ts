@@ -110,6 +110,18 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
     formats: 'Form → PDF',
     keywords: ['receipt', 'invoice', 'bill', 'kwitansi', 'faktur', 'amount in words', 'small business', 'pdf'],
   },
+  cicilan: {
+    title: 'Loan Instalment Calculator',
+    description: 'Work out loan instalments with flat or annuity (effective) interest: a month-by-month schedule, total interest and CSV export.',
+    formats: 'Loan → Schedule',
+    keywords: ['loan', 'instalment', 'installment', 'mortgage', 'amortization', 'flat rate', 'annuity', 'effective rate', 'repayment schedule', 'csv'],
+  },
+  'gaji-bersih': {
+    title: 'Take-Home Pay Calculator',
+    description: 'Estimate net salary from gross: PPh 21 income tax, BPJS health, JHT and pension, with every step shown.',
+    formats: 'Gross → Net salary',
+    keywords: ['take home pay', 'net salary', 'income tax', 'pph 21', 'bpjs', 'payslip', 'ptkp', 'salary', 'indonesia tax'],
+  },
   hijriah: {
     title: 'Hijri ⇄ Gregorian Converter',
     description: 'Convert Gregorian dates to Hijri and back, plus a year of Islamic holidays, with a note on Kemenag’s moon-sighting differences.',
