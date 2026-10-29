@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Code2, ExternalLink } from 'lucide-react'
+import { ChevronDown, Code2, ExternalLink } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { CopyButton } from '@/components/tool/CopyButton'
 import { toolText, type Tool } from '@/tools/registry'
@@ -60,66 +60,69 @@ export function InstallCard({ tool }: { tool: Tool }) {
   const current = snippets[tab]
 
   return (
-    <section className="mt-14 rounded-2xl border bg-card p-5 sm:p-6">
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <div className="flex items-center gap-3">
-          <span className="grid size-10 place-items-center rounded-xl border bg-background">
-            <Code2 className="size-[18px]" />
+    // Folded by default: one line under the tool, opened only by someone who wants it.
+    <details className="group mt-14 rounded-2xl border bg-card">
+      <summary className="flex cursor-pointer list-none items-center gap-3 p-4 sm:px-5 [&::-webkit-details-marker]:hidden">
+        <span className="grid size-9 shrink-0 place-items-center rounded-xl border bg-background">
+          <Code2 className="size-4" />
+        </span>
+        <span className="min-w-0 flex-1">
+          <span className="block font-semibold tracking-tight">{t('Pasang di situsmu', 'Add it to your site')}</span>
+          <span className="block truncate text-sm text-muted-foreground">
+            {t('Gratis dan open source (MIT) — tetap berjalan di browser pengunjungmu.', "Free and open source (MIT) — it still runs in your visitors' browsers.")}
           </span>
-          <div>
-            <h2 className="font-semibold tracking-tight">{t('Pasang di situsmu', 'Add it to your site')}</h2>
-            <p className="text-sm text-muted-foreground">
-              {t('Gratis dan open source (MIT) — tetap berjalan di browser pengunjungmu.', "Free and open source (MIT) — it still runs in your visitors' browsers.")}
-            </p>
-          </div>
-        </div>
+        </span>
+        <ChevronDown className="size-4 shrink-0 text-muted-foreground transition-transform group-open:rotate-180" />
+      </summary>
+
+      <div className="border-t p-4 sm:p-5">
         {tool.package && (
           <a
             href={`${REPO}/tree/main/packages/${tool.package.dir}#readme`}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
+            className="mb-4 inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
           >
             {t('Dokumentasi paket', 'Package docs')} <ExternalLink className="size-3.5" />
           </a>
         )}
-      </div>
 
-      {tabs.length > 1 && (
-        <div role="tablist" className="mt-5 inline-flex gap-1 rounded-xl border bg-muted/60 p-1">
-          {tabs.map((t) => (
-            <button
-              key={t}
-              type="button"
-              role="tab"
-              aria-selected={tab === t}
-              onClick={() => setTab(t)}
-              className={cn(
-                'rounded-lg px-3 py-1.5 text-sm transition-colors',
-                tab === t ? 'bg-background font-medium shadow-sm' : 'text-muted-foreground hover:text-foreground',
-              )}
-            >
-              {snippets[t].label}
-            </button>
-          ))}
-        </div>
-      )}
+        {tabs.length > 1 && (
+          <div role="tablist" className="flex w-fit gap-1 rounded-xl border bg-muted/60 p-1">
+            {tabs.map((t) => (
+              <button
+                key={t}
+                type="button"
+                role="tab"
+                aria-selected={tab === t}
+                onClick={() => setTab(t)}
+                className={cn(
+                  'rounded-lg px-3 py-1.5 text-sm transition-colors',
+                  tab === t ? 'bg-background font-medium shadow-sm' : 'text-muted-foreground hover:text-foreground',
+                )}
+              >
+                {snippets[t].label}
+              </button>
+            ))}
+          </div>
+        )}
 
-      <div className="relative mt-4">
-        <pre className="overflow-x-auto rounded-xl border bg-muted/50 p-4 pr-24 font-mono text-[13px] leading-relaxed">
-          {current.code}
-        </pre>
-        <div className="absolute top-2 right-2">
-          <CopyButton text={current.code} variant="outline" />
+        <div className={cn('relative', tabs.length > 1 && 'mt-4')}>
+          <pre className="overflow-x-auto rounded-xl border bg-muted/50 p-4 pr-24 font-mono text-[13px] leading-relaxed">
+            {current.code}
+          </pre>
+          <div className="absolute top-2 right-2">
+            <CopyButton text={current.code} variant="outline" />
+          </div>
         </div>
+        <p className="mt-3 text-sm text-muted-foreground">{current.note}</p>
+        {tool.package && !tool.package.published && (
+          <p className="mt-2 text-sm text-muted-foreground">
+            {t('Versi paket npm', 'An npm package version')} (<code className="font-mono text-xs">{tool.package.name}</code>){' '}
+            {t('dengan satu tag script sedang disiapkan.', 'with a one-line script tag is on its way.')}
+          </p>
+        )}
       </div>
-      <p className="mt-3 text-sm text-muted-foreground">{current.note}</p>
-      {tool.package && !tool.package.published && (
-        <p className="mt-2 text-sm text-muted-foreground">
-          {t('Versi paket npm', 'An npm package version')} (<code className="font-mono text-xs">{tool.package.name}</code>){' '}
-          {t('dengan satu tag script sedang disiapkan.', 'with a one-line script tag is on its way.')}
-        </p>
-      )}
-    </section>
+    </details>
   )
 }

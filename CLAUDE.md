@@ -80,8 +80,13 @@ picture; the rules that matter when editing:
   `#/<slug>` links are rewritten on load; embeds keep `#/<slug>?embed`.
   `robots.txt` lives in the `chalidade/chalidade.github.io` repo (domain
   root). A new tool needs nothing extra: its pages come from the registry.
-- The home page is deliberately light: a small static `Hero`, then
-  `ToolGrid` (search + category chips + cards) and `HowItWorks`. No animation
+- The home page is one search box (`SearchHome`): type, tap a result. It is
+  built for a phone — results sit right under the box as compact rows, and
+  the title folds away while typing. Its motion is CSS only (`blur-in`,
+  `collapse-blur` in `src/theme.css`). The full catalogue — `Hero`,
+  `ToolGrid` (search + category chips + cards, reads `?q=`) and
+  `HowItWorks` — lives at `/all/` (Header → "All tools"); `scripts/seo.mjs`
+  writes `all/index.html` with the home page's meta (canonical = home). No animation
   library and no per-frame JS on the home page — the walkable town that used
   to be here was removed to keep it fast; don't bring heavy visuals back.
 - **Installable packages** live in `packages/<tool>/` (see packages/README.md):

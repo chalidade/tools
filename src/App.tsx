@@ -5,6 +5,7 @@ import { ToolGrid } from '@/components/ToolGrid'
 import { HowItWorks } from '@/components/HowItWorks'
 import { ToolView } from '@/components/ToolView'
 import { Footer } from '@/components/Footer'
+import { SearchHome } from '@/components/SearchHome'
 import { routeQuery, useLinkNavigation, useRoute } from '@/lib/route'
 import { applyHead, homeMeta } from '@/lib/seo'
 import { findTool } from '@/tools/registry'
@@ -40,12 +41,14 @@ function App() {
       <main className="flex-1">
         {tool ? (
           <ToolView tool={tool} />
-        ) : (
+        ) : route.slug === 'all' ? (
           <>
             <Hero />
             <ToolGrid />
             <HowItWorks />
           </>
+        ) : (
+          <SearchHome />
         )}
       </main>
       <Footer />

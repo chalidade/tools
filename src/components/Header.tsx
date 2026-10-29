@@ -1,4 +1,4 @@
-import { Github, Languages, Moon, Sun } from 'lucide-react'
+import { Github, Languages, LayoutGrid, Moon, Sun } from 'lucide-react'
 import { InstallButton } from '@/components/InstallButton'
 import { Logo } from '@/components/Logo'
 import { useTheme } from '@/lib/use-theme'
@@ -22,10 +22,12 @@ export function Header() {
         <nav className="flex items-center gap-1">
           <InstallButton />
           <a
-            href={pageUrl('', lang)}
-            className="hidden rounded-lg px-3 py-2 text-sm text-muted-foreground transition-colors hover:text-foreground sm:block"
+            href={pageUrl('all', lang)}
+            aria-label={t('Semua tools', 'All tools')}
+            className="flex h-9 items-center gap-2 rounded-lg px-2.5 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground sm:px-3"
           >
-            {t('Semua tools', 'All tools')}
+            <LayoutGrid className="size-[18px] sm:size-4" />
+            <span className="hidden sm:inline">{t('Semua tools', 'All tools')}</span>
           </a>
           <a
             href={REPO}

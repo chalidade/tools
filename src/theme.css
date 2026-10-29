@@ -117,3 +117,39 @@
     radial-gradient(40rem 26rem at 85% -10%, oklch(from var(--brand-1) l c h / var(--glow)), transparent 70%),
     radial-gradient(34rem 24rem at 10% 10%, oklch(from var(--brand-2) l c h / calc(var(--glow) * 0.8)), transparent 70%);
 }
+
+/* Search home: a result fades in out of a blur. */
+@keyframes blur-in {
+  from {
+    opacity: 0;
+    filter: blur(10px);
+    transform: translateY(8px) scale(0.98);
+  }
+}
+@utility blur-in {
+  animation: blur-in 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+/* Search home: the title folds away (and blurs) once the visitor types. */
+@utility collapse-blur {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition:
+    grid-template-rows 0.45s cubic-bezier(0.2, 0.8, 0.2, 1),
+    opacity 0.35s,
+    filter 0.35s;
+  &.is-collapsed {
+    grid-template-rows: 0fr;
+    opacity: 0;
+    filter: blur(8px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blur-in {
+    animation: none;
+  }
+  .collapse-blur {
+    transition: none;
+  }
+}

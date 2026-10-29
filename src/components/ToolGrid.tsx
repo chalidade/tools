@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { ArrowUpRight, Search, X } from 'lucide-react'
-import { pageUrl } from '@/lib/route'
+import { pageUrl, routeQuery } from '@/lib/route'
 import { cn } from '@/lib/utils'
 import { CATEGORIES, TOOLS, categoryText, toolText, type CategoryId, type Tool } from '@/tools/registry'
 import { searchTools } from '@/tools/search'
@@ -9,7 +9,7 @@ import { useLang, useT } from '@/lib/i18n'
 export function ToolGrid() {
   const t = useT()
   const lang = useLang()
-  const [query, setQuery] = useState('')
+  const [query, setQuery] = useState(() => routeQuery().get('q') ?? '')
   const [category, setCategory] = useState<CategoryId | 'all'>('all')
   const searchRef = useRef<HTMLInputElement>(null)
 

@@ -3,6 +3,7 @@
 // clicks a result lands straight in that tool:
 //
 //   dist/index.html, dist/en/index.html               home (id, en)
+//   dist/all/index.html, dist/en/all/index.html       all tools (id, en)
 //   dist/<slug>/index.html, dist/en/<slug>/index.html each tool (id, en)
 //   dist/404.html                                     unknown paths load the app
 //   dist/sitemap.xml                                  every page, with hreflang
@@ -96,7 +97,7 @@ function toolBody(tool, lang) {
     .map((t) => `<li><a class="${LINK}" href="${href(t.slug, lang)}">${esc(toolText(t, lang).title)}</a></li>`)
     .join('')
   return `<main class="${MAIN}">
-<a class="text-sm ${LINK}" href="${href('', lang)}">← ${en ? 'All tools' : 'Semua tools'}</a>
+<a class="text-sm ${LINK}" href="${href('all', lang)}">← ${en ? 'All tools' : 'Semua tools'}</a>
 <h1 class="mt-8 text-3xl font-semibold tracking-tight sm:text-4xl">${esc(text.title)}</h1>
 <p class="mt-1 text-muted-foreground">${esc(text.description)}</p>
 <p class="mt-3 font-mono text-xs text-muted-foreground">${esc(text.formats)}</p>
@@ -109,6 +110,8 @@ ${related ? `<h2 class="mt-8 text-lg font-semibold">${esc(seo.relatedHeading(too
 const urls = []
 for (const lang of ['id', 'en']) {
   write(lang === 'en' ? 'en/index.html' : 'index.html', page(seo.homeMeta(lang), homeBody(lang)))
+  // /all/ is the full catalogue in the app; for crawlers it is the home page (canonical points there).
+  write(`${lang === 'en' ? 'en/' : ''}all/index.html`, page(seo.homeMeta(lang), homeBody(lang)))
   for (const tool of TOOLS) write(`${lang === 'en' ? 'en/' : ''}${tool.slug}/index.html`, page(seo.toolMeta(tool, lang), toolBody(tool, lang)))
 }
 write('404.html', page(seo.homeMeta('id'), homeBody('id'), { noindex: true }))
