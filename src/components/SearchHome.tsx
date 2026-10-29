@@ -29,7 +29,7 @@ export function SearchHome() {
       <div className="mx-auto max-w-2xl px-5 pt-[8vh] pb-16 sm:px-6 sm:pt-[16vh] lg:max-w-3xl lg:pt-[18vh]">
         <div className={cn('collapse-blur', searching && 'is-collapsed')}>
           <div className="min-h-0 text-center">
-            <h1 className="text-4xl leading-[1.05] font-semibold tracking-[-0.035em] text-balance sm:text-5xl lg:text-7xl">
+            <h1 className="text-4xl leading-[1.05] font-semibold tracking-[-0.035em] text-balance sm:text-5xl lg:text-6xl lg:whitespace-nowrap">
               {t('Butuh tool', 'Which tool')} <span className="text-gradient">{t('apa hari ini?', 'do you need?')}</span>
             </h1>
             <p className="mt-3 pb-8 text-muted-foreground text-pretty lg:mt-5 lg:pb-10 lg:text-lg">
