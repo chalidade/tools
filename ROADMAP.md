@@ -395,3 +395,23 @@ jaringan) dan tombol utamanya besar, bisa ditekan tanpa membaca.
   cadangan), model dan runtime di-host sendiri dan hanya diunduh saat tool
   dibuka. Tampilkan ukuran unduhan model di awal dan peringatan bahwa di HP
   lama prosesnya lambat.
+
+## Hari 37 — 2026-11-23 · Darurat: lokasi & bahasa
+
+- [ ] **Koordinat Saya** (`#/koordinat`): lokasi dalam desimal, DMS, UTM,
+  dan Plus Code sekaligus, plus ketinggian dan akurasi GPS, masing-masing
+  bisa disalin, dengan cara membacanya lewat telepon ke petugas SAR. Konversi
+  dihitung sendiri (tanpa library peta). Tautkan dari Info Darurat.
+- [ ] **Frasa Darurat Bersuara** di `#/papan-pesan`: bacakan frasa lewat
+  Web Speech (`speechSynthesis`) dalam bahasa yang suaranya tersedia di
+  perangkat (ID, EN, AR, JA, …); frasa siap pakai diterjemahkan ke beberapa
+  bahasa di satu file data. Bahasa tanpa suara di perangkat tetap tampil
+  sebagai teks.
+
+## Hari 38 — 2026-11-24 · Darurat: posko
+
+- [ ] **Kalkulator Logistik Pengungsian** (`#/logistik-pengungsian`): jumlah
+  orang (dengan bayi, lansia, perempuan) × hari → kebutuhan air, pangan,
+  selimut, pembalut, popok, dan lainnya menurut standar Sphere / BNPB (sumber
+  dan angka di satu file data). Hasil bisa dicetak atau disalin sebagai daftar
+  kebutuhan untuk penggalangan donasi.
