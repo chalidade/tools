@@ -55,7 +55,7 @@ export function ToolView({ tool, embed = false }: { tool: Tool; embed?: boolean 
 
       <div className="mx-auto max-w-5xl px-5 py-10 sm:px-6 sm:py-14">
         <a
-          href={pageUrl('', lang)}
+          href={pageUrl('all', lang)}
           className="inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
         >
           <ArrowLeft className="size-4" />
