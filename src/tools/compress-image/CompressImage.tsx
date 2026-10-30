@@ -258,7 +258,7 @@ export default function CompressImage() {
                   ) : current ? (
                     <>
                       {formatSize(item.file.size)} → {formatSize(current.blob.size)} · {current.width}×{current.height}
-                      {current.kept && t(' · sudah optimal, disimpan apa adanya', ' · already optimal, kept as is')}
+                      {current.kept && t(' · sudah optimal, hanya metadata yang dihapus', ' · already optimal, only the metadata removed')}
                     </>
                   ) : (
                     <>

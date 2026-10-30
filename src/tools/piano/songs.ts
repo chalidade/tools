@@ -22,6 +22,8 @@ export interface Song {
   id: string
   title: string
   by: string
+  /** English title / composer line, where it differs from the Indonesian one. */
+  en?: { title: string; by: string }
   notes: Note[]
   /** Track names for an imported file, when it has more than one. */
   tracks?: { index: number; name: string; count: number }[]
@@ -68,6 +70,7 @@ export const SONGS: Song[] = [
     id: 'twinkle',
     title: 'Twinkle Twinkle Little Star',
     by: 'Lagu rakyat / folk',
+    en: { title: 'Twinkle Twinkle Little Star', by: 'Folk song' },
     notes: melody(
       100,
       `C4 C4 G4 G4 A4 A4 G4:2 | F4 F4 E4 E4 D4 D4 C4:2 | G4 G4 F4 F4 E4 E4 D4:2 | G4 G4 F4 F4 E4 E4 D4:2
@@ -110,6 +113,7 @@ export const SONGS: Song[] = [
     id: 'fur-elise',
     title: 'Für Elise (bagian awal)',
     by: 'L. van Beethoven',
+    en: { title: 'Für Elise (opening)', by: 'L. van Beethoven' },
     notes: melody(
       150,
       `E5:0.5 D#5:0.5 E5:0.5 D#5:0.5 E5:0.5 B4:0.5 D5:0.5 C5:0.5 A4:1.5 | C4:0.5 E4:0.5 A4:0.5 B4:1.5
@@ -121,12 +125,14 @@ export const SONGS: Song[] = [
     id: 'canon',
     title: 'Canon in D (melodi)',
     by: 'J. Pachelbel',
+    en: { title: 'Canon in D (melody)', by: 'J. Pachelbel' },
     notes: melody(70, `F#5:2 E5:2 D5:2 C#5:2 B4:2 A4:2 B4:2 C#5:2 | D5:2 C#5:2 B4:2 A4:2 G4:2 F#4:2 G4:2 E4:2`),
   },
   {
     id: 'prelude',
     title: 'Prelude in C, BWV 846 (birama 1–8)',
     by: 'J. S. Bach',
+    en: { title: 'Prelude in C, BWV 846 (bars 1–8)', by: 'J. S. Bach' },
     notes: prelude(66, [
       'C4 E4 G4 C5 E5',
       'C4 D4 A4 D5 F5',

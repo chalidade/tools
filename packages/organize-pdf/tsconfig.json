@@ -1,0 +1,8 @@
+{
+  "extends": "../../tsconfig.app.json",
+  "compilerOptions": {
+    "tsBuildInfoFile": "../../node_modules/.tmp/tsconfig.organize-pdf.tsbuildinfo",
+    "paths": { "@/*": ["../../src/*"] }
+  },
+  "include": ["src", "../_shared", "types/index.d.ts", "types/check.ts", "../../src/vite-env.d.ts"]
+}

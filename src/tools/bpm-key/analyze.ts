@@ -233,6 +233,12 @@ function keys(samples: Float32Array) {
   return out.sort((a, b) => b.score - a.score)
 }
 
+/** Camelot wheel code DJs mix by: 8A = A minor, 8B = C major. */
+export function camelot(tonic: number, minor: boolean) {
+  const major = minor ? pc(tonic + 3) : tonic
+  return `${((pc(major * 7) + 7) % 12) + 1}${minor ? 'A' : 'B'}`
+}
+
 /** Analyses mono samples at RATE. */
 export function analyze(samples: Float32Array): Analysis {
   // Two minutes from the middle is plenty for the tempo, and skips a free-time intro.

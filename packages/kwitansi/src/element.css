@@ -1,0 +1,4 @@
+/* Styles for <receipt-invoice>'s Shadow DOM: the shared base plus this tool's classes. */
+@import "../../_shared/base.css";
+@source "../../../src/tools/kwitansi";
+@source "../../../src/tools/terbilang";

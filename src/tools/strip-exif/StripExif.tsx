@@ -7,7 +7,7 @@ import { FileDrop } from '@/components/tool/FileDrop'
 import { downloadBlob } from '@/lib/download'
 import { tr, useT } from '@/lib/i18n'
 import { canvasBlob, decodeImage, formatBytes, newCanvas } from '@/lib/image'
-import { formatCoords, readExif, sniff, stripJpeg, stripPng, textMap, type ExifInfo } from './exif'
+import { formatCoords, readExif, sniff, stripMetadata, textMap, type ExifInfo } from './exif'
 
 interface Loaded {
   file: File
@@ -16,17 +16,14 @@ interface Loaded {
   preview: string
 }
 
-/** The clean file: lossless for JPG/PNG, a re-encode (which drops everything) for the rest. */
+/** The clean file: lossless for JPG/PNG/WebP, a re-encode (which drops everything) for rotated JPGs. */
 async function clean(loaded: Loaded): Promise<{ blob: Blob; name: string }> {
-  const { file, bytes, info } = loaded
-  const kind = sniff(bytes)
+  const { file, bytes } = loaded
   const base = file.name.replace(/\.[^.]+$/, '')
-  // A rotated JPEG relies on its EXIF orientation; dropping the tag would turn the picture sideways.
-  if (kind === 'jpeg' && info.orientation <= 1) {
-    return { blob: new Blob([stripJpeg(bytes) as BlobPart], { type: 'image/jpeg' }), name: `${base}-${tr('bersih', 'clean')}.jpg` }
-  }
-  if (kind === 'png') {
-    return { blob: new Blob([stripPng(bytes) as BlobPart], { type: 'image/png' }), name: `${base}-${tr('bersih', 'clean')}.png` }
+  const kind = sniff(bytes)
+  const stripped = stripMetadata(bytes)
+  if (stripped && kind !== 'other') {
+    return { blob: new Blob([stripped as BlobPart], { type: `image/${kind}` }), name: `${base}-${tr('bersih', 'clean')}.${kind === 'jpeg' ? 'jpg' : kind}` }
   }
   const img = await decodeImage(file)
   try {
@@ -183,8 +180,8 @@ export default function StripExif() {
 
       <p className="text-xs text-muted-foreground">
         {t(
-          'JPG dan PNG dibersihkan tanpa mengubah gambarnya sama sekali. Foto yang disimpan miring lewat tanda orientasi, serta WebP, disimpan ulang (kualitas 95).',
-          'JPG and PNG are cleaned without touching the picture at all. Photos stored sideways via an orientation flag, and WebP, are re-saved (quality 95).',
+          'JPG, PNG, dan WebP dibersihkan tanpa mengubah gambarnya sama sekali. Foto yang disimpan miring lewat tanda orientasi disimpan ulang (kualitas 95).',
+          'JPG, PNG and WebP are cleaned without touching the picture at all. Photos stored sideways via an orientation flag are re-saved (quality 95).',
         )}
       </p>
     </div>

@@ -60,7 +60,7 @@ export default function OrganizePdf() {
     setError(null)
     setSaving(true)
     try {
-      downloadBlob(await organizePdf(file, items), file.name.replace(/\.pdf$/i, '') + '-diatur.pdf')
+      downloadBlob(await organizePdf(file, items), file.name.replace(/\.pdf$/i, '') + t('-diatur.pdf', '-organized.pdf'))
     } catch (e) {
       setError(openErrorMessage(e))
     } finally {

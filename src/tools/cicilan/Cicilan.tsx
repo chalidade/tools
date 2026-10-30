@@ -3,7 +3,7 @@ import { Download } from 'lucide-react'
 import { Segmented } from '@/components/tool/Segmented'
 import { downloadBlob } from '@/lib/download'
 import { locale, useT } from '@/lib/i18n'
-import { buildLoan, loanCsv, num, type Method } from './loan'
+import { buildLoan, loanCsv, MAX_MONTHS, num, type Method } from './loan'
 
 const inputCls =
   'w-full rounded-xl border bg-background px-3 py-2 text-base text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring'
@@ -82,7 +82,7 @@ export default function Cicilan() {
 
           <button
             type="button"
-            onClick={() => downloadBlob(new Blob(['﻿', loanCsv(loan.rows)], { type: 'text/csv;charset=utf-8' }), 'angsuran.csv')}
+            onClick={() => downloadBlob(new Blob(['﻿', loanCsv(loan.rows)], { type: 'text/csv;charset=utf-8' }), t('angsuran.csv', 'loan-schedule.csv'))}
             className="inline-flex items-center gap-2 rounded-xl border px-4 py-2 text-sm font-medium transition-colors hover:bg-muted"
           >
             <Download className="size-4" />
@@ -114,6 +114,8 @@ export default function Cicilan() {
             </table>
           </div>
         </>
+      ) : months > MAX_MONTHS ? (
+        <p className="text-sm text-muted-foreground">{t('Tenor paling lama 1.200 bulan (100 tahun).', 'The longest term is 1,200 months (100 years).')}</p>
       ) : (
         <p className="text-sm text-muted-foreground">{t('Isi jumlah pinjaman, bunga, dan tenor untuk melihat angsuran.', 'Enter the amount, rate and term to see the instalments.')}</p>
       )}

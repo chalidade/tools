@@ -1,0 +1,3 @@
+/* Styles for <gif-mp4>'s Shadow DOM: the shared base plus this tool's classes. */
+@import "../../_shared/base.css";
+@source "../../../src/tools/gif-mp4";

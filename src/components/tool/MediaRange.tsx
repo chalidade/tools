@@ -89,7 +89,7 @@ export function MediaRange({ duration, start, end, onChange, time, onSeek, child
         <TimeField label={tx('Awal', 'Start')} value={start} onCommit={(t) => onChange(Math.min(t, end - minLength), end)} />
         <TimeField label={tx('Akhir', 'End')} value={end} onCommit={(t) => onChange(start, Math.min(duration, Math.max(t, start + minLength)))} />
         <p className="pb-2.5 text-sm text-muted-foreground">
-          Durasi <span className="font-mono text-foreground">{formatTime(end - start)}</span>
+          {tx('Durasi', 'Duration')} <span className="font-mono text-foreground">{formatTime(end - start)}</span>
         </p>
       </div>
     </div>

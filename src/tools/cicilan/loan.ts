@@ -2,6 +2,8 @@
 // whole term. "Anuitas" (effective): interest is charged on the remaining
 // balance, so every instalment is equal and the interest share shrinks.
 
+import { parseNumber } from '@/tools/persen/percent'
+
 export type Method = 'flat' | 'annuity'
 
 export interface Row {
@@ -19,9 +21,12 @@ export interface Loan {
   totalPaid: number
 }
 
-/** `ratePct` is the yearly rate in percent, `months` the term. */
+/** Longest term accepted (100 years); a typo like 1e9 months would otherwise build a billion rows. */
+export const MAX_MONTHS = 1200
+
+/** `ratePct` is the yearly rate in percent, `months` the term (1 to MAX_MONTHS). */
 export function buildLoan(principal: number, ratePct: number, months: number, method: Method): Loan | null {
-  if (!(principal > 0) || !(months >= 1) || !Number.isInteger(months) || !(ratePct >= 0)) return null
+  if (!(principal > 0) || !Number.isFinite(principal) || !(months >= 1) || months > MAX_MONTHS || !Number.isInteger(months) || !(ratePct >= 0) || !Number.isFinite(ratePct)) return null
   const rows: Row[] = []
   let balance = principal
 
@@ -54,8 +59,11 @@ export function loanCsv(rows: Row[]): string {
   return [head, ...rows.map((r) => [r.month, r2(r.payment), r2(r.principal), r2(r.interest), r2(r.balance)].join(','))].join('\n') + '\n'
 }
 
-/** Accepts "1.500.000", "1500000" and "1,5" alike. */
+/**
+ * Accepts "1.500.000", "1,500,000", "1500000", "1,5" and "12.5" alike; 0 for anything
+ * not a positive number. (Dropping every dot read an English "12.5" % as 125 %.)
+ */
 export const num = (s: string): number => {
-  const n = Number(s.replace(/\./g, '').replace(',', '.'))
+  const n = parseNumber(s)
   return Number.isFinite(n) && n > 0 ? n : 0
 }

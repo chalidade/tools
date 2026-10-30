@@ -103,7 +103,18 @@ export default function Piano() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  useEffect(() => () => synthRef.current?.close(), [])
+  const midiRef = useRef<MIDIAccess | null>(null)
+  useEffect(
+    () => () => {
+      synthRef.current?.close()
+      // Unhook the MIDI inputs, or they keep playing a closed synth after the element is removed.
+      if (midiRef.current) {
+        midiRef.current.onstatechange = null
+        midiRef.current.inputs.forEach((input) => (input.onmidimessage = null))
+      }
+    },
+    [],
+  )
   useEffect(() => {
     if (synthRef.current) synthRef.current.volume = volume
   }, [volume])
@@ -163,7 +174,8 @@ export default function Piano() {
   kbRef.current = { kbBase, shift }
   useEffect(() => {
     const typing = (e: KeyboardEvent) =>
-      e.target instanceof HTMLElement && /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)
+      // composedPath: in a Shadow DOM embed, e.target is the host element, not the input.
+      /^(INPUT|TEXTAREA|SELECT)$/.test((e.composedPath()[0] as HTMLElement).tagName ?? '')
     const down = (e: KeyboardEvent) => {
       if (typing(e) || e.ctrlKey || e.metaKey || e.altKey) return
       if (e.code === 'Space') {
@@ -234,6 +246,7 @@ export default function Piano() {
   async function connectMidi() {
     try {
       const access = await navigator.requestMIDIAccess()
+      midiRef.current = access
       const attach = () => {
         const names: string[] = []
         access.inputs.forEach((input) => {

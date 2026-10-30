@@ -43,20 +43,26 @@ function load(): DocData {
   return blank()
 }
 
-export default function Kwitansi() {
+export interface KwitansiProps {
+  /** Keep the last document in localStorage (default). The package's persist="false" turns it off. */
+  persist?: boolean
+}
+
+export default function Kwitansi({ persist = true }: KwitansiProps) {
   const t = useT()
-  const [d, setD] = useState(load)
+  const [d, setD] = useState(() => (persist ? load() : blank()))
   const [error, setError] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
   const set = <K extends keyof DocData>(k: K, v: DocData[K]) => setD((p) => ({ ...p, [k]: v }))
 
   useEffect(() => {
+    if (!persist) return
     try {
       localStorage.setItem(KEY, JSON.stringify(d))
     } catch {
       /* storage blocked */
     }
-  }, [d])
+  }, [d, persist])
 
   const sum = useMemo(() => totals(d.items, d.discount, d.taxPercent), [d.items, d.discount, d.taxPercent])
   const total = d.mode === 'kwitansi' ? d.amount : sum.total
@@ -198,10 +204,15 @@ export default function Kwitansi() {
         </Button>
       </div>
       <p className="text-xs text-muted-foreground">
-        {t(
-          'Data terakhir tersimpan di browser ini supaya tidak perlu mengetik ulang; tidak dikirim ke mana pun. “Dokumen baru” menyimpan data pengirim dan mengosongkan sisanya. Tempel meterai/tanda tangan manual setelah dicetak.',
-          'Your last entry is kept in this browser so you don’t retype it; nothing is sent anywhere. “New document” keeps the sender details and clears the rest. Add the stamp duty/signature by hand after printing.',
-        )}
+        {persist
+          ? t(
+              'Data terakhir tersimpan di browser ini supaya tidak perlu mengetik ulang; tidak dikirim ke mana pun. “Dokumen baru” menyimpan data pengirim dan mengosongkan sisanya. Tempel meterai/tanda tangan manual setelah dicetak.',
+              'Your last entry is kept in this browser so you don’t retype it; nothing is sent anywhere. “New document” keeps the sender details and clears the rest. Add the stamp duty/signature by hand after printing.',
+            )
+          : t(
+              'Data tidak disimpan dan tidak dikirim ke mana pun. “Dokumen baru” menyimpan data pengirim dan mengosongkan sisanya. Tempel meterai/tanda tangan manual setelah dicetak.',
+              'Nothing is stored or sent anywhere. “New document” keeps the sender details and clears the rest. Add the stamp duty/signature by hand after printing.',
+            )}
       </p>
     </div>
   )

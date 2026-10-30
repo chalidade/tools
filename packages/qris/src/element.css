@@ -1,0 +1,4 @@
+/* Styles for <qris-amount>'s Shadow DOM: the shared base plus this tool's classes. */
+@import "../../_shared/base.css";
+@source "../../../src/tools/qris";
+@source "../../../src/tools/qr";

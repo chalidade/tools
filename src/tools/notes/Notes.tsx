@@ -70,7 +70,12 @@ function blankNote(): Note {
   return { id: newId(), title: '', body: '', color: 'none', pinned: false, createdAt: now, updatedAt: now }
 }
 
-export default function Notes() {
+export interface NotesProps {
+  /** Keep notes in this browser's IndexedDB (default). false: notes live only until the page closes. */
+  persist?: boolean
+}
+
+export default function Notes({ persist: keep = true }: NotesProps = {}) {
   // Not `t`: the editor helpers below already use t for the note text.
   const tx = useT()
   const lang = useLang()
@@ -91,9 +96,10 @@ export default function Notes() {
   const previewRef = useRef<HTMLDivElement>(null)
   const fileRef = useRef<HTMLInputElement>(null)
 
+  const save = useCallback((note: Note) => (keep ? saveNote(note) : Promise.resolve()), [keep])
   const persist = useCallback((note: Note) => {
     setSaving(true)
-    saveNote(note)
+    save(note)
       .then(() => setSaving(false))
       .catch(() =>
         setError(
@@ -103,22 +109,25 @@ export default function Notes() {
           ),
         ),
       )
-  }, [tx])
+  }, [tx, save])
 
   // Load; the very first visit gets a short welcome note.
   useEffect(() => {
-    listNotes()
+    ;(keep ? listNotes() : Promise.resolve<Note[]>([]))
       .then(async (list) => {
-        let welcomed = true
-        try {
-          welcomed = !!localStorage.getItem(WELCOMED_KEY)
-          localStorage.setItem(WELCOMED_KEY, '1')
-        } catch {
-          // Private mode: skip the welcome note.
+        // Not persisting: every visit is a first visit, and storage is never touched.
+        let welcomed = keep
+        if (keep) {
+          try {
+            welcomed = !!localStorage.getItem(WELCOMED_KEY)
+            localStorage.setItem(WELCOMED_KEY, '1')
+          } catch {
+            // Private mode: skip the welcome note.
+          }
         }
         if (!list.length && !welcomed) {
           const welcome = { ...blankNote(), ...welcomeNote(), color: 'yellow' as NoteColor }
-          await saveNote(welcome)
+          await save(welcome)
           list = [welcome]
         }
         setNotes(sortNotes(list))
@@ -141,7 +150,7 @@ export default function Notes() {
       for (const [id, t] of timers.current) {
         clearTimeout(t)
         const note = notesRef.current.find((n) => n.id === id)
-        if (note) void saveNote(note)
+        if (note) void save(note)
       }
     },
     [],
@@ -197,7 +206,7 @@ export default function Notes() {
     setNotes(rest)
     setCurrentId(window.matchMedia('(min-width: 768px)').matches ? (rest[0]?.id ?? null) : null)
     setConfirming(false)
-    void deleteNote(current.id).catch(() => {})
+    if (keep) void deleteNote(current.id).catch(() => {})
   }
 
   // ------------------------------------------------------------- editor helpers
@@ -248,12 +257,16 @@ export default function Notes() {
       const incoming = parsed.map((n) => ({
         ...blankNote(),
         ...n,
+        // The file is untrusted: a non-string title would crash every later render.
+        title: typeof n.title === 'string' ? n.title : '',
+        pinned: n.pinned === true,
+        createdAt: typeof n.createdAt === 'number' ? n.createdAt : n.updatedAt,
         color: NOTE_COLORS.some((c) => c.id === n.color) ? n.color : 'none',
       }))
       const changed = incoming.filter((n) => !byId.has(n.id) || byId.get(n.id)!.updatedAt < n.updatedAt)
       for (const n of changed) {
         byId.set(n.id, n)
-        await saveNote(n)
+        await save(n)
       }
       setNotes(sortNotes([...byId.values()]))
       setError('')
@@ -571,7 +584,12 @@ export default function Notes() {
 
       {error && <ErrorNote message={error} />}
       <p className="text-xs text-muted-foreground">
-        {lang === 'en' ? (
+        {!keep ? (
+          tx(
+            'Catatan hanya ada sampai halaman ini ditutup — tidak dikirim ke mana pun. Pakai Cadangkan untuk menyimpannya ke file.',
+            'Notes last only until this page is closed — never sent anywhere. Use Back up to save them to a file.',
+          )
+        ) : lang === 'en' ? (
           <>
             Notes are saved automatically in this browser only — never sent anywhere and not synced to other devices.
             Use <b>Back up</b> to save all your notes to a file, and <b>Restore</b> to open them on another device.

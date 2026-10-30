@@ -81,7 +81,7 @@ export default function PageNumbers() {
     setProgress({ done: 0, total: 0 })
     try {
       const blob = await numberPdf(file, opts, (done, total) => setProgress({ done, total }))
-      downloadBlob(blob, file.name.replace(/\.pdf$/i, '') + '-nomor.pdf')
+      downloadBlob(blob, file.name.replace(/\.pdf$/i, '') + t('-nomor.pdf', '-numbered.pdf'))
     } catch (e) {
       setError(openErrorMessage(e))
     } finally {

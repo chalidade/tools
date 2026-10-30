@@ -228,6 +228,12 @@ function cellStyle(cell: Cell, numeric: boolean, theme: string[]): CellStyle {
   }
 }
 
+/**
+ * Cells a sheet may span. A crafted file can put one value in XFD1048576 or
+ * merge the whole grid, and walking 17 billion cells would hang the tab.
+ */
+const MAX_CELLS = 2_000_000
+
 function readSheet(ws: Worksheet, numfmt: NumFmt, theme: string[], locale: string): Sheet | null {
   // Used range: the last row/column holding a value or a merge.
   let lastRow = 0
@@ -250,12 +256,15 @@ function readSheet(ws: Worksheet, numfmt: NumFmt, theme: string[], locale: strin
     if (!from || !to) continue
     const a = ws.getCell(from).fullAddress
     const b = ws.getCell(to).fullAddress
+    if ((b.row - a.row + 1) * (b.col - a.col + 1) > MAX_CELLS) throw new UnsupportedSheetError()
     spans.set(`${a.row}:${a.col}`, { rowSpan: b.row - a.row + 1, colSpan: b.col - a.col + 1 })
     for (let r = a.row; r <= b.row; r++)
       for (let c = a.col; c <= b.col; c++) if (r !== a.row || c !== a.col) covered.add(`${r}:${c}`)
     lastRow = Math.max(lastRow, b.row)
     lastCol = Math.max(lastCol, b.col)
   }
+
+  if (lastRow * lastCol > MAX_CELLS) throw new UnsupportedSheetError()
 
   const visibleCols: number[] = []
   for (let c = 1; c <= lastCol; c++) if (!ws.getColumn(c).hidden) visibleCols.push(c)
@@ -352,7 +361,9 @@ function parseCsv(text: string): string[][] {
 }
 
 function csvSheet(name: string, data: string[][]): Sheet {
-  const cols = Math.max(...data.map((r) => r.length))
+  // reduce, not Math.max(...): spreading 100k+ rows overflows the call stack.
+  const cols = data.reduce((n, r) => Math.max(n, r.length), 0)
+  if (cols * data.length > MAX_CELLS) throw new UnsupportedSheetError()
   const numeric = /^[-+]?[\d.,\s]+%?$/
   const rows = data.map((r, i) =>
     Array.from({ length: cols }, (_, c) => {
@@ -365,9 +376,37 @@ function csvSheet(name: string, data: string[][]): Sheet {
   )
   // Width from the longest value in each column, like Excel's auto-fit.
   const colWidths = Array.from({ length: cols }, (_, c) =>
-    Math.min(charsToPoints(Math.max(8, ...data.map((r) => (r[c] ?? '').length)) + 1), 300),
+    Math.min(charsToPoints(data.reduce((n, r) => Math.max(n, (r[c] ?? '').length), 8) + 1), 300),
   )
   return { name, rows, colWidths: fitColumns(rows, colWidths), rowHeights: rows.map(() => undefined) }
+}
+
+/** "XFD" → 16384. */
+const columnNumber = (letters: string) => [...letters.toUpperCase()].reduce((n, c) => n * 26 + c.charCodeAt(0) - 64, 0)
+
+/**
+ * ExcelJS creates every cell of a merged range while loading, so one
+ * `<mergeCell ref="A1:XFD1048576"/>` in a crafted file would hang the tab
+ * inside workbook.xlsx.load, before readSheet's own limit is reached. The
+ * sheet XML is checked first.
+ */
+async function rejectHugeMerges(data: ArrayBuffer) {
+  const { default: JSZip } = await import('jszip')
+  let zip: InstanceType<typeof JSZip>
+  try {
+    zip = await JSZip.loadAsync(data)
+  } catch {
+    throw new UnsupportedSheetError()
+  }
+  for (const entry of Object.values(zip.files)) {
+    if (!/^xl\/worksheets\/[^/]+\.xml$/i.test(entry.name)) continue
+    const xml = await entry.async('string')
+    for (const [, c1, r1, c2, r2] of xml.matchAll(/<(?:\w+:)?mergeCell\b[^>]*\bref="\$?([A-Z]+)\$?(\d+):\$?([A-Z]+)\$?(\d+)"/gi)) {
+      const cols = Math.abs(columnNumber(c2) - columnNumber(c1)) + 1
+      const rows = Math.abs(Number(r2) - Number(r1)) + 1
+      if (cols * rows > MAX_CELLS) throw new UnsupportedSheetError()
+    }
+  }
 }
 
 export async function readSpreadsheet(file: File): Promise<Spreadsheet> {
@@ -378,9 +417,11 @@ export async function readSpreadsheet(file: File): Promise<Spreadsheet> {
   }
 
   const [{ default: ExcelJS }, numfmt] = await Promise.all([import('exceljs'), import('numfmt')])
+  const data = await file.arrayBuffer()
+  await rejectHugeMerges(data)
   const workbook = new ExcelJS.Workbook()
   try {
-    await workbook.xlsx.load(await file.arrayBuffer())
+    await workbook.xlsx.load(data)
   } catch {
     throw new UnsupportedSheetError()
   }

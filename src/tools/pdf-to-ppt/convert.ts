@@ -187,7 +187,8 @@ export async function buildPptx(pages: SlidePage[], mode: SlideMode): Promise<Bl
         w: inch(box.w * scale),
         h: inch(box.h * scale),
         fontSize: Math.max(1, Math.round(box.size * scale * 10) / 10),
-        fontFace: box.font || 'Arial',
+        // pptxgenjs writes fontFace into the slide XML unescaped, and the name comes from the PDF.
+        fontFace: box.font.replace(/[^\p{L}\p{N} ._-]/gu, '') || 'Arial',
         bold: box.bold,
         italic: box.italic,
         color: box.color,

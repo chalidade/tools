@@ -1,0 +1,3 @@
+/* Styles for <take-home-pay>'s Shadow DOM: the shared base plus this tool's classes. */
+@import "../../_shared/base.css";
+@source "../../../src/tools/gaji-bersih";

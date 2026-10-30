@@ -2,13 +2,16 @@
 // qualifying wealth once it reaches the nisab (85 g of gold) and has been held
 // for a year (haul). Prices are entered by the user, never fetched.
 
+import { parseNumber } from '@/tools/persen/percent'
+
 export const RATE = 0.025
 export const GOLD_NISAB_G = 85
 export const SILVER_NISAB_G = 595
 export const FITRAH_RICE_KG = 2.5
 
+/** "1.500.000", "1,500,000", "2,5" or "2.5"; 0 for anything not a positive number. */
 export const num = (s: string): number => {
-  const n = Number(s.replace(/\./g, '').replace(',', '.'))
+  const n = parseNumber(s)
   return Number.isFinite(n) && n > 0 ? n : 0
 }
 

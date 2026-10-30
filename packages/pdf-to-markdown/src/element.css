@@ -1,0 +1,5 @@
+/* Styles for <pdf-to-markdown>'s Shadow DOM: the shared base plus this tool's classes. */
+@import "../../_shared/base.css";
+@source "../../../src/tools/pdf-to-markdown";
+@source "../../../src/tools/pdf-to-excel";
+@source "../../../src/tools/pdf-to-word";

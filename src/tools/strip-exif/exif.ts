@@ -1,5 +1,5 @@
-// Reads the EXIF block of a JPEG and removes metadata from JPEG and PNG files
-// without re-encoding the picture. Pure functions over bytes; nothing leaves
+// Reads the EXIF block of a JPEG or PNG and removes metadata from JPEG, PNG
+// and WebP files without re-encoding the picture. Pure functions over bytes; nothing leaves
 // the browser.
 
 export interface ExifField {
@@ -17,11 +17,12 @@ export interface ExifInfo {
   has: { exif: boolean; xmp: boolean; iptc: boolean; comment: boolean }
 }
 
-type Kind = 'jpeg' | 'png' | 'other'
+type Kind = 'jpeg' | 'png' | 'webp' | 'other'
 
 export function sniff(bytes: Uint8Array): Kind {
   if (bytes[0] === 0xff && bytes[1] === 0xd8) return 'jpeg'
   if (bytes[0] === 0x89 && bytes[1] === 0x50 && bytes[2] === 0x4e && bytes[3] === 0x47) return 'png'
+  if (startsWith(bytes, 0, 'RIFF') && startsWith(bytes, 8, 'WEBP')) return 'webp'
   return 'other'
 }
 
@@ -127,7 +128,7 @@ export function readExif(b: Uint8Array): ExifInfo {
       if (s.marker === 0xe1 && startsWith(b, s.start + 4, 'Exif\0\0')) {
         info.has.exif = true
         tiff = s.start + 10
-      } else if (s.marker === 0xe1 && startsWith(b, s.start + 4, 'http://ns.adobe.com/xap')) info.has.xmp = true
+      } else if (s.marker === 0xe1 && startsWith(b, s.start + 4, 'http://ns.adobe.com/')) info.has.xmp = true
       else if (s.marker === 0xed) info.has.iptc = true
       else if (s.marker === 0xfe) info.has.comment = true
     }
@@ -138,6 +139,14 @@ export function readExif(b: Uint8Array): ExifInfo {
         tiff = c.data
       } else if (c.type === 'iTXt' && startsWith(b, c.data, 'XML:com.adobe.xmp')) info.has.xmp = true
       else if (c.type === 'tEXt' || c.type === 'zTXt' || c.type === 'iTXt') info.has.comment = true
+    }
+  } else if (kind === 'webp') {
+    for (const c of webpChunks(b)) {
+      if (c.type === 'EXIF') {
+        info.has.exif = true
+        // Some writers keep JPEG's "Exif\0\0" prefix in the chunk.
+        tiff = startsWith(b, c.data, 'Exif\0\0') ? c.data + 6 : c.data
+      } else if (c.type === 'XMP ') info.has.xmp = true
     }
   }
   if (tiff < 0 || tiff + 8 > b.length) return info
@@ -234,26 +243,90 @@ const concat = (parts: Uint8Array[]) => {
   return out
 }
 
+/** Just past the JPEG's end-of-image marker; data after it (MPF previews, phone trailers) is not part of the picture. */
+function jpegEnd(b: Uint8Array) {
+  let p = 2
+  while (p + 4 <= b.length) {
+    if (b[p] !== 0xff) return b.length // not a stream we understand: cut nothing
+    const marker = b[p + 1]
+    if (marker === 0xff) {
+      p++
+      continue
+    }
+    if (marker === 0xd9) return p + 2
+    if ((marker >= 0xd0 && marker <= 0xd7) || marker === 0x01) {
+      p += 2
+      continue
+    }
+    p += 2 + ((b[p + 2] << 8) | b[p + 3])
+    // Entropy-coded data runs until a marker that is not stuffing (FF00) or a restart (FFD0–D7).
+    if (marker === 0xda) while (p + 1 < b.length && !(b[p] === 0xff && b[p + 1] !== 0 && (b[p + 1] < 0xd0 || b[p + 1] > 0xd7))) p++
+  }
+  return b.length
+}
+
+/** APP segments the picture needs: the JFIF header, the colour profile, Adobe's colour transform. */
+const KEEP_APP: Record<number, string> = { 0xe0: 'JFIF\0', 0xe2: 'ICC_PROFILE\0', 0xee: 'Adobe' }
+
 /**
- * The same JPEG without EXIF, XMP, IPTC and comments. The colour profile
- * (APP2 ICC) and the image data are untouched, so quality is identical.
+ * The same JPEG without EXIF, XMP (also Extended XMP), IPTC, comments, any
+ * other APP segment, and whatever follows the image (MPF previews and phone
+ * trailers carry their own EXIF). The colour profile and the image data are
+ * untouched, so quality is identical.
  */
 export function stripJpeg(b: Uint8Array): Uint8Array {
-  const drop = jpegSegments(b).filter(
-    (s) =>
-      (s.marker === 0xe1 && (startsWith(b, s.start + 4, 'Exif\0\0') || startsWith(b, s.start + 4, 'http://ns.adobe.com/xap'))) ||
-      s.marker === 0xed ||
-      s.marker === 0xfe,
+  const drop: { start: number; end: number }[] = jpegSegments(b).filter(
+    (s) => s.marker === 0xfe || (s.marker >= 0xe0 && s.marker <= 0xef && !(KEEP_APP[s.marker] && startsWith(b, s.start + 4, KEEP_APP[s.marker]))),
   )
+  const end = jpegEnd(b)
+  if (end < b.length) drop.push({ start: end, end: b.length })
   return cut(b, drop)
 }
 
-/** The same PNG without eXIf and text chunks (tEXt, zTXt, iTXt, which also carry XMP). */
+/** The same PNG without eXIf, text chunks (tEXt, zTXt, iTXt, which also carry XMP), tIME, and anything after IEND. */
 export function stripPng(b: Uint8Array): Uint8Array {
-  return cut(
-    b,
-    pngChunks(b).filter((c) => ['eXIf', 'tEXt', 'zTXt', 'iTXt', 'tIME'].includes(c.type)),
-  )
+  const chunks = pngChunks(b)
+  const iend = chunks.findIndex((c) => c.type === 'IEND')
+  const drop: { start: number; end: number }[] = chunks.filter((c, i) => ['eXIf', 'tEXt', 'zTXt', 'iTXt', 'tIME'].includes(c.type) && (iend < 0 || i < iend))
+  if (iend >= 0 && chunks[iend].end < b.length) drop.push({ start: chunks[iend].end, end: b.length })
+  return cut(b, drop)
+}
+
+function webpChunks(b: Uint8Array): Chunk[] {
+  const out: Chunk[] = []
+  const view = new DataView(b.buffer, b.byteOffset, b.byteLength)
+  const end = Math.min(b.length, 8 + view.getUint32(4, true))
+  for (let p = 12; p + 8 <= end; ) {
+    const len = view.getUint32(p + 4, true)
+    const next = Math.min(end, p + 8 + len + (len & 1)) // chunks are padded to an even size
+    out.push({ type: ascii(b, p, p + 4), start: p, data: p + 8, end: next })
+    p = next
+  }
+  return out
+}
+
+/** The same WebP without its EXIF and XMP chunks and anything after the RIFF (the VP8X flags and RIFF size are fixed up). */
+export function stripWebp(b: Uint8Array): Uint8Array {
+  const keep = [b.subarray(0, 12), ...webpChunks(b).filter((c) => c.type !== 'EXIF' && c.type !== 'XMP ').map((c) => b.subarray(c.start, c.end))]
+  const out = concat(keep)
+  const o = new DataView(out.buffer)
+  o.setUint32(4, out.length - 8, true)
+  // VP8X flags: bit 3 = has EXIF, bit 2 = has XMP.
+  if (startsWith(out, 12, 'VP8X')) out[20] &= ~0x0c
+  return out
+}
+
+/**
+ * Removes the metadata of a JPEG, PNG or WebP without re-encoding it; null
+ * for other formats, and for a JPEG whose picture relies on its EXIF
+ * orientation (without the tag it would turn sideways, so re-encode those).
+ */
+export function stripMetadata(b: Uint8Array): Uint8Array | null {
+  const kind = sniff(b)
+  if (kind === 'jpeg') return readExif(b).orientation <= 1 ? stripJpeg(b) : null
+  if (kind === 'png') return stripPng(b)
+  if (kind === 'webp') return stripWebp(b)
+  return null
 }
 
 function cut(b: Uint8Array, parts: { start: number; end: number }[]) {

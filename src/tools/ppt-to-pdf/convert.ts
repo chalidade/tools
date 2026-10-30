@@ -49,6 +49,21 @@ function textListMarkers(html: string) {
   return doc.body.innerHTML
 }
 
+/**
+ * The regex above misses CSS escapes (`\75rl(…)`) and `image-set("…")`, so
+ * the browser's own parser reads the style too and drops any declaration that
+ * would still load a non-embedded resource. A detached element fetches nothing.
+ */
+function withoutRemoteUrls(css: string) {
+  const probe = document.createElement('div')
+  probe.setAttribute('style', css)
+  for (const prop of Array.from(probe.style)) {
+    const v = probe.style.getPropertyValue(prop)
+    if (/image-set\(/i.test(v) || /url\((?!\s*["']?data:)/i.test(v)) probe.style.removeProperty(prop)
+  }
+  return probe.getAttribute('style') ?? ''
+}
+
 export async function readPptx(file: File): Promise<Deck> {
   const [{ pptxToHtml }, { default: DOMPurify }] = await Promise.all([
     import('@jvmr/pptx-to-html'),
@@ -60,7 +75,7 @@ export async function readPptx(file: File): Promise<Deck> {
   // who opened the file and when. Only embedded (data:) resources may load.
   const purify = DOMPurify(window)
   purify.addHook('uponSanitizeAttribute', (_node, data) => {
-    if (data.attrName === 'style') data.attrValue = data.attrValue.replace(/url\(\s*['"]?(?!data:)[^)]*\)/gi, 'none')
+    if (data.attrName === 'style') data.attrValue = withoutRemoteUrls(data.attrValue.replace(/url\(\s*['"]?(?!data:)[^)]*\)/gi, 'none'))
   })
 
   const slides = raw.map((html) =>
@@ -124,6 +139,8 @@ export function buildPrintHtml(deck: Deck, title: string) {
 export async function printDeck(deck: Deck, title: string) {
   const frame = document.createElement('iframe')
   frame.setAttribute('aria-hidden', 'true')
+  // The slides are sanitized already; the sandbox makes sure no script can run in the print copy regardless.
+  frame.setAttribute('sandbox', 'allow-same-origin allow-modals')
   frame.style.cssText = 'position:fixed;right:0;bottom:0;width:0;height:0;border:0'
   document.body.appendChild(frame)
 

@@ -27,7 +27,7 @@ const PADS: Pad[] = [
   { id: 'hhClosed', label: ['Hi-hat tutup', 'Closed hi-hat'], key: 'KeyS', keyLabel: 'S', gm: [42, 44] },
   { id: 'snare', label: ['Snare', 'Snare'], key: 'KeyD', keyLabel: 'D', gm: [38, 40, 37, 39] },
   { id: 'floor', label: ['Floor tom', 'Floor tom'], key: 'KeyF', keyLabel: 'F', gm: [41, 43] },
-  { id: 'kick', label: ['Kick', 'Kick'], key: 'Space', keyLabel: 'Spasi', gm: [35, 36] },
+  { id: 'kick', label: ['Kick', 'Kick'], key: 'Space', keyLabel: 'Space', gm: [35, 36] },
 ]
 
 /** Sequencer rows, top to bottom. */
@@ -128,6 +128,7 @@ export default function Drums() {
   const kitRef = useRef<DrumKit | null>(null)
   const padEls = useRef(new Map<Piece, HTMLElement>())
   const loop = useRef<{ timer: number; raf: number } | null>(null)
+  const midiRef = useRef<MIDIAccess | null>(null)
 
   const kit = useCallback(() => (kitRef.current ??= new DrumKit()), [])
 
@@ -166,7 +167,8 @@ export default function Drums() {
   useEffect(() => {
     const byKey = new Map(PADS.map((p) => [p.key, p.id]))
     const down = (e: KeyboardEvent) => {
-      if (e.target instanceof HTMLElement && /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) return
+      // composedPath: in a Shadow DOM embed, e.target is the host element, not the input.
+      if (/^(INPUT|TEXTAREA|SELECT)$/.test((e.composedPath()[0] as HTMLElement).tagName ?? '')) return
       if (e.repeat || e.ctrlKey || e.metaKey || e.altKey) return
       const piece = byKey.get(e.code)
       if (!piece) return
@@ -241,6 +243,11 @@ export default function Drums() {
     () => () => {
       stop()
       kitRef.current?.close()
+      // Unhook the MIDI inputs, or they keep playing a closed synth after the element is removed.
+      if (midiRef.current) {
+        midiRef.current.onstatechange = null
+        midiRef.current.inputs.forEach((input) => (input.onmidimessage = null))
+      }
     },
     [],
   )
@@ -255,6 +262,7 @@ export default function Drums() {
   async function connectMidi() {
     try {
       const access = await navigator.requestMIDIAccess()
+      midiRef.current = access
       const byNote = new Map(PADS.flatMap((p) => p.gm.map((n) => [n, p.id] as const)))
       const attach = () => {
         const names: string[] = []
@@ -304,7 +312,7 @@ export default function Drums() {
               )}
             >
               <span className="text-sm font-semibold sm:text-base">{name(p)}</span>
-              <span className="mt-1 rounded border bg-muted px-1.5 font-mono text-[10px] text-muted-foreground">{p.keyLabel}</span>
+              <span className="mt-1 rounded border bg-muted px-1.5 font-mono text-[10px] text-muted-foreground">{p.key === 'Space' ? t('Spasi', 'Space') : p.keyLabel}</span>
             </button>
           ))}
         </div>

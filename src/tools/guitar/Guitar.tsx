@@ -235,7 +235,8 @@ export default function Guitar() {
 
   const keyRef = useRef<(e: KeyboardEvent) => void>(() => {})
   keyRef.current = (e: KeyboardEvent) => {
-    if (e.target instanceof HTMLElement && /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) return
+    // composedPath: in a Shadow DOM embed, e.target is the host element, not the input.
+    if (/^(INPUT|TEXTAREA|SELECT)$/.test((e.composedPath()[0] as HTMLElement).tagName ?? '')) return
     if (e.ctrlKey || e.metaKey || e.altKey || e.repeat) return
     if (e.code === 'Space' || e.code === 'ArrowDown') {
       e.preventDefault()

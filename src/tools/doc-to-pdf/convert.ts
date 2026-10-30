@@ -6,10 +6,8 @@ const PX_TO_PT = 0.75
 
 /** Renders the document into `body`; returns one <section> per page. */
 export async function renderDocx(file: File, body: HTMLElement, style: HTMLElement) {
-  const { renderAsync } = await import('docx-preview')
-  body.replaceChildren()
-  style.replaceChildren()
-  await renderAsync(file, body, style, {
+  const { parseAsync, renderDocument } = await import('docx-preview')
+  const options = {
     className: 'docx',
     inWrapper: true,
     breakPages: true,
@@ -21,9 +19,59 @@ export async function renderDocx(file: File, body: HTMLElement, style: HTMLEleme
     // into an un-sandboxed <iframe srcdoc>, running its script in our origin.
     // We only ever show the document's own text, so never render those.
     renderAltChunks: false,
-  })
+  }
+  // Rendered detached and cleaned before it touches the page, so nothing in
+  // the file can make the browser fetch a URL, even for a moment.
+  const nodes = await renderDocument(await parseAsync(file, options), options)
+  blockRemote(nodes)
+  body.replaceChildren()
+  style.replaceChildren()
+  for (const n of nodes) (n.nodeName === 'STYLE' ? style : body).appendChild(n)
   neutralizeLinks(body)
   return Array.from(body.querySelectorAll<HTMLElement>('section.docx'))
+}
+
+/**
+ * docx-preview writes names from the file (style ids, font names, list text)
+ * into CSS unescaped. A crafted file can therefore add `url(https://…)` rules
+ * that report who opened it, or a `</style>` that turns into live markup when
+ * the print copy re-parses the HTML. The browser's own CSS parser reads every
+ * rule (so escapes like `\75rl(` can't hide a URL), anything that would load
+ * a non-embedded resource is dropped, and the rest is written back out.
+ */
+const loadsRemote = (value: string) => /image-set\(/i.test(value) || /url\((?!\s*["']?data:)/i.test(value)
+
+function cleanDeclarations(style: CSSStyleDeclaration) {
+  for (const prop of Array.from(style)) if (loadsRemote(style.getPropertyValue(prop))) style.removeProperty(prop)
+}
+
+function cleanCss(css: string) {
+  const sheet = new CSSStyleSheet()
+  sheet.replaceSync(css) // ignores @import
+  const walk = (rules: CSSRuleList) => {
+    for (const rule of Array.from(rules)) {
+      if ('style' in rule) cleanDeclarations((rule as CSSStyleRule).style)
+      if ('cssRules' in rule) walk((rule as CSSGroupingRule).cssRules)
+    }
+  }
+  walk(sheet.cssRules)
+  // "<" only appears inside CSS strings here; the escape keeps it out of the HTML parser's sight.
+  return Array.from(sheet.cssRules, (r) => r.cssText).join('\n').replace(/</g, '\\3c ')
+}
+
+function blockRemote(nodes: Node[]) {
+  for (const node of nodes) {
+    if (!(node instanceof Element)) continue
+    for (const el of [node, ...node.querySelectorAll('*')]) {
+      if (el.localName === 'style') el.textContent = cleanCss(el.textContent ?? '')
+      if (el instanceof HTMLElement || el instanceof SVGElement) cleanDeclarations(el.style)
+      if (el.localName === 'a') continue // a link loads nothing until clicked; neutralizeLinks handles it
+      for (const name of ['src', 'srcset', 'href', 'xlink:href', 'poster', 'data']) {
+        const v = el.getAttribute(name)?.trim()
+        if (v && !/^(data:|#)/i.test(v)) el.removeAttribute(name)
+      }
+    }
+  }
 }
 
 /**
@@ -193,7 +241,7 @@ export function buildPrintHtml(body: HTMLElement, style: HTMLElement, sections: 
   const size = first ? `${first.offsetWidth}px ${pageHeight(first)}px` : 'auto'
   const margin = css ? `${css.paddingTop} 0 ${css.paddingBottom} 0` : '0'
 
-  return `<!doctype html><html><head><meta charset="utf-8"><title>${document.title}</title>${style.innerHTML}<style>
+  return `<!doctype html><html><head><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; img-src data:; font-src data:"><title>${document.title.replace(/[<>&]/g, '')}</title>${style.innerHTML}<style>
     @page { size: ${size}; margin: ${margin} }
     html, body { margin: 0; background: #fff }
     .docx-wrapper { background: none !important; padding: 0 !important; display: block !important }
@@ -220,6 +268,8 @@ export function buildPrintHtml(body: HTMLElement, style: HTMLElement, sections: 
 export async function printDocx(body: HTMLElement, style: HTMLElement, sections: HTMLElement[]) {
   const frame = document.createElement('iframe')
   frame.setAttribute('aria-hidden', 'true')
+  // Scripts can never run in the print copy, whatever the file managed to slip into its HTML.
+  frame.setAttribute('sandbox', 'allow-same-origin allow-modals')
   frame.style.cssText = 'position:fixed;right:0;bottom:0;width:0;height:0;border:0'
   document.body.appendChild(frame)
 

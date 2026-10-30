@@ -4,7 +4,9 @@ import { Button } from '@/components/ui/button'
 import { Segmented } from '@/components/tool/Segmented'
 import { locale, useT } from '@/lib/i18n'
 
-const KEY = 'tasbih:v1'
+const KEY = 'tools:tasbih'
+// Saved under this name before it moved to the tools: prefix; read once, then dropped.
+const OLD_KEY = 'tasbih:v1'
 
 interface Round {
   at: number
@@ -20,7 +22,7 @@ interface Saved {
 
 const load = (): Saved => {
   try {
-    const s = JSON.parse(localStorage.getItem(KEY) ?? '')
+    const s = JSON.parse(localStorage.getItem(KEY) ?? localStorage.getItem(OLD_KEY) ?? '')
     if (s && typeof s.count === 'number') return { count: s.count, target: s.target ?? 33, total: s.total ?? 0, history: Array.isArray(s.history) ? s.history : [] }
   } catch {
     /* storage blocked or empty */
@@ -28,9 +30,18 @@ const load = (): Saved => {
   return { count: 0, target: 33, total: 0, history: [] }
 }
 
-export default function Tasbih() {
+const BLANK: Saved = { count: 0, target: 33, total: 0, history: [] }
+
+export interface TasbihProps {
+  /** Keep the count and history in localStorage (default). false: nothing is stored. */
+  persist?: boolean
+}
+
+export default function Tasbih({ persist = true }: TasbihProps = {}) {
   const t = useT()
-  const [init] = useState(load)
+  const [init] = useState(() => (persist ? load() : BLANK))
+  const rootRef = useRef<HTMLDivElement>(null)
+  const tapRef = useRef<HTMLButtonElement>(null)
   const [count, setCount] = useState(init.count)
   const [target, setTarget] = useState(init.target)
   const [total, setTotal] = useState(init.total)
@@ -41,12 +52,14 @@ export default function Tasbih() {
   const flashTimer = useRef<number>(0)
 
   useEffect(() => {
+    if (!persist) return
     try {
       localStorage.setItem(KEY, JSON.stringify({ count, target, total, history }))
+      localStorage.removeItem(OLD_KEY)
     } catch {
       /* storage blocked */
     }
-  }, [count, target, total, history])
+  }, [persist, count, target, total, history])
 
   const buzz = useCallback(
     (pattern: number | number[]) => {
@@ -85,9 +98,15 @@ export default function Tasbih() {
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      const el = e.target as HTMLElement | null
-      if (el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.tagName === 'SELECT' || el.tagName === 'BUTTON')) return
-      if (e.key === ' ' || e.key === 'Enter') {
+      // composedPath: inside a Shadow DOM (the npm element) e.target is the host element, not the input.
+      const path = e.composedPath()
+      // Embedded on someone else's page: only while focus is inside the counter, so the page keeps Space/Enter.
+      if (rootRef.current?.getRootNode() instanceof ShadowRoot && !path.includes(rootRef.current)) return
+      const el = path[0] as HTMLElement | undefined
+      const onTap = el === tapRef.current
+      if (!onTap && el?.closest?.('input, textarea, select, button, a, [contenteditable]')) return
+      // On the count button itself Space/Enter already click it.
+      if ((e.key === ' ' || e.key === 'Enter') && !onTap) {
         e.preventDefault()
         tap()
       } else if (e.key === 'Backspace') {
@@ -103,7 +122,7 @@ export default function Tasbih() {
   const pct = target > 0 ? Math.min(100, (count / target) * 100) : 0
 
   return (
-    <div className="space-y-6">
+    <div ref={rootRef} className="space-y-6">
       <div className="flex flex-wrap items-end gap-4">
         <Segmented
           label={t('Target', 'Target')}
@@ -143,6 +162,7 @@ export default function Tasbih() {
 
       <div className="flex flex-col items-center gap-4">
         <button
+          ref={tapRef}
           type="button"
           onClick={tap}
           aria-label={t('Hitung', 'Count')}
@@ -192,7 +212,9 @@ export default function Tasbih() {
           </ul>
         </section>
       )}
-      <p className="text-xs text-muted-foreground">{t('Hitungan dan riwayat tersimpan di perangkat ini saja.', 'Your count and history are stored on this device only.')}</p>
+      <p className="text-xs text-muted-foreground">{persist
+          ? t('Hitungan dan riwayat tersimpan di perangkat ini saja.', 'Your count and history are stored on this device only.')
+          : t('Hitungan dan riwayat tidak disimpan; hilang saat halaman ditutup.', 'Your count and history are not saved; they reset when the page closes.')}</p>
     </div>
   )
 }

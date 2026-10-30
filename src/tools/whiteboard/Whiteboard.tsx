@@ -100,15 +100,20 @@ function loadDoc(): BoardDoc {
   return emptyDoc()
 }
 
-const isTyping = (t: EventTarget | null) =>
+const isTyping = (t: EventTarget | undefined) =>
   t instanceof HTMLElement && (/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName) || t.isContentEditable)
 
 const clampZoom = (z: number) => Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, z))
 
-export default function Whiteboard() {
+export interface WhiteboardProps {
+  /** Autosave the board in localStorage (default). false: the board lasts until the page closes. */
+  persist?: boolean
+}
+
+export default function Whiteboard({ persist = true }: WhiteboardProps = {}) {
   // Not `t`: the tool loops and handlers below already use t for a tool.
   const tx = useT()
-  const [doc, setDoc] = useState<BoardDoc>(loadDoc)
+  const [doc, setDoc] = useState<BoardDoc>(() => (persist ? loadDoc() : emptyDoc()))
   const [pageIndex, setPageIndex] = useState(0)
   const [tool, setTool] = useState<ToolId>('pen')
   const [color, setColor] = useState<string>('ink')
@@ -253,6 +258,7 @@ export default function Whiteboard() {
 
   // Autosave on this device only.
   useEffect(() => {
+    if (!persist) return
     const id = setTimeout(() => {
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(doc))
@@ -262,7 +268,7 @@ export default function Whiteboard() {
       }
     }, 400)
     return () => clearTimeout(id)
-  }, [doc])
+  }, [persist, doc])
 
   // ------------------------------------------------------------- history
 
@@ -576,7 +582,12 @@ export default function Whiteboard() {
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
-      if (isTyping(e.target)) return
+      // composedPath: inside a Shadow DOM (the npm element) e.target is the host element, not the text box.
+      const path = e.composedPath()
+      if (isTyping(path[0])) return
+      // Embedded on someone else's page: leave the page's keys alone unless the board is in use.
+      const wrap = wrapRef.current
+      if (wrap?.getRootNode() instanceof ShadowRoot && !overBoard.current && !path.includes(wrap)) return
       const mod = e.ctrlKey || e.metaKey
       if (mod && e.key.toLowerCase() === 'z') {
         e.preventDefault()
@@ -627,7 +638,8 @@ export default function Whiteboard() {
   // ------------------------------------------------------------- fullscreen, pages, files
 
   useEffect(() => {
-    const change = () => setFullscreen(document.fullscreenElement === wrapRef.current)
+    // In a Shadow DOM, document.fullscreenElement is the host element; the shadow root knows the real one.
+    const change = () => setFullscreen((wrapRef.current?.getRootNode() as Document | ShadowRoot | undefined)?.fullscreenElement === wrapRef.current)
     document.addEventListener('fullscreenchange', change)
     return () => document.removeEventListener('fullscreenchange', change)
   }, [])
@@ -1020,7 +1032,9 @@ export default function Whiteboard() {
 
       {error && <ErrorNote message={error} />}
       <p className="text-xs leading-relaxed text-muted-foreground">
-        {tx('Papan tersimpan otomatis di browser ini saja', 'The board is saved automatically in this browser only')}
+        {persist
+          ? tx('Papan tersimpan otomatis di browser ini saja', 'The board is saved automatically in this browser only')
+          : tx('Papan hanya ada sampai halaman ini ditutup', 'The board lasts only until this page is closed')}
         {saveFailed &&
           tx(
             ' — tapi papan ini sudah terlalu besar untuk disimpan otomatis, simpan sebagai file lewat tombol unduh',

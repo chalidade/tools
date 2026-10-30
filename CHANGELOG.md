@@ -3,6 +3,21 @@
 Catatan harian apa yang berubah di [tools](https://chalidade.github.io/tools/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-10-31 — Audit keamanan & paket npm untuk semua tools
+
+Audit keamanan ke-72 tools. Tidak ada tool yang mengirim data ke mana pun; perbaikan yang juga berlaku di situs:
+
+- **Word ke PDF** (tinggi): file .docx yang sengaja dibuat bisa menjalankan script lewat tombol "Print / Simpan PDF", dan memancing browser memuat URL asing saat file dibuka. Dokumen kini dibersihkan sebelum tampil, dan salinan cetaknya di-sandbox.
+- **Hapus Metadata Foto**: salinan JPEG yang tertanam (pratinjau dari ponsel), Extended XMP, dan data setelah akhir file ikut terhapus. Sebelumnya GPS dan nama kamera bisa tersisa di sana. WebP kini juga didukung.
+- **Kompres Gambar**: bila hasil kompresi tidak lebih kecil, file asli dikembalikan dengan metadata (termasuk GPS) dihapus, sesuai janji di layar.
+- **PowerPoint ke PDF**, **PDF ke PowerPoint**: file tidak bisa lagi memuat gambar dari server luar atau menyisipkan XML lewat nama font.
+- **Excel ke PDF**, **PDF ke Gambar**, **GIF ↔ MP4**, **Kalkulator Cicilan**: file atau input ekstrem (merge cell raksasa, halaman/GIF berukuran raksasa, tenor 1e9 tahun) ditolak, tidak lagi membekukan tab.
+- **Kalkulator Cicilan**, **Zakat**, **Gaji Bersih**: angka seperti "12.5" kini dibaca 12,5, bukan 125.
+- **Catatan**: form di pratinjau Markdown diblokir; backup atau papan Whiteboard yang rusak tidak lagi merusak aplikasi secara permanen.
+- Kamera dan mikrofon (Pembaca QR, QRIS, Tuner, Rekam Suara, Rekam Latihan) selalu dilepas saat tool ditutup, termasuk ketika prompt izin masih terbuka.
+
+**Paket npm.** Semua 72 tools kini punya paket di `packages/` (README berbahasa Inggris, custom element + API tanpa UI, belum terbit). Tool yang menyimpan data punya atribut `persist="false"`. Shortcut keyboard dan listener paste tidak lagi bocor ke halaman pemasang.
+
 ## 2026-10-30 — Harian: chat & belanja
 
 Tiga tools baru di kategori Produktivitas; total sekarang **72 tools**.
