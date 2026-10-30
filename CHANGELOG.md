@@ -3,6 +3,14 @@
 Catatan harian apa yang berubah di [tools](https://chalidade.github.io/tools/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-10-30 — Harian: chat & belanja
+
+Tiga tools baru di kategori Produktivitas; total sekarang **72 tools**.
+
+- **Link WhatsApp** (`#/link-wa`): nomor (08…, +62…, spasi dan strip dibersihkan ke format `62…`) dan pesan opsional menjadi tombol "Chat sekarang" tanpa simpan kontak, link `wa.me` siap salin, dan QR (PNG/SVG) lewat generator QR yang sama. Nomor terakhir hanya disimpan di perangkat bila kotak "Ingat" dicentang.
+- **Kalkulator Persen & Diskon** (`#/persen`): X% dari Y, Y itu berapa persen dari Z, naik/turun berapa persen, dan diskon bertingkat dengan tabel tiap langkah serta jumlah yang dihemat (50% + 20% = 60%, bukan 70%). Angka dengan titik/koma (1.500,5 atau 1,500.5) dikenali dari polanya.
+- **Mana Lebih Murah** (`#/mana-lebih-murah`): beberapa kemasan (harga × isi, satuan g/kg/ml/L/pcs) diubah ke harga per satuan yang sama; yang termurah ditandai dan selisih kemasan lain ditampilkan dalam persen. Berat dan volume tidak dicampur.
+
 ## 2026-10-29 — Keuangan
 
 Dua tools baru di kategori Produktivitas; total sekarang **69 tools**.

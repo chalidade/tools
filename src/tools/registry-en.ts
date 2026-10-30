@@ -122,6 +122,24 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
     formats: 'Gross → Net salary',
     keywords: ['take home pay', 'net salary', 'income tax', 'pph 21', 'bpjs', 'payslip', 'ptkp', 'salary', 'indonesia tax'],
   },
+  'link-wa': {
+    title: 'WhatsApp Link',
+    description: 'Make a WhatsApp chat link from a phone number (08…, +62…) and an optional message: chat without saving the contact, a copy-ready wa.me link and its QR.',
+    formats: 'Number → wa.me link + QR',
+    keywords: ['whatsapp link', 'wa.me', 'click to chat', 'chat without saving contact', 'whatsapp qr', 'phone number', 'message'],
+  },
+  persen: {
+    title: 'Percentage & Discount Calculator',
+    description: 'Work out X% of Y, what percent, percent increase/decrease, and stacked discounts (50% + 20% = 60%) with every step shown.',
+    formats: 'Numbers → Percent / final price',
+    keywords: ['percent', 'percentage', 'discount', 'stacked discount', 'sale price', 'percent change', 'markup', 'calculator'],
+  },
+  'mana-lebih-murah': {
+    title: 'Which Is Cheaper',
+    description: 'Compare several packs (price × pieces, g/kg/ml/L/pcs) on one unit price; the cheapest is marked with the difference in percent.',
+    formats: 'Packs → Unit price',
+    keywords: ['unit price', 'compare prices', 'cheaper', 'price per kg', 'price per 100g', 'grocery', 'supermarket', 'shopping'],
+  },
   hijriah: {
     title: 'Hijri ⇄ Gregorian Converter',
     description: 'Convert Gregorian dates to Hijri and back, plus a year of Islamic holidays, with a note on Kemenag’s moon-sighting differences.',
