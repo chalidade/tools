@@ -11,6 +11,8 @@ Tiga tools baru di kategori Produktivitas; total sekarang **72 tools**.
 - **Kalkulator Persen & Diskon** (`#/persen`): X% dari Y, Y itu berapa persen dari Z, naik/turun berapa persen, dan diskon bertingkat dengan tabel tiap langkah serta jumlah yang dihemat (50% + 20% = 60%, bukan 70%). Angka dengan titik/koma (1.500,5 atau 1,500.5) dikenali dari polanya.
 - **Mana Lebih Murah** (`#/mana-lebih-murah`): beberapa kemasan (harga × isi, satuan g/kg/ml/L/pcs) diubah ke harga per satuan yang sama; yang termurah ditandai dan selisih kemasan lain ditampilkan dalam persen. Berat dan volume tidak dicampur.
 
+**Paket npm, batch 1.** Lima tool lagi dikemas sebagai paket npm dengan README berbahasa Inggris (belum terbit): `@chalidade/password-generator`, `@chalidade/terbilang`, `@chalidade/text-diff`, `@chalidade/uuid`, dan `@chalidade/word-counter`. Masing-masing berisi custom element (`<uuid-generator>` dan seterusnya) plus API tanpa UI. Kode elemen bersama dipindah ke `packages/_shared/`, dan `scripts/new-package.mjs` membuat kerangka paket baru. `@chalidade/screen-recorder` 0.1.1 sudah terbit dengan README berbahasa Inggris, jadi tab pemasangan npm-nya kini tampil di halaman tool. Perbaikan kecil: label versi UUID kini ikut bahasa Inggris, dan batas SMS di Penghitung Kata cukup bernama "SMS".
+
 ## 2026-10-29 — Keuangan
 
 Dua tools baru di kategori Produktivitas; total sekarang **69 tools**.

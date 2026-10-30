@@ -31,8 +31,8 @@ export default function Uuid() {
           value={version}
           onChange={setVersion}
           options={[
-            { value: 'v4', label: 'v4 (acak)' },
-            { value: 'v7', label: 'v7 (urut waktu)' },
+            { value: 'v4', label: t('v4 (acak)', 'v4 (random)') },
+            { value: 'v7', label: t('v7 (urut waktu)', 'v7 (time-ordered)') },
           ]}
         />
         <label className="space-y-2 text-xs font-medium text-muted-foreground">

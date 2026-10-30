@@ -74,7 +74,7 @@ export const LIMITS: Limit[] = [
   { id: 'tiktok', name: 'TikTok caption', max: 2200 },
   { id: 'wa-status', name: 'WhatsApp status', max: 700 },
   { id: 'linkedin', name: 'LinkedIn post', max: 3000 },
-  { id: 'sms', name: 'SMS (1 pesan / 1 message)', max: 160 },
+  { id: 'sms', name: 'SMS', max: 160 },
   { id: 'meta-title', name: 'SEO title', max: 60, soft: true },
   { id: 'meta-desc', name: 'Meta description', max: 160, soft: true },
 ]

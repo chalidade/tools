@@ -3,9 +3,17 @@
 Setiap folder di sini adalah satu tool yang dikemas sebagai paket npm, supaya
 orang lain bisa memasangnya di website mereka. Saat ini:
 
-| Paket | Folder | Status |
+| Paket | Elemen | Status |
 | --- | --- | --- |
-| [`@chalidade/screen-recorder`](./screen-recorder) | `screen-recorder/` | siap terbit (0.1.0) |
+| [`@chalidade/screen-recorder`](./screen-recorder) | `<screen-recorder>` | terbit (0.1.1) |
+| [`@chalidade/password-generator`](./password-generator) | `<password-generator>` | siap terbit (0.1.0) |
+| [`@chalidade/terbilang`](./terbilang) | `<terbilang-converter>` | siap terbit (0.1.0) |
+| [`@chalidade/text-diff`](./text-diff) | `<text-diff>` | siap terbit (0.1.0) |
+| [`@chalidade/uuid`](./uuid) | `<uuid-generator>` | siap terbit (0.1.0) |
+| [`@chalidade/word-counter`](./word-counter) | `<word-counter>` | siap terbit (0.1.0) |
+
+README setiap paket berbahasa Inggris, karena halaman npm dibaca orang dari
+mana saja. Folder `_shared/` bukan paket: isinya kode bersama untuk elemen.
 
 ## Cara kerjanya
 
@@ -37,7 +45,12 @@ Hal yang perlu diperhatikan saat membuat paket baru:
 - **Komponen tool** sebaiknya menerima props untuk pemakaian di luar situs
   (lihat `ScreenRecorderProps`: `persist`, `onRecording`, `showInTitle`), lalu
   `element.tsx` menerjemahkannya menjadi atribut dan event.
-- **Teks UI** masih berbahasa Indonesia.
+- **Teks UI** dua bahasa lewat `t()` di komponen tool; atribut `lang="en"` /
+  `lang="id"` memilihnya, tanpa atribut ikut bahasa browser pengunjung.
+  Teks yang ditulis langsung tanpa `t()` tetap muncul dalam bahasa Indonesia,
+  jadi cek tampilan `lang="en"` sebelum terbit.
+- **Latar belakang**: elemen punya latar sendiri (`bg-background`), supaya
+  `theme="dark"` tetap terbaca di halaman terang.
 
 ## Build dan uji
 
@@ -57,32 +70,49 @@ Hanya pemilik akun npm yang bisa menjalankan langkah ini.
    atau organisasi bernama `chalidade`. Kalau username itu sudah dipakai orang,
    ganti `name` di `package.json` paket (dan di `src/tools/registry.ts`).
 2. Login di terminal: `npm login`
-3. Build dan terbitkan:
+3. Build dan terbitkan (akun memakai 2FA lewat browser, jadi pakai `--auth-type=web`):
    ```bash
-   cd packages/screen-recorder
-   npm publish --access public      # prepublishOnly menjalankan build otomatis
+   cd packages/<paket>
+   npm publish --access public --auth-type=web   # prepublishOnly menjalankan build otomatis
    ```
 4. Di `src/tools/registry.ts`, ubah `package.published` menjadi `true` untuk tool
    itu. Halaman tool lalu menampilkan tab "Satu tag script" dan "npm" di bagian
    **Pasang di situsmu**. Commit dan push.
-5. Cek: `https://cdn.jsdelivr.net/npm/@chalidade/screen-recorder@0/dist/element.js`
+5. Cek: `https://cdn.jsdelivr.net/npm/@chalidade/<paket>@0/dist/element.js`
    (jsDelivr butuh beberapa menit setelah publish).
 
 **Versi berikutnya:** naikkan `version` di `package.json` paket (`0.1.1` untuk
-perbaikan, `0.2.0` untuk fitur baru), lalu `npm publish` lagi. Snippet memakai
+perbaikan, `0.2.0` untuk fitur baru), lalu publish lagi. Snippet memakai
 `@0`, jadi pemasang otomatis mendapat versi 0.x terbaru.
 
 ## Menambah paket untuk tool lain
 
-Salin `screen-recorder/` sebagai pola:
+Generator membuat kerangka yang sama untuk semua paket (package.json,
+vite/tsconfig, `element.tsx` lewat `_shared/define-element.tsx`, `element.css`
+lewat `_shared/base.css`, LICENSE, THIRD-PARTY-NOTICES):
 
-1. Pisahkan logika tool dari tampilannya (seperti `captureScreen()` di
-   `src/tools/screen-recorder/screen.ts`) supaya ada API tanpa UI.
-2. `src/index.ts`: ekspor API itu. `src/element.tsx`: ganti nama elemen dan
-   komponennya. `src/element.css`: arahkan `@source` ke folder tool tersebut.
-3. Sesuaikan `package.json`, `types/`, README, dan THIRD-PARTY-NOTICES.
-4. Tambahkan field `package` di registry dan skrip build-nya di
-   `build:packages` (root `package.json`).
+```bash
+node scripts/new-package.mjs <nama> <folder-tool> <tag-elemen> <Komponen> "<deskripsi Inggris>"
+node scripts/new-package.mjs uuid uuid uuid-generator Uuid "Generate UUID v4 and v7 …"
+```
+
+Lalu tulis sendiri bagian yang khas tiap tool:
+
+1. `src/index.ts`: ekspor API tanpa UI dari file logika tool (mis.
+   `src/tools/uuid/uuid.ts`). Kalau logika masih menyatu dengan komponen,
+   pisahkan dulu.
+2. `types/index.d.ts` (tipe publik, ditulis tangan) dan `types/check.ts`
+   (memastikan tipe itu sama dengan sumbernya).
+3. `README.md` dalam bahasa Inggris. Jalankan contoh kodenya terhadap
+   `dist/index.js` supaya output di README benar.
+4. Tambahkan field `package` di `src/tools/registry.ts`. `npm run build:packages`
+   otomatis mem-build semua folder di `packages/` yang punya `package.json`.
+5. Uji elemennya di halaman HTML biasa dengan CSS "nakal" dan `lang="en"`.
+6. Library pihak ketiga yang ikut ter-bundle masuk ke THIRD-PARTY-NOTICES.
+
+Elemen dengan atribut atau event tambahan (seperti `persist` dan `recording` di
+screen-recorder) memakai opsi `attributes` dan `render(el)` di
+`defineToolElement`.
 
 Tool yang memakai WASM (PDF lewat pdf.js / qpdf) perlu satu langkah tambahan:
 file `.wasm` dan worker harus dimuat dari URL paket (`import.meta.url`), bukan

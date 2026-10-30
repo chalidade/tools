@@ -348,6 +348,7 @@ export const TOOLS: Tool[] = [
     formats: 'Pengaturan → Password',
     badge: 'Baru',
     component: lazy(() => import('./password-generator/PasswordGenerator')),
+    package: { name: '@chalidade/password-generator', element: 'password-generator', dir: 'password-generator', published: false },
   },
   {
     slug: 'word-counter',
@@ -359,6 +360,7 @@ export const TOOLS: Tool[] = [
     formats: 'Teks → Statistik',
     badge: 'Baru',
     component: lazy(() => import('./word-counter/WordCounter')),
+    package: { name: '@chalidade/word-counter', element: 'word-counter', dir: 'word-counter', published: false },
   },
   {
     slug: 'unit-converter',
@@ -447,6 +449,7 @@ export const TOOLS: Tool[] = [
     formats: 'Angka → Teks',
     badge: 'Baru',
     component: lazy(() => import('./terbilang/Terbilang')),
+    package: { name: '@chalidade/terbilang', element: 'terbilang-converter', dir: 'terbilang', published: false },
   },
   {
     slug: 'qris',
@@ -732,7 +735,7 @@ export const TOOLS: Tool[] = [
     formats: 'Layar → WebM / MP4',
     badge: 'Baru',
     component: lazy(() => import('./screen-recorder/ScreenRecorder')),
-    package: { name: '@chalidade/screen-recorder', element: 'screen-recorder', dir: 'screen-recorder', published: false },
+    package: { name: '@chalidade/screen-recorder', element: 'screen-recorder', dir: 'screen-recorder', published: true },
   },
   {
     slug: 'audio-recorder',
@@ -991,6 +994,7 @@ export const TOOLS: Tool[] = [
     formats: 'Jumlah → UUID',
     badge: 'Baru',
     component: lazy(() => import('./uuid/Uuid')),
+    package: { name: '@chalidade/uuid', element: 'uuid-generator', dir: 'uuid', published: false },
   },
   {
     slug: 'text-diff',
@@ -1002,6 +1006,7 @@ export const TOOLS: Tool[] = [
     formats: 'Teks + Teks → Perbedaan',
     badge: 'Baru',
     component: lazy(() => import('./text-diff/TextDiff')),
+    package: { name: '@chalidade/text-diff', element: 'text-diff', dir: 'text-diff', published: false },
   },
   {
     slug: 'favicon-generator',
