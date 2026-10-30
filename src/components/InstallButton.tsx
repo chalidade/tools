@@ -19,7 +19,7 @@ export function InstallButton() {
       >
         <Download className="size-4" />
         <span className="hidden sm:inline">{t('Pasang aplikasi', 'Install app')}</span>
-        <span className="sm:hidden">{t('Pasang', 'Install')}</span>
+        <span className="sr-only min-[420px]:not-sr-only sm:hidden">{t('Pasang', 'Install')}</span>
       </button>
       {help && (
         <div className="absolute top-11 right-0 z-50 w-72 rounded-2xl border bg-card p-4 text-sm shadow-xl">

@@ -15,7 +15,7 @@ export function Header() {
   return (
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/70 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5 sm:px-6">
-        <a href={pageUrl('', lang)} aria-label={t('Tools — beranda', 'Tools — home')} className="rounded-md outline-offset-4">
+        <a href={pageUrl('', lang)} aria-label={t('toowl — beranda', 'toowl — home')} className="rounded-md outline-offset-4">
           <Logo />
         </a>
 

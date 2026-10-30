@@ -1,15 +1,6 @@
 import { cn } from '@/lib/utils'
 
-/** The "Tools" wordmark. One dark PNG, inverted for dark mode. */
+/** The toowl wordmark: plain text, so it follows the theme and font size. */
 export function Logo({ className }: { className?: string }) {
-  return (
-    <img
-      src={`${import.meta.env.BASE_URL}logo.png`}
-      alt="Tools"
-      width={314}
-      height={96}
-      className={cn('h-6 w-auto select-none dark:invert', className)}
-      draggable={false}
-    />
-  )
+  return <span className={cn('shrink-0 text-xl font-semibold tracking-tight select-none', className)}>toowl</span>
 }

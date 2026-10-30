@@ -6,7 +6,23 @@ import { ToolBoundary } from '@/components/tool/ToolBoundary'
 import { toolText, type Tool } from '@/tools/registry'
 import { useLang, useT } from '@/lib/i18n'
 import { pageUrl } from '@/lib/route'
+import { cn } from '@/lib/utils'
 import { absoluteUrl, applyHead, toolMeta } from '@/lib/seo'
+
+function NoUploadBadge({ className }: { className: string }) {
+  const t = useT()
+  return (
+    <p
+      className={cn(
+        'items-center gap-1.5 rounded-full border bg-card/70 px-3 py-1 text-xs whitespace-nowrap text-muted-foreground backdrop-blur',
+        className,
+      )}
+    >
+      <ShieldCheck className="size-3.5 text-emerald-600 dark:text-emerald-400" />
+      {t('File tidak di-upload', 'Nothing is uploaded')}
+    </p>
+  )
+}
 
 export function ToolView({ tool, embed = false }: { tool: Tool; embed?: boolean }) {
   const Component = tool.component
@@ -17,7 +33,7 @@ export function ToolView({ tool, embed = false }: { tool: Tool; embed?: boolean 
   useEffect(() => {
     if (embed) {
       const previous = document.title
-      document.title = `${text.title} — Tools`
+      document.title = `${text.title} — toowl`
       return () => {
         document.title = previous
       }
@@ -42,7 +58,7 @@ export function ToolView({ tool, embed = false }: { tool: Tool; embed?: boolean 
         </ToolBoundary>
         <p className="mt-4 text-center text-xs text-muted-foreground">
           <a href={absoluteUrl(tool.slug, lang)} target="_blank" rel="noreferrer" className="hover:text-foreground">
-            {text.title} · Tools — {t('berjalan di browsermu, tanpa upload', 'runs in your browser, no upload')} ↗
+            {text.title} · toowl — {t('berjalan di browsermu, tanpa upload', 'runs in your browser, no upload')} ↗
           </a>
         </p>
       </div>
@@ -55,35 +71,37 @@ export function ToolView({ tool, embed = false }: { tool: Tool; embed?: boolean 
 
       <div className="mx-auto max-w-5xl px-5 py-10 sm:px-6 sm:py-14">
         <a
-          href={pageUrl('all', lang)}
+          href={pageUrl('', lang)}
           className="inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
         >
           <ArrowLeft className="size-4" />
-          {t('Semua tools', 'All tools')}
+          {t('Kembali', 'Back')}
         </a>
 
-        <div className="mt-8 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
-          <div className="flex items-center gap-4">
+        {/* On phones the tool comes first and its title block follows it, above the install card. */}
+        <div className="mt-8 flex flex-col gap-10">
+          <div className="order-2 flex items-start gap-4 sm:order-1">
             <span className="grid size-14 shrink-0 place-items-center rounded-2xl bg-gradient-brand text-white shadow-lg shadow-brand-2/25">
               <tool.icon className="size-6" />
             </span>
             <div>
-              <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">{text.title}</h1>
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+                <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">{text.title}</h1>
+                {/* Beside the title on desktop; under the description on phones. */}
+                <NoUploadBadge className="hidden sm:inline-flex" />
+              </div>
               <p className="mt-1 text-muted-foreground">{text.description}</p>
+              <NoUploadBadge className="mt-3 inline-flex sm:hidden" />
             </div>
           </div>
-          <p className="inline-flex items-center gap-1.5 self-start rounded-full border bg-card/70 px-3 py-1 text-xs text-muted-foreground backdrop-blur sm:self-auto">
-            <ShieldCheck className="size-3.5 text-emerald-600 dark:text-emerald-400" />
-            {t('File tidak di-upload', 'Nothing is uploaded')}
-          </p>
-        </div>
 
-        <div className="mt-10">
-          <ToolBoundary key={tool.slug}>
-            <Suspense fallback={loading}>
-              <Component key={tool.slug} />
-            </Suspense>
-          </ToolBoundary>
+          <div className="order-1 sm:order-2">
+            <ToolBoundary key={tool.slug}>
+              <Suspense fallback={loading}>
+                <Component key={tool.slug} />
+              </Suspense>
+            </ToolBoundary>
+          </div>
         </div>
         <InstallCard tool={tool} />
         <ToolAbout tool={tool} />
