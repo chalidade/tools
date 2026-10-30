@@ -56,15 +56,22 @@ export async function readPptx(file: File): Promise<Deck> {
   ])
   const raw = await pptxToHtml(await file.arrayBuffer())
 
+  // A crafted file can point images at a remote server, which would tell it
+  // who opened the file and when. Only embedded (data:) resources may load.
+  const purify = DOMPurify(window)
+  purify.addHook('uponSanitizeAttribute', (_node, data) => {
+    if (data.attrName === 'style') data.attrValue = data.attrValue.replace(/url\(\s*['"]?(?!data:)[^)]*\)/gi, 'none')
+  })
+
   const slides = raw.map((html) =>
-    DOMPurify.sanitize(
+    purify.sanitize(
       // The slide background is a z-index:-1 layer; with the slide not being
       // a stacking context it can fall behind the slide's own white fill.
       // Every other layer sits at z-index 20000+, so 0 keeps it at the back.
       textListMarkers(html.replace(/z-index:\s*-1/g, 'z-index:0')),
       // Slide HTML is built from the file's contents: keep layout (inline
       // styles, SVG charts, data: images) but drop anything executable.
-      { ADD_ATTR: ['style'], ALLOW_DATA_ATTR: false },
+      { ADD_ATTR: ['style'], ALLOW_DATA_ATTR: false, ALLOWED_URI_REGEXP: /^(?:data:image\/|#)/i },
     ),
   )
 
