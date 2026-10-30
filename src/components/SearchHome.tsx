@@ -26,13 +26,13 @@ export function SearchHome() {
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 bg-glow" />
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 bg-grid opacity-60" />
 
-      <div className="mx-auto max-w-2xl px-5 pt-[8vh] pb-16 sm:px-6 sm:pt-[16vh]">
+      <div className="mx-auto max-w-2xl px-5 pt-[8vh] pb-16 sm:px-6 sm:pt-[16vh] lg:max-w-3xl lg:pt-[18vh]">
         <div className={cn('collapse-blur', searching && 'is-collapsed')}>
           <div className="min-h-0 text-center">
-            <h1 className="text-4xl leading-[1.05] font-semibold tracking-[-0.035em] text-balance sm:text-5xl">
+            <h1 className="text-4xl leading-[1.05] font-semibold tracking-[-0.035em] text-balance sm:text-5xl lg:text-6xl lg:whitespace-nowrap">
               {t('Butuh tool', 'Which tool')} <span className="text-gradient">{t('apa hari ini?', 'do you need?')}</span>
             </h1>
-            <p className="mt-3 pb-8 text-muted-foreground text-pretty">
+            <p className="mt-3 pb-8 text-muted-foreground text-pretty lg:mt-5 lg:pb-10 lg:text-lg">
               {t(`${TOOLS.length} tools gratis, jalan di browsermu, tanpa upload.`, `${TOOLS.length} free tools, running in your browser, nothing uploaded.`)}
             </p>
           </div>
@@ -41,8 +41,8 @@ export function SearchHome() {
         <label className="group relative block">
           <span className="sr-only">{t('Cari tool', 'Search tools')}</span>
           {/* Soft brand glow that wakes up when the box has focus. */}
-          <span aria-hidden className="absolute -inset-1 rounded-[1.4rem] bg-gradient-brand opacity-25 blur-xl transition-opacity duration-500 group-focus-within:opacity-60" />
-          <Search className="pointer-events-none absolute top-1/2 left-5 z-10 size-5 -translate-y-1/2 text-muted-foreground" />
+          <span aria-hidden className="absolute -inset-1 rounded-[1.4rem] lg:rounded-[1.65rem] bg-gradient-brand opacity-25 blur-xl transition-opacity duration-500 group-focus-within:opacity-60" />
+          <Search className="pointer-events-none absolute top-1/2 left-5 z-10 size-5 -translate-y-1/2 lg:left-6 lg:size-6 text-muted-foreground" />
           <input
             type="search"
             autoFocus
@@ -54,7 +54,7 @@ export function SearchHome() {
               if (e.key === 'Escape') setQuery('')
             }}
             placeholder={t('Cari: kompres pdf, pas foto, mp3…', 'Search: compress pdf, photo, mp3…')}
-            className="relative h-15 w-full rounded-2xl border bg-card/90 pr-12 pl-13 text-base shadow-lg backdrop-blur-xl outline-none placeholder:text-muted-foreground focus:border-brand-2/50 [&::-webkit-search-cancel-button]:hidden"
+            className="relative h-15 w-full rounded-2xl border bg-card/90 pr-12 pl-13 text-base lg:h-18 lg:rounded-3xl lg:pl-15 lg:text-lg shadow-lg backdrop-blur-xl outline-none placeholder:text-muted-foreground focus:border-brand-2/50 [&::-webkit-search-cancel-button]:hidden"
           />
           {searching && (
             <button
@@ -69,15 +69,15 @@ export function SearchHome() {
         </label>
 
         {!searching ? (
-          <div className="mt-6 flex flex-wrap justify-center gap-2">
+          <div className="mt-6 flex flex-wrap justify-center gap-2 lg:mt-8 lg:gap-2.5">
             {popular.map((tool, i) => (
               <a
                 key={tool.slug}
                 href={pageUrl(tool.slug, lang)}
                 style={{ animationDelay: `${i * 50}ms` }}
-                className="blur-in inline-flex items-center gap-2 rounded-full border bg-card/70 py-1.5 pr-3.5 pl-2 text-sm text-muted-foreground backdrop-blur transition-colors hover:border-brand-2/50 hover:text-foreground"
+                className="blur-in inline-flex items-center gap-2 rounded-full border bg-card/70 py-1.5 pr-3.5 pl-2 text-sm lg:py-2 lg:pr-4 lg:pl-3 lg:text-base text-muted-foreground backdrop-blur transition-colors hover:border-brand-2/50 hover:text-foreground"
               >
-                <tool.icon className="size-4 text-brand-2" />
+                <tool.icon className="size-4 text-brand-2 lg:size-[18px]" />
                 {toolText(tool, lang).title}
               </a>
             ))}
