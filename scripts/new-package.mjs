@@ -4,6 +4,10 @@
 //   node scripts/new-package.mjs <name> <tool-dir> <element-tag> <Component> "<English description>"
 //   node scripts/new-package.mjs uuid uuid uuid-generator Uuid "Generate UUID v4 / v7 …"
 //
+// <name> is the tool's slug from the registry (qr-generator), <tool-dir> its folder (qr).
+// If the component imports from other tool folders, add an @source per folder
+// to src/element.css, or their classes are missing from the Shadow DOM.
+//
 // Then: write src/index.ts, types/index.d.ts, types/check.ts and README.md,
 // add the `package` field in src/tools/registry.ts, and `npm run build:packages`.
 
@@ -36,7 +40,7 @@ write('package.json', JSON.stringify({
   keywords: ['web component', 'custom element'],
   license: 'MIT',
   author: 'Chalid Ade Rahman',
-  homepage: `https://chalidade.github.io/tools/#/${toolDir}`,
+  homepage: `https://chalidade.github.io/tools/#/${name}`, // package name = the tool's slug
   repository: { type: 'git', url: 'git+https://github.com/chalidade/tools.git', directory: `packages/${name}` },
   bugs: 'https://github.com/chalidade/tools/issues',
   type: 'module',
