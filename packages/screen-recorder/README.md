@@ -1,21 +1,17 @@
 # @chalidade/screen-recorder
 
-Rekam layar di website mana pun — satu tag `<script>`, satu elemen. Merekam
-seluruh layar, satu jendela, atau satu tab, dengan suara mikrofon dan suara
-tab, plus kamera melayang. **Semua berjalan di browser pengunjung**: tidak ada
-server, tidak ada yang di-upload.
+Screen recording for any website: one `<script>` tag, one element. Record the
+whole screen, a single window or a single tab, with microphone and tab audio,
+plus a floating camera bubble. **Everything runs in the visitor's browser**:
+there is no server and nothing is uploaded.
 
-*English: a drop-in screen recorder for any website (a `<screen-recorder>`
-custom element) plus a small headless API. Runs entirely in the browser. The
-built-in UI speaks Indonesian and English (`lang="en"`).*
+This is the [Screen Recorder](https://chalidade.github.io/tools/#/screen-recorder)
+tool from [chalidade/tools](https://github.com/chalidade/tools), packaged so you
+can drop it into your own site. Try it there first.
 
-Ini adalah tool [Rekam Layar](https://chalidade.github.io/tools/#/screen-recorder)
-dari [chalidade/tools](https://github.com/chalidade/tools), dikemas supaya bisa
-dipasang di situsmu sendiri. Coba dulu di sana.
+## Install in 10 seconds
 
-## Pasang dalam 10 detik
-
-Tempel ini di HTML mana pun (WordPress, Blogger, Webflow, HTML biasa):
+Paste this into any HTML page (WordPress, Blogger, Webflow, plain HTML):
 
 ```html
 <script type="module" src="https://cdn.jsdelivr.net/npm/@chalidade/screen-recorder@0/dist/element.js"></script>
@@ -23,22 +19,22 @@ Tempel ini di HTML mana pun (WordPress, Blogger, Webflow, HTML biasa):
 <screen-recorder></screen-recorder>
 ```
 
-Selesai. Rekaman tersimpan di browser pengunjung dan bisa diunduh sebagai WebM
-atau diubah ke MP4.
+That's it. Recordings are stored in the visitor's browser and can be downloaded
+as WebM or converted to MP4.
 
-### Atribut
+### Attributes
 
-| Atribut | Nilai | Default |
+| Attribute | Value | Default |
 | --- | --- | --- |
-| `theme` | `auto` (ikut sistem), `light`, `dark` | `auto` |
-| `persist` | `false` = jangan simpan rekaman di browser (IndexedDB) | simpan |
-| `title-indicator` | `true` = tampilkan "● Merekam 0:42" di judul tab | mati |
-| `lang` | `id` atau `en` — bahasa tampilan | bahasa browser pengunjung |
+| `theme` | `auto` (follows the system), `light`, `dark` | `auto` |
+| `persist` | `false` = don't keep recordings in the browser (IndexedDB) | keep |
+| `title-indicator` | `true` = show "● Recording 0:42" in the tab title | off |
+| `lang` | `id` or `en`, the UI language | the visitor's browser language |
 
-### Event: ambil file rekamannya
+### Event: get the recorded file
 
-Setiap rekaman selesai, elemen mengirim event `recording` — misalnya untuk
-meng-upload ke server-mu sendiri:
+When a recording finishes, the element fires a `recording` event, for example to
+upload it to your own server:
 
 ```html
 <screen-recorder id="rec" persist="false"></screen-recorder>
@@ -46,51 +42,51 @@ meng-upload ke server-mu sendiri:
   document.getElementById('rec').addEventListener('recording', async (e) => {
     const { blob, mimeType, duration, width, height } = e.detail
     const form = new FormData()
-    form.append('video', blob, 'rekaman.webm')
-    await fetch('/upload', { method: 'POST', body: form }) // server milikmu
+    form.append('video', blob, 'recording.webm')
+    await fetch('/upload', { method: 'POST', body: form }) // your server
   })
 </script>
 ```
 
-### Warna
+### Colors
 
-Elemen memakai Shadow DOM, jadi CSS situsmu tidak merusaknya (dan sebaliknya).
-Warnanya bisa diubah lewat variabel CSS:
+The element uses Shadow DOM, so your site's CSS can't break it (and vice versa).
+Change its colors with CSS variables:
 
 ```css
 screen-recorder {
-  --sr-brand-1: #0ea5e9; /* gradasi toggle & aksen, terang maupun gelap */
+  --sr-brand-1: #0ea5e9; /* toggle & accent gradient, light and dark */
   --sr-brand-2: #6366f1;
-  --radius: 0.5rem;      /* kelengkungan sudut */
+  --radius: 0.5rem;      /* corner radius */
 }
 ```
 
-## Pakai dengan npm
+## Use with npm
 
 ```bash
 npm install @chalidade/screen-recorder
 ```
 
 ```js
-import '@chalidade/screen-recorder/element' // mendaftarkan <screen-recorder>
+import '@chalidade/screen-recorder/element' // registers <screen-recorder>
 ```
 
-Di React: `<screen-recorder theme="light" />` langsung bisa dipakai di JSX
-(React 19 meneruskan atribut dan event ke custom element).
+In React, `<screen-recorder theme="light" />` works directly in JSX (React 19
+passes attributes and events through to custom elements).
 
-## API tanpa UI
+## Headless API
 
-Untuk tampilanmu sendiri — tanpa React, ±3 KB gzip:
+For your own UI, no React, about 3 KB gzipped:
 
 ```js
 import { canRecordScreen, recordScreen, toMp4 } from '@chalidade/screen-recorder'
 
-if (!canRecordScreen()) alert('Perekaman layar butuh browser komputer.')
+if (!canRecordScreen()) alert('Screen recording needs a desktop browser.')
 
 button.onclick = async () => {
   const capture = await recordScreen({ microphone: true, systemAudio: true, fps: 30 })
-  preview.srcObject = capture.stream          // tampilan langsung
-  capture.onended = () => stopButton.click()  // pengunjung menekan "Berhenti berbagi"
+  preview.srcObject = capture.stream          // live preview
+  capture.onended = () => stopButton.click()  // the visitor clicked "Stop sharing"
 }
 
 stopButton.onclick = async () => {
@@ -99,25 +95,25 @@ stopButton.onclick = async () => {
 }
 ```
 
-- `captureScreen(options)` menyiapkan perekaman tanpa langsung mulai (untuk
-  hitung mundur), lalu `capture.start()`.
+- `captureScreen(options)` prepares a recording without starting it (for a
+  countdown); call `capture.start()` when ready.
 - `capture.pause()`, `capture.resume()`, `capture.cancel()`, `capture.elapsed()`.
-- `capture.warnings` berisi `'system-audio-missing'` (pengunjung tidak mencentang
-  "Bagikan audio") atau `'microphone-unavailable'`.
-- `toMp4()` memuat encoder (±200 KB gzip) hanya saat dipanggil.
+- `capture.warnings` contains `'system-audio-missing'` (the visitor didn't tick
+  "Share audio") or `'microphone-unavailable'`.
+- `toMp4()` loads the encoder (about 200 KB gzipped) only when called.
 
-`recordScreen` / `captureScreen` harus dipanggil dari klik — browser mewajibkan
-izin pengguna untuk merekam layar.
+`recordScreen` / `captureScreen` must be called from a click: browsers require a
+user gesture before recording the screen.
 
-## Dukungan browser
+## Browser support
 
-Chrome, Edge, Firefox, dan Safari versi terbaru **di komputer**. Ponsel dan
-tablet belum mengizinkan situs web merekam layar — `canRecordScreen()`
-mengembalikan `false` di sana, dan elemen menampilkan pesannya sendiri. Suara
-tab bisa direkam di Chrome/Edge; suara seluruh sistem hanya di Windows dan
-ChromeOS. Halaman harus dibuka lewat HTTPS (atau `localhost`).
+Current Chrome, Edge, Firefox and Safari **on desktop**. Phones and tablets
+don't let websites record the screen yet; `canRecordScreen()` returns `false`
+there, and the element shows its own message. Tab audio can be recorded in
+Chrome/Edge; whole-system audio only on Windows and ChromeOS. The page must be
+served over HTTPS (or `localhost`).
 
-## Lisensi
+## License
 
-MIT © Chalid Ade Rahman. Paket ini menyertakan pustaka pihak ketiga — lihat
+MIT © Chalid Ade Rahman. This package bundles third-party libraries, see
 [THIRD-PARTY-NOTICES.md](./THIRD-PARTY-NOTICES.md).

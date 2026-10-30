@@ -1,7 +1,7 @@
 {
   "name": "@chalidade/screen-recorder",
-  "version": "0.1.0",
-  "description": "Rekam layar di website mana pun: elemen <screen-recorder> siap pakai plus API kecil. Semua berjalan di browser — tidak ada yang di-upload.",
+  "version": "0.1.1",
+  "description": "Drop-in screen recorder for any website: a ready-made <screen-recorder> element plus a small headless API. Runs entirely in the browser, nothing is uploaded.",
   "keywords": [
     "screen recorder",
     "screen recording",
