@@ -1,7 +1,7 @@
 {
   "id": "./",
-  "name": "Tools — tools gratis di browser",
-  "short_name": "Tools",
+  "name": "toowl — tools gratis di browser",
+  "short_name": "toowl",
   "description": "Kumpulan tools gratis untuk dokumen, PDF, gambar, video, audio, musik, sampai data developer — semuanya berjalan di perangkatmu.",
   "start_url": "./",
   "scope": "./",

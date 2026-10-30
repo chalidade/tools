@@ -26,13 +26,13 @@ export interface PageMeta {
 export function homeMeta(lang: Lang): PageMeta {
   return lang === 'en'
     ? {
-        title: 'Tools — Free tools that run in your browser',
+        title: 'toowl — Free tools that run in your browser',
         description: `${TOOLS.length} free tools for PDFs, documents, images, video, audio, music and developer data — all running on your device. No account, nothing uploaded.`,
         slug: '',
         lang,
       }
     : {
-        title: 'Tools — Kumpulan tools gratis, langsung di browser',
+        title: 'toowl — Kumpulan tools gratis, langsung di browser',
         description: `${TOOLS.length} tools gratis untuk PDF, dokumen, gambar, video, audio, musik, sampai data developer — semuanya berjalan di perangkatmu. Tanpa akun, tanpa upload.`,
         slug: '',
         lang,
@@ -45,8 +45,8 @@ export function toolMeta(tool: Tool, lang: Lang): PageMeta {
   const online = /online/i.test(text.title) ? '' : ' Online'
   const title =
     lang === 'en'
-      ? `${text.title}${online} — Free${files ? ', No Upload' : ''} | Tools`
-      : `${text.title}${online} Gratis${files ? ', Tanpa Upload' : ''} — Tools`
+      ? `${text.title}${online} — Free${files ? ', No Upload' : ''} | toowl`
+      : `${text.title}${online} Gratis${files ? ', Tanpa Upload' : ''} — toowl`
   const tail =
     lang === 'en'
       ? files
@@ -91,7 +91,7 @@ export function relatedHeading(tool: Tool, lang: Lang) {
 export function structuredData(meta: PageMeta) {
   const url = absoluteUrl(meta.slug, meta.lang)
   if (!meta.slug)
-    return { '@context': 'https://schema.org', '@type': 'WebSite', name: 'Tools', url, inLanguage: meta.lang, description: meta.description }
+    return { '@context': 'https://schema.org', '@type': 'WebSite', name: 'toowl', url, inLanguage: meta.lang, description: meta.description }
   const tool = TOOLS.find((t) => t.slug === meta.slug)!
   return {
     '@context': 'https://schema.org',
@@ -105,7 +105,7 @@ export function structuredData(meta: PageMeta) {
     browserRequirements: 'Requires JavaScript',
     isAccessibleForFree: true,
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'IDR' },
-    isPartOf: { '@type': 'WebSite', name: 'Tools', url: SITE },
+    isPartOf: { '@type': 'WebSite', name: 'toowl', url: SITE },
   }
 }
 

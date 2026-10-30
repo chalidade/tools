@@ -3,6 +3,10 @@
 Catatan harian apa yang berubah di [tools](https://chalidade.github.io/tools/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-10-31 — Nama baru: toowl
+
+Situs kini bernama **toowl**, dengan maskot burung hantu sebagai logo, favicon, ikon aplikasi, dan gambar pratinjau link. Di halaman tool, tautan "Semua tools" menjadi "Kembali" ke beranda; badge "File tidak di-upload" ada di sebelah judul (desktop) atau di atas "Pasang di situsmu" (ponsel), dan ikon tool rata atas.
+
 ## 2026-10-31 — Audit keamanan & paket npm untuk semua tools
 
 Audit keamanan ke-72 tools. Tidak ada tool yang mengirim data ke mana pun; perbaikan yang juga berlaku di situs:
