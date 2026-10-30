@@ -87,9 +87,11 @@ export function ToolView({ tool, embed = false }: { tool: Tool; embed?: boolean 
             <div>
               <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
                 <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">{text.title}</h1>
-                <NoUploadBadge className="inline-flex" />
+                {/* Beside the title on desktop; under the description on phones. */}
+                <NoUploadBadge className="hidden sm:inline-flex" />
               </div>
               <p className="mt-1 text-muted-foreground">{text.description}</p>
+              <NoUploadBadge className="mt-3 inline-flex sm:hidden" />
             </div>
           </div>
 
