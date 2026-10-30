@@ -78,28 +78,29 @@ export function ToolView({ tool, embed = false }: { tool: Tool; embed?: boolean 
           {t('Kembali', 'Back')}
         </a>
 
-        <div className="mt-8 flex items-start gap-4">
-          <span className="grid size-14 shrink-0 place-items-center rounded-2xl bg-gradient-brand text-white shadow-lg shadow-brand-2/25">
-            <tool.icon className="size-6" />
-          </span>
-          <div>
-            <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-              <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">{text.title}</h1>
-              {/* Desktop: beside the title. Mobile: after the tool, above the install card. */}
-              <NoUploadBadge className="hidden sm:inline-flex" />
+        {/* On phones the tool comes first and its title block follows it, above the install card. */}
+        <div className="mt-8 flex flex-col gap-10">
+          <div className="order-2 flex items-start gap-4 sm:order-1">
+            <span className="grid size-14 shrink-0 place-items-center rounded-2xl bg-gradient-brand text-white shadow-lg shadow-brand-2/25">
+              <tool.icon className="size-6" />
+            </span>
+            <div>
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+                <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">{text.title}</h1>
+                <NoUploadBadge className="inline-flex" />
+              </div>
+              <p className="mt-1 text-muted-foreground">{text.description}</p>
             </div>
-            <p className="mt-1 text-muted-foreground">{text.description}</p>
+          </div>
+
+          <div className="order-1 sm:order-2">
+            <ToolBoundary key={tool.slug}>
+              <Suspense fallback={loading}>
+                <Component key={tool.slug} />
+              </Suspense>
+            </ToolBoundary>
           </div>
         </div>
-
-        <div className="mt-10">
-          <ToolBoundary key={tool.slug}>
-            <Suspense fallback={loading}>
-              <Component key={tool.slug} />
-            </Suspense>
-          </ToolBoundary>
-        </div>
-        <NoUploadBadge className="mt-10 inline-flex sm:hidden" />
         <InstallCard tool={tool} />
         <ToolAbout tool={tool} />
       </div>
