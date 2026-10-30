@@ -6,7 +6,7 @@ orang lain bisa memasangnya di website mereka. Semua 72 tool sudah punya paket:
 | Paket | Elemen | Status |
 | --- | --- | --- |
 | [`@chalidade/arah-kiblat`](./arah-kiblat) | `<qibla-direction>` | siap terbit (0.1.0) |
-| [`@chalidade/audio-recorder`](./audio-recorder) | `<audio-recorder>` | siap terbit (0.1.0) |
+| [`@chalidade/audio-recorder`](./audio-recorder) | `<audio-recorder>` | terbit (0.1.0) |
 | [`@chalidade/bpm-key`](./bpm-key) | `<bpm-key>` | siap terbit (0.1.0) |
 | [`@chalidade/calculator`](./calculator) | `<basic-calculator>` | siap terbit (0.1.0) |
 | [`@chalidade/change-speed`](./change-speed) | `<change-speed>` | siap terbit (0.1.0) |
@@ -15,8 +15,8 @@ orang lain bisa memasangnya di website mereka. Semua 72 tool sudah punya paket:
 | [`@chalidade/cicilan`](./cicilan) | `<loan-calculator>` | siap terbit (0.1.0) |
 | [`@chalidade/color-picker`](./color-picker) | `<color-picker>` | siap terbit (0.1.0) |
 | [`@chalidade/compress-audio`](./compress-audio) | `<compress-audio>` | siap terbit (0.1.0) |
-| [`@chalidade/compress-image`](./compress-image) | `<compress-image>` | siap terbit (0.1.0) |
-| [`@chalidade/compress-pdf`](./compress-pdf) | `<compress-pdf>` | siap terbit (0.1.0) |
+| [`@chalidade/compress-image`](./compress-image) | `<compress-image>` | terbit (0.1.0) |
+| [`@chalidade/compress-pdf`](./compress-pdf) | `<compress-pdf>` | terbit (0.1.0) |
 | [`@chalidade/compress-video`](./compress-video) | `<compress-video>` | siap terbit (0.1.0) |
 | [`@chalidade/convert-image`](./convert-image) | `<convert-image>` | siap terbit (0.1.0) |
 | [`@chalidade/crop-resize-image`](./crop-resize-image) | `<crop-resize-image>` | siap terbit (0.1.0) |
@@ -29,27 +29,27 @@ orang lain bisa memasangnya di website mereka. Semua 72 tool sudah punya paket:
 | [`@chalidade/favicon-generator`](./favicon-generator) | `<favicon-generator>` | siap terbit (0.1.0) |
 | [`@chalidade/gaji-bersih`](./gaji-bersih) | `<take-home-pay>` | siap terbit (0.1.0) |
 | [`@chalidade/gif-mp4`](./gif-mp4) | `<gif-mp4>` | siap terbit (0.1.0) |
-| [`@chalidade/guitar-tuner`](./guitar-tuner) | `<guitar-tuner>` | siap terbit (0.1.0) |
+| [`@chalidade/guitar-tuner`](./guitar-tuner) | `<guitar-tuner>` | terbit (0.1.0) |
 | [`@chalidade/guitar`](./guitar) | `<virtual-guitar>` | siap terbit (0.1.0) |
-| [`@chalidade/hijriah`](./hijriah) | `<hijri-calendar>` | siap terbit (0.1.0) |
+| [`@chalidade/hijriah`](./hijriah) | `<hijri-calendar>` | terbit (0.1.0) |
 | [`@chalidade/image-to-base64`](./image-to-base64) | `<image-to-base64>` | siap terbit (0.1.0) |
-| [`@chalidade/image-to-pdf`](./image-to-pdf) | `<image-to-pdf>` | siap terbit (0.1.0) |
-| [`@chalidade/jadwal-sholat`](./jadwal-sholat) | `<prayer-times>` | siap terbit (0.1.0) |
+| [`@chalidade/image-to-pdf`](./image-to-pdf) | `<image-to-pdf>` | terbit (0.1.0) |
+| [`@chalidade/jadwal-sholat`](./jadwal-sholat) | `<prayer-times>` | terbit (0.1.0) |
 | [`@chalidade/json-beautify`](./json-beautify) | `<json-beautify>` | siap terbit (0.1.0) |
 | [`@chalidade/json-minify`](./json-minify) | `<json-minify>` | siap terbit (0.1.0) |
 | [`@chalidade/kwitansi`](./kwitansi) | `<receipt-invoice>` | siap terbit (0.1.0) |
 | [`@chalidade/link-wa`](./link-wa) | `<link-wa>` | siap terbit (0.1.0) |
 | [`@chalidade/mana-lebih-murah`](./mana-lebih-murah) | `<unit-price-compare>` | siap terbit (0.1.0) |
 | [`@chalidade/merge-audio`](./merge-audio) | `<merge-audio>` | siap terbit (0.1.0) |
-| [`@chalidade/merge-pdf`](./merge-pdf) | `<merge-pdf>` | siap terbit (0.1.0) |
-| [`@chalidade/metronome`](./metronome) | `<web-metronome>` | siap terbit (0.1.0) |
+| [`@chalidade/merge-pdf`](./merge-pdf) | `<merge-pdf>` | terbit (0.1.0) |
+| [`@chalidade/metronome`](./metronome) | `<web-metronome>` | terbit (0.1.0) |
 | [`@chalidade/notes`](./notes) | `<markdown-notes>` | siap terbit (0.1.0) |
 | [`@chalidade/organize-pdf`](./organize-pdf) | `<organize-pdf>` | siap terbit (0.1.0) |
 | [`@chalidade/page-numbers`](./page-numbers) | `<page-numbers>` | siap terbit (0.1.0) |
 | [`@chalidade/pas-foto`](./pas-foto) | `<pas-foto>` | siap terbit (0.1.0) |
 | [`@chalidade/password-generator`](./password-generator) | `<password-generator>` | siap terbit (0.1.0) |
 | [`@chalidade/pdf-to-excel`](./pdf-to-excel) | `<pdf-to-excel>` | siap terbit (0.1.0) |
-| [`@chalidade/pdf-to-image`](./pdf-to-image) | `<pdf-to-image>` | siap terbit (0.1.0) |
+| [`@chalidade/pdf-to-image`](./pdf-to-image) | `<pdf-to-image>` | terbit (0.1.0) |
 | [`@chalidade/pdf-to-markdown`](./pdf-to-markdown) | `<pdf-to-markdown>` | siap terbit (0.1.0) |
 | [`@chalidade/pdf-to-ppt`](./pdf-to-ppt) | `<pdf-to-ppt>` | siap terbit (0.1.0) |
 | [`@chalidade/pdf-to-word`](./pdf-to-word) | `<pdf-to-word>` | siap terbit (0.1.0) |
@@ -57,26 +57,26 @@ orang lain bisa memasangnya di website mereka. Semua 72 tool sudah punya paket:
 | [`@chalidade/piano`](./piano) | `<piano-keyboard>` | siap terbit (0.1.0) |
 | [`@chalidade/ppt-to-pdf`](./ppt-to-pdf) | `<ppt-to-pdf>` | siap terbit (0.1.0) |
 | [`@chalidade/practice-recorder`](./practice-recorder) | `<practice-recorder>` | siap terbit (0.1.0) |
-| [`@chalidade/protect-pdf`](./protect-pdf) | `<protect-pdf>` | siap terbit (0.1.0) |
-| [`@chalidade/qr-generator`](./qr-generator) | `<qr-generator>` | siap terbit (0.1.0) |
-| [`@chalidade/qr-reader`](./qr-reader) | `<qr-reader>` | siap terbit (0.1.0) |
-| [`@chalidade/qris`](./qris) | `<qris-amount>` | siap terbit (0.1.0) |
+| [`@chalidade/protect-pdf`](./protect-pdf) | `<protect-pdf>` | terbit (0.1.0) |
+| [`@chalidade/qr-generator`](./qr-generator) | `<qr-generator>` | terbit (0.1.0) |
+| [`@chalidade/qr-reader`](./qr-reader) | `<qr-reader>` | terbit (0.1.0) |
+| [`@chalidade/qris`](./qris) | `<qris-amount>` | terbit (0.1.0) |
 | [`@chalidade/remove-background`](./remove-background) | `<remove-background>` | siap terbit (0.1.0) |
 | [`@chalidade/screen-recorder`](./screen-recorder) | `<screen-recorder>` | terbit (0.1.1) |
-| [`@chalidade/sign-pdf`](./sign-pdf) | `<sign-pdf>` | siap terbit (0.1.0) |
-| [`@chalidade/split-pdf`](./split-pdf) | `<split-pdf>` | siap terbit (0.1.0) |
-| [`@chalidade/strip-exif`](./strip-exif) | `<strip-exif>` | siap terbit (0.1.0) |
+| [`@chalidade/sign-pdf`](./sign-pdf) | `<sign-pdf>` | terbit (0.1.0) |
+| [`@chalidade/split-pdf`](./split-pdf) | `<split-pdf>` | terbit (0.1.0) |
+| [`@chalidade/strip-exif`](./strip-exif) | `<strip-exif>` | terbit (0.1.0) |
 | [`@chalidade/tasbih`](./tasbih) | `<tasbih-counter>` | siap terbit (0.1.0) |
-| [`@chalidade/terbilang`](./terbilang) | `<terbilang-converter>` | siap terbit (0.1.0) |
+| [`@chalidade/terbilang`](./terbilang) | `<terbilang-converter>` | terbit (0.1.0) |
 | [`@chalidade/text-diff`](./text-diff) | `<text-diff>` | siap terbit (0.1.0) |
 | [`@chalidade/trim-media`](./trim-media) | `<trim-media>` | siap terbit (0.1.0) |
 | [`@chalidade/unit-converter`](./unit-converter) | `<unit-converter>` | siap terbit (0.1.0) |
-| [`@chalidade/unlock-pdf`](./unlock-pdf) | `<unlock-pdf>` | siap terbit (0.1.0) |
+| [`@chalidade/unlock-pdf`](./unlock-pdf) | `<unlock-pdf>` | terbit (0.1.0) |
 | [`@chalidade/uuid`](./uuid) | `<uuid-generator>` | siap terbit (0.1.0) |
 | [`@chalidade/watermark-pdf`](./watermark-pdf) | `<watermark-pdf>` | siap terbit (0.1.0) |
 | [`@chalidade/whiteboard`](./whiteboard) | `<web-whiteboard>` | siap terbit (0.1.0) |
 | [`@chalidade/word-counter`](./word-counter) | `<word-counter>` | siap terbit (0.1.0) |
-| [`@chalidade/zakat`](./zakat) | `<zakat-calculator>` | siap terbit (0.1.0) |
+| [`@chalidade/zakat`](./zakat) | `<zakat-calculator>` | terbit (0.1.0) |
 
 README setiap paket berbahasa Inggris, karena halaman npm dibaca orang dari
 mana saja. Folder `_shared/` bukan paket: isinya kode bersama untuk elemen.
