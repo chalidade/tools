@@ -56,7 +56,14 @@ function micError(e: unknown) {
   return tr('Mikrofon tidak bisa dibuka di browser ini.', "The microphone can't be opened in this browser.")
 }
 
-export default function AudioRecorder() {
+export interface AudioRecorderProps {
+  /** Keep recordings in this browser (IndexedDB) and list them. Default true. */
+  persist?: boolean
+  /** Called with every finished recording — e.g. to upload it to your own server. */
+  onRecording?: (recording: Recording) => void
+}
+
+export default function AudioRecorder({ persist = true, onRecording }: AudioRecorderProps = {}) {
   const t = useT()
   const supported = useMemo(canRecord, [])
   const [phase, setPhase] = useState<Phase>('idle')
@@ -78,8 +85,14 @@ export default function AudioRecorder() {
   const peaks = useRef<number[]>([])
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const raf = useRef(0)
+  /** Bumped by every start and by unmount: a microphone stream that arrives for an older session is stopped at once. */
+  const session = useRef(0)
+
+  const onRecordingRef = useRef(onRecording)
+  onRecordingRef.current = onRecording
 
   const refresh = useCallback(() => {
+    if (!persist) return
     listRecordings()
       .then(setRecordings)
       .catch(() =>
@@ -90,7 +103,7 @@ export default function AudioRecorder() {
           ),
         ),
       )
-  }, [])
+  }, [persist])
   useEffect(refresh, [refresh])
 
   // Labels only show once the page has microphone permission.
@@ -167,6 +180,7 @@ export default function AudioRecorder() {
   // Leaving the page mid-take (another tool, the home page) stops and keeps it.
   useEffect(
     () => () => {
+      session.current++
       if (recorderRef.current && recorderRef.current.state !== 'inactive') recorderRef.current.stop()
       cleanup()
     },
@@ -185,6 +199,7 @@ export default function AudioRecorder() {
     setError('')
     setPhase('starting')
     const speech = mode === 'speech'
+    const mine = ++session.current
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
         audio: {
@@ -195,6 +210,11 @@ export default function AudioRecorder() {
           channelCount: speech ? 1 : 2,
         },
       })
+      // Unmounted, or started again, while the permission prompt was open.
+      if (mine !== session.current) {
+        stream.getTracks().forEach((t) => t.stop())
+        return
+      }
       streamRef.current = stream
       void loadDevices()
 
@@ -224,6 +244,7 @@ export default function AudioRecorder() {
       setPhase('recording')
       if (!raf.current) draw()
     } catch (e) {
+      if (mine !== session.current) return // a newer session owns the stream now
       cleanup()
       setPhase('idle')
       setError(micError(e))
@@ -247,6 +268,9 @@ export default function AudioRecorder() {
       blob,
     }
     setRecordings((list) => [recording, ...list])
+    onRecordingRef.current?.(recording)
+    // Without storage the file only lives in this list until the page closes.
+    if (!persist) return
     try {
       await saveRecording(recording)
     } catch {
@@ -287,11 +311,11 @@ export default function AudioRecorder() {
   const rename = (r: Recording, name: string) => {
     const next = { ...r, name: name.trim() || r.name }
     setRecordings((list) => list.map((x) => (x.id === r.id ? next : x)))
-    void saveRecording(next).catch(() => {})
+    if (persist) void saveRecording(next).catch(() => {})
   }
   const remove = (r: Recording) => {
     setRecordings((list) => list.filter((x) => x.id !== r.id))
-    void deleteRecording(r.id).catch(() => {})
+    if (persist) void deleteRecording(r.id).catch(() => {})
   }
 
   if (!supported)
@@ -424,7 +448,11 @@ export default function AudioRecorder() {
       <section>
         <div className="flex items-baseline justify-between gap-3">
           <h2 className="text-lg font-semibold tracking-tight">{t('Rekaman', 'Recordings')}</h2>
-          <p className="text-xs text-muted-foreground">{t('Tersimpan di browser ini saja', 'Saved in this browser only')}</p>
+          <p className="text-xs text-muted-foreground">
+            {persist
+              ? t('Tersimpan di browser ini saja', 'Saved in this browser only')
+              : t('Hilang saat halaman ditutup — unduh dulu', 'Lost when the page closes — download first')}
+          </p>
         </div>
         {recordings.length === 0 ? (
           <p className="mt-3 rounded-2xl border border-dashed p-8 text-center text-sm text-muted-foreground">

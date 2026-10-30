@@ -1,10 +1,10 @@
-import { useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Minus, Plus, Volume2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { CopyButton } from '@/components/tool/CopyButton'
 import { Segmented } from '@/components/tool/Segmented'
 import { FLATS, SHARPS, pc, pluck, midiToFreq } from '@/lib/music'
-import { useLang, useT } from '@/lib/i18n'
+import { tr, useLang, useT } from '@/lib/i18n'
 import {
   CHORD_TYPES,
   INSTRUMENTS,
@@ -26,6 +26,15 @@ Am                F
 Kopi hangat menemani hari
 C         G        Am      F
 Langkah [C]kecil menuju mimpi`
+
+const SAMPLE_EN = `Intro:  C   G   Am   F
+
+C                 G
+Morning light across the sky
+Am                F
+Coffee warm as hours go by
+C         G        Am      F
+Little [C]steps toward a dream`
 
 export default function Chords() {
   const t = useT()
@@ -55,6 +64,7 @@ function Dictionary() {
   const [root, setRoot] = useState(0)
   const [suffix, setSuffix] = useState('')
   const ctxRef = useRef<AudioContext | null>(null)
+  useEffect(() => () => void ctxRef.current?.close().catch(() => {}), [])
 
   const inst = INSTRUMENTS.find((i) => i.id === instId)!
   const type = CHORD_TYPES.find((c) => c.suffix === suffix)!
@@ -226,7 +236,7 @@ function Diagram({ v }: { v: Voicing }) {
 
 function Transpose() {
   const t = useT()
-  const [text, setText] = useState(SAMPLE)
+  const [text, setText] = useState(() => tr(SAMPLE, SAMPLE_EN))
   const [steps, setSteps] = useState(0)
   const [flats, setFlats] = useState(false)
 

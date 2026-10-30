@@ -54,18 +54,28 @@ export function snippet(n: Note) {
 // ---------------------------------------------------------------- Markdown
 
 // Its own DOMPurify instance, so this hook doesn't change how other tools sanitize.
-const purify = DOMPurify(window)
-purify.addHook('afterSanitizeAttributes', (node) => {
-  // Links from a note open in a new tab and can't reach back into this page.
-  if (node.tagName === 'A') {
-    node.setAttribute('target', '_blank')
-    node.setAttribute('rel', 'noopener noreferrer')
-  }
-})
+// Made on first use, so importing this module (the npm headless API) works without a DOM.
+let purify: ReturnType<typeof DOMPurify> | null = null
+function sanitizer() {
+  if (purify) return purify
+  // Without a DOM DOMPurify can't sanitize, and would hand the HTML back unchanged.
+  if (typeof window === 'undefined' || !DOMPurify(window).isSupported) throw new Error('renderMarkdown needs a browser DOM to sanitize')
+  purify = DOMPurify(window)
+  purify.addHook('afterSanitizeAttributes', (node) => {
+    // Links from a note open in a new tab and can't reach back into this page.
+    if (node.tagName === 'A') {
+      node.setAttribute('target', '_blank')
+      node.setAttribute('rel', 'noopener noreferrer')
+    }
+  })
+  return purify
+}
 
+/** Markdown (GFM, single newlines kept) to sanitized HTML. Browser only. */
 export function renderMarkdown(body: string) {
   const html = marked.parse(body, { gfm: true, breaks: true, async: false })
-  return purify.sanitize(html, { ADD_ATTR: ['checked'] })
+  // No forms: a note (or a restored backup from someone else) could otherwise post typed text to any site.
+  return sanitizer().sanitize(html, { ADD_ATTR: ['checked'], FORBID_TAGS: ['form'] })
 }
 
 const TASK = /^(\s*(?:[-*+]|\d+[.)])\s+)\[( |x|X)\]/

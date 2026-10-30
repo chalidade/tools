@@ -1,0 +1,47 @@
+{
+  "name": "@chalidade/pas-foto",
+  "version": "0.1.0",
+  "description": "ID photo maker for any website: crop to 2x3, 3x4 or 4x6 cm, swap the background, lay it out on 4R or A4 paper. A <pas-foto> element plus a headless layout API. Nothing is uploaded.",
+  "keywords": [
+    "web component",
+    "custom element"
+  ],
+  "license": "MIT",
+  "author": "Chalid Ade Rahman",
+  "homepage": "https://chalidade.github.io/tools/#/pas-foto",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chalidade/tools.git",
+    "directory": "packages/pas-foto"
+  },
+  "bugs": "https://github.com/chalidade/tools/issues",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "jsdelivr": "./dist/element.js",
+  "unpkg": "./dist/element.js",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./element": {
+      "types": "./dist/element.d.ts",
+      "import": "./dist/element.js"
+    }
+  },
+  "sideEffects": [
+    "./dist/element.js"
+  ],
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "THIRD-PARTY-NOTICES.md"
+  ],
+  "scripts": {
+    "build": "tsc --noEmit -p . && vite build && cp types/*.d.ts dist/",
+    "prepublishOnly": "npm run build"
+  }
+}

@@ -1,0 +1,4 @@
+/* Styles for <qibla-direction>'s Shadow DOM: the shared base plus this tool's classes. */
+@import "../../_shared/base.css";
+@source "../../../src/tools/arah-kiblat";
+@source "../../../src/tools/jadwal-sholat";

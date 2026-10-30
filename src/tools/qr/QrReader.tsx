@@ -104,14 +104,23 @@ export function CameraScanner({ onFound }: { onFound: (scan: Scan) => void }) {
   const [error, setError] = useState<string | null>(null)
   const t = useT()
 
+  const mounted = useRef(true)
+  const starting = useRef(false)
+
   const stop = useCallback(() => {
     streamRef.current?.getTracks().forEach((track) => track.stop())
     streamRef.current = null
-    setState('idle')
+    if (mounted.current) setState('idle')
   }, [])
 
   // Release the camera when leaving.
-  useEffect(() => stop, [stop])
+  useEffect(() => {
+    mounted.current = true
+    return () => {
+      mounted.current = false
+      stop()
+    }
+  }, [stop])
 
   async function start() {
     setError(null)
@@ -124,18 +133,31 @@ export function CameraScanner({ onFound }: { onFound: (scan: Scan) => void }) {
       )
       return
     }
+    // One camera at a time, even if start() is called again while the prompt is open.
+    if (streamRef.current || starting.current) return
+    starting.current = true
     setState('starting')
+    let stream: MediaStream | null = null
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({
+      stream = await navigator.mediaDevices.getUserMedia({
         video: { facingMode: 'environment' },
         audio: false,
       })
+      // Unmounted (or stopped) while the permission prompt was open: release the camera at once.
+      if (!mounted.current || !videoRef.current) {
+        stream.getTracks().forEach((track) => track.stop())
+        return
+      }
       streamRef.current = stream
-      const video = videoRef.current!
+      const video = videoRef.current
       video.srcObject = stream
       await video.play()
+      if (!mounted.current) return stop()
       setState('scanning')
     } catch (e) {
+      if (stream && streamRef.current !== stream) stream.getTracks().forEach((track) => track.stop())
+      else stop()
+      if (!mounted.current) return
       setState('idle')
       const name = (e as DOMException)?.name
       setError(
@@ -151,6 +173,8 @@ export function CameraScanner({ onFound }: { onFound: (scan: Scan) => void }) {
                 'The camera can’t be opened. Another app may be using it.',
               ),
       )
+    } finally {
+      starting.current = false
     }
   }
 

@@ -1,0 +1,3 @@
+/* Styles for <unit-price-compare>'s Shadow DOM: the shared base plus this tool's classes. */
+@import "../../_shared/base.css";
+@source "../../../src/tools/mana-lebih-murah";

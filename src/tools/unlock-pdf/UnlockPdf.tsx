@@ -6,7 +6,8 @@ import { FileDrop } from '@/components/tool/FileDrop'
 import { PasswordInput } from '@/components/tool/PasswordInput'
 import { downloadBlob } from '@/lib/download'
 import { useT } from '@/lib/i18n'
-import { encryptionInfo, isPasswordError, runQpdf } from '@/lib/qpdf'
+import { encryptionInfo } from '@/lib/qpdf'
+import { unlockPdf, WrongPasswordError } from './unlock'
 
 type Status =
   | { kind: 'idle' }
@@ -54,23 +55,17 @@ export default function UnlockPdf() {
     setSaving(true)
     setError(null)
     try {
-      const { code, log, output } = await runQpdf(bytes, (i, o) => [
-        ...(needsPassword ? [`--password=${password}`] : []),
-        '--decrypt',
-        i,
-        o,
-      ])
-      if (isPasswordError(log)) {
-        setError(t('Password salah. Coba lagi — perhatikan huruf besar/kecil.', 'Wrong password. Try again — mind upper and lower case.'))
-        return
-      }
-      if (code === 2 || !output) throw new Error('qpdf')
+      const output = await unlockPdf(bytes, needsPassword ? password : undefined)
       downloadBlob(
         new Blob([output as BlobPart], { type: 'application/pdf' }),
         file.name.replace(/\.pdf$/i, '') + t('-terbuka.pdf', '-unlocked.pdf'),
       )
       setDone(true)
-    } catch {
+    } catch (e) {
+      if (e instanceof WrongPasswordError) {
+        setError(t('Password salah. Coba lagi — perhatikan huruf besar/kecil.', 'Wrong password. Try again — mind upper and lower case.'))
+        return
+      }
       setError(
         t(
           'Gagal membuka proteksi. File mungkin rusak atau memakai enkripsi yang tidak didukung.',

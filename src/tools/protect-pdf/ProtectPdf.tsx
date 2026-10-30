@@ -6,8 +6,9 @@ import { FileDrop } from '@/components/tool/FileDrop'
 import { PasswordInput } from '@/components/tool/PasswordInput'
 import { downloadBlob } from '@/lib/download'
 import { useT } from '@/lib/i18n'
-import { encryptionInfo, runQpdf } from '@/lib/qpdf'
+import { encryptionInfo } from '@/lib/qpdf'
 import { cn } from '@/lib/utils'
+import { protectPdf, type Permission } from './protect'
 
 type Status =
   | { kind: 'idle' }
@@ -21,17 +22,6 @@ const PERMISSIONS = [
   { key: 'copy', label: ['Boleh salin teks', 'Can copy text'] },
   { key: 'modify', label: ['Boleh diubah', 'Can edit'] },
 ] as const
-type Permission = (typeof PERMISSIONS)[number]['key']
-
-/**
- * The owner password guards the permission flags. The visitor only sets the
- * open password; a random owner password keeps the restrictions from being
- * lifted with the open password alone in readers that honour them.
- */
-function randomPassword() {
-  const bytes = crypto.getRandomValues(new Uint8Array(24))
-  return Array.from(bytes, (b) => b.toString(36).padStart(2, '0')).join('').slice(0, 32)
-}
 
 export default function ProtectPdf() {
   const t = useT()
@@ -77,19 +67,7 @@ export default function ProtectPdf() {
     setSaving(true)
     setError(null)
     try {
-      const { code, output } = await runQpdf(bytes, (i, o) => [
-        i,
-        '--encrypt',
-        `--user-password=${password}`,
-        `--owner-password=${randomPassword()}`,
-        '--bits=256', // AES-256, the strongest PDF encryption
-        `--print=${allowed.print ? 'full' : 'none'}`,
-        `--extract=${allowed.copy ? 'y' : 'n'}`,
-        `--modify=${allowed.modify ? 'all' : 'none'}`,
-        '--',
-        o,
-      ])
-      if (code === 2 || !output) throw new Error('qpdf')
+      const output = await protectPdf(bytes, password, allowed)
       downloadBlob(
         new Blob([output as BlobPart], { type: 'application/pdf' }),
         file.name.replace(/\.pdf$/i, '') + t('-terproteksi.pdf', '-protected.pdf'),

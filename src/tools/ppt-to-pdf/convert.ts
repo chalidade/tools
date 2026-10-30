@@ -49,6 +49,21 @@ function textListMarkers(html: string) {
   return doc.body.innerHTML
 }
 
+/**
+ * The regex above misses CSS escapes (`\75rl(…)`) and `image-set("…")`, so
+ * the browser's own parser reads the style too and drops any declaration that
+ * would still load a non-embedded resource. A detached element fetches nothing.
+ */
+function withoutRemoteUrls(css: string) {
+  const probe = document.createElement('div')
+  probe.setAttribute('style', css)
+  for (const prop of Array.from(probe.style)) {
+    const v = probe.style.getPropertyValue(prop)
+    if (/image-set\(/i.test(v) || /url\((?!\s*["']?data:)/i.test(v)) probe.style.removeProperty(prop)
+  }
+  return probe.getAttribute('style') ?? ''
+}
+
 export async function readPptx(file: File): Promise<Deck> {
   const [{ pptxToHtml }, { default: DOMPurify }] = await Promise.all([
     import('@jvmr/pptx-to-html'),
@@ -56,15 +71,22 @@ export async function readPptx(file: File): Promise<Deck> {
   ])
   const raw = await pptxToHtml(await file.arrayBuffer())
 
+  // A crafted file can point images at a remote server, which would tell it
+  // who opened the file and when. Only embedded (data:) resources may load.
+  const purify = DOMPurify(window)
+  purify.addHook('uponSanitizeAttribute', (_node, data) => {
+    if (data.attrName === 'style') data.attrValue = withoutRemoteUrls(data.attrValue.replace(/url\(\s*['"]?(?!data:)[^)]*\)/gi, 'none'))
+  })
+
   const slides = raw.map((html) =>
-    DOMPurify.sanitize(
+    purify.sanitize(
       // The slide background is a z-index:-1 layer; with the slide not being
       // a stacking context it can fall behind the slide's own white fill.
       // Every other layer sits at z-index 20000+, so 0 keeps it at the back.
       textListMarkers(html.replace(/z-index:\s*-1/g, 'z-index:0')),
       // Slide HTML is built from the file's contents: keep layout (inline
       // styles, SVG charts, data: images) but drop anything executable.
-      { ADD_ATTR: ['style'], ALLOW_DATA_ATTR: false },
+      { ADD_ATTR: ['style'], ALLOW_DATA_ATTR: false, ALLOWED_URI_REGEXP: /^(?:data:image\/|#)/i },
     ),
   )
 
@@ -117,6 +139,8 @@ export function buildPrintHtml(deck: Deck, title: string) {
 export async function printDeck(deck: Deck, title: string) {
   const frame = document.createElement('iframe')
   frame.setAttribute('aria-hidden', 'true')
+  // The slides are sanitized already; the sandbox makes sure no script can run in the print copy regardless.
+  frame.setAttribute('sandbox', 'allow-same-origin allow-modals')
   frame.style.cssText = 'position:fixed;right:0;bottom:0;width:0;height:0;border:0'
   document.body.appendChild(frame)
 

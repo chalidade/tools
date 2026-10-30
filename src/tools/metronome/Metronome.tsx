@@ -135,7 +135,8 @@ export default function Metronome() {
   toggleRef.current = () => (playing ? stop() : start())
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.target instanceof HTMLElement && /^(INPUT|TEXTAREA|SELECT|BUTTON)$/.test(e.target.tagName)) return
+      // composedPath: in a Shadow DOM embed, e.target is the host element, not the input.
+      if (/^(INPUT|TEXTAREA|SELECT|BUTTON)$/.test((e.composedPath()[0] as HTMLElement).tagName ?? '')) return
       if (e.code === 'Space') {
         e.preventDefault()
         toggleRef.current()

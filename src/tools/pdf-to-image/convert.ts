@@ -15,7 +15,13 @@ export interface PdfPages {
   thumbs: string[]
 }
 
-async function renderPage(page: PDFPageProxy, scale: number, background = '#ffffff') {
+/** Browsers refuse (or crash on) canvases past ~16k px a side or ~268 M pixels; a crafted PDF can ask for far more. */
+const MAX_SIDE = 16384
+const MAX_PIXELS = 120_000_000
+
+async function renderPage(page: PDFPageProxy, wanted: number, background = '#ffffff') {
+  const base = page.getViewport({ scale: 1 })
+  const scale = Math.min(wanted, MAX_SIDE / Math.max(base.width, base.height), Math.sqrt(MAX_PIXELS / (base.width * base.height)))
   const viewport = page.getViewport({ scale })
   const canvas = document.createElement('canvas')
   canvas.width = Math.ceil(viewport.width)

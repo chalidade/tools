@@ -149,6 +149,7 @@ export const TOOLS: Tool[] = [
     icon: FileText,
     formats: 'DOCX → PDF',
     component: lazy(() => import('./doc-to-pdf/DocToPdf')),
+    package: { name: '@chalidade/doc-to-pdf', element: 'doc-to-pdf', dir: 'doc-to-pdf', published: false },
   },
   {
     slug: 'pdf-to-word',
@@ -159,6 +160,7 @@ export const TOOLS: Tool[] = [
     icon: FileType,
     formats: 'PDF → DOCX',
     component: lazy(() => import('./pdf-to-word/PdfToWord')),
+    package: { name: '@chalidade/pdf-to-word', element: 'pdf-to-word', dir: 'pdf-to-word', published: false },
   },
   {
     slug: 'image-to-pdf',
@@ -169,6 +171,7 @@ export const TOOLS: Tool[] = [
     icon: Images,
     formats: 'JPG / PNG → PDF',
     component: lazy(() => import('./image-to-pdf/ImageToPdf')),
+    package: { name: '@chalidade/image-to-pdf', element: 'image-to-pdf', dir: 'image-to-pdf', published: false },
   },
   {
     slug: 'ppt-to-pdf',
@@ -179,6 +182,7 @@ export const TOOLS: Tool[] = [
     icon: Presentation,
     formats: 'PPTX → PDF',
     component: lazy(() => import('./ppt-to-pdf/PptToPdf')),
+    package: { name: '@chalidade/ppt-to-pdf', element: 'ppt-to-pdf', dir: 'ppt-to-pdf', published: false },
   },
   {
     slug: 'excel-to-pdf',
@@ -190,6 +194,7 @@ export const TOOLS: Tool[] = [
     icon: FileSpreadsheet,
     formats: 'XLSX / CSV → PDF',
     component: lazy(() => import('./excel-to-pdf/ExcelToPdf')),
+    package: { name: '@chalidade/excel-to-pdf', element: 'excel-to-pdf', dir: 'excel-to-pdf', published: false },
   },
   {
     slug: 'pdf-to-excel',
@@ -200,6 +205,7 @@ export const TOOLS: Tool[] = [
     icon: Sheet,
     formats: 'PDF → XLSX',
     component: lazy(() => import('./pdf-to-excel/PdfToExcel')),
+    package: { name: '@chalidade/pdf-to-excel', element: 'pdf-to-excel', dir: 'pdf-to-excel', published: false },
   },
   {
     slug: 'pdf-to-ppt',
@@ -210,6 +216,7 @@ export const TOOLS: Tool[] = [
     icon: MonitorPlay,
     formats: 'PDF → PPTX',
     component: lazy(() => import('./pdf-to-ppt/PdfToPpt')),
+    package: { name: '@chalidade/pdf-to-ppt', element: 'pdf-to-ppt', dir: 'pdf-to-ppt', published: false },
   },
   {
     slug: 'pdf-to-image',
@@ -220,6 +227,7 @@ export const TOOLS: Tool[] = [
     icon: FileImage,
     formats: 'PDF → PNG / JPG',
     component: lazy(() => import('./pdf-to-image/PdfToImage')),
+    package: { name: '@chalidade/pdf-to-image', element: 'pdf-to-image', dir: 'pdf-to-image', published: false },
   },
   {
     slug: 'merge-pdf',
@@ -231,6 +239,7 @@ export const TOOLS: Tool[] = [
     formats: 'PDF + PDF → PDF',
     badge: 'Baru',
     component: lazy(() => import('./merge-pdf/MergePdf')),
+    package: { name: '@chalidade/merge-pdf', element: 'merge-pdf', dir: 'merge-pdf', published: false },
   },
   {
     slug: 'split-pdf',
@@ -242,6 +251,7 @@ export const TOOLS: Tool[] = [
     formats: 'PDF → PDF / ZIP',
     badge: 'Baru',
     component: lazy(() => import('./split-pdf/SplitPdf')),
+    package: { name: '@chalidade/split-pdf', element: 'split-pdf', dir: 'split-pdf', published: false },
   },
   {
     slug: 'watermark-pdf',
@@ -253,6 +263,7 @@ export const TOOLS: Tool[] = [
     formats: 'PDF → PDF + watermark',
     badge: 'Baru',
     component: lazy(() => import('./watermark-pdf/WatermarkPdf')),
+    package: { name: '@chalidade/watermark-pdf', element: 'watermark-pdf', dir: 'watermark-pdf', published: false },
   },
   {
     slug: 'organize-pdf',
@@ -264,6 +275,7 @@ export const TOOLS: Tool[] = [
     formats: 'PDF → PDF',
     badge: 'Baru',
     component: lazy(() => import('./organize-pdf/OrganizePdf')),
+    package: { name: '@chalidade/organize-pdf', element: 'organize-pdf', dir: 'organize-pdf', published: false },
   },
   {
     slug: 'page-numbers',
@@ -275,6 +287,7 @@ export const TOOLS: Tool[] = [
     formats: 'PDF → PDF + nomor',
     badge: 'Baru',
     component: lazy(() => import('./page-numbers/PageNumbers')),
+    package: { name: '@chalidade/page-numbers', element: 'page-numbers', dir: 'page-numbers', published: false },
   },
   {
     slug: 'sign-pdf',
@@ -286,6 +299,7 @@ export const TOOLS: Tool[] = [
     formats: 'PDF → PDF + TTD',
     badge: 'Baru',
     component: lazy(() => import('./sign-pdf/SignPdf')),
+    package: { name: '@chalidade/sign-pdf', element: 'sign-pdf', dir: 'sign-pdf', published: false },
   },
   {
     slug: 'compress-pdf',
@@ -296,6 +310,7 @@ export const TOOLS: Tool[] = [
     icon: FileArchive,
     formats: 'PDF → PDF',
     component: lazy(() => import('./compress-pdf/CompressPdf')),
+    package: { name: '@chalidade/compress-pdf', element: 'compress-pdf', dir: 'compress-pdf', published: false },
   },
   {
     slug: 'pdf-to-markdown',
@@ -306,6 +321,7 @@ export const TOOLS: Tool[] = [
     icon: FileCode,
     formats: 'PDF → MD',
     component: lazy(() => import('./pdf-to-markdown/PdfToMarkdown')),
+    package: { name: '@chalidade/pdf-to-markdown', element: 'pdf-to-markdown', dir: 'pdf-to-markdown', published: false },
   },
   {
     slug: 'protect-pdf',
@@ -316,6 +332,7 @@ export const TOOLS: Tool[] = [
     icon: FileLock,
     formats: 'PDF → PDF + password',
     component: lazy(() => import('./protect-pdf/ProtectPdf')),
+    package: { name: '@chalidade/protect-pdf', element: 'protect-pdf', dir: 'protect-pdf', published: false },
   },
   {
     slug: 'unlock-pdf',
@@ -326,6 +343,7 @@ export const TOOLS: Tool[] = [
     icon: LockOpen,
     formats: 'PDF + password → PDF',
     component: lazy(() => import('./unlock-pdf/UnlockPdf')),
+    package: { name: '@chalidade/unlock-pdf', element: 'unlock-pdf', dir: 'unlock-pdf', published: false },
   },
   {
     slug: 'notes',
@@ -337,6 +355,7 @@ export const TOOLS: Tool[] = [
     formats: 'Teks → Markdown',
     badge: 'Baru',
     component: lazy(() => import('./notes/Notes')),
+    package: { name: '@chalidade/notes', element: 'markdown-notes', dir: 'notes', published: false },
   },
   {
     slug: 'password-generator',
@@ -348,6 +367,7 @@ export const TOOLS: Tool[] = [
     formats: 'Pengaturan → Password',
     badge: 'Baru',
     component: lazy(() => import('./password-generator/PasswordGenerator')),
+    package: { name: '@chalidade/password-generator', element: 'password-generator', dir: 'password-generator', published: false },
   },
   {
     slug: 'word-counter',
@@ -359,6 +379,7 @@ export const TOOLS: Tool[] = [
     formats: 'Teks → Statistik',
     badge: 'Baru',
     component: lazy(() => import('./word-counter/WordCounter')),
+    package: { name: '@chalidade/word-counter', element: 'word-counter', dir: 'word-counter', published: false },
   },
   {
     slug: 'unit-converter',
@@ -370,6 +391,7 @@ export const TOOLS: Tool[] = [
     formats: 'Angka → Satuan lain',
     badge: 'Baru',
     component: lazy(() => import('./unit-converter/UnitConverter')),
+    package: { name: '@chalidade/unit-converter', element: 'unit-converter', dir: 'unit-converter', published: false },
   },
   {
     slug: 'date-calculator',
@@ -381,6 +403,7 @@ export const TOOLS: Tool[] = [
     formats: 'Tanggal → Hasil',
     badge: 'Baru',
     component: lazy(() => import('./date-calculator/DateCalculator')),
+    package: { name: '@chalidade/date-calculator', element: 'date-calculator', dir: 'date-calculator', published: false },
   },
   {
     slug: 'jadwal-sholat',
@@ -392,6 +415,7 @@ export const TOOLS: Tool[] = [
     formats: 'Lokasi → Waktu sholat',
     badge: 'Baru',
     component: lazy(() => import('./jadwal-sholat/JadwalSholat')),
+    package: { name: '@chalidade/jadwal-sholat', element: 'prayer-times', dir: 'jadwal-sholat', published: false },
   },
   {
     slug: 'arah-kiblat',
@@ -403,6 +427,7 @@ export const TOOLS: Tool[] = [
     formats: 'Lokasi → Arah kiblat',
     badge: 'Baru',
     component: lazy(() => import('./arah-kiblat/ArahKiblat')),
+    package: { name: '@chalidade/arah-kiblat', element: 'qibla-direction', dir: 'arah-kiblat', published: false },
   },
   {
     slug: 'hijriah',
@@ -414,6 +439,7 @@ export const TOOLS: Tool[] = [
     formats: 'Masehi ⇄ Hijriah',
     badge: 'Baru',
     component: lazy(() => import('./hijriah/Hijriah')),
+    package: { name: '@chalidade/hijriah', element: 'hijri-calendar', dir: 'hijriah', published: false },
   },
   {
     slug: 'zakat',
@@ -425,6 +451,7 @@ export const TOOLS: Tool[] = [
     formats: 'Harta → Zakat',
     badge: 'Baru',
     component: lazy(() => import('./zakat/Zakat')),
+    package: { name: '@chalidade/zakat', element: 'zakat-calculator', dir: 'zakat', published: false },
   },
   {
     slug: 'tasbih',
@@ -436,6 +463,7 @@ export const TOOLS: Tool[] = [
     formats: 'Ketuk → Hitungan',
     badge: 'Baru',
     component: lazy(() => import('./tasbih/Tasbih')),
+    package: { name: '@chalidade/tasbih', element: 'tasbih-counter', dir: 'tasbih', published: false },
   },
   {
     slug: 'terbilang',
@@ -447,6 +475,7 @@ export const TOOLS: Tool[] = [
     formats: 'Angka → Teks',
     badge: 'Baru',
     component: lazy(() => import('./terbilang/Terbilang')),
+    package: { name: '@chalidade/terbilang', element: 'terbilang-converter', dir: 'terbilang', published: false },
   },
   {
     slug: 'qris',
@@ -458,6 +487,7 @@ export const TOOLS: Tool[] = [
     formats: 'QRIS → QRIS + nominal',
     badge: 'Baru',
     component: lazy(() => import('./qris/Qris')),
+    package: { name: '@chalidade/qris', element: 'qris-amount', dir: 'qris', published: false },
   },
   {
     slug: 'kwitansi',
@@ -469,6 +499,7 @@ export const TOOLS: Tool[] = [
     formats: 'Isian → PDF',
     badge: 'Baru',
     component: lazy(() => import('./kwitansi/Kwitansi')),
+    package: { name: '@chalidade/kwitansi', element: 'receipt-invoice', dir: 'kwitansi', published: false },
   },
   {
     slug: 'cicilan',
@@ -480,6 +511,7 @@ export const TOOLS: Tool[] = [
     formats: 'Pinjaman → Tabel angsuran',
     badge: 'Baru',
     component: lazy(() => import('./cicilan/Cicilan')),
+    package: { name: '@chalidade/cicilan', element: 'loan-calculator', dir: 'cicilan', published: false },
   },
   {
     slug: 'gaji-bersih',
@@ -491,6 +523,7 @@ export const TOOLS: Tool[] = [
     formats: 'Gaji bruto → Gaji bersih',
     badge: 'Baru',
     component: lazy(() => import('./gaji-bersih/GajiBersih')),
+    package: { name: '@chalidade/gaji-bersih', element: 'take-home-pay', dir: 'gaji-bersih', published: false },
   },
   {
     slug: 'link-wa',
@@ -502,6 +535,7 @@ export const TOOLS: Tool[] = [
     formats: 'Nomor → Link wa.me + QR',
     badge: 'Baru',
     component: lazy(() => import('./link-wa/LinkWa')),
+    package: { name: '@chalidade/link-wa', element: 'link-wa', dir: 'link-wa', published: false },
   },
   {
     slug: 'persen',
@@ -513,6 +547,7 @@ export const TOOLS: Tool[] = [
     formats: 'Angka → Persen / harga akhir',
     badge: 'Baru',
     component: lazy(() => import('./persen/Persen')),
+    package: { name: '@chalidade/persen', element: 'percent-calculator', dir: 'persen', published: false },
   },
   {
     slug: 'mana-lebih-murah',
@@ -524,6 +559,7 @@ export const TOOLS: Tool[] = [
     formats: 'Kemasan → Harga per satuan',
     badge: 'Baru',
     component: lazy(() => import('./mana-lebih-murah/ManaLebihMurah')),
+    package: { name: '@chalidade/mana-lebih-murah', element: 'unit-price-compare', dir: 'mana-lebih-murah', published: false },
   },
   {
     slug: 'calculator',
@@ -535,6 +571,7 @@ export const TOOLS: Tool[] = [
     formats: 'Ekspresi → Hasil',
     badge: 'Baru',
     component: lazy(() => import('./calculator/Calculator')),
+    package: { name: '@chalidade/calculator', element: 'basic-calculator', dir: 'calculator', published: false },
   },
   {
     slug: 'whiteboard',
@@ -562,6 +599,7 @@ export const TOOLS: Tool[] = [
     formats: 'Tulis tangan → PNG / PDF',
     badge: 'Baru',
     component: lazy(() => import('./whiteboard/Whiteboard')),
+    package: { name: '@chalidade/whiteboard', element: 'web-whiteboard', dir: 'whiteboard', published: false },
   },
   {
     slug: 'compress-video',
@@ -573,6 +611,7 @@ export const TOOLS: Tool[] = [
     formats: 'MP4 / MOV / WebM → MP4',
     badge: 'Baru',
     component: lazy(() => import('./compress-video/CompressVideo')),
+    package: { name: '@chalidade/compress-video', element: 'compress-video', dir: 'compress-video', published: false },
   },
   {
     slug: 'crop-resize-image',
@@ -584,6 +623,7 @@ export const TOOLS: Tool[] = [
     formats: 'JPG / PNG / WebP → JPG / PNG / WebP',
     badge: 'Baru',
     component: lazy(() => import('./crop-resize-image/CropResizeImage')),
+    package: { name: '@chalidade/crop-resize-image', element: 'crop-resize-image', dir: 'crop-resize-image', published: false },
   },
   {
     slug: 'convert-image',
@@ -595,6 +635,7 @@ export const TOOLS: Tool[] = [
     formats: 'HEIC / WebP / AVIF / PNG / JPG → JPG / PNG / WebP',
     badge: 'Baru',
     component: lazy(() => import('./convert-image/ConvertImage')),
+    package: { name: '@chalidade/convert-image', element: 'convert-image', dir: 'convert-image', published: false },
   },
   {
     slug: 'pas-foto',
@@ -606,6 +647,7 @@ export const TOOLS: Tool[] = [
     formats: 'JPG / PNG / WebP → JPG / PNG / PDF',
     badge: 'Baru',
     component: lazy(() => import('./pas-foto/PasFoto')),
+    package: { name: '@chalidade/pas-foto', element: 'pas-foto', dir: 'pas-foto', published: false },
   },
   {
     slug: 'strip-exif',
@@ -617,6 +659,7 @@ export const TOOLS: Tool[] = [
     formats: 'JPG / PNG / WebP → JPG / PNG / WebP',
     badge: 'Baru',
     component: lazy(() => import('./strip-exif/StripExif')),
+    package: { name: '@chalidade/strip-exif', element: 'strip-exif', dir: 'strip-exif', published: false },
   },
   {
     slug: 'remove-background',
@@ -628,6 +671,7 @@ export const TOOLS: Tool[] = [
     formats: 'JPG / PNG / WebP → PNG / JPG',
     badge: 'Baru',
     component: lazy(() => import('./remove-background/RemoveBackground')),
+    package: { name: '@chalidade/remove-background', element: 'remove-background', dir: 'remove-background', published: false },
   },
   {
     slug: 'compress-image',
@@ -652,6 +696,7 @@ export const TOOLS: Tool[] = [
     formats: 'JPG / PNG / WebP → JPG / WebP',
     badge: 'Baru',
     component: lazy(() => import('./compress-image/CompressImage')),
+    package: { name: '@chalidade/compress-image', element: 'compress-image', dir: 'compress-image', published: false },
   },
   {
     slug: 'trim-media',
@@ -663,6 +708,7 @@ export const TOOLS: Tool[] = [
     formats: 'MP4 / MOV / WebM / MP3 / M4A / WAV',
     badge: 'Baru',
     component: lazy(() => import('./trim-media/TrimMedia')),
+    package: { name: '@chalidade/trim-media', element: 'trim-media', dir: 'trim-media', published: false },
   },
   {
     slug: 'gif-mp4',
@@ -674,6 +720,7 @@ export const TOOLS: Tool[] = [
     formats: 'GIF ⇄ MP4',
     badge: 'Baru',
     component: lazy(() => import('./gif-mp4/GifMp4')),
+    package: { name: '@chalidade/gif-mp4', element: 'gif-mp4', dir: 'gif-mp4', published: false },
   },
   {
     slug: 'extract-frames',
@@ -685,6 +732,7 @@ export const TOOLS: Tool[] = [
     formats: 'Video → PNG / JPG / WebP',
     badge: 'Baru',
     component: lazy(() => import('./extract-frames/ExtractFrames')),
+    package: { name: '@chalidade/extract-frames', element: 'extract-frames', dir: 'extract-frames', published: false },
   },
   {
     slug: 'change-speed',
@@ -696,6 +744,7 @@ export const TOOLS: Tool[] = [
     formats: 'Video → MP4 · Audio → MP3 / M4A / WAV',
     badge: 'Baru',
     component: lazy(() => import('./change-speed/ChangeSpeed')),
+    package: { name: '@chalidade/change-speed', element: 'change-speed', dir: 'change-speed', published: false },
   },
   {
     slug: 'merge-audio',
@@ -707,6 +756,7 @@ export const TOOLS: Tool[] = [
     formats: 'Audio + Audio → MP3 / M4A / WAV',
     badge: 'Baru',
     component: lazy(() => import('./merge-audio/MergeAudio')),
+    package: { name: '@chalidade/merge-audio', element: 'merge-audio', dir: 'merge-audio', published: false },
   },
   {
     slug: 'screen-recorder',
@@ -732,7 +782,7 @@ export const TOOLS: Tool[] = [
     formats: 'Layar → WebM / MP4',
     badge: 'Baru',
     component: lazy(() => import('./screen-recorder/ScreenRecorder')),
-    package: { name: '@chalidade/screen-recorder', element: 'screen-recorder', dir: 'screen-recorder', published: false },
+    package: { name: '@chalidade/screen-recorder', element: 'screen-recorder', dir: 'screen-recorder', published: true },
   },
   {
     slug: 'audio-recorder',
@@ -759,6 +809,7 @@ export const TOOLS: Tool[] = [
     formats: 'Mikrofon → MP3 / M4A / WAV',
     badge: 'Baru',
     component: lazy(() => import('./audio-recorder/AudioRecorder')),
+    package: { name: '@chalidade/audio-recorder', element: 'audio-recorder', dir: 'audio-recorder', published: false },
   },
   {
     slug: 'guitar-tuner',
@@ -791,6 +842,7 @@ export const TOOLS: Tool[] = [
     formats: 'Mikrofon → Nada',
     badge: 'Baru',
     component: lazy(() => import('./guitar-tuner/GuitarTuner')),
+    package: { name: '@chalidade/guitar-tuner', element: 'guitar-tuner', dir: 'guitar-tuner', published: false },
   },
   {
     slug: 'metronome',
@@ -802,6 +854,7 @@ export const TOOLS: Tool[] = [
     formats: 'BPM → Klik',
     badge: 'Baru',
     component: lazy(() => import('./metronome/Metronome')),
+    package: { name: '@chalidade/metronome', element: 'web-metronome', dir: 'metronome', published: false },
   },
   {
     slug: 'chords',
@@ -827,6 +880,7 @@ export const TOOLS: Tool[] = [
     formats: 'Chord → Diagram',
     badge: 'Baru',
     component: lazy(() => import('./chords/Chords')),
+    package: { name: '@chalidade/chords', element: 'chord-finder', dir: 'chords', published: false },
   },
   {
     slug: 'chord-progression',
@@ -838,6 +892,7 @@ export const TOOLS: Tool[] = [
     formats: 'Kunci + Pola → Chord',
     badge: 'Baru',
     component: lazy(() => import('./chord-progression/ChordProgression')),
+    package: { name: '@chalidade/chord-progression', element: 'chord-progression', dir: 'chord-progression', published: false },
   },
   {
     slug: 'practice-recorder',
@@ -849,6 +904,7 @@ export const TOOLS: Tool[] = [
     formats: 'Mikrofon → MP3 / WAV',
     badge: 'Baru',
     component: lazy(() => import('./practice-recorder/PracticeRecorder')),
+    package: { name: '@chalidade/practice-recorder', element: 'practice-recorder', dir: 'practice-recorder', published: false },
   },
   {
     slug: 'bpm-key',
@@ -860,6 +916,7 @@ export const TOOLS: Tool[] = [
     formats: 'MP3 / WAV → BPM + Kunci',
     badge: 'Baru',
     component: lazy(() => import('./bpm-key/BpmKey')),
+    package: { name: '@chalidade/bpm-key', element: 'bpm-key', dir: 'bpm-key', published: false },
   },
   {
     slug: 'piano',
@@ -871,6 +928,7 @@ export const TOOLS: Tool[] = [
     formats: 'Tuts → Suara',
     badge: 'Baru',
     component: lazy(() => import('./piano/Piano')),
+    package: { name: '@chalidade/piano', element: 'piano-keyboard', dir: 'piano', published: false },
   },
   {
     slug: 'guitar',
@@ -882,6 +940,7 @@ export const TOOLS: Tool[] = [
     formats: 'Chord → Genjreng',
     badge: 'Baru',
     component: lazy(() => import('./guitar/Guitar')),
+    package: { name: '@chalidade/guitar', element: 'virtual-guitar', dir: 'guitar', published: false },
   },
   {
     slug: 'drums',
@@ -893,6 +952,7 @@ export const TOOLS: Tool[] = [
     formats: 'Pad → Beat',
     badge: 'Baru',
     component: lazy(() => import('./drums/Drums')),
+    package: { name: '@chalidade/drums', element: 'drum-machine', dir: 'drums', published: false },
   },
   {
     slug: 'compress-audio',
@@ -925,6 +985,7 @@ export const TOOLS: Tool[] = [
     formats: 'Audio / Video → MP3 / M4A / OGG',
     badge: 'Baru',
     component: lazy(() => import('./compress-audio/CompressAudio')),
+    package: { name: '@chalidade/compress-audio', element: 'compress-audio', dir: 'compress-audio', published: false },
   },
   {
     slug: 'qr-generator',
@@ -936,6 +997,7 @@ export const TOOLS: Tool[] = [
     formats: 'Teks → PNG / SVG',
     badge: 'Baru',
     component: lazy(() => import('./qr/QrGenerator')),
+    package: { name: '@chalidade/qr-generator', element: 'qr-generator', dir: 'qr-generator', published: false },
   },
   {
     slug: 'qr-reader',
@@ -947,6 +1009,7 @@ export const TOOLS: Tool[] = [
     formats: 'Gambar / Kamera → Teks',
     badge: 'Baru',
     component: lazy(() => import('./qr/QrReader')),
+    package: { name: '@chalidade/qr-reader', element: 'qr-reader', dir: 'qr-reader', published: false },
   },
   {
     slug: 'json-beautify',
@@ -958,6 +1021,7 @@ export const TOOLS: Tool[] = [
     formats: 'JSON → JSON rapi',
     badge: 'Baru',
     component: lazy(() => import('./json/JsonBeautify')),
+    package: { name: '@chalidade/json-beautify', element: 'json-beautify', dir: 'json-beautify', published: false },
   },
   {
     slug: 'json-minify',
@@ -969,6 +1033,7 @@ export const TOOLS: Tool[] = [
     formats: 'JSON → JSON ringkas',
     badge: 'Baru',
     component: lazy(() => import('./json/JsonMinify')),
+    package: { name: '@chalidade/json-minify', element: 'json-minify', dir: 'json-minify', published: false },
   },
   {
     slug: 'encode-decode',
@@ -980,6 +1045,7 @@ export const TOOLS: Tool[] = [
     formats: 'Teks ⇄ Base64 / URL / HTML / JWT',
     badge: 'Baru',
     component: lazy(() => import('./encode-decode/EncodeDecode')),
+    package: { name: '@chalidade/encode-decode', element: 'encode-decode', dir: 'encode-decode', published: false },
   },
   {
     slug: 'uuid',
@@ -991,6 +1057,7 @@ export const TOOLS: Tool[] = [
     formats: 'Jumlah → UUID',
     badge: 'Baru',
     component: lazy(() => import('./uuid/Uuid')),
+    package: { name: '@chalidade/uuid', element: 'uuid-generator', dir: 'uuid', published: false },
   },
   {
     slug: 'text-diff',
@@ -1002,6 +1069,7 @@ export const TOOLS: Tool[] = [
     formats: 'Teks + Teks → Perbedaan',
     badge: 'Baru',
     component: lazy(() => import('./text-diff/TextDiff')),
+    package: { name: '@chalidade/text-diff', element: 'text-diff', dir: 'text-diff', published: false },
   },
   {
     slug: 'favicon-generator',
@@ -1013,6 +1081,7 @@ export const TOOLS: Tool[] = [
     formats: 'PNG / SVG / teks → ICO + PNG',
     badge: 'Baru',
     component: lazy(() => import('./favicon-generator/FaviconGenerator')),
+    package: { name: '@chalidade/favicon-generator', element: 'favicon-generator', dir: 'favicon-generator', published: false },
   },
   {
     slug: 'image-to-base64',
@@ -1024,6 +1093,7 @@ export const TOOLS: Tool[] = [
     formats: 'Gambar ⇄ Base64',
     badge: 'Baru',
     component: lazy(() => import('./image-to-base64/ImageToBase64')),
+    package: { name: '@chalidade/image-to-base64', element: 'image-to-base64', dir: 'image-to-base64', published: false },
   },
   {
     slug: 'color-picker',
@@ -1035,6 +1105,7 @@ export const TOOLS: Tool[] = [
     formats: 'HEX / RGB / HSL / OKLCH',
     badge: 'Baru',
     component: lazy(() => import('./color-picker/ColorPicker')),
+    package: { name: '@chalidade/color-picker', element: 'color-picker', dir: 'color-picker', published: false },
   },
 ]
 

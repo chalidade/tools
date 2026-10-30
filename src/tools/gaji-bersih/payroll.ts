@@ -39,7 +39,7 @@ export interface Result {
 }
 
 export const ptkp = (married: boolean, dependents: number) =>
-  PTKP_SELF + (married ? PTKP_MARRIED : 0) + Math.min(MAX_DEPENDENTS, Math.max(0, Math.floor(dependents))) * PTKP_DEPENDENT
+  PTKP_SELF + (married ? PTKP_MARRIED : 0) + Math.min(MAX_DEPENDENTS, Math.max(0, Math.floor(dependents) || 0)) * PTKP_DEPENDENT
 
 export function progressiveTax(taxable: number): number {
   let tax = 0
@@ -58,7 +58,8 @@ export function progressiveTax(taxable: number): number {
  * effective rate. A planning estimate, not a withholding slip.
  */
 export function netSalary(i: Input): Result {
-  const gross = Math.max(0, i.gross)
+  // NaN, Infinity and negatives count as no salary rather than poisoning every figure.
+  const gross = Number.isFinite(i.gross) && i.gross > 0 ? i.gross : 0
   const kesBase = Math.min(gross, BPJS_KES_CAP)
   const jpBase = Math.min(gross, JP_CAP)
   const kesEmployee = i.bpjs ? kesBase * BPJS_KES_EMPLOYEE : 0

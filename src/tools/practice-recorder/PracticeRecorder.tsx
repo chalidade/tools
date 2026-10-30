@@ -139,13 +139,16 @@ export default function PracticeRecorder() {
   }
   const cleanupRef = useRef(cleanup)
   cleanupRef.current = cleanup
-  useEffect(
-    () => () => {
+  /** Set on unmount, so a mic prompt answered afterwards releases its stream instead of recording. */
+  const gone = useRef(false)
+  useEffect(() => {
+    gone.current = false // StrictMode remounts after a cleanup
+    return () => {
+      gone.current = true
       cleanupRef.current()
       void ctxRef.current?.close().catch(() => {})
-    },
-    [],
-  )
+    }
+  }, [])
 
   /**
    * Clicks for beats k = 0, 1, 2… at `origin + k × beat` (AudioContext time),
@@ -190,6 +193,7 @@ export default function PracticeRecorder() {
       const stream = await navigator.mediaDevices.getUserMedia({
         audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false },
       })
+      if (gone.current) return stream.getTracks().forEach((track) => track.stop())
       streamRef.current = stream
       const audio = ctx()
       await audio.resume()

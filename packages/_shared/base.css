@@ -1,0 +1,32 @@
+/* Shadow DOM base for every package's element.css. The package's own file
+   imports this, then adds `@source` for its tool folder. */
+@import "tailwindcss" source(none);
+@import "tw-animate-css";
+
+@source "../../src/components/tool";
+@source "../../src/components/ui";
+@source "./define-element.tsx";
+
+@custom-variant dark (&:is(.dark *));
+
+@import "../../src/theme.css";
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  :host {
+    display: block;
+  }
+}
+
+/* The page embedding the element can recolour it, in both themes:
+   my-element { --sr-brand-1: …; --sr-brand-2: … } */
+.sr-frame {
+  --brand-1: var(--sr-brand-1, oklch(0.623 0.214 259.815));
+  --brand-2: var(--sr-brand-2, oklch(0.606 0.25 292.717));
+}
+.sr-frame.dark {
+  --brand-1: var(--sr-brand-1, oklch(0.707 0.165 254.624));
+  --brand-2: var(--sr-brand-2, oklch(0.702 0.183 293.541));
+}

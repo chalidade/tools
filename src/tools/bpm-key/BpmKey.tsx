@@ -7,7 +7,9 @@ import { FileDrop } from '@/components/tool/FileDrop'
 import { FLATS, SHARPS, pc } from '@/lib/music'
 import { getLang, tr, useT } from '@/lib/i18n'
 import { pageUrl } from '@/lib/route'
-import { decodeToMono, type Analysis } from './analyze'
+import { camelot, decodeToMono, type Analysis } from './analyze'
+
+const MAX_BYTES = 200 * 1024 * 1024
 
 type Phase = { kind: 'idle' } | { kind: 'busy'; label: string } | { kind: 'done'; result: Analysis; file: File; url: string }
 
@@ -24,11 +26,6 @@ function keyName(tonic: number, minor: boolean) {
 }
 const keyShort = (tonic: number, minor: boolean) => noteIn(tonic, usesFlats(tonic, minor)) + (minor ? 'm' : '')
 
-/** Camelot wheel code DJs mix by: 8A = A minor, 8B = C major. */
-function camelot(tonic: number, minor: boolean) {
-  const major = minor ? pc(tonic + 3) : tonic
-  return `${((pc(major * 7) + 7) % 12) + 1}${minor ? 'A' : 'B'}`
-}
 
 /** The seven chords that belong to the key, I … vii°. */
 function diatonic(tonic: number, minor: boolean) {
@@ -66,6 +63,9 @@ export default function BpmKey() {
   async function run(file: File) {
     setError('')
     setFactor(1)
+    // The whole file is decoded in memory (about 20 MB per minute of stereo audio), so refuse the absurd.
+    if (file.size > MAX_BYTES)
+      return setError(tr('File terlalu besar — maksimal 200 MB.', 'The file is too big — 200 MB at most.'))
     setPhase({ kind: 'busy', label: t('Membaca audio…', 'Reading the audio…') })
     try {
       let samples: Float32Array

@@ -1,0 +1,47 @@
+{
+  "name": "@chalidade/whiteboard",
+  "version": "0.1.0",
+  "description": "A whiteboard or blackboard to write and draw on: pen, highlighter, shapes, text, many pages, PNG/PDF export: a drop-in <web-whiteboard> element.",
+  "keywords": [
+    "web component",
+    "custom element"
+  ],
+  "license": "MIT",
+  "author": "Chalid Ade Rahman",
+  "homepage": "https://chalidade.github.io/tools/#/whiteboard",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chalidade/tools.git",
+    "directory": "packages/whiteboard"
+  },
+  "bugs": "https://github.com/chalidade/tools/issues",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "jsdelivr": "./dist/element.js",
+  "unpkg": "./dist/element.js",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./element": {
+      "types": "./dist/element.d.ts",
+      "import": "./dist/element.js"
+    }
+  },
+  "sideEffects": [
+    "./dist/element.js"
+  ],
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "THIRD-PARTY-NOTICES.md"
+  ],
+  "scripts": {
+    "build": "tsc --noEmit -p . && vite build && cp types/*.d.ts dist/",
+    "prepublishOnly": "npm run build"
+  }
+}

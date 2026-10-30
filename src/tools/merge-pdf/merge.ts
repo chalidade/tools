@@ -17,7 +17,7 @@ export async function loadPdfItem(file: File): Promise<PdfItem> {
   return { id: crypto.randomUUID(), file, pages: count, thumb: thumbs[0].src }
 }
 
-export async function mergePdfs(items: PdfItem[], onProgress: (done: number, total: number) => void) {
+export async function mergePdfs(items: Pick<PdfItem, 'file'>[], onProgress: (done: number, total: number) => void) {
   const out = await newPdfDoc()
   for (const [i, item] of items.entries()) {
     const src = await openPdfDoc(new Uint8Array(await item.file.arrayBuffer()))

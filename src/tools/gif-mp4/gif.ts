@@ -3,7 +3,7 @@
 // with Mediabunny's CanvasSink and written as a GIF with gifenc. Nothing is
 // uploaded; the libraries load only when this tool is opened.
 
-import { NoEncoderError, openMedia } from '@/lib/media'
+import { NoEncoderError, openMedia, UnsupportedMediaError } from '@/lib/media'
 
 export const isGif = (file: File) => file.type === 'image/gif' || /\.gif$/i.test(file.name)
 
@@ -15,11 +15,19 @@ export interface GifInfo {
   duration: number
 }
 
+/** 64 megapixels: about 8000×8000, Safari's canvas limit. */
+const MAX_PIXELS = 64_000_000
+
 async function parse(file: File) {
   const { parseGIF, decompressFrame } = await import('gifuct-js')
   const gif = parseGIF(await file.arrayBuffer())
   // Only image frames; application/comment blocks are skipped.
   const frames = gif.frames.filter((f) => 'image' in f)
+  // A GIF states its own size: a 200 KB file can claim 16000×16000 and need gigabytes to
+  // decode. Refuse anything past what a canvas holds anyway, before decoding a pixel.
+  const big = (w: number, h: number) => w * h > MAX_PIXELS
+  if (big(gif.lsd.width, gif.lsd.height) || frames.some((f) => big(f.image.descriptor.width, f.image.descriptor.height)))
+    throw new UnsupportedMediaError('gif too large')
   return { gif, frames, decompressFrame }
 }
 

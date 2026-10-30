@@ -2,6 +2,8 @@
 // encode as JPEG/WebP/PNG at the chosen quality. Re-encoding also drops all
 // metadata (EXIF camera data, GPS location). Nothing is uploaded.
 
+import { stripMetadata } from '../strip-exif/exif'
+
 export type OutFormat = 'same' | 'jpeg' | 'webp'
 
 export interface ImageOptions {
@@ -16,7 +18,7 @@ export interface ImageResult {
   blob: Blob
   width: number
   height: number
-  /** True when re-encoding did not help, so the original file is returned as is. */
+  /** True when re-encoding did not help, so the original picture is returned, minus its metadata. */
   kept: boolean
 }
 
@@ -72,8 +74,9 @@ export async function compressImage(file: File, opts: ImageOptions): Promise<Ima
     canvas.width = canvas.height = 0
 
     // Same format and size but not smaller: the original was already well compressed.
-    const sameShape = scale === 1 && type === file.type
-    if (sameShape && blob.size >= file.size) return { blob: file, width, height, kept: true }
+    // It is kept without its metadata, so the GPS promise holds for kept files too.
+    const original = scale === 1 && type === file.type ? stripMetadata(new Uint8Array(await file.arrayBuffer())) : null
+    if (original && blob.size >= original.length) return { blob: new Blob([original as BlobPart], { type }), width, height, kept: true }
     return { blob, width, height, kept: false }
   } finally {
     bitmap.close()

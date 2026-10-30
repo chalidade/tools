@@ -1,0 +1,4 @@
+/* Styles for <link-wa>'s Shadow DOM: the shared base plus this tool's classes. */
+@import "../../_shared/base.css";
+@source "../../../src/tools/link-wa";
+@source "../../../src/tools/qr";

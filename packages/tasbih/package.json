@@ -1,0 +1,50 @@
+{
+  "name": "@chalidade/tasbih",
+  "version": "0.1.0",
+  "description": "A big dhikr (tasbih) counter with 33/99/free targets, vibration and keyboard shortcuts: a drop-in <tasbih-counter> element.",
+  "keywords": [
+    "web component",
+    "custom element",
+    "tasbih",
+    "dhikr",
+    "counter"
+  ],
+  "license": "MIT",
+  "author": "Chalid Ade Rahman",
+  "homepage": "https://chalidade.github.io/tools/#/tasbih",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chalidade/tools.git",
+    "directory": "packages/tasbih"
+  },
+  "bugs": "https://github.com/chalidade/tools/issues",
+  "type": "module",
+  "main": "./dist/element.js",
+  "module": "./dist/element.js",
+  "types": "./dist/element.d.ts",
+  "jsdelivr": "./dist/element.js",
+  "unpkg": "./dist/element.js",
+  "exports": {
+    ".": {
+      "types": "./dist/element.d.ts",
+      "import": "./dist/element.js"
+    },
+    "./element": {
+      "types": "./dist/element.d.ts",
+      "import": "./dist/element.js"
+    }
+  },
+  "sideEffects": [
+    "./dist/element.js"
+  ],
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "THIRD-PARTY-NOTICES.md"
+  ],
+  "scripts": {
+    "build": "tsc --noEmit -p . && vite build && cp types/*.d.ts dist/",
+    "prepublishOnly": "npm run build"
+  }
+}

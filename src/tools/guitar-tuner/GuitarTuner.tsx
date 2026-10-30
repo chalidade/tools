@@ -84,6 +84,8 @@ export default function GuitarTuner() {
   const [drone, setDrone] = useState<number | null>(null)
   const [droneNote, setDroneNote] = useState(57)
   const inTuneSince = useRef<{ string: number; at: number } | null>(null)
+  /** Bumped by every start/stop, so a mic prompt answered after Stop or unmount releases its stream. */
+  const session = useRef(0)
 
   useEffect(() => {
     try {
@@ -106,6 +108,7 @@ export default function GuitarTuner() {
   a4Ref.current = prefs.a4
 
   const stop = useCallback(() => {
+    session.current++
     cancelAnimationFrame(rafRef.current)
     streamRef.current?.getTracks().forEach((track) => track.stop())
     streamRef.current = null
@@ -172,11 +175,13 @@ export default function GuitarTuner() {
 
   const start = async () => {
     setError('')
+    const id = ++session.current
     try {
       // Raw signal: speech processing would gate and smear a plucked note.
       const stream = await navigator.mediaDevices.getUserMedia({
         audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false },
       })
+      if (id !== session.current) return stream.getTracks().forEach((track) => track.stop())
       streamRef.current = stream
       const ctx = new AudioContext()
       ctxRef.current = ctx
@@ -208,6 +213,7 @@ export default function GuitarTuner() {
       }
       rafRef.current = requestAnimationFrame(tick)
     } catch (e) {
+      if (id !== session.current) return
       stop()
       setError(micError(e))
     }

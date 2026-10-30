@@ -1,0 +1,47 @@
+{
+  "name": "@chalidade/practice-recorder",
+  "version": "0.1.0",
+  "description": "Record your playing over a metronome click that is not recorded, play it back with the click, and save it as MP3 or WAV. A web component, runs in the browser.",
+  "keywords": [
+    "web component",
+    "custom element"
+  ],
+  "license": "MIT",
+  "author": "Chalid Ade Rahman",
+  "homepage": "https://chalidade.github.io/tools/#/practice-recorder",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chalidade/tools.git",
+    "directory": "packages/practice-recorder"
+  },
+  "bugs": "https://github.com/chalidade/tools/issues",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "jsdelivr": "./dist/element.js",
+  "unpkg": "./dist/element.js",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./element": {
+      "types": "./dist/element.d.ts",
+      "import": "./dist/element.js"
+    }
+  },
+  "sideEffects": [
+    "./dist/element.js"
+  ],
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "THIRD-PARTY-NOTICES.md"
+  ],
+  "scripts": {
+    "build": "tsc --noEmit -p . && vite build && cp types/*.d.ts dist/",
+    "prepublishOnly": "npm run build"
+  }
+}

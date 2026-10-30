@@ -382,7 +382,28 @@ export function renderPage(page: Page, doc: BoardDoc, scale = 2, padding = 48) {
   return out
 }
 
-/** Loose check for a board file opened from disk. */
+const isNum = (n: unknown): n is number => typeof n === 'number' && Number.isFinite(n)
+const isPoint = (p: unknown) => !!p && isNum((p as Point).x) && isNum((p as Point).y)
+
+/** Every field drawItem() reads: a file with a malformed item would otherwise break the board on every load. */
+function isItem(value: unknown): value is Item {
+  const i = value as Item
+  if (!i || typeof i.id !== 'string' || typeof i.color !== 'string' || !isNum(i.size)) return false
+  switch (i.kind) {
+    case 'stroke':
+      return Array.isArray(i.points) && i.points.every((p) => Array.isArray(p) && isNum(p[0]) && isNum(p[1]))
+    case 'line':
+    case 'arrow':
+    case 'rect':
+    case 'ellipse':
+      return isPoint(i.a) && isPoint(i.b)
+    case 'text':
+      return isPoint(i.at) && typeof i.text === 'string'
+  }
+  return false
+}
+
+/** Check for a board file opened from disk (or saved earlier): untrusted until every item passes. */
 export function isBoardDoc(value: unknown): value is BoardDoc {
   const v = value as BoardDoc
   return (
@@ -390,6 +411,6 @@ export function isBoardDoc(value: unknown): value is BoardDoc {
     (v.surface === 'white' || v.surface === 'black') &&
     Array.isArray(v.pages) &&
     v.pages.length > 0 &&
-    v.pages.every((p) => p && Array.isArray(p.items))
+    v.pages.every((p) => p && typeof p.id === 'string' && Array.isArray(p.items) && p.items.every(isItem))
   )
 }

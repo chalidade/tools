@@ -11,17 +11,18 @@ function formatSize(n: number) {
 
 /** "Before → after, −X%" card shared by the compression tools. */
 export function SizeResult({ before, after, children }: { before: number; after: number; children?: ReactNode }) {
+  const t = useT()
   const saved = 1 - after / before
   return (
     <div className="overflow-hidden rounded-2xl border bg-card">
       <div className="grid gap-6 p-6 sm:grid-cols-[1fr_auto_1fr_auto] sm:items-center">
         <div>
-          <p className="text-xs text-muted-foreground">Sebelum</p>
+          <p className="text-xs text-muted-foreground">{t('Sebelum', 'Before')}</p>
           <p className="mt-1 text-2xl font-semibold tracking-tight">{formatSize(before)}</p>
         </div>
         <ArrowRight className="hidden size-5 text-muted-foreground sm:block" />
         <div>
-          <p className="text-xs text-muted-foreground">Sesudah</p>
+          <p className="text-xs text-muted-foreground">{t('Sesudah', 'After')}</p>
           <p className="mt-1 text-2xl font-semibold tracking-tight">{formatSize(after)}</p>
         </div>
         <p className="text-gradient text-4xl font-semibold tracking-tight sm:text-right">

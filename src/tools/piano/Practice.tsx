@@ -222,7 +222,7 @@ export function Practice({ host }: { host: PracticeHost }) {
             >
               {SONGS.map((s) => (
                 <option key={s.id} value={s.id}>
-                  {s.title} — {s.by}
+                  {lang === 'en' && s.en ? `${s.en.title} — ${s.en.by}` : `${s.title} — ${s.by}`}
                 </option>
               ))}
             </select>

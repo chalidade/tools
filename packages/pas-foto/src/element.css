@@ -1,0 +1,4 @@
+/* Styles for <pas-foto>'s Shadow DOM: the shared base plus this tool's classes. */
+@import "../../_shared/base.css";
+@source "../../../src/tools/pas-foto";
+@source "../../../src/tools/remove-background";

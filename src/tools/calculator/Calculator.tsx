@@ -86,25 +86,31 @@ const SCIENTIFIC: Key[] = [
   { label: 'EE', insert: '×10^', title: ['×10 pangkat', '×10 to the power'] },
 ]
 
-export default function Calculator() {
+export interface CalculatorProps {
+  /** Keep the history in localStorage (default). false: history lasts until the page closes. */
+  persist?: boolean
+}
+
+export default function Calculator({ persist = true }: CalculatorProps = {}) {
   const t = useT()
   const lang = useLang()
   const [expr, setExpr] = useState('')
   const [mode, setMode] = useState<Mode>('basic')
   const [angle, setAngle] = useState<AngleMode>('deg')
-  const [history, setHistory] = useState<Entry[]>(loadHistory)
+  const [history, setHistory] = useState<Entry[]>(() => (persist ? loadHistory() : []))
   const [shown, setShown] = useState<{ expr: string; result: number } | null>(null)
   const [error, setError] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
   const ans = history[0]?.result ?? 0
 
   useEffect(() => {
+    if (!persist) return
     try {
       localStorage.setItem(HISTORY_KEY, JSON.stringify(history.slice(0, MAX_HISTORY)))
     } catch {
       // Private mode: history just won't persist.
     }
-  }, [history])
+  }, [persist, history])
 
   // The result as you type, like a phone calculator; nothing while it's incomplete.
   const preview = useMemo(() => {

@@ -1,0 +1,47 @@
+{
+  "name": "@chalidade/drums",
+  "version": "0.1.0",
+  "description": "Nine drum pads and a 16-step sequencer for any website, playable by touch, keyboard or MIDI. A web component plus a headless drum synth.",
+  "keywords": [
+    "web component",
+    "custom element"
+  ],
+  "license": "MIT",
+  "author": "Chalid Ade Rahman",
+  "homepage": "https://chalidade.github.io/tools/#/drums",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chalidade/tools.git",
+    "directory": "packages/drums"
+  },
+  "bugs": "https://github.com/chalidade/tools/issues",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "jsdelivr": "./dist/element.js",
+  "unpkg": "./dist/element.js",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./element": {
+      "types": "./dist/element.d.ts",
+      "import": "./dist/element.js"
+    }
+  },
+  "sideEffects": [
+    "./dist/element.js"
+  ],
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "THIRD-PARTY-NOTICES.md"
+  ],
+  "scripts": {
+    "build": "tsc --noEmit -p . && vite build && cp types/*.d.ts dist/",
+    "prepublishOnly": "npm run build"
+  }
+}

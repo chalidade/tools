@@ -9,8 +9,6 @@ import { downloadBlob } from '@/lib/download'
 import { tr, useT } from '@/lib/i18n'
 import {
   audioPeaks,
-  convertMedia,
-  ensureAudioEncoder,
   formatDuration,
   formatSize,
   formatTime,
@@ -23,6 +21,7 @@ import {
   type MediaInfo,
   type OutputChoice,
 } from '@/lib/media'
+import { trimMedia } from './trim'
 
 type Status =
   | { kind: 'idle' }
@@ -123,22 +122,13 @@ export default function TrimMedia() {
     void el.play()
   }
 
-  async function save(info: MediaInfo, out: OutputChoice) {
+  async function save() {
     if (!file) return
     setError(null)
     setResult(null)
     setJob({ progress: 0, startedAt: Date.now() })
     try {
-      const whole = range.start <= 0.001 && range.end >= info.duration - 0.001
-      // The audio at the cut points is re-encoded for an exact cut; browsers have no MP3
-      // encoder and often no AAC one, so load the wasm ones for those.
-      const codec = info.audio?.codec
-      if (!whole && (codec === 'mp3' || codec === 'aac')) await ensureAudioEncoder(codec)
-      const blob = await convertMedia({
-        file,
-        format: out.format,
-        mimeType: out.mimeType,
-        trim: whole ? undefined : range,
+      const { blob } = await trimMedia(file, range, {
         onProgress: (progress) => setJob((j) => (j ? { ...j, progress } : j)),
         onStart: (cancel) => (cancelRef.current = cancel),
       })
@@ -179,7 +169,7 @@ export default function TrimMedia() {
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
-            <Button onClick={() => void save(info, out)} disabled={busy}>
+            <Button onClick={() => void save()} disabled={busy}>
               <Scissors />
               {tx('Potong', 'Trim')}
             </Button>

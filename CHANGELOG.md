@@ -3,6 +3,21 @@
 Catatan harian apa yang berubah di [tools](https://chalidade.github.io/tools/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-10-31 — Audit keamanan & paket npm untuk semua tools
+
+Audit keamanan ke-72 tools. Tidak ada tool yang mengirim data ke mana pun; perbaikan yang juga berlaku di situs:
+
+- **Word ke PDF** (tinggi): file .docx yang sengaja dibuat bisa menjalankan script lewat tombol "Print / Simpan PDF", dan memancing browser memuat URL asing saat file dibuka. Dokumen kini dibersihkan sebelum tampil, dan salinan cetaknya di-sandbox.
+- **Hapus Metadata Foto**: salinan JPEG yang tertanam (pratinjau dari ponsel), Extended XMP, dan data setelah akhir file ikut terhapus. Sebelumnya GPS dan nama kamera bisa tersisa di sana. WebP kini juga didukung.
+- **Kompres Gambar**: bila hasil kompresi tidak lebih kecil, file asli dikembalikan dengan metadata (termasuk GPS) dihapus, sesuai janji di layar.
+- **PowerPoint ke PDF**, **PDF ke PowerPoint**: file tidak bisa lagi memuat gambar dari server luar atau menyisipkan XML lewat nama font.
+- **Excel ke PDF**, **PDF ke Gambar**, **GIF ↔ MP4**, **Kalkulator Cicilan**: file atau input ekstrem (merge cell raksasa, halaman/GIF berukuran raksasa, tenor 1e9 tahun) ditolak, tidak lagi membekukan tab.
+- **Kalkulator Cicilan**, **Zakat**, **Gaji Bersih**: angka seperti "12.5" kini dibaca 12,5, bukan 125.
+- **Catatan**: form di pratinjau Markdown diblokir; backup atau papan Whiteboard yang rusak tidak lagi merusak aplikasi secara permanen.
+- Kamera dan mikrofon (Pembaca QR, QRIS, Tuner, Rekam Suara, Rekam Latihan) selalu dilepas saat tool ditutup, termasuk ketika prompt izin masih terbuka.
+
+**Paket npm.** Semua 72 tools kini punya paket di `packages/` (README berbahasa Inggris, custom element + API tanpa UI, belum terbit). Tool yang menyimpan data punya atribut `persist="false"`. Shortcut keyboard dan listener paste tidak lagi bocor ke halaman pemasang.
+
 ## 2026-10-30 — Harian: chat & belanja
 
 Tiga tools baru di kategori Produktivitas; total sekarang **72 tools**.
@@ -10,6 +25,8 @@ Tiga tools baru di kategori Produktivitas; total sekarang **72 tools**.
 - **Link WhatsApp** (`#/link-wa`): nomor (08…, +62…, spasi dan strip dibersihkan ke format `62…`) dan pesan opsional menjadi tombol "Chat sekarang" tanpa simpan kontak, link `wa.me` siap salin, dan QR (PNG/SVG) lewat generator QR yang sama. Nomor terakhir hanya disimpan di perangkat bila kotak "Ingat" dicentang.
 - **Kalkulator Persen & Diskon** (`#/persen`): X% dari Y, Y itu berapa persen dari Z, naik/turun berapa persen, dan diskon bertingkat dengan tabel tiap langkah serta jumlah yang dihemat (50% + 20% = 60%, bukan 70%). Angka dengan titik/koma (1.500,5 atau 1,500.5) dikenali dari polanya.
 - **Mana Lebih Murah** (`#/mana-lebih-murah`): beberapa kemasan (harga × isi, satuan g/kg/ml/L/pcs) diubah ke harga per satuan yang sama; yang termurah ditandai dan selisih kemasan lain ditampilkan dalam persen. Berat dan volume tidak dicampur.
+
+**Paket npm, batch 1.** Lima tool lagi dikemas sebagai paket npm dengan README berbahasa Inggris (belum terbit): `@chalidade/password-generator`, `@chalidade/terbilang`, `@chalidade/text-diff`, `@chalidade/uuid`, dan `@chalidade/word-counter`. Masing-masing berisi custom element (`<uuid-generator>` dan seterusnya) plus API tanpa UI. Kode elemen bersama dipindah ke `packages/_shared/`, dan `scripts/new-package.mjs` membuat kerangka paket baru. `@chalidade/screen-recorder` 0.1.1 sudah terbit dengan README berbahasa Inggris, jadi tab pemasangan npm-nya kini tampil di halaman tool. Perbaikan kecil: label versi UUID kini ikut bahasa Inggris, dan batas SMS di Penghitung Kata cukup bernama "SMS".
 
 ## 2026-10-29 — Keuangan
 

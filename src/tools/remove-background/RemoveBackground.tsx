@@ -214,6 +214,9 @@ export default function RemoveBackground() {
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
+      // Leave Ctrl+Z to text fields, also the host page's (inside Shadow DOM, e.target is the host element).
+      const el = e.composedPath()[0]
+      if (el instanceof HTMLElement && (el.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName))) return
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z' && !e.shiftKey) {
         e.preventDefault()
         undo()
