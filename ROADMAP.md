@@ -149,14 +149,14 @@ dibutuhkan sehari-hari dan paling banyak dicari di depan.
 
 ## Hari 13 — 2026-10-30 · Harian: chat & belanja
 
-- [ ] **Link WhatsApp** (`#/link-wa`): nomor (08…, +62…, spasi/strip
+- [x] **Link WhatsApp** (`#/link-wa`): nomor (08…, +62…, spasi/strip
   dibersihkan ke format `62…`) dan pesan opsional → tombol "Chat sekarang"
   tanpa simpan kontak, link `wa.me` siap salin, dan QR-nya (pakai ulang QR
   generator). Nomor terakhir tidak disimpan kecuali diminta.
-- [ ] **Kalkulator Persen & Diskon** (`#/persen`): X% dari Y, Y itu berapa %
+- [x] **Kalkulator Persen & Diskon** (`#/persen`): X% dari Y, Y itu berapa %
   dari Z, naik/turun berapa %, dan diskon bertingkat (50% + 20% = 60%, bukan
   70%) dengan rincian tiap langkah dan jumlah yang dihemat.
-- [ ] **Mana Lebih Murah** (`#/mana-lebih-murah`): beberapa kemasan (harga ×
+- [x] **Mana Lebih Murah** (`#/mana-lebih-murah`): beberapa kemasan (harga ×
   isi, satuan g/kg/ml/L/pcs) → harga per satuan yang sama, termurah ditandai
   dan selisihnya dalam persen. Dibuat untuk dipakai satu tangan di minimarket.
 
