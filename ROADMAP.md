@@ -162,7 +162,7 @@ dibutuhkan sehari-hari dan paling banyak dicari di depan.
 
 ## Hari 14 — 2026-10-31 · Surat
 
-- [ ] **Generator Surat** (`#/surat`): surat lamaran kerja, izin sakit /
+- [x] **Generator Surat** (`#/surat`): surat lamaran kerja, izin sakit /
   tidak masuk (kerja dan sekolah), surat kuasa, surat pernyataan, dan surat
   pengunduran diri. Isi formulir → pratinjau langsung → unduh PDF (jsPDF) atau
   Word (`docx`). Template di satu file data per jenis surat, isian terakhir
