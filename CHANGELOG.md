@@ -3,6 +3,13 @@
 Catatan harian apa yang berubah di [tools](https://chalidade.github.io/tools/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-01 — Formulir & teks
+
+Satu tool baru dan satu peningkatan; total sekarang **74 tools**.
+
+- **Kompres Gambar** kini punya **batas ukuran file** (100 KB, 200 KB, 500 KB, 1 MB, atau angka sendiri) untuk unggahan formulir seperti CPNS atau SNBT. Tool mencari kualitas tertinggi yang masih muat dan, bila perlu, mengecilkan dimensi bertahap; PNG otomatis dikonversi ke WebP/JPG karena PNG tidak punya kualitas. Bila tetap tidak muat, file ditandai "belum muat di batas ukuran".
+- **Ubah Huruf** (`#/ubah-huruf`): HURUF BESAR, huruf kecil, Judul Tiap Kata, kalimat biasa, hapus spasi ganda, hapus baris kosong, dan satukan baris. Sekali ketuk lalu salin, ada tombol urungkan. Ditautkan dari Penghitung Kata.
+
 ## 2026-10-31 — Surat
 
 Satu tool baru di kategori Produktivitas; total sekarang **73 tools**.

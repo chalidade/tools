@@ -1118,6 +1118,17 @@ export const TOOLS: Tool[] = [
     badge: 'Baru',
     component: lazy(() => import('./surat/Surat')),
   },
+  {
+    slug: 'ubah-huruf',
+    category: 'productivity',
+    keywords: ['huruf', 'huruf besar', 'huruf kecil', 'kapital', 'kapitalisasi', 'judul', 'kalimat', 'spasi ganda', 'baris kosong', 'satukan baris', 'uppercase', 'lowercase', 'title case', 'sentence case', 'capitalize', 'case converter', 'remove blank lines', 'join lines'],
+    title: 'Ubah Huruf',
+    description: 'Ubah teks jadi HURUF BESAR, huruf kecil, Judul Tiap Kata, atau kalimat biasa; hapus spasi ganda dan baris kosong, atau satukan baris. Sekali ketuk lalu salin.',
+    icon: CaseSensitive,
+    formats: 'Teks → Teks',
+    badge: 'Baru',
+    component: lazy(() => import('./ubah-huruf/UbahHuruf')),
+  },
 ]
 
 /** A tool's title, description and formats in the given language (English lives in registry-en.ts). */

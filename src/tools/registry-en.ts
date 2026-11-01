@@ -110,6 +110,12 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
     formats: 'Form → PDF / Word',
     keywords: ['letter', 'cover letter', 'job application', 'absence', 'sick leave', 'power of attorney', 'statement', 'resignation', 'resign', 'surat', 'docx', 'pdf'],
   },
+  'ubah-huruf': {
+    title: 'Case Converter',
+    description: 'Turn text into UPPERCASE, lowercase, Title Case or Sentence case; collapse extra spaces, remove blank lines or join lines. One tap, then copy.',
+    formats: 'Text → Text',
+    keywords: ['case converter', 'uppercase', 'lowercase', 'title case', 'sentence case', 'capitalize', 'remove blank lines', 'join lines'],
+  },
   kwitansi: {
     title: 'Receipt & Invoice',
     description: 'Make a PDF receipt or invoice: fill in payee, items and total; the amount in words is written for you and your last entry stays on this device.',

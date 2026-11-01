@@ -2,8 +2,9 @@ import { useMemo, useState } from 'react'
 import { Trash2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { CopyButton } from '@/components/tool/CopyButton'
-import { locale, tr, useT } from '@/lib/i18n'
+import { locale, tr, useLang, useT } from '@/lib/i18n'
 import { cn } from '@/lib/utils'
+import { pageUrl } from '@/lib/route'
 import { analyze, LIMITS, minutesToParts } from './count'
 
 function time(minutes: number): string {
@@ -15,6 +16,7 @@ function time(minutes: number): string {
 
 export default function WordCounter() {
   const t = useT()
+  const lang = useLang()
   const [text, setText] = useState('')
   const s = useMemo(() => analyze(text), [text])
   const fmt = (n: number) => n.toLocaleString(locale())
@@ -94,6 +96,13 @@ export default function WordCounter() {
           })}
         </ul>
       </div>
+      <p className="text-xs text-muted-foreground">
+        {t('Perlu mengubah huruf besar/kecil? Buka ', 'Need to change letter case? Open ')}
+        <a href={pageUrl('ubah-huruf', lang)} className="underline underline-offset-2">
+          {t('Ubah Huruf', 'Case Converter')}
+        </a>
+        .
+      </p>
     </div>
   )
 }
