@@ -116,6 +116,18 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
     formats: 'Text → Text',
     keywords: ['case converter', 'uppercase', 'lowercase', 'title case', 'sentence case', 'capitalize', 'remove blank lines', 'join lines'],
   },
+  scan: {
+    title: 'Document Scanner',
+    description: 'Photograph paper with your camera or pick from the gallery, straighten the corners, make it crisp black-and-white and combine pages into one PDF.',
+    formats: 'Photo → PDF',
+    keywords: ['scan', 'scanner', 'document', 'paper', 'straighten', 'perspective', 'camera', 'pdf'],
+  },
+  ocr: {
+    title: 'OCR — Photo to Text',
+    description: 'Pull the text out of a photo or screenshot, in Indonesian and English. Copy it or download as TXT.',
+    formats: 'Image → TXT',
+    keywords: ['ocr', 'image to text', 'extract text', 'text recognition', 'receipt', 'screenshot'],
+  },
   kwitansi: {
     title: 'Receipt & Invoice',
     description: 'Make a PDF receipt or invoice: fill in payee, items and total; the amount in words is written for you and your last entry stays on this device.',

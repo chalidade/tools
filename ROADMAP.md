@@ -180,11 +180,11 @@ dibutuhkan sehari-hari dan paling banyak dicari di depan.
 
 ## Hari 16 — 2026-11-02 · Scan & OCR
 
-- [ ] **Scan Dokumen** (`#/scan`): foto kertas dari kamera atau galeri,
+- [x] **Scan Dokumen** (`#/scan`): foto kertas dari kamera atau galeri,
   tarik empat sudut (deteksi tepi otomatis sebagai tebakan awal), luruskan
   perspektif dengan homografi di canvas (tanpa OpenCV), mode hitam-putih
   tajam/abu-abu/warna, lalu gabung beberapa halaman jadi satu PDF.
-- [ ] **OCR — Foto ke Teks** (`#/ocr`): Tesseract (wasm) dengan bahasa
+- [x] **OCR — Foto ke Teks** (`#/ocr`): Tesseract (wasm) dengan bahasa
   Indonesia dan Inggris. Worker, core wasm, dan data bahasa di-host sendiri,
   jangan dari CDN bawaannya, dan hanya dimuat saat tool dibuka. Hasil bisa
   disalin atau diunduh sebagai TXT; nanti bisa dipakai juga oleh Scan Dokumen.

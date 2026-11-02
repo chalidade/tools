@@ -2,6 +2,7 @@ import { lazy, type ComponentType, type LazyExoticComponent } from 'react'
 import type { Lang } from '@/lib/i18n'
 import { CATEGORIES_EN, TOOLS_EN } from './registry-en'
 import {
+  ScanText,
   AppWindow,
   CalendarDays,
   CalendarRange,
@@ -1128,6 +1129,28 @@ export const TOOLS: Tool[] = [
     formats: 'Teks → Teks',
     badge: 'Baru',
     component: lazy(() => import('./ubah-huruf/UbahHuruf')),
+  },
+  {
+    slug: 'scan',
+    category: 'media',
+    keywords: ['scan', 'scanner', 'pindai', 'dokumen', 'kertas', 'foto dokumen', 'luruskan', 'perspektif', 'kamera', 'camscanner', 'ktp', 'ijazah', 'pdf', 'document scanner', 'straighten', 'perspective', 'camera'],
+    title: 'Scan Dokumen',
+    description: 'Foto kertas dari kamera atau galeri, luruskan sudutnya, jadikan hitam-putih yang tajam, lalu gabung beberapa halaman jadi satu PDF.',
+    icon: ScanLine,
+    formats: 'Foto → PDF',
+    badge: 'Baru',
+    component: lazy(() => import('./scan/Scan')),
+  },
+  {
+    slug: 'ocr',
+    category: 'media',
+    keywords: ['ocr', 'foto ke teks', 'gambar ke teks', 'baca teks', 'salin teks', 'tesseract', 'scan teks', 'struk', 'screenshot', 'image to text', 'extract text', 'text recognition', 'copy text from image'],
+    title: 'OCR — Foto ke Teks',
+    description: 'Ambil teks dari foto atau tangkapan layar, bahasa Indonesia dan Inggris. Salin atau unduh sebagai TXT.',
+    icon: ScanText,
+    formats: 'Gambar → TXT',
+    badge: 'Baru',
+    component: lazy(() => import('./ocr/Ocr')),
   },
 ]
 
