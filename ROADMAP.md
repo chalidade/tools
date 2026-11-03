@@ -191,7 +191,7 @@ dibutuhkan sehari-hari dan paling banyak dicari di depan.
 
 ## Hari 17 — 2026-11-03 · CV
 
-- [ ] **Pembuat CV** (`#/cv`): CV satu halaman yang ramah ATS (teks asli,
+- [x] **Pembuat CV** (`#/cv`): CV satu halaman yang ramah ATS (teks asli,
   bukan gambar; satu kolom; heading standar), bagian yang bisa diurutkan,
   2–3 tata letak, ekspor PDF dan Word. Data disimpan di perangkat dan bisa
   diekspor/impor sebagai JSON. Contoh isian Indonesia dan Inggris.
