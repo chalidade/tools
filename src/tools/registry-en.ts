@@ -116,6 +116,18 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
     formats: 'Form → PDF / Word',
     keywords: ['cv', 'resume', 'curriculum vitae', 'cv builder', 'resume builder', 'ats', 'job application', 'docx', 'pdf'],
   },
+  'token-listrik': {
+    title: 'Electricity Token Calculator',
+    description: 'Turn a PLN prepaid-token amount into estimated kWh by tariff class (after street-light tax, admin fee and VAT where it applies), plus how many days it lasts.',
+    formats: 'Amount → kWh',
+    keywords: ['electricity token', 'pln', 'prepaid electricity', 'kwh', 'ppj', 'tariff class', 'token calculator', 'power'],
+  },
+  'thr-lembur': {
+    title: 'THR & Overtime Calculator',
+    description: 'Work out full or prorated THR holiday bonus and overtime pay under PP 35/2021 (working day vs holiday, 5- or 6-day week), with an hour-by-hour breakdown.',
+    formats: 'Wage → THR / Overtime',
+    keywords: ['thr', 'holiday bonus', 'religious holiday allowance', 'overtime', 'overtime pay', 'pp 35/2021', 'prorated', 'indonesia labour', 'salary'],
+  },
   'ubah-huruf': {
     title: 'Case Converter',
     description: 'Turn text into UPPERCASE, lowercase, Title Case or Sentence case; collapse extra spaces, remove blank lines or join lines. One tap, then copy.',

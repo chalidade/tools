@@ -198,12 +198,12 @@ dibutuhkan sehari-hari dan paling banyak dicari di depan.
 
 ## Hari 18 — 2026-11-04 · Listrik & gaji
 
-- [ ] **Kalkulator Token Listrik** (`#/token-listrik`): nominal → kWh per
+- [x] **Kalkulator Token Listrik** (`#/token-listrik`): nominal → kWh per
   golongan tarif PLN (R-1 900 VA, 1.300 VA, …) setelah PPJ (beda per daerah,
   bisa diatur) dan PPN bila berlaku, plus perkiraan berapa hari habis dari
   pemakaian harian. Tarif dan tanggal berlakunya di satu file data; hasil
   ditandai perkiraan.
-- [ ] **Kalkulator THR & Lembur** (`#/thr-lembur`): THR penuh atau prorata
+- [x] **Kalkulator THR & Lembur** (`#/thr-lembur`): THR penuh atau prorata
   (masa kerja/12 × upah) dan upah lembur menurut PP 35/2021 (upah sejam =
   1/173 upah sebulan; hari kerja vs hari libur, 5 atau 6 hari kerja), dengan
   rincian per jam. Aturan di satu file dengan sumbernya.
