@@ -210,7 +210,7 @@ dibutuhkan sehari-hari dan paling banyak dicari di depan.
 
 ## Hari 19 — 2026-11-05 · Edit PDF
 
-- [ ] **Edit PDF** (`#/edit-pdf`): tambah teks (font, ukuran, warna), gambar,
+- [x] **Edit PDF** (`#/edit-pdf`): tambah teks (font, ukuran, warna), gambar,
   kotak, garis, centang, dan coretan di halaman mana saja, untuk formulir yang
   bukan AcroForm. Pakai ulang pratinjau dan penempatan dari Tanda Tangan PDF
   (`uprightPage` di `src/lib/pdf-doc.ts`).

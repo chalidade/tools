@@ -40,6 +40,7 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
   'organize-pdf': { title: 'Organize PDF Pages', description: 'Reorder by dragging, delete, rotate and duplicate pages — with thumbnails.', keywords: ['reorder', 'rearrange', 'rotate', 'delete', 'duplicate', 'pages'] },
   'page-numbers': { title: 'PDF Page Numbers', description: 'Add page numbers: pick the position, the format (1, 1 / 10, Page 1) and the first page.', keywords: ['numbering', 'pagination', 'footer', 'header'] },
   'sign-pdf': { title: 'Sign PDF', description: 'Draw or upload your signature, then place it on any page.', formats: 'PDF → PDF + signature', keywords: ['signature', 'sign'] },
+  'edit-pdf': { title: 'Edit PDF', description: 'Add text, images, boxes, lines, ticks and scribbles on any page — for ordinary, non-AcroForm forms.', formats: 'PDF → PDF + additions', keywords: ['fill form', 'type on pdf', 'annotate', 'tick', 'checkbox', 'write'] },
   'compress-pdf': { title: 'Compress PDF', description: 'Shrink a PDF by downsizing the photos inside — text stays sharp.', keywords: ['shrink', 'reduce', 'smaller'] },
   'pdf-to-markdown': { title: 'PDF to Markdown', description: 'Turn a PDF into Markdown: headings, bold/italic, lists and tables.', keywords: ['text', 'notes'] },
   'protect-pdf': { title: 'Protect PDF', description: 'Lock a PDF with a password (AES-256) and restrict printing, copying or editing.', keywords: ['lock', 'encrypt', 'password'] },
