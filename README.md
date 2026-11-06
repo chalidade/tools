@@ -3,7 +3,7 @@
 **English** · [Bahasa Indonesia](README.id.md)
 
 **My everyday file toolbox, built for the file work I do every day and published free for everyone.**
-80 tools for PDF, Office files, images, video, audio and QR codes, and every one of them runs entirely in your browser.
+81 tools for PDF, Office files, images, video, audio and QR codes, and every one of them runs entirely in your browser.
 Your files are never uploaded.
 
 [![Live demo](https://img.shields.io/badge/live%20demo-chalidade.github.io%2Ftools-6366f1)](https://chalidade.github.io/tools/)
@@ -106,6 +106,7 @@ All 45, grouped the way the home page groups them. Each name links to the live t
 - [Qibla Direction](https://chalidade.github.io/tools/en/arah-kiblat/): great-circle bearing to the Kaaba plus a live phone compass via `DeviceOrientationEvent` (iOS permission, calibration warning)
 - [Hijri ⇄ Gregorian Converter](https://chalidade.github.io/tools/en/hijriah/): through the browser's `islamic-umalqura` Intl calendar, plus a year of Islamic holidays; notes that official Kemenag dates may differ by a day
 - [Zakat Calculator](https://chalidade.github.io/tools/en/zakat/): income, wealth, gold/silver and fitrah zakat; nisab from a gold price you enter (nothing fetched), formulas shown
+- [Used Phone/Laptop Check](https://chalidade.github.io/tools/en/cek-perangkat/): tick through screen (dead pixels), touch, speaker, mic, camera, vibration, sensor and keyboard tests, then copy a summary
 - [Digital Tasbih](https://chalidade.github.io/tools/en/tasbih/): big tap counter with 33/99/free/custom targets, vibration at the target, keyboard shortcuts, history in localStorage
 - [Number to Words](https://chalidade.github.io/tools/en/terbilang/): numbers to Indonesian or English words with rupiah/sen suffix and letter-case options
 - [QRIS Amount](https://chalidade.github.io/tools/en/qris/): read your shop's static QRIS (image or camera) and add an amount (tag 54, dynamic flag, CRC-16 recomputed) for a ready-to-scan QR; PNG/SVG

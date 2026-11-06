@@ -87,6 +87,12 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
     formats: 'Wealth → Zakat',
     keywords: ['zakat', 'nisab', 'alms', 'fitrah', 'zakat al-fitr', 'income zakat', 'islamic charity', 'baznas'],
   },
+  'cek-perangkat': {
+    title: 'Used Phone/Laptop Check',
+    description: 'A checklist for second-hand devices: screen (dead pixels), touch, speakers, microphone, cameras, vibration, sensors and keyboard, then copy the summary.',
+    formats: 'Device → Summary',
+    keywords: ['used phone', 'second hand', 'dead pixel', 'screen test', 'touch test', 'speaker test', 'mic test', 'webcam test', 'camera test', 'keyboard test', 'device check', 'before buying'],
+  },
   tasbih: {
     title: 'Digital Tasbih',
     description: 'A big dhikr counter with 33/99/free targets, vibration at the target, keyboard shortcuts and history kept on your device.',

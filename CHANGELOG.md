@@ -3,6 +3,12 @@
 Catatan harian apa yang berubah di [tools](https://chalidade.github.io/tools/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-06 — Cek perangkat
+
+Satu tool baru di kategori Produktivitas; total sekarang **81 tools**.
+
+- **Cek HP/Laptop Bekas** (`#/cek-perangkat`): daftar tes yang dicentang satu per satu — layar penuh warna hitam/putih/merah/hijau/biru untuk dead pixel, sentuh (seret jari sampai semua kotak hijau), speaker kiri/tengah/kanan, mikrofon (rekam 4 detik + putar ulang dengan indikator level), kamera depan/belakang, getar, sensor gerak/orientasi (izin di iOS), dan keyboard (tombol yang ditekan menyala). Info yang terbaca browser (resolusi, inti CPU, baterai bila ada) ditampilkan, dan ringkasan lulus/gagal bisa disalin. Tidak ada rekaman atau gambar yang disimpan atau dikirim; kamera dan mikrofon dilepas saat selesai atau tool ditutup. Berguna juga untuk tes kamera dan mic sebelum rapat online.
+
 ## 2026-11-05 — Edit PDF
 
 Satu tool baru di kategori PDF; total sekarang **80 tools**.
