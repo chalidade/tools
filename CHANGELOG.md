@@ -3,6 +3,12 @@
 Catatan harian apa yang berubah di [tools](https://chalidade.github.io/tools/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-05 — Edit PDF
+
+Satu tool baru di kategori PDF; total sekarang **80 tools**.
+
+- **Edit PDF** (`#/edit-pdf`): tambah teks (font Sans/Serif/Mono, tebal, ukuran, warna), gambar, kotak (garis tepi atau isi penuh), garis, centang, dan coretan bebas di halaman mana saja — untuk formulir yang bukan AcroForm. Semua tambahan bisa dipilih, digeser, diubah ukuran, dan dihapus (tombol Delete). Pratinjau memakai satuan poin halaman yang sama dengan hasilnya, dan `uprightPage` memastikan halaman yang diputar atau punya crop box tetap benar. Teks memakai font PDF bawaan (huruf Latin); karakter lain diganti "?" dengan peringatan. Kotak isi penuh hanya menutup tampilan, bukan menyensor data.
+
 ## 2026-11-04 — Listrik & gaji
 
 Dua tools baru di kategori Produktivitas; total sekarang **79 tools**.
