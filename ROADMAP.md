@@ -227,11 +227,11 @@ dibutuhkan sehari-hari dan paling banyak dicari di depan.
 
 ## Hari 21 — 2026-11-07 · Kesehatan
 
-- [ ] **Hitung HPL Kehamilan** (`#/hpl`): dari HPHT (rumus Naegele, panjang
+- [x] **Hitung HPL Kehamilan** (`#/hpl`): dari HPHT (rumus Naegele, panjang
   siklus bisa diatur) atau dari tanggal USG → HPL, usia kehamilan dalam
   minggu + hari, trimester, dan tonggak penting. Bilang bahwa ini perkiraan
   dan bidan/dokter yang menentukan.
-- [ ] **BMI & Berat Ideal** (`#/bmi`): BMI dengan kategori Asia-Pasifik
+- [x] **BMI & Berat Ideal** (`#/bmi`): BMI dengan kategori Asia-Pasifik
   (WHO 2000 / Kemenkes, beda dari ambang global), rentang berat ideal, dan
   kebutuhan kalori harian (Mifflin-St Jeor × tingkat aktivitas). Sumber
   ambang di satu file data; bilang bahwa ini skrining, bukan diagnosis.

@@ -135,6 +135,18 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
     formats: 'Wage → THR / Overtime',
     keywords: ['thr', 'holiday bonus', 'religious holiday allowance', 'overtime', 'overtime pay', 'pp 35/2021', 'prorated', 'indonesia labour', 'salary'],
   },
+  'hpl': {
+    title: 'Pregnancy Due Date Calculator',
+    description: "Estimate the due date from your last period (Naegele's rule, adjustable cycle) or an ultrasound, plus gestational age, trimester and key milestones.",
+    formats: 'LMP / Ultrasound → Due date',
+    keywords: ['due date', 'pregnancy', 'pregnant', 'lmp', 'naegele', 'gestational age', 'trimester', 'ultrasound', 'midwife', 'edd', 'baby'],
+  },
+  'bmi': {
+    title: 'BMI & Ideal Weight',
+    description: 'Work out your BMI with Asia-Pacific, Indonesian MoH or WHO categories, a healthy weight range, and daily calorie needs.',
+    formats: 'Weight + Height → BMI',
+    keywords: ['bmi', 'body mass index', 'ideal weight', 'healthy weight', 'calories', 'bmr', 'tdee', 'diet', 'obesity', 'underweight', 'asia pacific'],
+  },
   'ubah-huruf': {
     title: 'Case Converter',
     description: 'Turn text into UPPERCASE, lowercase, Title Case or Sentence case; collapse extra spaces, remove blank lines or join lines. One tap, then copy.',
