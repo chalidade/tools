@@ -217,7 +217,7 @@ dibutuhkan sehari-hari dan paling banyak dicari di depan.
 
 ## Hari 20 — 2026-11-06 · Cek perangkat
 
-- [ ] **Cek HP/Laptop Bekas** (`#/cek-perangkat`): daftar tes yang dicentang
+- [x] **Cek HP/Laptop Bekas** (`#/cek-perangkat`): daftar tes yang dicentang
   satu per satu — layar (warna penuh untuk dead pixel), sentuh (gambar di
   seluruh layar), speaker kiri/kanan, mikrofon (rekam + putar), kamera depan/
   belakang, getar, sensor gerak/orientasi, keyboard (tombol yang sudah ditekan
