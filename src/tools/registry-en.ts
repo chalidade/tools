@@ -104,6 +104,12 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
     formats: 'QRIS → QRIS + amount',
     keywords: ['qris', 'payment qr', 'merchant', 'shop', 'amount', 'dynamic qris', 'static qris', 'small business', 'point of sale'],
   },
+  surat: {
+    title: 'Letter Generator',
+    description: 'Write a job application, absence letter, power of attorney, statement or resignation letter: fill in the form, preview it, download PDF or Word.',
+    formats: 'Form → PDF / Word',
+    keywords: ['letter', 'cover letter', 'job application', 'absence', 'sick leave', 'power of attorney', 'statement', 'resignation', 'resign', 'surat', 'docx', 'pdf'],
+  },
   kwitansi: {
     title: 'Receipt & Invoice',
     description: 'Make a PDF receipt or invoice: fill in payee, items and total; the amount in words is written for you and your last entry stays on this device.',

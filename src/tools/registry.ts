@@ -1107,6 +1107,17 @@ export const TOOLS: Tool[] = [
     component: lazy(() => import('./color-picker/ColorPicker')),
     package: { name: '@chalidade/color-picker', element: 'color-picker', dir: 'color-picker', published: false },
   },
+  {
+    slug: 'surat',
+    category: 'productivity',
+    keywords: ['surat', 'surat lamaran', 'lamaran kerja', 'surat izin', 'izin sakit', 'surat kuasa', 'surat pernyataan', 'pengunduran diri', 'resign', 'letter', 'cover letter', 'job application', 'power of attorney', 'resignation', 'word', 'docx', 'pdf'],
+    title: 'Generator Surat',
+    description: 'Buat surat lamaran kerja, izin tidak masuk, surat kuasa, pernyataan, atau pengunduran diri: isi formulir, lihat pratinjau, unduh PDF atau Word.',
+    icon: FileText,
+    formats: 'Isian → PDF / Word',
+    badge: 'Baru',
+    component: lazy(() => import('./surat/Surat')),
+  },
 ]
 
 /** A tool's title, description and formats in the given language (English lives in registry-en.ts). */

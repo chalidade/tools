@@ -3,6 +3,12 @@
 Catatan harian apa yang berubah di [tools](https://chalidade.github.io/tools/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-10-31 — Surat
+
+Satu tool baru di kategori Produktivitas; total sekarang **73 tools**.
+
+- **Generator Surat** (`#/surat`): lima jenis surat — lamaran kerja, izin tidak masuk, kuasa, pernyataan, dan pengunduran diri. Isi formulir, lihat pratinjau langsung, lalu unduh PDF (pdf-lib) atau Word (`docx`). Template ada di satu file data (`templates.ts`), dan isian terakhir hanya tersimpan di perangkat.
+
 ## 2026-10-31 — Nama baru: toowl
 
 Situs kini bernama **toowl**: logonya teks "toowl", sementara maskot burung hantu menjadi favicon dan ikon aplikasi. Di halaman tool, tautan "Semua tools" menjadi "Kembali" ke beranda, badge "File tidak di-upload" ada di sebelah judul, dan ikon tool rata atas. Di ponsel, tool tampil lebih dulu; judul dan deskripsinya menyusul di atas "Pasang di situsmu".
