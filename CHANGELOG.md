@@ -3,6 +3,12 @@
 Catatan harian apa yang berubah di [tools](https://chalidade.github.io/tools/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-03 — CV
+
+Satu tool baru di kategori Produktivitas; total sekarang **77 tools**.
+
+- **Pembuat CV** (`#/cv`): CV satu halaman yang ramah ATS — teks asli (bukan gambar), satu kolom, dan heading standar (Ringkasan, Pengalaman Kerja, Pendidikan, Keahlian, dst.). Bagian bisa diurutkan, ada tiga tata letak (Klasik, Modern, Ringkas), dan bahasa heading bisa Indonesia atau Inggris. Unduh PDF (pdf-lib) atau Word (`docx`). Data tersimpan hanya di perangkat dan bisa disimpan/dibuka lagi sebagai JSON; ada tombol contoh isian Indonesia dan Inggris.
+
 ## 2026-11-02 — Scan & OCR
 
 Dua tool baru di kategori Gambar & Media; total sekarang **76 tools**.

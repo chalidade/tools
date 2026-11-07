@@ -32,6 +32,7 @@ import {
   Crop,
   Eraser,
   IdCard,
+  BriefcaseBusiness,
   Repeat,
   ShieldOff,
   FileArchive,
@@ -1151,6 +1152,17 @@ export const TOOLS: Tool[] = [
     formats: 'Gambar → TXT',
     badge: 'Baru',
     component: lazy(() => import('./ocr/Ocr')),
+  },
+  {
+    slug: 'cv',
+    category: 'productivity',
+    keywords: ['cv', 'curriculum vitae', 'resume', 'riwayat hidup', 'daftar riwayat hidup', 'ats', 'lamaran kerja', 'melamar', 'pembuat cv', 'cv builder', 'resume builder', 'job application', 'word', 'docx', 'pdf'],
+    title: 'Pembuat CV',
+    description: 'CV satu halaman yang ramah ATS: isi data, urutkan bagian, pilih tata letak, lalu unduh PDF atau Word. Data tersimpan di perangkat.',
+    icon: BriefcaseBusiness,
+    formats: 'Isian → PDF / Word',
+    badge: 'Baru',
+    component: lazy(() => import('./cv/Cv')),
   },
 ]
 

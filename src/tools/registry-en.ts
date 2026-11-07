@@ -110,6 +110,12 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
     formats: 'Form → PDF / Word',
     keywords: ['letter', 'cover letter', 'job application', 'absence', 'sick leave', 'power of attorney', 'statement', 'resignation', 'resign', 'surat', 'docx', 'pdf'],
   },
+  cv: {
+    title: 'CV Builder',
+    description: 'A one-page, ATS-friendly CV: fill in your details, reorder sections, pick a layout, then download PDF or Word. Your data stays on the device.',
+    formats: 'Form → PDF / Word',
+    keywords: ['cv', 'resume', 'curriculum vitae', 'cv builder', 'resume builder', 'ats', 'job application', 'docx', 'pdf'],
+  },
   'ubah-huruf': {
     title: 'Case Converter',
     description: 'Turn text into UPPERCASE, lowercase, Title Case or Sentence case; collapse extra spaces, remove blank lines or join lines. One tap, then copy.',
