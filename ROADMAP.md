@@ -170,11 +170,11 @@ dibutuhkan sehari-hari dan paling banyak dicari di depan.
 
 ## Hari 15 — 2026-11-01 · Formulir & teks
 
-- [ ] **Kompres ke Ukuran Target** di `#/compress-image`: mode "maksimal
+- [x] **Kompres ke Ukuran Target** di `#/compress-image`: mode "maksimal
   N KB" (mis. 200 KB untuk CPNS/SNBT) yang mencari kualitas dan, bila perlu,
   dimensi terbesar yang masih di bawah batas. Pakai `canvasBlob` dari
   `src/lib/image.ts`.
-- [ ] **Ubah Huruf** (`#/ubah-huruf`): HURUF BESAR, huruf kecil, Judul Tiap
+- [x] **Ubah Huruf** (`#/ubah-huruf`): HURUF BESAR, huruf kecil, Judul Tiap
   Kata, Kalimat biasa, hapus spasi ganda/baris kosong, dan satukan baris;
   sekali ketuk lalu salin. Tautkan dari Penghitung Kata.
 

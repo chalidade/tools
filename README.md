@@ -3,7 +3,7 @@
 **English** · [Bahasa Indonesia](README.id.md)
 
 **My everyday file toolbox, built for the file work I do every day and published free for everyone.**
-73 tools for PDF, Office files, images, video, audio and QR codes, and every one of them runs entirely in your browser.
+74 tools for PDF, Office files, images, video, audio and QR codes, and every one of them runs entirely in your browser.
 Your files are never uploaded.
 
 [![Live demo](https://img.shields.io/badge/live%20demo-chalidade.github.io%2Ftools-6366f1)](https://chalidade.github.io/tools/)
@@ -59,7 +59,7 @@ All 45, grouped the way the home page groups them. Each name links to the live t
 - [Protect PDF](https://chalidade.github.io/tools/en/protect-pdf/) (AES-256 password and permissions) and [Unlock PDF](https://chalidade.github.io/tools/en/unlock-pdf/)
 
 **Images & Media**
-- [Compress Images](https://chalidade.github.io/tools/en/compress-image/): batch JPG/WebP, metadata (including GPS) stripped
+- [Compress Images](https://chalidade.github.io/tools/en/compress-image/): batch JPG/WebP, optional "max N KB" size limit, metadata (including GPS) stripped
 - [Crop & Resize Image](https://chalidade.github.io/tools/en/crop-resize-image/): free or fixed ratios, rotate, flip, exact pixels
 - [Convert Image Format](https://chalidade.github.io/tools/en/convert-image/): HEIC (iPhone), WebP, AVIF, PNG, JPG to JPG/PNG/WebP, in batches; HEIC decoded by a self-hosted libheif wasm
 - [ID Photo](https://chalidade.github.io/tools/en/pas-foto/): 2×3 / 3×4 / 4×6 crop, red/blue/white backdrop, 4R or A4 print sheet (JPG/PNG/PDF)
@@ -107,6 +107,7 @@ All 45, grouped the way the home page groups them. Each name links to the live t
 - [Number to Words](https://chalidade.github.io/tools/en/terbilang/): numbers to Indonesian or English words with rupiah/sen suffix and letter-case options
 - [QRIS Amount](https://chalidade.github.io/tools/en/qris/): read your shop's static QRIS (image or camera) and add an amount (tag 54, dynamic flag, CRC-16 recomputed) for a ready-to-scan QR; PNG/SVG
 - [Letter Generator](https://chalidade.github.io/tools/en/surat/): job application, absence, power of attorney, statement and resignation letters as PDF (pdf-lib) or Word (docx), last entry kept on the device
+- [Case Converter](https://chalidade.github.io/tools/en/ubah-huruf/): UPPERCASE, lowercase, Title Case, Sentence case, collapse extra spaces, remove blank lines, join lines; one tap, then copy
 - [Receipt & Invoice](https://chalidade.github.io/tools/en/kwitansi/): PDF receipt or invoice with items, discount and tax, amount in words from Terbilang, last entry kept on the device (pdf-lib)
 - [Loan Instalment Calculator](https://chalidade.github.io/tools/en/cicilan/): flat or annuity interest, month-by-month schedule, total interest, CSV export
 - [Take-Home Pay Calculator](https://chalidade.github.io/tools/en/gaji-bersih/): gross to net salary with PPh 21 (Article 17 brackets, PTKP), BPJS health, JHT and pension; rates in one source file

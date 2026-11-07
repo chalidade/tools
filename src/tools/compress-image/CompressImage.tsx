@@ -47,12 +47,14 @@ function formatSize(n: number) {
   return `${(n / 1024 / 1024).toFixed(2)} MB`
 }
 
+const TARGET_OPTIONS = [0, 100, 200, 500, 1024]
+
 let nextId = 0
 
 export default function CompressImage() {
   const t = useT()
   const [items, setItems] = useState<Item[]>([])
-  const [opts, setOpts] = useState<ImageOptions>({ format: 'webp', quality: 0.75, maxSide: 1920 })
+  const [opts, setOpts] = useState<ImageOptions>({ format: 'webp', quality: 0.75, maxSide: 1920, targetKB: 0 })
   const [busy, setBusy] = useState(false)
   const addRef = useRef<HTMLInputElement>(null)
   const optsKey = JSON.stringify(opts)
@@ -107,7 +109,7 @@ export default function CompressImage() {
     const zip = new JSZip()
     const used = new Set<string>()
     for (const item of done) {
-      let name = outputName(item.file, item.result!.kept ? item.file.type : outputType(item.file, opts.format))
+      let name = outputName(item.file, item.result!.kept ? item.file.type : outputType(item.file, opts.format, opts.targetKB ?? 0))
       for (let n = 2; used.has(name); n++) name = name.replace(/(\.[^.]+)$/, `-${n}$1`)
       used.add(name)
       zip.file(name, item.result!.blob, { compression: 'STORE' })
@@ -119,7 +121,7 @@ export default function CompressImage() {
     if (!item.result) return
     downloadBlob(
       item.result.blob,
-      outputName(item.file, item.result.kept ? item.file.type : outputType(item.file, opts.format)),
+      outputName(item.file, item.result.kept ? item.file.type : outputType(item.file, opts.format, opts.targetKB ?? 0)),
     )
   }
 
@@ -214,7 +216,29 @@ export default function CompressImage() {
           options={SIZE_OPTIONS.map((o) => ({ value: o.value, label: t(...o.label) }))}
           onChange={(maxSide) => setOpts((o) => ({ ...o, maxSide }))}
         />
-        <label className="min-w-48 flex-1 space-y-2">
+        <div className="space-y-2">
+          <Segmented
+            label={t('Batas ukuran file', 'File size limit')}
+            value={opts.targetKB ?? 0}
+            options={TARGET_OPTIONS.map((o) => ({ value: o, label: o ? (o >= 1024 ? `${o / 1024} MB` : `${o} KB`) : t('Mati', 'Off') }))}
+            onChange={(targetKB) => setOpts((o) => ({ ...o, targetKB }))}
+          />
+          <label className="flex items-center gap-2 text-xs text-muted-foreground">
+            {t('atau ketik sendiri', 'or type your own')}
+            <input
+              type="number"
+              min={0}
+              max={20000}
+              inputMode="numeric"
+              value={opts.targetKB || ''}
+              placeholder="KB"
+              onChange={(e) => setOpts((o) => ({ ...o, targetKB: Math.max(0, Math.min(20000, Math.floor(Number(e.target.value)) || 0)) }))}
+              className="w-24 rounded-lg border bg-background px-2 py-1 text-sm text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            />
+            KB
+          </label>
+        </div>
+        <label className={cn('min-w-48 flex-1 space-y-2', opts.targetKB ? 'hidden' : '')}>
           <span className="flex justify-between text-xs font-medium text-muted-foreground">
             {t('Kualitas', 'Quality')} <span className="font-mono text-foreground">{Math.round(opts.quality * 100)}</span>
           </span>
@@ -258,6 +282,11 @@ export default function CompressImage() {
                   ) : current ? (
                     <>
                       {formatSize(item.file.size)} → {formatSize(current.blob.size)} · {current.width}×{current.height}
+                      {current.overTarget && (
+                        <span className="text-destructive">
+                          {t(' · belum muat di batas ukuran', ' · still over the size limit')}
+                        </span>
+                      )}
                       {current.kept && t(' · sudah optimal, hanya metadata yang dihapus', ' · already optimal, only the metadata removed')}
                     </>
                   ) : (
