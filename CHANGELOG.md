@@ -3,6 +3,13 @@
 Catatan harian apa yang berubah di [tools](https://chalidade.github.io/tools/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-04 — Listrik & gaji
+
+Dua tools baru di kategori Produktivitas; total sekarang **79 tools**.
+
+- **Kalkulator Token Listrik** (`#/token-listrik`): nominal pembelian token PLN menjadi perkiraan kWh menurut golongan tarif (R-1 450 VA sampai R-3 6.600 VA ke atas), setelah PPJ (bisa diatur karena beda tiap daerah), biaya admin, dan PPN bila berlaku. Isi pemakaian harian untuk melihat token cukup berapa hari. Tarif dan tanggal berlakunya ada di satu berkas; hasil ditandai perkiraan.
+- **Kalkulator THR & Lembur** (`#/thr-lembur`): THR penuh (masa kerja 12 bulan atau lebih) atau prorata (bulan/12 × upah), dan upah lembur menurut PP 35/2021 — upah sejam = 1/173 upah sebulan, pengali hari kerja vs hari libur, 5 atau 6 hari kerja, termasuk hari kerja pendek — dengan rincian per jam dan beberapa baris hari sekaligus. Aturan dan sumbernya ada di satu berkas.
+
 ## 2026-11-03 — CV
 
 Satu tool baru di kategori Produktivitas; total sekarang **77 tools**.
