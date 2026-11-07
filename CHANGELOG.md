@@ -3,6 +3,15 @@
 Catatan harian apa yang berubah di [tools](https://chalidade.github.io/tools/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-07 — Kesehatan
+
+Dua tool baru di kategori Produktivitas; total sekarang **83 tools**.
+
+- **Hitung HPL Kehamilan** (`#/hpl`): HPL dari HPHT dengan rumus Naegele (panjang siklus 21–45 hari bisa diatur) atau dari tanggal dan usia kehamilan saat USG. Menampilkan usia kehamilan dalam minggu + hari per tanggal yang dipilih, trimester, hari tersisa, dan tonggak penting (K1, USG anatomi, skrining diabetes, cukup bulan). Ditegaskan bahwa ini perkiraan dan bidan/dokter yang menentukan.
+- **BMI & Berat Ideal** (`#/bmi`): BMI dengan kategori Asia-Pasifik (WHO 2000), Kemenkes RI, atau WHO global; rentang berat ideal untuk tinggi badan; dan kebutuhan kalori harian (Mifflin-St Jeor × tingkat aktivitas). Ambang kategori ada di satu berkas data. Ditegaskan bahwa ini skrining, bukan diagnosis.
+
+Semua hitungan berjalan di browser; tidak ada data yang dikirim.
+
 ## 2026-11-06 — Cek perangkat
 
 Satu tool baru di kategori Produktivitas; total sekarang **81 tools**.

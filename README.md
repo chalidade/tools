@@ -3,7 +3,7 @@
 **English** · [Bahasa Indonesia](README.id.md)
 
 **My everyday file toolbox, built for the file work I do every day and published free for everyone.**
-81 tools for PDF, Office files, images, video, audio and QR codes, and every one of them runs entirely in your browser.
+83 tools for PDF, Office files, images, video, audio and QR codes, and every one of them runs entirely in your browser.
 Your files are never uploaded.
 
 [![Live demo](https://img.shields.io/badge/live%20demo-chalidade.github.io%2Ftools-6366f1)](https://chalidade.github.io/tools/)
@@ -125,6 +125,8 @@ All 45, grouped the way the home page groups them. Each name links to the live t
 - [UUID Generator](https://chalidade.github.io/tools/en/uuid/): v4 and time-ordered v7 from `crypto.getRandomValues`, up to 1000 at once, with format options
 - [Text Compare](https://chalidade.github.io/tools/en/text-diff/): line and word diff with colours, unified or side by side
 - [Whiteboard](https://chalidade.github.io/tools/en/whiteboard/): pressure-sensitive pen, shapes, text, multiple pages, export to PNG/PDF
+- [Pregnancy Due Date Calculator](https://chalidade.github.io/tools/en/hpl/): due date from the last period (Naegele's rule, adjustable cycle) or an ultrasound, with gestational age, trimester and milestones; an estimate only
+- [BMI & Ideal Weight](https://chalidade.github.io/tools/en/bmi/): BMI with Asia-Pacific, Kemenkes or WHO categories, healthy weight range and daily calories (Mifflin-St Jeor); cut-offs in one data file
 
 The [Indonesian README](README.id.md) has a longer per-tool table with every option and limitation.
 
