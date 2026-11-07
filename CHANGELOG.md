@@ -3,6 +3,13 @@
 Catatan harian apa yang berubah di [tools](https://chalidade.github.io/tools/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-02 — Scan & OCR
+
+Dua tool baru di kategori Gambar & Media; total sekarang **76 tools**.
+
+- **Scan Dokumen** (`#/scan`): foto kertas dari kamera atau galeri, lalu empat sudutnya dicari otomatis sebagai tebakan awal dan bisa ditarik sendiri. Perspektif diluruskan dengan homografi di canvas (tanpa OpenCV), dengan tiga tampilan: hitam-putih tajam, abu-abu (pencahayaan diratakan), atau warna. Bisa memutar foto, menambah halaman, lalu mengunduh satu PDF (atau satu halaman sebagai JPG).
+- **OCR — Foto ke Teks** (`#/ocr`): Tesseract (wasm) untuk bahasa Indonesia, Inggris, atau keduanya, dari banyak foto sekaligus. Worker, core wasm, dan data bahasa dibundel bersama situs (bukan dari CDN) dan baru diunduh saat tombol Baca teks ditekan. Hasilnya bisa diedit, disalin, atau diunduh sebagai TXT.
+
 ## 2026-11-01 — Formulir & teks
 
 Satu tool baru dan satu peningkatan; total sekarang **74 tools**.
