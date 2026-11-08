@@ -242,12 +242,12 @@ Kategori baru **Darurat**. Halaman-halamannya harus tetap jalan offline
 (service worker sudah menyimpan app shell; tool ini jangan bergantung pada
 jaringan) dan tombol utamanya besar, bisa ditekan tanpa membaca.
 
-- [ ] **SOS** (`#/sos`): satu tombol besar — senter HP berkedip pola morse
+- [x] **SOS** (`#/sos`): satu tombol besar — senter HP berkedip pola morse
   SOS (torch lewat `MediaStreamTrack.applyConstraints({ advanced: [{ torch }] })`,
   ada di Chrome Android; iPhone tidak punya, jadi di sana layar saja), layar
   putih penuh yang berkedip, dan sirene keras dari Web Audio. Bisa juga jadi
   senter biasa (nyala terus). Minta Wake Lock supaya layar tidak mati.
-- [ ] **Info Darurat** (`#/darurat`): nomor darurat Indonesia sebagai tombol
+- [x] **Info Darurat** (`#/darurat`): nomor darurat Indonesia sebagai tombol
   `tel:` (112, polisi, pemadam, ambulans, Basarnas, …) — verifikasi daftarnya
   dari sumber resmi dan tulis tanggal pengecekan di satu file data. Plus
   "Bagikan lokasiku": koordinat GPS → teks siap kirim dengan link Maps,
