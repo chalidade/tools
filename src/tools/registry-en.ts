@@ -15,6 +15,7 @@ export const CATEGORIES_EN: Record<CategoryId, { title: string; description: str
   music: { title: 'Music', description: 'Tune a guitar, keep time, look up chords, and find a song’s BPM and key.' },
   dev: { title: 'Developer & Design', description: 'QR codes, favicons, Base64, colors and tidy data.' },
   productivity: { title: 'Productivity', description: 'Take notes, calculate and sketch.' },
+  emergency: { title: 'Emergency', description: 'SOS, flashlight, emergency numbers and sharing your location. Works offline.' },
 }
 
 export const TOOLS_EN: Record<string, { title: string; description: string; formats?: string; keywords?: string[] }> = {
@@ -146,6 +147,18 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
     description: 'Work out your BMI with Asia-Pacific, Indonesian MoH or WHO categories, a healthy weight range, and daily calorie needs.',
     formats: 'Weight + Height → BMI',
     keywords: ['bmi', 'body mass index', 'ideal weight', 'healthy weight', 'calories', 'bmr', 'tdee', 'diet', 'obesity', 'underweight', 'asia pacific'],
+  },
+  sos: {
+    title: 'SOS & Flashlight',
+    description: 'One big button: the phone torch blinks the Morse SOS pattern, the white screen flashes, and a loud siren sounds. Also works as a plain flashlight.',
+    formats: 'Button → SOS signal',
+    keywords: ['sos', 'emergency', 'flashlight', 'torch', 'morse', 'siren', 'help', 'lost'],
+  },
+  darurat: {
+    title: 'Emergency Info',
+    description: 'Indonesian emergency numbers as call buttons, plus your GPS location as ready-to-send text with a map link via WhatsApp or Share.',
+    formats: 'GPS → Location text',
+    keywords: ['emergency number', '112', 'police', 'fire', 'ambulance', 'share location', 'gps', 'coordinates', 'accident'],
   },
   'ubah-huruf': {
     title: 'Case Converter',

@@ -71,6 +71,8 @@ import {
   Smartphone,
   Baby,
   HeartPulse,
+  Siren,
+  PhoneCall,
   Presentation,
   Scissors,
   Sheet,
@@ -112,7 +114,7 @@ export interface ToolPackage {
   published: boolean
 }
 
-export type CategoryId = 'to-pdf' | 'from-pdf' | 'pdf' | 'media' | 'music' | 'dev' | 'productivity'
+export type CategoryId = 'to-pdf' | 'from-pdf' | 'pdf' | 'media' | 'music' | 'dev' | 'productivity' | 'emergency'
 
 /** Home page groups, in display order. */
 export const CATEGORIES: { id: CategoryId; title: string; description: string }[] = [
@@ -143,6 +145,7 @@ export const CATEGORIES: { id: CategoryId; title: string; description: string }[
     description: 'QR code, favicon, Base64, warna, dan rapikan data.',
   },
   { id: 'productivity', title: 'Produktivitas', description: 'Catat, hitung, dan corat-coret.' },
+  { id: 'emergency', title: 'Darurat', description: 'SOS, senter, nomor darurat, dan bagikan lokasi. Jalan offline.' },
 ]
 
 // Adding a tool: create src/tools/<slug>/ with a default-exported component,
@@ -1235,6 +1238,28 @@ export const TOOLS: Tool[] = [
     formats: 'Berat + Tinggi → BMI',
     badge: 'Baru',
     component: lazy(() => import('./bmi/Bmi')),
+  },
+  {
+    slug: 'sos',
+    category: 'emergency',
+    keywords: ['sos', 'darurat', 'senter', 'flashlight', 'torch', 'morse', 'sirene', 'siren', 'lampu kilat', 'minta tolong', 'emergency', 'help', 'tersesat'],
+    title: 'SOS & Senter',
+    description: 'Satu tombol besar: senter HP berkedip pola morse SOS, layar putih berkedip, dan sirene keras. Bisa juga jadi senter biasa.',
+    icon: Siren,
+    formats: 'Tombol → Sinyal SOS',
+    badge: 'Baru',
+    component: lazy(() => import('./sos/Sos')),
+  },
+  {
+    slug: 'darurat',
+    category: 'emergency',
+    keywords: ['nomor darurat', '112', 'polisi', 'pemadam', 'ambulans', 'basarnas', 'bagikan lokasi', 'lokasiku', 'gps', 'koordinat', 'emergency number', 'share location', 'tolong', 'kecelakaan'],
+    title: 'Info Darurat',
+    description: 'Nomor darurat Indonesia sebagai tombol telepon, plus bagikan lokasi GPS-mu sebagai teks dengan link peta lewat WhatsApp atau Bagikan.',
+    icon: PhoneCall,
+    formats: 'GPS → Teks lokasi',
+    badge: 'Baru',
+    component: lazy(() => import('./darurat/Darurat')),
   },
 ]
 

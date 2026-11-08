@@ -3,6 +3,15 @@
 Catatan harian apa yang berubah di [tools](https://chalidade.github.io/tools/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-08 — Darurat
+
+Kategori baru **Darurat** dengan dua tool; total sekarang **85 tools**.
+
+- **SOS & Senter** (`#/sos`): satu tombol besar yang menyalakan senter HP berkedip pola morse SOS (Chrome Android, lewat `applyConstraints({ torch })`), layar putih penuh yang berkedip, dan sirene Web Audio. Mode senter biasa nyala terus. Wake Lock menjaga layar tetap menyala. iPhone tidak mengizinkan senter dari browser, jadi di sana hanya layar yang berkedip. Jalan offline.
+- **Info Darurat** (`#/darurat`): nomor darurat Indonesia (112, 110, 113, 118, 119, 115, 117, 123) sebagai tombol telepon; daftar dan tanggal pengecekannya ada di satu berkas data. "Bagikan lokasiku" mengubah koordinat GPS menjadi teks siap kirim dengan link peta dan akurasinya, lewat Web Share atau WhatsApp.
+
+Tidak ada data yang dikirim ke server; lokasi hanya dibaca saat tombol ditekan.
+
 ## 2026-11-07 — Kesehatan
 
 Dua tool baru di kategori Produktivitas; total sekarang **83 tools**.
