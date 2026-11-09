@@ -3,7 +3,7 @@
 **English** · [Bahasa Indonesia](README.id.md)
 
 **My everyday file toolbox, built for the file work I do every day and published free for everyone.**
-85 tools for PDF, Office files, images, video, audio and QR codes, and every one of them runs entirely in your browser.
+87 tools for PDF, Office files, images, video, audio and QR codes, and every one of them runs entirely in your browser.
 Your files are never uploaded.
 
 [![Live demo](https://img.shields.io/badge/live%20demo-chalidade.github.io%2Ftools-6366f1)](https://chalidade.github.io/tools/)
@@ -70,6 +70,8 @@ All 45, grouped the way the home page groups them. Each name links to the live t
 - [OCR — Photo to Text](https://chalidade.github.io/tools/en/ocr/): Indonesian and English text from photos and screenshots with Tesseract (wasm); the worker, core and language data are bundled with the site, never fetched from a CDN, and loaded only when you press Read text
 - [Compress Video](https://chalidade.github.io/tools/en/compress-video/): MP4 output using the device's own encoder, with a size estimate up front
 - [Trim Video & Audio](https://chalidade.github.io/tools/en/trim-media/): filmstrip/waveform timeline; untouched parts are copied without re-encoding
+- [Split Video for WhatsApp Status](https://chalidade.github.io/tools/en/status-wa/): cuts a long video into equal 15/30/60 s parts, each re-encoded under 16 MB, with a ZIP of all parts
+- [Photo Collage](https://chalidade.github.io/tools/en/kolase/): 2–9 photos in grid, strip or one-big layouts, spacing, rounded corners, 1:1 / 4:5 / 9:16, JPG or PNG
 - [GIF ⇄ MP4](https://chalidade.github.io/tools/en/gif-mp4/), [Extract Video Frames](https://chalidade.github.io/tools/en/extract-frames/)
 - [Change Speed](https://chalidade.github.io/tools/en/change-speed/): 0.25× to 4× with the pitch kept natural (a hand-written WSOLA time-stretch)
 - [Merge Audio](https://chalidade.github.io/tools/en/merge-audio/), [Compress Audio](https://chalidade.github.io/tools/en/compress-audio/) (MP3, AAC or Opus)

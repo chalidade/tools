@@ -1261,6 +1261,28 @@ export const TOOLS: Tool[] = [
     badge: 'Baru',
     component: lazy(() => import('./darurat/Darurat')),
   },
+  {
+    slug: 'status-wa',
+    category: 'media',
+    keywords: ['status', 'whatsapp', 'wa', 'potong video', 'pecah video', 'split', 'kompres', '30 detik', 'story', 'video panjang'],
+    title: 'Potong Video untuk Status WhatsApp',
+    description: 'Pecah video panjang jadi potongan 15, 30, atau 60 detik yang dikompres di bawah 16 MB — unduh semuanya sekaligus.',
+    icon: MessageCircle,
+    formats: 'Video → beberapa MP4 / ZIP',
+    badge: 'Baru',
+    component: lazy(() => import('./status-wa/StatusWa')),
+  },
+  {
+    slug: 'kolase',
+    category: 'media',
+    keywords: ['kolase', 'collage', 'grid', 'foto', 'gabung foto', 'instagram', 'story', 'layout', 'gambar'],
+    title: 'Kolase Foto',
+    description: '2–9 foto jadi satu gambar: grid, strip, atau satu besar, dengan jarak, sudut membulat, dan rasio 1:1, 4:5, 9:16.',
+    icon: LayoutGrid,
+    formats: 'Foto → JPG / PNG',
+    badge: 'Baru',
+    component: lazy(() => import('./kolase/Kolase')),
+  },
 ]
 
 /** A tool's title, description and formats in the given language (English lives in registry-en.ts). */

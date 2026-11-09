@@ -255,11 +255,11 @@ jaringan) dan tombol utamanya besar, bisa ditekan tanpa membaca.
 
 ## Hari 23 — 2026-11-09 · WhatsApp & foto
 
-- [ ] **Potong Video untuk Status WhatsApp** (`#/status-wa`): pecah video
+- [x] **Potong Video untuk Status WhatsApp** (`#/status-wa`): pecah video
   panjang jadi potongan berurutan dengan durasi maksimal Status WhatsApp (cek
   batas terbaru saat dibangun), kompres agar muat, lalu unduh semua sekaligus.
   Pakai `convertMedia` dengan `trim` dari `src/lib/media.ts`.
-- [ ] **Kolase Foto** (`#/kolase`): 2–9 foto dengan beberapa tata letak
+- [x] **Kolase Foto** (`#/kolase`): 2–9 foto dengan beberapa tata letak
   (grid, strip, satu besar), jarak dan sudut membulat, rasio 1:1/4:5/9:16, lalu
   unduh JPG/PNG.
 
