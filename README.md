@@ -3,7 +3,7 @@
 **English** · [Bahasa Indonesia](README.id.md)
 
 **My everyday file toolbox, built for the file work I do every day and published free for everyone.**
-85 tools for PDF, Office files, images, video, audio and QR codes, and every one of them runs entirely in your browser.
+89 tools for PDF, Office files, images, video, audio and QR codes, and every one of them runs entirely in your browser.
 Your files are never uploaded.
 
 [![Live demo](https://img.shields.io/badge/live%20demo-chalidade.github.io%2Ftools-6366f1)](https://chalidade.github.io/tools/)
@@ -64,12 +64,16 @@ All 45, grouped the way the home page groups them. Each name links to the live t
 - [Crop & Resize Image](https://chalidade.github.io/tools/en/crop-resize-image/): free or fixed ratios, rotate, flip, exact pixels
 - [Convert Image Format](https://chalidade.github.io/tools/en/convert-image/): HEIC (iPhone), WebP, AVIF, PNG, JPG to JPG/PNG/WebP, in batches; HEIC decoded by a self-hosted libheif wasm
 - [ID Photo](https://chalidade.github.io/tools/en/pas-foto/): 2×3 / 3×4 / 4×6 crop, red/blue/white backdrop, 4R or A4 print sheet (JPG/PNG/PDF)
+- [ID Document Watermark](https://chalidade.github.io/tools/en/watermark-ktp/): tiled "only for verification" text with the date over an ID photo, size/angle/opacity adjustable, re-saved without EXIF
+- [Censor Photo](https://chalidade.github.io/tools/en/sensor-foto/): box or brush over ID numbers, faces or plates; black block (default), pixelate or blur, with a warning that light blur on small text can be guessed
 - [Remove Photo Metadata](https://chalidade.github.io/tools/en/strip-exif/): shows camera, date and GPS; JPG/PNG are cleaned losslessly
 - [Remove Background](https://chalidade.github.io/tools/en/remove-background/): magic wand, color select, lasso and brush, with no AI model to download
 - [Document Scanner](https://chalidade.github.io/tools/en/scan/): photograph paper, drag the four corners (found automatically as a first guess), straighten the perspective on a canvas without OpenCV, pick black-and-white, grayscale or color, and combine pages into one PDF (pdf-lib)
 - [OCR — Photo to Text](https://chalidade.github.io/tools/en/ocr/): Indonesian and English text from photos and screenshots with Tesseract (wasm); the worker, core and language data are bundled with the site, never fetched from a CDN, and loaded only when you press Read text
 - [Compress Video](https://chalidade.github.io/tools/en/compress-video/): MP4 output using the device's own encoder, with a size estimate up front
 - [Trim Video & Audio](https://chalidade.github.io/tools/en/trim-media/): filmstrip/waveform timeline; untouched parts are copied without re-encoding
+- [Split Video for WhatsApp Status](https://chalidade.github.io/tools/en/status-wa/): cuts a long video into equal 15/30/60 s parts, each re-encoded under 16 MB, with a ZIP of all parts
+- [Photo Collage](https://chalidade.github.io/tools/en/kolase/): 2–9 photos in grid, strip or one-big layouts, spacing, rounded corners, 1:1 / 4:5 / 9:16, JPG or PNG
 - [GIF ⇄ MP4](https://chalidade.github.io/tools/en/gif-mp4/), [Extract Video Frames](https://chalidade.github.io/tools/en/extract-frames/)
 - [Change Speed](https://chalidade.github.io/tools/en/change-speed/): 0.25× to 4× with the pitch kept natural (a hand-written WSOLA time-stretch)
 - [Merge Audio](https://chalidade.github.io/tools/en/merge-audio/), [Compress Audio](https://chalidade.github.io/tools/en/compress-audio/) (MP3, AAC or Opus)

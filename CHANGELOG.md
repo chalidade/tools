@@ -3,6 +3,24 @@
 Catatan harian apa yang berubah di [tools](https://chalidade.github.io/tools/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-10 — Privasi foto
+
+Dua tool baru di kategori Media; total sekarang **89 tools**.
+
+- **Watermark KTP & Dokumen Identitas** (`#/watermark-ktp`): teks melintang berulang di foto KTP/SIM/paspor, bawaannya "Hanya untuk verifikasi <keperluan> · <tanggal hari ini>". Ukuran, sudut, transparansi, kerapatan, dan warna (abu/hitam/putih/merah) bisa diatur dengan pratinjau langsung. Foto digambar ulang di canvas sehingga EXIF (GPS, kamera) hilang; unduh JPG atau PNG.
+- **Sensor Foto** (`#/sensor-foto`): tutup bagian foto (NIK, wajah, plat nomor, alamat) dengan kotak atau kuas. Modelnya blok hitam (bawaan), piksel besar, atau blur; piksel dan blur memakai kode sendiri (rata-rata blok dan box blur tiga lintasan), tanpa `ctx.filter` yang tidak ada di Safari. Ada peringatan bahwa blur tipis pada teks kecil bisa ditebak. Hasil digambar ulang pada resolusi asli tanpa EXIF, jadi bagian yang ditutup benar-benar hilang. Bisa diurungkan.
+
+Semuanya diproses di browser; tidak ada file yang dikirim.
+
+## 2026-11-09 — WhatsApp & foto
+
+Dua tool baru di kategori Media; total sekarang **87 tools**.
+
+- **Potong Video untuk Status WhatsApp** (`#/status-wa`): pecah video panjang jadi bagian sama panjang dengan durasi maksimal 15, 30 (bawaan), atau 60 detik, karena batas Status WhatsApp pernah berubah. Tiap bagian di-encode ulang (maks. 720p, H.264/AAC bila tersedia) dengan bitrate yang dihitung supaya di bawah 16 MB, memakai `convertMedia` dengan `trim`. Bagian diputar ulang di halaman, diunduh satuan atau semuanya sebagai ZIP.
+- **Kolase Foto** (`#/kolase`): 2–9 foto dalam tata letak grid, strip tegak, strip datar, atau satu besar; urutan bisa digeser, jarak dan sudut membulat diatur, latar putih/abu/hitam, rasio 1:1, 4:5, atau 9:16 (lebar 1080 px). Foto dipotong tengah tanpa gepeng, EXIF diterapkan; unduh JPG atau PNG.
+
+Semuanya diproses di browser; tidak ada file yang dikirim.
+
 ## 2026-11-08 — Darurat
 
 Kategori baru **Darurat** dengan dua tool; total sekarang **85 tools**.

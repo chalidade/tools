@@ -255,21 +255,21 @@ jaringan) dan tombol utamanya besar, bisa ditekan tanpa membaca.
 
 ## Hari 23 — 2026-11-09 · WhatsApp & foto
 
-- [ ] **Potong Video untuk Status WhatsApp** (`#/status-wa`): pecah video
+- [x] **Potong Video untuk Status WhatsApp** (`#/status-wa`): pecah video
   panjang jadi potongan berurutan dengan durasi maksimal Status WhatsApp (cek
   batas terbaru saat dibangun), kompres agar muat, lalu unduh semua sekaligus.
   Pakai `convertMedia` dengan `trim` dari `src/lib/media.ts`.
-- [ ] **Kolase Foto** (`#/kolase`): 2–9 foto dengan beberapa tata letak
+- [x] **Kolase Foto** (`#/kolase`): 2–9 foto dengan beberapa tata letak
   (grid, strip, satu besar), jarak dan sudut membulat, rasio 1:1/4:5/9:16, lalu
   unduh JPG/PNG.
 
 ## Hari 24 — 2026-11-10 · Privasi foto
 
-- [ ] **Watermark KTP & Dokumen Identitas** (`#/watermark-ktp`): teks
+- [x] **Watermark KTP & Dokumen Identitas** (`#/watermark-ktp`): teks
   melintang berulang di foto KTP/SIM/paspor ("Hanya untuk verifikasi …",
   tanggal otomatis), atur ukuran, sudut, dan transparansi, lalu simpan ulang
   tanpa EXIF. Pakai `decodeImage`/`canvasBlob` dari `src/lib/image.ts`.
-- [ ] **Sensor Foto** (`#/sensor-foto`): tutup bagian foto (NIK, wajah, plat
+- [x] **Sensor Foto** (`#/sensor-foto`): tutup bagian foto (NIK, wajah, plat
   nomor, alamat) dengan kotak atau kuas, model blok hitam, piksel besar, atau
   blur. Gambar disimpan ulang sehingga bagian yang ditutup benar-benar hilang.
   Beri peringatan bahwa blur tipis pada teks kecil bisa ditebak, jadi default
