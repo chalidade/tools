@@ -3,6 +3,15 @@
 Catatan harian apa yang berubah di [tools](https://chalidade.github.io/tools/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-10 — Privasi foto
+
+Dua tool baru di kategori Media; total sekarang **89 tools**.
+
+- **Watermark KTP & Dokumen Identitas** (`#/watermark-ktp`): teks melintang berulang di foto KTP/SIM/paspor, bawaannya "Hanya untuk verifikasi <keperluan> · <tanggal hari ini>". Ukuran, sudut, transparansi, kerapatan, dan warna (abu/hitam/putih/merah) bisa diatur dengan pratinjau langsung. Foto digambar ulang di canvas sehingga EXIF (GPS, kamera) hilang; unduh JPG atau PNG.
+- **Sensor Foto** (`#/sensor-foto`): tutup bagian foto (NIK, wajah, plat nomor, alamat) dengan kotak atau kuas. Modelnya blok hitam (bawaan), piksel besar, atau blur; piksel dan blur memakai kode sendiri (rata-rata blok dan box blur tiga lintasan), tanpa `ctx.filter` yang tidak ada di Safari. Ada peringatan bahwa blur tipis pada teks kecil bisa ditebak. Hasil digambar ulang pada resolusi asli tanpa EXIF, jadi bagian yang ditutup benar-benar hilang. Bisa diurungkan.
+
+Semuanya diproses di browser; tidak ada file yang dikirim.
+
 ## 2026-11-09 — WhatsApp & foto
 
 Dua tool baru di kategori Media; total sekarang **87 tools**.

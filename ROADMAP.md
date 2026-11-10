@@ -265,11 +265,11 @@ jaringan) dan tombol utamanya besar, bisa ditekan tanpa membaca.
 
 ## Hari 24 — 2026-11-10 · Privasi foto
 
-- [ ] **Watermark KTP & Dokumen Identitas** (`#/watermark-ktp`): teks
+- [x] **Watermark KTP & Dokumen Identitas** (`#/watermark-ktp`): teks
   melintang berulang di foto KTP/SIM/paspor ("Hanya untuk verifikasi …",
   tanggal otomatis), atur ukuran, sudut, dan transparansi, lalu simpan ulang
   tanpa EXIF. Pakai `decodeImage`/`canvasBlob` dari `src/lib/image.ts`.
-- [ ] **Sensor Foto** (`#/sensor-foto`): tutup bagian foto (NIK, wajah, plat
+- [x] **Sensor Foto** (`#/sensor-foto`): tutup bagian foto (NIK, wajah, plat
   nomor, alamat) dengan kotak atau kuas, model blok hitam, piksel besar, atau
   blur. Gambar disimpan ulang sehingga bagian yang ditutup benar-benar hilang.
   Beri peringatan bahwa blur tipis pada teks kecil bisa ditebak, jadi default
