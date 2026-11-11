@@ -190,6 +190,8 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
     formats: 'Loan → Schedule',
     keywords: ['loan', 'instalment', 'installment', 'mortgage', 'amortization', 'flat rate', 'annuity', 'effective rate', 'repayment schedule', 'csv'],
   },
+  patungan: { title: 'Bill Split', description: 'Split a group bill per item or equally, with tax and service shared proportionally, exact rounding and a summary ready for WhatsApp.', formats: 'Bill → Share per person', keywords: ['split bill', 'split', 'dutch', 'restaurant', 'tax', 'service', 'friends', 'group'] },
+  undian: { title: 'Random Draw & Arisan', description: 'Draw names with secure randomness; arisan mode never repeats a winner until everyone has had a turn, with history kept on the device.', formats: 'Names → Winner', keywords: ['random picker', 'raffle', 'lottery', 'arisan', 'giveaway', 'winner', 'name picker', 'draw'] },
   'gaji-bersih': {
     title: 'Take-Home Pay Calculator',
     description: 'Estimate net salary from gross: PPh 21 income tax, BPJS health, JHT and pension, with every step shown.',
