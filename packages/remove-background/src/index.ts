@@ -1,6 +1,6 @@
 // The headless API: mask editing on raw pixels, no UI. The source lives with
 // the site (src/tools/remove-background/mask.ts), so the tool on
-// chalidade.github.io/tools and this package are the same code.
+// toowl.my.id and this package are the same code.
 //
 //   import { floodRegion, applyRegion, refine, compose } from '@chalidade/remove-background'
 //   const { data } = ctx.getImageData(0, 0, W, H)

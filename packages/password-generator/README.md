@@ -5,7 +5,7 @@ Random passwords or English/Indonesian passphrases, plus a strength check with
 an estimated time to crack. **Everything runs in the visitor's browser** using
 `crypto.getRandomValues`; no password ever leaves the page.
 
-This is the [Password Generator](https://chalidade.github.io/tools/#/password-generator) tool from
+This is the [Password Generator](https://toowl.my.id/#/password-generator) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

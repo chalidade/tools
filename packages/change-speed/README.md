@@ -4,7 +4,7 @@ Speed up or slow down video and audio for any website: one `<script>` tag, one
 element. 0.25× to 4×, with the pitch kept natural (a time-stretch, so voices
 don't turn into chipmunks) or shifted like a tape. **Everything runs in the visitor's browser**: there is no server and nothing is uploaded.
 
-This is the [Change Speed](https://chalidade.github.io/tools/#/change-speed) tool from
+This is the [Change Speed](https://toowl.my.id/#/change-speed) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

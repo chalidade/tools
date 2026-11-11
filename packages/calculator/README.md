@@ -11,7 +11,7 @@ phone-calculator percent (200 + 10% = 220), × ÷ −, a comma or dot as the
 decimal point, implicit multiplication (2π, 3(4+5)), powers, roots, factorials,
 trigonometry in degrees or radians, logarithms and `Ans`.
 
-This is the [Calculator](https://chalidade.github.io/tools/#/calculator) tool from
+This is the [Calculator](https://toowl.my.id/#/calculator) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

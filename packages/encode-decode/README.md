@@ -6,7 +6,7 @@ HTML entities, and JWT reading (header, payload and the iat/nbf/exp dates).
 **Everything runs in the visitor's browser**; no text or token is sent
 anywhere. JWT signatures are not verified, and the tool says so.
 
-This is the [Encode / Decode](https://chalidade.github.io/tools/#/encode-decode) tool from
+This is the [Encode / Decode](https://toowl.my.id/#/encode-decode) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

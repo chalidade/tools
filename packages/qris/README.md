@@ -8,7 +8,7 @@ CRC is recomputed; a code whose own CRC doesn't match is flagged.
 **Everything runs in the visitor's browser**; nothing is sent to any server.
 Scan the result once with a payment app before giving it to customers.
 
-This is the [QRIS Amount](https://chalidade.github.io/tools/#/qris) tool from
+This is the [QRIS Amount](https://toowl.my.id/#/qris) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

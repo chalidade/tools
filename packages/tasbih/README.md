@@ -11,7 +11,7 @@ element replaces the beads with one large button, for Islamic sites, mosque or
 study-group pages and Ramadan pages. It is just a counter: it does not show
 or suggest any recitation.
 
-This is the [Digital Tasbih](https://chalidade.github.io/tools/#/tasbih) tool from
+This is the [Digital Tasbih](https://toowl.my.id/#/tasbih) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

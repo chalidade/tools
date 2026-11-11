@@ -5,7 +5,7 @@ element. Visitors drop their files, drag them into order and download the
 merged PDF. **Everything runs in the visitor's browser** with pdf-lib; the files
 are never uploaded.
 
-This is the [Merge PDF](https://chalidade.github.io/tools/#/merge-pdf) tool from
+This is the [Merge PDF](https://toowl.my.id/#/merge-pdf) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

@@ -192,7 +192,7 @@ Situs pemasang dengan Content-Security-Policy ketat perlu mengizinkannya
 Worker yang dibuat dengan `new Worker(new URL(...))` (bpm-key) harus di-inline
 (`?worker&inline`, lihat `packages/bpm-key/vite.config.ts`), karena browser
 menolak worker dari origin lain. Link ke situs ini yang dibangun dari
-`import.meta.env.BASE_URL` perlu `define` ke `https://chalidade.github.io/tools/`
+`import.meta.env.BASE_URL` perlu `define` ke `https://toowl.my.id/`
 di vite.config.ts paketnya, kalau tidak link itu mengarah ke situs pemasang.
 
 ## Hal yang perlu diingat saat tool dipasang di situs orang

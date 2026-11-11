@@ -6,7 +6,7 @@ line break outside strings goes, the data itself doesn't change one bit
 with their line and column. **Everything runs in the visitor's browser**;
 nothing is sent anywhere.
 
-This is the [JSON Minify](https://chalidade.github.io/tools/#/json-minify) tool from
+This is the [JSON Minify](https://toowl.my.id/#/json-minify) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

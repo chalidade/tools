@@ -7,7 +7,7 @@ circle) and padding, previewed at real size. The download is a zip with
 Android icons (192, 512), `site.webmanifest` and the `<link>` tags to paste.
 **Everything runs in the visitor's browser**; the logo is never uploaded.
 
-This is the [Favicon Generator](https://chalidade.github.io/tools/#/favicon-generator) tool from
+This is the [Favicon Generator](https://toowl.my.id/#/favicon-generator) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

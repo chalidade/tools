@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-Browser-only tools site, deployed to https://chalidade.github.io/tools/ by
+Browser-only tools site, deployed to https://toowl.my.id/ by
 `.github/workflows/pages.yml` on push to `main`. See README.md for the full
 picture; the rules that matter when editing:
 
@@ -84,8 +84,8 @@ picture; the rules that matter when editing:
   `sitemap.xml` and `404.html`, using the text in `src/lib/seo.ts`; keep
   `seo.ts` the single source for titles/descriptions/about text. Old
   `#/<slug>` links are rewritten on load; embeds keep `#/<slug>?embed`.
-  `robots.txt` lives in the `chalidade/chalidade.github.io` repo (domain
-  root). A new tool needs nothing extra: its pages come from the registry.
+  `public/robots.txt` and `public/CNAME` (custom domain toowl.my.id, served
+  at the root, so `--base=/`) ship with the build. A new tool needs nothing extra: its pages come from the registry.
 - The home page is one search box (`SearchHome`): type, tap a result. It is
   built for a phone — results sit right under the box as compact rows, and
   the title folds away while typing. Its motion is CSS only (`blur-in`,

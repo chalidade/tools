@@ -6,7 +6,7 @@ and gridlines, and get a PDF with real, selectable text: number and date
 formats, bold, colors, fills, borders and merged cells as in Excel.
 **Everything runs in the visitor's browser**; the file is never uploaded.
 
-This is the [Excel to PDF](https://chalidade.github.io/tools/#/excel-to-pdf) tool from
+This is the [Excel to PDF](https://toowl.my.id/#/excel-to-pdf) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

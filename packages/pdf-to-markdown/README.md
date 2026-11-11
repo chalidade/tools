@@ -5,7 +5,7 @@ Headings come from font size, **bold** and *italic* are kept, lists and
 tables are rebuilt. **Everything runs in the visitor's browser** with PDF.js;
 the file is never uploaded.
 
-This is the [PDF to Markdown](https://chalidade.github.io/tools/#/pdf-to-markdown) tool from
+This is the [PDF to Markdown](https://toowl.my.id/#/pdf-to-markdown) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

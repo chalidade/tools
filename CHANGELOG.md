@@ -1,6 +1,6 @@
 # Riwayat update
 
-Catatan harian apa yang berubah di [tools](https://chalidade.github.io/tools/),
+Catatan harian apa yang berubah di [tools](https://toowl.my.id/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
 ## 2026-11-11 — Tambah Musik ke Video

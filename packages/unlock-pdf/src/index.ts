@@ -1,5 +1,5 @@
 // The headless API. The source lives with the site (src/tools/unlock-pdf/),
-// so the tool on chalidade.github.io/tools and this package are the same code.
+// so the tool on toowl.my.id and this package are the same code.
 //
 //   import { encryptionInfo, unlockPdf } from '@chalidade/unlock-pdf'
 //   const { needsPassword } = await encryptionInfo(bytes)

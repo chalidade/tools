@@ -4,7 +4,7 @@ Image cropping for any website: one `<script>` tag, one element. Crop freely or
 to 1:1, 4:3, 16:9, 4:5 and more, rotate, flip, resize in pixels or percent,
 and save as PNG, JPEG or WebP. **Everything runs in the visitor's browser**: there is no server and nothing is uploaded.
 
-This is the [Crop & Resize Image](https://chalidade.github.io/tools/#/crop-resize-image) tool from
+This is the [Crop & Resize Image](https://toowl.my.id/#/crop-resize-image) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

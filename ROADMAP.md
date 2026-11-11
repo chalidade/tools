@@ -27,6 +27,10 @@ tool-nya langsung terbuka siap dipakai.
 - [x] **Google Search Console** (dikerjakan pemilik akun): verifikasi properti
   `https://chalidade.github.io/tools/` lewat meta tag, kirim sitemap, minta
   indexing untuk halaman utama dan tool terpenting.
+- [ ] **Pindah ke domain `toowl.my.id`**: daftarkan properti Domain baru di
+  Search Console (TXT DNS), kirim `https://toowl.my.id/sitemap.xml`, lalu
+  pakai "Change of address" dari properti lama. `robots.txt` sekarang ikut
+  build (`public/robots.txt`).
 - [x] **Kata kunci yang sering dicari** di `keywords` registry dan teks
   halamannya: "vn", "voice note", "whatsapp" (Kompres Audio sudah bisa .opus ke
   MP3), "video ke mp3", "rotate pdf", "jpg ke pdf", dan semacamnya.

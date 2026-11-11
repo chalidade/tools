@@ -6,7 +6,7 @@ and tax, and download an A4 PDF with the amount written out in words, in
 Indonesian (`Satu juta dua ratus lima puluh ribu rupiah`) or English.
 **Everything runs in the visitor's browser**; nothing is sent anywhere.
 
-This is the [Receipt & Invoice](https://chalidade.github.io/tools/#/kwitansi) tool from
+This is the [Receipt & Invoice](https://toowl.my.id/#/kwitansi) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

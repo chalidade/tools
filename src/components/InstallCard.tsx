@@ -5,7 +5,7 @@ import { CopyButton } from '@/components/tool/CopyButton'
 import { toolText, type Tool } from '@/tools/registry'
 import { useLang, useT } from '@/lib/i18n'
 
-const SITE = 'https://chalidade.github.io/tools/'
+const SITE = 'https://toowl.my.id/'
 const REPO = 'https://github.com/chalidade/tools'
 
 type Tab = 'script' | 'npm' | 'iframe'

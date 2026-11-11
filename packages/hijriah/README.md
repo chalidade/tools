@@ -10,7 +10,7 @@ calendar built into the browser (`Intl`). Official dates in some countries,
 Indonesia included, are set by moon sighting and can be a day later; the element
 says so.
 
-This is the [Hijri ⇄ Gregorian Converter](https://chalidade.github.io/tools/#/hijriah) tool from
+This is the [Hijri ⇄ Gregorian Converter](https://toowl.my.id/#/hijriah) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

@@ -7,7 +7,7 @@ real text box on top, in its position, size, style and colour. **Everything
 runs in the visitor's browser** with PDF.js and PptxGenJS; the file is never
 uploaded.
 
-This is the [PDF to PowerPoint](https://chalidade.github.io/tools/#/pdf-to-ppt) tool from
+This is the [PDF to PowerPoint](https://toowl.my.id/#/pdf-to-ppt) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

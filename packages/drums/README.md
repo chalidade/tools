@@ -6,7 +6,7 @@ swing and patterns (rock, pop, disco, funk, hip-hop, shuffle, bossa nova,
 reggae, dangdut). **Everything runs in the visitor's browser**: the kit is
 synthesised like a classic drum machine, no samples are downloaded.
 
-This is the [Online Drums](https://chalidade.github.io/tools/#/drums) tool from
+This is the [Online Drums](https://toowl.my.id/#/drums) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

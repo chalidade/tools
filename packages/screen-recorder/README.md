@@ -5,7 +5,7 @@ whole screen, a single window or a single tab, with microphone and tab audio,
 plus a floating camera bubble. **Everything runs in the visitor's browser**:
 there is no server and nothing is uploaded.
 
-This is the [Screen Recorder](https://chalidade.github.io/tools/#/screen-recorder)
+This is the [Screen Recorder](https://toowl.my.id/#/screen-recorder)
 tool from [chalidade/tools](https://github.com/chalidade/tools), packaged so you
 can drop it into your own site. Try it there first.
 

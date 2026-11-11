@@ -6,7 +6,7 @@ it on guitar or piano at any tempo, transpose it and copy the chords.
 **Everything runs in the visitor's browser**; the sound is synthesised, no
 samples are downloaded.
 
-This is the [Chord Progression Builder](https://chalidade.github.io/tools/#/chord-progression) tool from
+This is the [Chord Progression Builder](https://toowl.my.id/#/chord-progression) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 
@@ -46,7 +46,7 @@ The key, pattern, sound, tempo and chord length are kept in your page's `localSt
 there on the next visit. Nothing else is stored, and nothing is sent anywhere.
 
 The buttons under the chords link to the guitar, piano and chord tools on
-chalidade.github.io/tools.
+toowl.my.id.
 
 ## Use with npm
 

@@ -6,14 +6,14 @@
 91 tools for PDF, Office files, images, video, audio and QR codes, and every one of them runs entirely in your browser.
 Your files are never uploaded.
 
-[![Live demo](https://img.shields.io/badge/live%20demo-chalidade.github.io%2Ftools-6366f1)](https://chalidade.github.io/tools/)
+[![Live demo](https://img.shields.io/badge/live%20demo-chalidade.github.io%2Ftools-6366f1)](https://toowl.my.id/)
 [![Deploy to GitHub Pages](https://github.com/chalidade/tools/actions/workflows/pages.yml/badge.svg)](https://github.com/chalidade/tools/actions/workflows/pages.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 ![TypeScript](https://img.shields.io/badge/TypeScript-6-3178c6?logo=typescript&logoColor=white)
 ![React](https://img.shields.io/badge/React-19-61dafb?logo=react&logoColor=black)
 ![Vite](https://img.shields.io/badge/Vite-8-646cff?logo=vite&logoColor=white)
 
-<a href="https://chalidade.github.io/tools/"><img src="docs/launch-en.gif" alt="tools launch preview: search for a tool, open it, convert a file in the browser" width="480"></a>
+<a href="https://toowl.my.id/"><img src="docs/launch-en.gif" alt="tools launch preview: search for a tool, open it, convert a file in the browser" width="480"></a>
 
 ▶ [Watch the 16-second launch video with sound](https://github.com/user-attachments/assets/d0f73458-88ca-4a23-937d-e8166ab4079d) · [Bahasa Indonesia version](https://github.com/user-attachments/assets/4270efe2-2e7e-4d1a-a5db-766ac01e369b)
 
@@ -37,106 +37,106 @@ browser's own media encoders, and a library is downloaded only when you open the
 All 45, grouped the way the home page groups them. Each name links to the live tool.
 
 **To PDF**
-- [Word to PDF](https://chalidade.github.io/tools/en/doc-to-pdf/): `.docx` to PDF, paginated without cutting through lines of text
-- [Images to PDF](https://chalidade.github.io/tools/en/image-to-pdf/): reorder, rotate, A4/Letter/fit-to-image; phone EXIF rotation applied
-- [PowerPoint to PDF](https://chalidade.github.io/tools/en/ppt-to-pdf/): `.pptx` to PDF, one page per slide
-- [Excel to PDF](https://chalidade.github.io/tools/en/excel-to-pdf/): `.xlsx`/`.csv` to a selectable-text PDF table, with theme colors, borders, merged cells and number formats
+- [Word to PDF](https://toowl.my.id/en/doc-to-pdf/): `.docx` to PDF, paginated without cutting through lines of text
+- [Images to PDF](https://toowl.my.id/en/image-to-pdf/): reorder, rotate, A4/Letter/fit-to-image; phone EXIF rotation applied
+- [PowerPoint to PDF](https://toowl.my.id/en/ppt-to-pdf/): `.pptx` to PDF, one page per slide
+- [Excel to PDF](https://toowl.my.id/en/excel-to-pdf/): `.xlsx`/`.csv` to a selectable-text PDF table, with theme colors, borders, merged cells and number formats
 
 **From PDF**
-- [PDF to Word](https://chalidade.github.io/tools/en/pdf-to-word/): editable `.docx`, keeping font size, bold/italic, tabs and page breaks
-- [PDF to Excel](https://chalidade.github.io/tools/en/pdf-to-excel/): tables rebuilt from text positions; currencies and percentages become real numbers
-- [PDF to PowerPoint](https://chalidade.github.io/tools/en/pdf-to-ppt/): one slide per page, with the text as editable text boxes
-- [PDF to Images](https://chalidade.github.io/tools/en/pdf-to-image/): PNG/JPG at 72, 150 or 300 dpi, zipped when there are several
-- [PDF to Markdown](https://chalidade.github.io/tools/en/pdf-to-markdown/): headings, emphasis, lists and tables, with tables joined across pages
+- [PDF to Word](https://toowl.my.id/en/pdf-to-word/): editable `.docx`, keeping font size, bold/italic, tabs and page breaks
+- [PDF to Excel](https://toowl.my.id/en/pdf-to-excel/): tables rebuilt from text positions; currencies and percentages become real numbers
+- [PDF to PowerPoint](https://toowl.my.id/en/pdf-to-ppt/): one slide per page, with the text as editable text boxes
+- [PDF to Images](https://toowl.my.id/en/pdf-to-image/): PNG/JPG at 72, 150 or 300 dpi, zipped when there are several
+- [PDF to Markdown](https://toowl.my.id/en/pdf-to-markdown/): headings, emphasis, lists and tables, with tables joined across pages
 
 **Edit & Secure PDF**
-- [Merge PDF](https://chalidade.github.io/tools/en/merge-pdf/), [Split PDF](https://chalidade.github.io/tools/en/split-pdf/) (pages, ranges like `1-3, 5, 8-`, or every N pages)
-- [Watermark PDF](https://chalidade.github.io/tools/en/watermark-pdf/): text or logo, centred or tiled, correct on rotated pages
-- [Organize PDF Pages](https://chalidade.github.io/tools/en/organize-pdf/): thumbnails you drag to reorder, rotate, duplicate or delete
-- [PDF Page Numbers](https://chalidade.github.io/tools/en/page-numbers/): position, format (`1`, `1 / 10`, `Page 1`) and the first numbered page
-- [Sign PDF](https://chalidade.github.io/tools/en/sign-pdf/): draw (pressure-sensitive) or upload a signature, then place it anywhere
-- [Edit PDF](https://chalidade.github.io/tools/en/edit-pdf/): add text (font, size, colour), images, boxes, lines, ticks and scribbles on any page of a non-AcroForm form
-- [Compress PDF](https://chalidade.github.io/tools/en/compress-pdf/): re-encodes embedded JPEGs and optimises the structure with qpdf; never returns a larger file
-- [Protect PDF](https://chalidade.github.io/tools/en/protect-pdf/) (AES-256 password and permissions) and [Unlock PDF](https://chalidade.github.io/tools/en/unlock-pdf/)
+- [Merge PDF](https://toowl.my.id/en/merge-pdf/), [Split PDF](https://toowl.my.id/en/split-pdf/) (pages, ranges like `1-3, 5, 8-`, or every N pages)
+- [Watermark PDF](https://toowl.my.id/en/watermark-pdf/): text or logo, centred or tiled, correct on rotated pages
+- [Organize PDF Pages](https://toowl.my.id/en/organize-pdf/): thumbnails you drag to reorder, rotate, duplicate or delete
+- [PDF Page Numbers](https://toowl.my.id/en/page-numbers/): position, format (`1`, `1 / 10`, `Page 1`) and the first numbered page
+- [Sign PDF](https://toowl.my.id/en/sign-pdf/): draw (pressure-sensitive) or upload a signature, then place it anywhere
+- [Edit PDF](https://toowl.my.id/en/edit-pdf/): add text (font, size, colour), images, boxes, lines, ticks and scribbles on any page of a non-AcroForm form
+- [Compress PDF](https://toowl.my.id/en/compress-pdf/): re-encodes embedded JPEGs and optimises the structure with qpdf; never returns a larger file
+- [Protect PDF](https://toowl.my.id/en/protect-pdf/) (AES-256 password and permissions) and [Unlock PDF](https://toowl.my.id/en/unlock-pdf/)
 
 **Images & Media**
-- [Compress Images](https://chalidade.github.io/tools/en/compress-image/): batch JPG/WebP, optional "max N KB" size limit, metadata (including GPS) stripped
-- [Crop & Resize Image](https://chalidade.github.io/tools/en/crop-resize-image/): free or fixed ratios, rotate, flip, exact pixels
-- [Convert Image Format](https://chalidade.github.io/tools/en/convert-image/): HEIC (iPhone), WebP, AVIF, PNG, JPG to JPG/PNG/WebP, in batches; HEIC decoded by a self-hosted libheif wasm
-- [ID Photo](https://chalidade.github.io/tools/en/pas-foto/): 2×3 / 3×4 / 4×6 crop, red/blue/white backdrop, 4R or A4 print sheet (JPG/PNG/PDF)
-- [ID Document Watermark](https://chalidade.github.io/tools/en/watermark-ktp/): tiled "only for verification" text with the date over an ID photo, size/angle/opacity adjustable, re-saved without EXIF
-- [Censor Photo](https://chalidade.github.io/tools/en/sensor-foto/): box or brush over ID numbers, faces or plates; black block (default), pixelate or blur, with a warning that light blur on small text can be guessed
-- [Remove Photo Metadata](https://chalidade.github.io/tools/en/strip-exif/): shows camera, date and GPS; JPG/PNG are cleaned losslessly
-- [Remove Background](https://chalidade.github.io/tools/en/remove-background/): magic wand, color select, lasso and brush, with no AI model to download
-- [Document Scanner](https://chalidade.github.io/tools/en/scan/): photograph paper, drag the four corners (found automatically as a first guess), straighten the perspective on a canvas without OpenCV, pick black-and-white, grayscale or color, and combine pages into one PDF (pdf-lib)
-- [OCR — Photo to Text](https://chalidade.github.io/tools/en/ocr/): Indonesian and English text from photos and screenshots with Tesseract (wasm); the worker, core and language data are bundled with the site, never fetched from a CDN, and loaded only when you press Read text
-- [Compress Video](https://chalidade.github.io/tools/en/compress-video/): MP4 output using the device's own encoder, with a size estimate up front
-- [Trim Video & Audio](https://chalidade.github.io/tools/en/trim-media/): filmstrip/waveform timeline; untouched parts are copied without re-encoding
-- [Split Video for WhatsApp Status](https://chalidade.github.io/tools/en/status-wa/): cuts a long video into equal 15/30/60 s parts, each re-encoded under 16 MB, with a ZIP of all parts
-- [Photo Collage](https://chalidade.github.io/tools/en/kolase/): 2–9 photos in grid, strip or one-big layouts, spacing, rounded corners, 1:1 / 4:5 / 9:16, JPG or PNG
-- [GIF ⇄ MP4](https://chalidade.github.io/tools/en/gif-mp4/), [Extract Video Frames](https://chalidade.github.io/tools/en/extract-frames/)
-- [Change Speed](https://chalidade.github.io/tools/en/change-speed/): 0.25× to 4× with the pitch kept natural (a hand-written WSOLA time-stretch)
-- [Merge Audio](https://chalidade.github.io/tools/en/merge-audio/), [Compress Audio](https://chalidade.github.io/tools/en/compress-audio/) (MP3, AAC or Opus)
-- [Screen Recorder](https://chalidade.github.io/tools/en/screen-recorder/): screen, window or tab, with mic and tab audio mixed, a floating camera, and WebM or MP4 export
-- [Voice Recorder](https://chalidade.github.io/tools/en/audio-recorder/): live waveform, recordings kept in IndexedDB, export to MP3/M4A/WAV
+- [Compress Images](https://toowl.my.id/en/compress-image/): batch JPG/WebP, optional "max N KB" size limit, metadata (including GPS) stripped
+- [Crop & Resize Image](https://toowl.my.id/en/crop-resize-image/): free or fixed ratios, rotate, flip, exact pixels
+- [Convert Image Format](https://toowl.my.id/en/convert-image/): HEIC (iPhone), WebP, AVIF, PNG, JPG to JPG/PNG/WebP, in batches; HEIC decoded by a self-hosted libheif wasm
+- [ID Photo](https://toowl.my.id/en/pas-foto/): 2×3 / 3×4 / 4×6 crop, red/blue/white backdrop, 4R or A4 print sheet (JPG/PNG/PDF)
+- [ID Document Watermark](https://toowl.my.id/en/watermark-ktp/): tiled "only for verification" text with the date over an ID photo, size/angle/opacity adjustable, re-saved without EXIF
+- [Censor Photo](https://toowl.my.id/en/sensor-foto/): box or brush over ID numbers, faces or plates; black block (default), pixelate or blur, with a warning that light blur on small text can be guessed
+- [Remove Photo Metadata](https://toowl.my.id/en/strip-exif/): shows camera, date and GPS; JPG/PNG are cleaned losslessly
+- [Remove Background](https://toowl.my.id/en/remove-background/): magic wand, color select, lasso and brush, with no AI model to download
+- [Document Scanner](https://toowl.my.id/en/scan/): photograph paper, drag the four corners (found automatically as a first guess), straighten the perspective on a canvas without OpenCV, pick black-and-white, grayscale or color, and combine pages into one PDF (pdf-lib)
+- [OCR — Photo to Text](https://toowl.my.id/en/ocr/): Indonesian and English text from photos and screenshots with Tesseract (wasm); the worker, core and language data are bundled with the site, never fetched from a CDN, and loaded only when you press Read text
+- [Compress Video](https://toowl.my.id/en/compress-video/): MP4 output using the device's own encoder, with a size estimate up front
+- [Trim Video & Audio](https://toowl.my.id/en/trim-media/): filmstrip/waveform timeline; untouched parts are copied without re-encoding
+- [Split Video for WhatsApp Status](https://toowl.my.id/en/status-wa/): cuts a long video into equal 15/30/60 s parts, each re-encoded under 16 MB, with a ZIP of all parts
+- [Photo Collage](https://toowl.my.id/en/kolase/): 2–9 photos in grid, strip or one-big layouts, spacing, rounded corners, 1:1 / 4:5 / 9:16, JPG or PNG
+- [GIF ⇄ MP4](https://toowl.my.id/en/gif-mp4/), [Extract Video Frames](https://toowl.my.id/en/extract-frames/)
+- [Change Speed](https://toowl.my.id/en/change-speed/): 0.25× to 4× with the pitch kept natural (a hand-written WSOLA time-stretch)
+- [Merge Audio](https://toowl.my.id/en/merge-audio/), [Compress Audio](https://toowl.my.id/en/compress-audio/) (MP3, AAC or Opus)
+- [Screen Recorder](https://toowl.my.id/en/screen-recorder/): screen, window or tab, with mic and tab audio mixed, a floating camera, and WebM or MP4 export
+- [Voice Recorder](https://toowl.my.id/en/audio-recorder/): live waveform, recordings kept in IndexedDB, export to MP3/M4A/WAV
 
 **Music**
 
-- [Guitar Tuner](https://chalidade.github.io/tools/en/guitar-tuner/): microphone pitch detection (McLeod method), auto string detection, guitar/bass/ukulele/violin/viola/cello tunings, reference tones, continuous drone, adjustable A4
-- [Metronome](https://chalidade.github.io/tools/en/metronome/): 30–300 BPM on a lookahead Web Audio scheduler, accents, beats per bar, subdivisions, tap tempo
-- [Chord Finder & Transpose](https://chalidade.github.io/tools/en/chords/): guitar and ukulele shapes generated for every root and 16 chord types, playable (Karplus–Strong); transposes a pasted song sheet keeping chords aligned to the lyrics
-- [Chord Progression Builder](https://chalidade.github.io/tools/en/chord-progression/): 12 patterns (pop, 50s, canon, ii–V–I, 12-bar blues, minor loops) in any key built from the chord dictionary's generated shapes; plays on the guitar or piano synth with a lookahead scheduler, transposes by semitone, opens the chords in Online Guitar
-- [Practice Recorder](https://chalidade.github.io/tools/en/practice-recorder/): raw microphone take over a lookahead metronome (the click is never recorded), count-in bar, playback with the click laid back on top and a nudge for latency, MP3/M4A/WAV export through Mediabunny
-- [BPM & Key Finder](https://chalidade.github.io/tools/en/bpm-key/): tempo from an onset-envelope comb search, key from a chromagram against Krumhansl profiles, Camelot code and diatonic chords; runs in a Web Worker
-- [Online Piano](https://chalidade.github.io/tools/en/piano/): all 88 keys with a minimap and 1–7 octave views; six synthesised voices (grand, electric piano, organ, harpsichord, strings, music box); practice mode with public-domain pieces, scales and any MIDI file you open (parsed in the browser), next-key highlighting, demo playback and a score; multi-touch, computer keyboard, Web MIDI, sustain, chord names
-- [Online Guitar](https://chalidade.github.io/tools/en/guitar/): Karplus–Strong strings with a fractional-delay all-pass (in tune to ~2 cents) and pick-position excitation, acoustic body / clean / overdriven amp; swipe-to-strum over generated chord shapes, capo, free fretboard, auto accompaniment patterns
-- [Online Drums](https://chalidade.github.io/tools/en/drums/): nine synthesised pads (808-style metal for hats and cymbals, hi-hat choke), multi-touch with centre-is-louder velocity, keyboard, General MIDI e-drum input; 16-step sequencer with accents, swing and nine preset grooves, saved in the browser
+- [Guitar Tuner](https://toowl.my.id/en/guitar-tuner/): microphone pitch detection (McLeod method), auto string detection, guitar/bass/ukulele/violin/viola/cello tunings, reference tones, continuous drone, adjustable A4
+- [Metronome](https://toowl.my.id/en/metronome/): 30–300 BPM on a lookahead Web Audio scheduler, accents, beats per bar, subdivisions, tap tempo
+- [Chord Finder & Transpose](https://toowl.my.id/en/chords/): guitar and ukulele shapes generated for every root and 16 chord types, playable (Karplus–Strong); transposes a pasted song sheet keeping chords aligned to the lyrics
+- [Chord Progression Builder](https://toowl.my.id/en/chord-progression/): 12 patterns (pop, 50s, canon, ii–V–I, 12-bar blues, minor loops) in any key built from the chord dictionary's generated shapes; plays on the guitar or piano synth with a lookahead scheduler, transposes by semitone, opens the chords in Online Guitar
+- [Practice Recorder](https://toowl.my.id/en/practice-recorder/): raw microphone take over a lookahead metronome (the click is never recorded), count-in bar, playback with the click laid back on top and a nudge for latency, MP3/M4A/WAV export through Mediabunny
+- [BPM & Key Finder](https://toowl.my.id/en/bpm-key/): tempo from an onset-envelope comb search, key from a chromagram against Krumhansl profiles, Camelot code and diatonic chords; runs in a Web Worker
+- [Online Piano](https://toowl.my.id/en/piano/): all 88 keys with a minimap and 1–7 octave views; six synthesised voices (grand, electric piano, organ, harpsichord, strings, music box); practice mode with public-domain pieces, scales and any MIDI file you open (parsed in the browser), next-key highlighting, demo playback and a score; multi-touch, computer keyboard, Web MIDI, sustain, chord names
+- [Online Guitar](https://toowl.my.id/en/guitar/): Karplus–Strong strings with a fractional-delay all-pass (in tune to ~2 cents) and pick-position excitation, acoustic body / clean / overdriven amp; swipe-to-strum over generated chord shapes, capo, free fretboard, auto accompaniment patterns
+- [Online Drums](https://toowl.my.id/en/drums/): nine synthesised pads (808-style metal for hats and cymbals, hi-hat choke), multi-touch with centre-is-louder velocity, keyboard, General MIDI e-drum input; 16-step sequencer with accents, swing and nine preset grooves, saved in the browser
 
 **Developer & Design**
-- [QR Code Generator](https://chalidade.github.io/tools/en/qr-generator/): links, Wi-Fi, WhatsApp, vCard and more, with logo and styles; every code is scanned back to confirm it reads
-- [QR & Barcode Reader](https://chalidade.github.io/tools/en/qr-reader/): from an image, a pasted screenshot or the camera (QR, Data Matrix, Aztec, PDF417, EAN/UPC, Code 128…)
-- [JSON Beautifier](https://chalidade.github.io/tools/en/json-beautify/) and [JSON Minify](https://chalidade.github.io/tools/en/json-minify/): a custom parser that keeps numbers exactly as written
-- [Favicon Generator](https://chalidade.github.io/tools/en/favicon-generator/): `.ico`, iOS/Android icons, web manifest and the `<head>` snippet
-- [Image ⇄ Base64](https://chalidade.github.io/tools/en/image-to-base64/), [Color Picker](https://chalidade.github.io/tools/en/color-picker/) (HEX/RGB/HSL/OKLCH, WCAG contrast, 50–950 shades)
+- [QR Code Generator](https://toowl.my.id/en/qr-generator/): links, Wi-Fi, WhatsApp, vCard and more, with logo and styles; every code is scanned back to confirm it reads
+- [QR & Barcode Reader](https://toowl.my.id/en/qr-reader/): from an image, a pasted screenshot or the camera (QR, Data Matrix, Aztec, PDF417, EAN/UPC, Code 128…)
+- [JSON Beautifier](https://toowl.my.id/en/json-beautify/) and [JSON Minify](https://toowl.my.id/en/json-minify/): a custom parser that keeps numbers exactly as written
+- [Favicon Generator](https://toowl.my.id/en/favicon-generator/): `.ico`, iOS/Android icons, web manifest and the `<head>` snippet
+- [Image ⇄ Base64](https://toowl.my.id/en/image-to-base64/), [Color Picker](https://toowl.my.id/en/color-picker/) (HEX/RGB/HSL/OKLCH, WCAG contrast, 50–950 shades)
 
 **Productivity**
-- [Notes](https://chalidade.github.io/tools/en/notes/): Markdown with live checklists, saved in the browser, JSON backup/restore
-- [Calculator](https://chalidade.github.io/tools/en/calculator/): basic and scientific, with its own expression parser (no `eval`)
-- [Password Generator](https://chalidade.github.io/tools/en/password-generator/): random passwords and Indonesian/English passphrases from `crypto.getRandomValues`, plus a strength check with estimated guessing time
-- [Word Counter](https://chalidade.github.io/tools/en/word-counter/): words, characters, sentences, paragraphs, reading/speaking time and per-platform character limits
-- [Unit Converter](https://chalidade.github.io/tools/en/unit-converter/): length, weight (ons, quintal), area (hectare, are, tumbak), volume, temperature, speed and data
-- [Date Calculator](https://chalidade.github.io/tools/en/date-calculator/): exact age, days between dates, working days with bundled Indonesian public holidays, add/subtract time
-- [Prayer Times](https://chalidade.github.io/tools/en/jadwal-sholat/): daily and monthly times from a bundled city list or GPS, computed from the sun's position (Kemenag angles: Fajr 20°, Isha 18°, Asr 1×, 2-minute margin), printable; no API
-- [Qibla Direction](https://chalidade.github.io/tools/en/arah-kiblat/): great-circle bearing to the Kaaba plus a live phone compass via `DeviceOrientationEvent` (iOS permission, calibration warning)
-- [Hijri ⇄ Gregorian Converter](https://chalidade.github.io/tools/en/hijriah/): through the browser's `islamic-umalqura` Intl calendar, plus a year of Islamic holidays; notes that official Kemenag dates may differ by a day
-- [Zakat Calculator](https://chalidade.github.io/tools/en/zakat/): income, wealth, gold/silver and fitrah zakat; nisab from a gold price you enter (nothing fetched), formulas shown
-- [Used Phone/Laptop Check](https://chalidade.github.io/tools/en/cek-perangkat/): tick through screen (dead pixels), touch, speaker, mic, camera, vibration, sensor and keyboard tests, then copy a summary
-- [Digital Tasbih](https://chalidade.github.io/tools/en/tasbih/): big tap counter with 33/99/free/custom targets, vibration at the target, keyboard shortcuts, history in localStorage
-- [Number to Words](https://chalidade.github.io/tools/en/terbilang/): numbers to Indonesian or English words with rupiah/sen suffix and letter-case options
-- [QRIS Amount](https://chalidade.github.io/tools/en/qris/): read your shop's static QRIS (image or camera) and add an amount (tag 54, dynamic flag, CRC-16 recomputed) for a ready-to-scan QR; PNG/SVG
-- [Letter Generator](https://chalidade.github.io/tools/en/surat/): job application, absence, power of attorney, statement and resignation letters as PDF (pdf-lib) or Word (docx), last entry kept on the device
-- [CV Builder](https://chalidade.github.io/tools/en/cv/): one-column, ATS-friendly CV with real text and standard headings, reorderable sections, three layouts, Indonesian and English samples, PDF (pdf-lib) or Word (docx), data in localStorage and JSON export/import
-- [Case Converter](https://chalidade.github.io/tools/en/ubah-huruf/): UPPERCASE, lowercase, Title Case, Sentence case, collapse extra spaces, remove blank lines, join lines; one tap, then copy
-- [Receipt & Invoice](https://chalidade.github.io/tools/en/kwitansi/): PDF receipt or invoice with items, discount and tax, amount in words from Terbilang, last entry kept on the device (pdf-lib)
-- [Loan Instalment Calculator](https://chalidade.github.io/tools/en/cicilan/): flat or annuity interest, month-by-month schedule, total interest, CSV export
-- [Bill Split](https://chalidade.github.io/tools/en/patungan/): split a group bill per item or equally, tax and service shared proportionally, exact rounding (largest remainder), summary for WhatsApp
-- [Random Draw & Arisan](https://chalidade.github.io/tools/en/undian/): unbiased `crypto.getRandomValues` name draw with a short animation, arisan mode that excludes earlier winners until everyone has had a turn, history in localStorage
-- [Take-Home Pay Calculator](https://chalidade.github.io/tools/en/gaji-bersih/): gross to net salary with PPh 21 (Article 17 brackets, PTKP), BPJS health, JHT and pension; rates in one source file
-- [Electricity Token Calculator](https://chalidade.github.io/tools/en/token-listrik/): PLN prepaid amount to estimated kWh by tariff class after PPJ, admin fee and VAT, with days left from daily use; tariffs in one source file
-- [THR & Overtime Calculator](https://chalidade.github.io/tools/en/thr-lembur/): full or prorated THR and PP 35/2021 overtime (working day vs holiday, 5- or 6-day week) with an hour-by-hour breakdown; rules in one source file
-- [WhatsApp Link](https://chalidade.github.io/tools/en/link-wa/): number (08…, +62…) and optional message to a `wa.me` chat link, copy button and QR (reuses the QR generator); the number is remembered only if you ask
-- [Percentage & Discount Calculator](https://chalidade.github.io/tools/en/persen/): X% of Y, what percent, percent change and stacked discounts with a step table (50% + 20% = 60%)
-- [Which Is Cheaper](https://chalidade.github.io/tools/en/mana-lebih-murah/): compare packs on one unit price (g/kg/ml/L/pcs, pieces per pack), cheapest marked with the percent difference
-- [Encode / Decode](https://chalidade.github.io/tools/en/encode-decode/): Base64 (UTF-8, URL-safe), URL encode, HTML entities and JWT decoding (header + payload, no signature check)
-- [UUID Generator](https://chalidade.github.io/tools/en/uuid/): v4 and time-ordered v7 from `crypto.getRandomValues`, up to 1000 at once, with format options
-- [Text Compare](https://chalidade.github.io/tools/en/text-diff/): line and word diff with colours, unified or side by side
-- [Whiteboard](https://chalidade.github.io/tools/en/whiteboard/): pressure-sensitive pen, shapes, text, multiple pages, export to PNG/PDF
-- [Pregnancy Due Date Calculator](https://chalidade.github.io/tools/en/hpl/): due date from the last period (Naegele's rule, adjustable cycle) or an ultrasound, with gestational age, trimester and milestones; an estimate only
-- [BMI & Ideal Weight](https://chalidade.github.io/tools/en/bmi/): BMI with Asia-Pacific, Kemenkes or WHO categories, healthy weight range and daily calories (Mifflin-St Jeor); cut-offs in one data file
+- [Notes](https://toowl.my.id/en/notes/): Markdown with live checklists, saved in the browser, JSON backup/restore
+- [Calculator](https://toowl.my.id/en/calculator/): basic and scientific, with its own expression parser (no `eval`)
+- [Password Generator](https://toowl.my.id/en/password-generator/): random passwords and Indonesian/English passphrases from `crypto.getRandomValues`, plus a strength check with estimated guessing time
+- [Word Counter](https://toowl.my.id/en/word-counter/): words, characters, sentences, paragraphs, reading/speaking time and per-platform character limits
+- [Unit Converter](https://toowl.my.id/en/unit-converter/): length, weight (ons, quintal), area (hectare, are, tumbak), volume, temperature, speed and data
+- [Date Calculator](https://toowl.my.id/en/date-calculator/): exact age, days between dates, working days with bundled Indonesian public holidays, add/subtract time
+- [Prayer Times](https://toowl.my.id/en/jadwal-sholat/): daily and monthly times from a bundled city list or GPS, computed from the sun's position (Kemenag angles: Fajr 20°, Isha 18°, Asr 1×, 2-minute margin), printable; no API
+- [Qibla Direction](https://toowl.my.id/en/arah-kiblat/): great-circle bearing to the Kaaba plus a live phone compass via `DeviceOrientationEvent` (iOS permission, calibration warning)
+- [Hijri ⇄ Gregorian Converter](https://toowl.my.id/en/hijriah/): through the browser's `islamic-umalqura` Intl calendar, plus a year of Islamic holidays; notes that official Kemenag dates may differ by a day
+- [Zakat Calculator](https://toowl.my.id/en/zakat/): income, wealth, gold/silver and fitrah zakat; nisab from a gold price you enter (nothing fetched), formulas shown
+- [Used Phone/Laptop Check](https://toowl.my.id/en/cek-perangkat/): tick through screen (dead pixels), touch, speaker, mic, camera, vibration, sensor and keyboard tests, then copy a summary
+- [Digital Tasbih](https://toowl.my.id/en/tasbih/): big tap counter with 33/99/free/custom targets, vibration at the target, keyboard shortcuts, history in localStorage
+- [Number to Words](https://toowl.my.id/en/terbilang/): numbers to Indonesian or English words with rupiah/sen suffix and letter-case options
+- [QRIS Amount](https://toowl.my.id/en/qris/): read your shop's static QRIS (image or camera) and add an amount (tag 54, dynamic flag, CRC-16 recomputed) for a ready-to-scan QR; PNG/SVG
+- [Letter Generator](https://toowl.my.id/en/surat/): job application, absence, power of attorney, statement and resignation letters as PDF (pdf-lib) or Word (docx), last entry kept on the device
+- [CV Builder](https://toowl.my.id/en/cv/): one-column, ATS-friendly CV with real text and standard headings, reorderable sections, three layouts, Indonesian and English samples, PDF (pdf-lib) or Word (docx), data in localStorage and JSON export/import
+- [Case Converter](https://toowl.my.id/en/ubah-huruf/): UPPERCASE, lowercase, Title Case, Sentence case, collapse extra spaces, remove blank lines, join lines; one tap, then copy
+- [Receipt & Invoice](https://toowl.my.id/en/kwitansi/): PDF receipt or invoice with items, discount and tax, amount in words from Terbilang, last entry kept on the device (pdf-lib)
+- [Loan Instalment Calculator](https://toowl.my.id/en/cicilan/): flat or annuity interest, month-by-month schedule, total interest, CSV export
+- [Bill Split](https://toowl.my.id/en/patungan/): split a group bill per item or equally, tax and service shared proportionally, exact rounding (largest remainder), summary for WhatsApp
+- [Random Draw & Arisan](https://toowl.my.id/en/undian/): unbiased `crypto.getRandomValues` name draw with a short animation, arisan mode that excludes earlier winners until everyone has had a turn, history in localStorage
+- [Take-Home Pay Calculator](https://toowl.my.id/en/gaji-bersih/): gross to net salary with PPh 21 (Article 17 brackets, PTKP), BPJS health, JHT and pension; rates in one source file
+- [Electricity Token Calculator](https://toowl.my.id/en/token-listrik/): PLN prepaid amount to estimated kWh by tariff class after PPJ, admin fee and VAT, with days left from daily use; tariffs in one source file
+- [THR & Overtime Calculator](https://toowl.my.id/en/thr-lembur/): full or prorated THR and PP 35/2021 overtime (working day vs holiday, 5- or 6-day week) with an hour-by-hour breakdown; rules in one source file
+- [WhatsApp Link](https://toowl.my.id/en/link-wa/): number (08…, +62…) and optional message to a `wa.me` chat link, copy button and QR (reuses the QR generator); the number is remembered only if you ask
+- [Percentage & Discount Calculator](https://toowl.my.id/en/persen/): X% of Y, what percent, percent change and stacked discounts with a step table (50% + 20% = 60%)
+- [Which Is Cheaper](https://toowl.my.id/en/mana-lebih-murah/): compare packs on one unit price (g/kg/ml/L/pcs, pieces per pack), cheapest marked with the percent difference
+- [Encode / Decode](https://toowl.my.id/en/encode-decode/): Base64 (UTF-8, URL-safe), URL encode, HTML entities and JWT decoding (header + payload, no signature check)
+- [UUID Generator](https://toowl.my.id/en/uuid/): v4 and time-ordered v7 from `crypto.getRandomValues`, up to 1000 at once, with format options
+- [Text Compare](https://toowl.my.id/en/text-diff/): line and word diff with colours, unified or side by side
+- [Whiteboard](https://toowl.my.id/en/whiteboard/): pressure-sensitive pen, shapes, text, multiple pages, export to PNG/PDF
+- [Pregnancy Due Date Calculator](https://toowl.my.id/en/hpl/): due date from the last period (Naegele's rule, adjustable cycle) or an ultrasound, with gestational age, trimester and milestones; an estimate only
+- [BMI & Ideal Weight](https://toowl.my.id/en/bmi/): BMI with Asia-Pacific, Kemenkes or WHO categories, healthy weight range and daily calories (Mifflin-St Jeor); cut-offs in one data file
 
 **Emergency**
-- [SOS & Flashlight](https://chalidade.github.io/tools/en/sos/): phone torch (Chrome Android) blinking Morse SOS, flashing white screen, siren from Web Audio, plain flashlight mode, screen Wake Lock; screen only on iPhone
-- [Emergency Info](https://chalidade.github.io/tools/en/darurat/): Indonesian emergency numbers as `tel:` buttons (list and check date in one data file), and GPS location as text with a map link via Share or WhatsApp, with accuracy shown
+- [SOS & Flashlight](https://toowl.my.id/en/sos/): phone torch (Chrome Android) blinking Morse SOS, flashing white screen, siren from Web Audio, plain flashlight mode, screen Wake Lock; screen only on iPhone
+- [Emergency Info](https://toowl.my.id/en/darurat/): Indonesian emergency numbers as `tel:` buttons (list and check date in one data file), and GPS location as text with a map link via Share or WhatsApp, with accuracy shown
 
 The [Indonesian README](README.id.md) has a longer per-tool table with every option and limitation.
 
@@ -256,7 +256,7 @@ add `&theme=light|dark` and `&lang=en|id` as needed.
 
 ```html
 <iframe
-  src="https://chalidade.github.io/tools/#/screen-recorder?embed&lang=en"
+  src="https://toowl.my.id/#/screen-recorder?embed&lang=en"
   title="Screen Recorder"
   style="width: 100%; height: 760px; border: 0; border-radius: 16px"
   allow="display-capture; microphone; camera; clipboard-write; fullscreen; picture-in-picture"

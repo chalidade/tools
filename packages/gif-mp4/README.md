@@ -5,7 +5,7 @@ A GIF becomes a much smaller MP4 (that apps accept as a video, looped as many
 times as you like); a clip of a video becomes a GIF with a sharp palette per
 frame. **Everything runs in the visitor's browser**: there is no server and nothing is uploaded.
 
-This is the [GIF ⇄ MP4](https://chalidade.github.io/tools/#/gif-mp4) tool from
+This is the [GIF ⇄ MP4](https://toowl.my.id/#/gif-mp4) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

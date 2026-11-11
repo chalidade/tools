@@ -6,7 +6,7 @@ clean the edge, then save a transparent PNG or put it on a new colour. There is
 **no AI model**, so nothing is downloaded beyond this package.
 **Everything runs in the visitor's browser**: there is no server and nothing is uploaded.
 
-This is the [Remove Background](https://chalidade.github.io/tools/#/remove-background) tool from
+This is the [Remove Background](https://toowl.my.id/#/remove-background) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

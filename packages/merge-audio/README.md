@@ -5,7 +5,7 @@ in MP3, M4A, WAV, OGG, FLAC (or the sound of a video), mixed formats welcome,
 set the order and the gap between them, and save as MP3, M4A or WAV.
 **Everything runs in the visitor's browser**: there is no server and nothing is uploaded.
 
-This is the [Merge Audio](https://chalidade.github.io/tools/#/merge-audio) tool from
+This is the [Merge Audio](https://toowl.my.id/#/merge-audio) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

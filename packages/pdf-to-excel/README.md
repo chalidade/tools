@@ -6,7 +6,7 @@ numbers such as `Rp15.500.000`, `1,234.50` or `12,5%` become real numbers.
 **Everything runs in the visitor's browser** with PDF.js and ExcelJS; the file
 is never uploaded.
 
-This is the [PDF to Excel](https://chalidade.github.io/tools/#/pdf-to-excel) tool from
+This is the [PDF to Excel](https://toowl.my.id/#/pdf-to-excel) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

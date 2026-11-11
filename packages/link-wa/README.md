@@ -6,7 +6,7 @@ optional message, and get a copy-ready `wa.me` link, a "Chat now" button and
 the link as a QR code (PNG or SVG). **Everything runs in the visitor's
 browser**; the number and message are not sent to any server.
 
-This is the [WhatsApp Link](https://chalidade.github.io/tools/#/link-wa) tool from
+This is the [WhatsApp Link](https://toowl.my.id/#/link-wa) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

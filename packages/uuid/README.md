@@ -5,7 +5,7 @@ Generate UUIDs on any website: one `<script>` tag, one element. Version 4
 with braces. **Everything runs in the visitor's browser** using
 `crypto.getRandomValues`; nothing is sent anywhere.
 
-This is the [UUID Generator](https://chalidade.github.io/tools/#/uuid) tool from
+This is the [UUID Generator](https://toowl.my.id/#/uuid) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

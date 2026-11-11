@@ -5,7 +5,7 @@ website: one `<script>` tag, one element. Centred or tiled, any angle, with a
 live preview that matches the output. **Everything runs in the visitor's
 browser** with pdf-lib; the file is never uploaded.
 
-This is the [Watermark PDF](https://chalidade.github.io/tools/#/watermark-pdf) tool from
+This is the [Watermark PDF](https://toowl.my.id/#/watermark-pdf) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

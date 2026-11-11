@@ -5,7 +5,7 @@ before and after versions and see what changed, line by line and word by word,
 in a unified or side-by-side view. **Everything runs in the visitor's browser**;
 neither text is sent anywhere.
 
-This is the [Text Compare](https://chalidade.github.io/tools/#/text-diff) tool from
+This is the [Text Compare](https://toowl.my.id/#/text-diff) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

@@ -9,7 +9,7 @@ English, with an optional rupiah currency reading and letter-case options.
 required on Indonesian receipts (*kwitansi*) and bank transfers. The tool also
 reads English, so it works for international invoices too.
 
-This is the [Number to Words](https://chalidade.github.io/tools/#/terbilang) tool from
+This is the [Number to Words](https://toowl.my.id/#/terbilang) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

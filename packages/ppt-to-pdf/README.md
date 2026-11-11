@@ -6,7 +6,7 @@ slide, or print to "Save as PDF" for selectable text. **Everything runs in the
 visitor's browser**; the deck is never uploaded. Animations, transitions and
 video are not carried over; fonts that aren't installed are replaced.
 
-This is the [PowerPoint to PDF](https://chalidade.github.io/tools/#/ppt-to-pdf) tool from
+This is the [PowerPoint to PDF](https://toowl.my.id/#/ppt-to-pdf) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

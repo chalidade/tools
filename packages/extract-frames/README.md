@@ -5,7 +5,7 @@ on a scene and capture it, or grab a frame every N seconds, at the video's
 full resolution, as PNG, JPEG or WebP, and download them one by one or as a
 ZIP. **Everything runs in the visitor's browser**: there is no server and nothing is uploaded.
 
-This is the [Extract Video Frames](https://chalidade.github.io/tools/#/extract-frames) tool from
+This is the [Extract Video Frames](https://toowl.my.id/#/extract-frames) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

@@ -4,7 +4,7 @@ Image format conversion for any website: one `<script>` tag, one element. Turn
 HEIC (iPhone photos), WebP, AVIF, PNG, GIF or JPG into JPG, PNG or WebP, many
 files at once, and download them one by one or as a ZIP. **Everything runs in the visitor's browser**: there is no server and nothing is uploaded.
 
-This is the [Convert Image Format](https://chalidade.github.io/tools/#/convert-image) tool from
+This is the [Convert Image Format](https://toowl.my.id/#/convert-image) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

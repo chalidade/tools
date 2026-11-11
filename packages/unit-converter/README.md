@@ -8,7 +8,7 @@ Besides metric and imperial units it knows the Indonesian ones people still use:
 *ons* (100 g), *kuintal* (100 kg), *are* (100 m²) and *tumbak* (14 m², a
 traditional West Java land unit), and it accepts a decimal comma (`1,5`).
 
-This is the [Unit Converter](https://chalidade.github.io/tools/#/unit-converter) tool from
+This is the [Unit Converter](https://toowl.my.id/#/unit-converter) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

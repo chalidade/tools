@@ -1,5 +1,5 @@
 // The headless API. The source lives with the site (src/tools/merge-pdf/),
-// so the tool on chalidade.github.io/tools and this package are the same code.
+// so the tool on toowl.my.id and this package are the same code.
 // Heavy libraries (pdf-lib, pdf.js, qpdf…) load on first use, not on import.
 //
 //   import { mergePdfs } from '@chalidade/merge-pdf'

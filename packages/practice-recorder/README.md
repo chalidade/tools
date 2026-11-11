@@ -6,7 +6,7 @@ play the take back with the click on top to check your timing, and save it as
 WAV or MP3. **Everything runs in the visitor's browser**: nothing is uploaded,
 and the take is gone when the page closes.
 
-This is the [Practice Recorder](https://chalidade.github.io/tools/#/practice-recorder) tool from
+This is the [Practice Recorder](https://toowl.my.id/#/practice-recorder) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

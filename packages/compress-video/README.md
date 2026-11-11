@@ -5,7 +5,7 @@ MP4, MOV, WebM or MKV with the device's own (usually hardware) encoder, pick
 the quality and resolution, keep or drop the sound. The result is an MP4 that
 plays everywhere. **Everything runs in the visitor's browser**: there is no server and nothing is uploaded.
 
-This is the [Compress Video](https://chalidade.github.io/tools/#/compress-video) tool from
+This is the [Compress Video](https://toowl.my.id/#/compress-video) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

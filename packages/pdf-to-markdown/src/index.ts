@@ -1,5 +1,5 @@
 // The headless API. The source lives with the site (src/tools/pdf-to-markdown/),
-// so the tool on chalidade.github.io/tools and this package are the same code.
+// so the tool on toowl.my.id and this package are the same code.
 //
 //   import { readPdfText, toMarkdown } from '@chalidade/pdf-to-markdown'
 //   const pages = await readPdfText(file, (done, total) => {})

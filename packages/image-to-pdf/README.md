@@ -6,7 +6,7 @@ Letter or pages that fit each image, with a margin. Phone photos come out
 upright (EXIF), PNG screenshots stay lossless. **Everything runs in the
 visitor's browser**; no image is uploaded.
 
-This is the [Images to PDF](https://chalidade.github.io/tools/#/image-to-pdf) tool from
+This is the [Images to PDF](https://toowl.my.id/#/image-to-pdf) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

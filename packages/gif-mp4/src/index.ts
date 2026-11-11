@@ -1,5 +1,5 @@
 // The headless API. The source lives with the site (src/tools/gif-mp4/gif.ts),
-// so the tool on chalidade.github.io/tools and this package are the same code.
+// so the tool on toowl.my.id and this package are the same code.
 //
 //   import { gifToMp4, videoToGif } from '@chalidade/gif-mp4'
 //   const mp4 = await gifToMp4(gif, { background: '#ffffff', loops: 1 }, onProgress)

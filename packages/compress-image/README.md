@@ -6,7 +6,7 @@ or as a ZIP. Every result is free of metadata (EXIF, GPS location, XMP): when
 re-encoding would not make a file smaller, the original picture is kept and
 only its metadata is removed. **Everything runs in the visitor's browser**: there is no server and nothing is uploaded.
 
-This is the [Compress Images](https://chalidade.github.io/tools/#/compress-image) tool from
+This is the [Compress Images](https://toowl.my.id/#/compress-image) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

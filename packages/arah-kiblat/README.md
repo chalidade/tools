@@ -11,7 +11,7 @@ A phone compass may report magnetic north and needs calibration, so the element
 warns when the sensor reports poor accuracy and suggests checking a local
 mosque's direction.
 
-This is the [Qibla Direction](https://chalidade.github.io/tools/#/arah-kiblat) tool from
+This is the [Qibla Direction](https://toowl.my.id/#/arah-kiblat) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

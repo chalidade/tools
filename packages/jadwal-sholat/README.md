@@ -12,7 +12,7 @@ at 18°, Asr at shadow length 1× (Shafi'i), and a 2-minute safety margin
 and works for any location; other countries use other angles, so local
 timetables there may differ by several minutes.
 
-This is the [Prayer Times](https://chalidade.github.io/tools/#/jadwal-sholat) tool from
+This is the [Prayer Times](https://toowl.my.id/#/jadwal-sholat) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

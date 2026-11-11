@@ -10,7 +10,7 @@ from the joint ministerial decree (SKB 3 Menteri). The bundled list covers 2025
 and 2026; for other years only weekends are skipped, and the element says so.
 Holiday names stay in Indonesian.
 
-This is the [Date Calculator](https://chalidade.github.io/tools/#/date-calculator) tool from
+This is the [Date Calculator](https://toowl.my.id/#/date-calculator) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

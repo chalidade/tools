@@ -7,7 +7,7 @@ practice mode (built-in songs, scales or your own MIDI file).
 **Everything runs in the visitor's browser**: the sound is synthesised, and a
 MIDI file opened for practice is read on the device, never uploaded.
 
-This is the [Online Piano](https://chalidade.github.io/tools/#/piano) tool from
+This is the [Online Piano](https://toowl.my.id/#/piano) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

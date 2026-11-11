@@ -9,7 +9,7 @@ Drawings are vector data, so they stay sharp at any zoom and can be moved,
 undone and exported cleanly. The PDF exporter (jsPDF) is only downloaded when
 someone exports a PDF.
 
-This is the [Whiteboard](https://chalidade.github.io/tools/#/whiteboard) tool from
+This is the [Whiteboard](https://toowl.my.id/#/whiteboard) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

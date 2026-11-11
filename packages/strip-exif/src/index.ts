@@ -1,5 +1,5 @@
 // The headless API. The source lives with the site (src/tools/strip-exif/exif.ts),
-// so the tool on chalidade.github.io/tools and this package are the same code.
+// so the tool on toowl.my.id and this package are the same code.
 //
 //   import { readExif, stripMetadata } from '@chalidade/strip-exif'
 //   const bytes = new Uint8Array(await file.arrayBuffer())

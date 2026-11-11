@@ -7,7 +7,7 @@ re-encoding). Paste Base64 or a data URL to see and download the image; its
 type is checked from the bytes, not from what the text claims. **Everything
 runs in the visitor's browser**; nothing is uploaded.
 
-This is the [Image ⇄ Base64](https://chalidade.github.io/tools/#/image-to-base64) tool from
+This is the [Image ⇄ Base64](https://toowl.my.id/#/image-to-base64) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

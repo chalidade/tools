@@ -18,7 +18,7 @@ month; the monthly withholding on a payslip uses the TER tables and only meets
 this figure at the December true-up. Bonuses, THR, overtime and the surcharge
 for employees without a tax ID (NPWP) are not included.
 
-This is the [Take-Home Pay Calculator](https://chalidade.github.io/tools/#/gaji-bersih) tool from
+This is the [Take-Home Pay Calculator](https://toowl.my.id/#/gaji-bersih) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

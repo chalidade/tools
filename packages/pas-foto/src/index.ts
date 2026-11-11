@@ -1,5 +1,5 @@
 // The headless API. The source lives with the site (src/tools/pas-foto/),
-// so the tool on chalidade.github.io/tools and this package are the same code.
+// so the tool on toowl.my.id and this package are the same code.
 //
 //   import { decodeImage, renderPhoto, mmToPx, sheetLayout, PAPERS } from '@chalidade/pas-foto'
 //   const photo = renderPhoto(await decodeImage(file), mmToPx(30), mmToPx(40), { zoom: 1, ox: 0, oy: 0 }, 'red', 20)

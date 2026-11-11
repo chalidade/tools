@@ -4,7 +4,7 @@ Reorder, delete, rotate and duplicate the pages of a PDF on any website: one
 `<script>` tag, one element, with page thumbnails. **Everything runs in the
 visitor's browser** with pdf-lib; the file is never uploaded.
 
-This is the [Organize PDF Pages](https://chalidade.github.io/tools/#/organize-pdf) tool from
+This is the [Organize PDF Pages](https://toowl.my.id/#/organize-pdf) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

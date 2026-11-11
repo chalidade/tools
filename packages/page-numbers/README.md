@@ -5,7 +5,7 @@ Pick the position, the format (`1`, `1 / 10`, `Page 1`, `- 1 -`), the first page
 that gets a number and the number it starts at. **Everything runs in the
 visitor's browser** with pdf-lib; the file is never uploaded.
 
-This is the [PDF Page Numbers](https://chalidade.github.io/tools/#/page-numbers) tool from
+This is the [PDF Page Numbers](https://toowl.my.id/#/page-numbers) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

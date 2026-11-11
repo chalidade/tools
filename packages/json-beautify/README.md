@@ -6,7 +6,7 @@ syntax errors are shown with their line, column and a jump to the spot. Numbers
 are copied exactly, never rounded. **Everything runs in the visitor's
 browser**; nothing is sent anywhere.
 
-This is the [JSON Beautifier](https://chalidade.github.io/tools/#/json-beautify) tool from
+This is the [JSON Beautifier](https://toowl.my.id/#/json-beautify) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

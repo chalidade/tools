@@ -5,7 +5,7 @@ Save PDF pages as PNG or JPG images, up to 300 dpi, on any website: one
 ZIP. **Everything runs in the visitor's browser** with PDF.js; the file is
 never uploaded.
 
-This is the [PDF to Images](https://chalidade.github.io/tools/#/pdf-to-image) tool from
+This is the [PDF to Images](https://toowl.my.id/#/pdf-to-image) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

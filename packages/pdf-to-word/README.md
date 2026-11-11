@@ -5,7 +5,7 @@ tag, one element. Lines are rebuilt into paragraphs, keeping font size, bold,
 italic, centring and indents. **Everything runs in the visitor's browser** with
 PDF.js and docx; the file is never uploaded.
 
-This is the [PDF to Word](https://chalidade.github.io/tools/#/pdf-to-word) tool from
+This is the [PDF to Word](https://toowl.my.id/#/pdf-to-word) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

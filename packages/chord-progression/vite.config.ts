@@ -13,7 +13,7 @@ export default defineConfig({
   define: {
     'process.env.NODE_ENV': JSON.stringify('production'),
     // Links to the other tools (lib/route pageUrl) go to the site, not the host page.
-    'import.meta.env.BASE_URL': JSON.stringify('https://chalidade.github.io/tools/'),
+    'import.meta.env.BASE_URL': JSON.stringify('https://toowl.my.id/'),
   },
   build: {
     outDir: 'dist',

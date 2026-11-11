@@ -40,7 +40,7 @@ write('package.json', JSON.stringify({
   keywords: ['web component', 'custom element'],
   license: 'MIT',
   author: 'Chalid Ade Rahman',
-  homepage: `https://chalidade.github.io/tools/#/${name}`, // package name = the tool's slug
+  homepage: `https://toowl.my.id/#/${name}`, // package name = the tool's slug
   repository: { type: 'git', url: 'git+https://github.com/chalidade/tools.git', directory: `packages/${name}` },
   bugs: 'https://github.com/chalidade/tools/issues',
   type: 'module',

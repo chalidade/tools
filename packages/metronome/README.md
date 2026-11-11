@@ -6,7 +6,7 @@ triplets, sixteenths) and tap tempo. Clicks are scheduled ahead on the Web Audio
 clock, so the beat stays steady even when the page is busy. **Everything runs in
 the visitor's browser**.
 
-This is the [Metronome](https://chalidade.github.io/tools/#/metronome) tool from
+This is the [Metronome](https://toowl.my.id/#/metronome) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

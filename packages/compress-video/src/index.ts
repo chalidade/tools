@@ -1,5 +1,5 @@
 // The headless API. The source lives with the site (src/tools/compress-video/),
-// so the tool on chalidade.github.io/tools and this package are the same code.
+// so the tool on toowl.my.id and this package are the same code.
 //
 //   import { probeMedia, compressVideo } from '@chalidade/compress-video'
 //   const info = await probeMedia(file)

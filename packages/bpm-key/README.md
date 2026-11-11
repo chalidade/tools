@@ -6,7 +6,7 @@ key with its Camelot code, the relative key and the chords that fit.
 **Everything runs in the visitor's browser**: the song is decoded and analysed
 on the device, in a Web Worker, and never uploaded.
 
-This is the [BPM & Key Finder](https://chalidade.github.io/tools/#/bpm-key) tool from
+This is the [BPM & Key Finder](https://toowl.my.id/#/bpm-key) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 
@@ -48,7 +48,7 @@ runs in a Web Worker that starts from a `blob:` URL (a browser does not start a
 worker from a CDN address); if your site sends a Content-Security-Policy, allow
 it with `worker-src blob:`.
 
-The "Open in Metronome" button links to the metronome on chalidade.github.io/tools.
+The "Open in Metronome" button links to the metronome on toowl.my.id.
 
 ## Use with npm
 

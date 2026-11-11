@@ -6,7 +6,7 @@ away (each page as an image) or print to "Save as PDF" for selectable text.
 **Everything runs in the visitor's browser**; the document is never uploaded.
 The old binary `.doc` format is not supported.
 
-This is the [Word to PDF](https://chalidade.github.io/tools/#/doc-to-pdf) tool from
+This is the [Word to PDF](https://toowl.my.id/#/doc-to-pdf) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

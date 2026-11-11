@@ -8,7 +8,7 @@ Data Matrix, Aztec, PDF417, EAN, UPC, Code 128/39/93, ITF and Codabar with
 ZXing compiled to WebAssembly. **Everything runs in the visitor's browser**;
 no picture or camera frame leaves the device.
 
-This is the [QR & Barcode Reader](https://chalidade.github.io/tools/#/qr-reader) tool from
+This is the [QR & Barcode Reader](https://toowl.my.id/#/qr-reader) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

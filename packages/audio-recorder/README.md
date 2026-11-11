@@ -4,7 +4,7 @@ A voice recorder for any website: one `<script>` tag, one element. Record from
 the microphone with a live waveform, pause and resume, play back, rename, and
 download as WebM, MP3, M4A or WAV. **Everything runs in the visitor's browser**: there is no server and nothing is uploaded.
 
-This is the [Voice Recorder](https://chalidade.github.io/tools/#/audio-recorder) tool from
+This is the [Voice Recorder](https://toowl.my.id/#/audio-recorder) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

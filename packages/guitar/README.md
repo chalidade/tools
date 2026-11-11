@@ -6,7 +6,7 @@ capo, switch between acoustic, clean electric and distortion, and let the auto
 accompaniment strum a pattern for you. **Everything runs in the visitor's
 browser**: every string is synthesised, no samples are downloaded.
 
-This is the [Online Guitar](https://chalidade.github.io/tools/#/guitar) tool from
+This is the [Online Guitar](https://toowl.my.id/#/guitar) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

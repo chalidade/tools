@@ -11,7 +11,7 @@ whole term, common for vehicle and consumer loans) and **annuity** or
 mortgages). Amounts are labelled in rupiah, but the maths is currency-free.
 Fees, insurance and penalties are not included.
 
-This is the [Loan Instalment Calculator](https://chalidade.github.io/tools/#/cicilan) tool from
+This is the [Loan Instalment Calculator](https://toowl.my.id/#/cicilan) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

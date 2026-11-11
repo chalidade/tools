@@ -6,7 +6,7 @@ and can forbid printing, copying text or editing. **Everything runs in the
 visitor's browser** with qpdf compiled to WebAssembly; neither the file nor
 the password leaves the device, and the password is not stored.
 
-This is the [Protect PDF](https://chalidade.github.io/tools/#/protect-pdf) tool from
+This is the [Protect PDF](https://toowl.my.id/#/protect-pdf) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

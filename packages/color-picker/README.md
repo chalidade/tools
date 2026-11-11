@@ -7,7 +7,7 @@ contrast against white and black text, the image's main colors and a
 Tailwind-style 50–950 scale. **Everything runs in the visitor's browser**;
 images are never uploaded.
 
-This is the [Color Picker](https://chalidade.github.io/tools/#/color-picker) tool from
+This is the [Color Picker](https://toowl.my.id/#/color-picker) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

@@ -1,5 +1,5 @@
-# Builds the site and publishes it to https://chalidade.github.io/tools/.
-# The --base flag makes asset URLs resolve under the /tools/ sub-path; local
+# Builds the site and publishes it to https://toowl.my.id/.
+# The --base flag makes asset URLs resolve at the domain root (custom domain toowl.my.id); local
 # `npm run build` keeps the default base.
 name: Pages
 
@@ -35,7 +35,7 @@ jobs:
 
       # tsc -b first: the type-check is the correctness gate.
       # seo.mjs writes a real page per tool and language, plus sitemap.xml.
-      - run: npx tsc -b && npx vite build --base=/tools/ && node scripts/seo.mjs --base=/tools/
+      - run: npx tsc -b && npx vite build --base=/ && node scripts/seo.mjs --base=/
 
       - uses: actions/upload-pages-artifact@v5
         with:

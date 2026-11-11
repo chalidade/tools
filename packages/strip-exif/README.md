@@ -6,7 +6,7 @@ map), then save it without any metadata. JPEG, PNG and WebP are cleaned
 **without re-encoding**: the picture stays bit-for-bit identical.
 **Everything runs in the visitor's browser**: there is no server and nothing is uploaded.
 
-This is the [Remove Photo Metadata](https://chalidade.github.io/tools/#/strip-exif) tool from
+This is the [Remove Photo Metadata](https://toowl.my.id/#/strip-exif) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

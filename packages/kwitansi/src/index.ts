@@ -1,5 +1,5 @@
 // The headless API. The source lives with the site (src/tools/kwitansi/),
-// so the tool on chalidade.github.io/tools and this package are the same code.
+// so the tool on toowl.my.id and this package are the same code.
 
 export { totals, amountFromInput, wrapText, type Item, type Totals } from '@/tools/kwitansi/doc'
 export { buildPdf, rupiahText, amountWords, type DocData } from '@/tools/kwitansi/pdf'

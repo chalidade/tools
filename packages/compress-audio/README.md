@@ -4,7 +4,7 @@ Audio compression for any website: one `<script>` tag, one element. Shrink a
 song, podcast or voice note to MP3, AAC (M4A) or Opus at the bitrate you pick,
 in stereo or mono, or pull the sound out of a video. **Everything runs in the visitor's browser**: there is no server and nothing is uploaded.
 
-This is the [Compress Audio](https://chalidade.github.io/tools/#/compress-audio) tool from
+This is the [Compress Audio](https://toowl.my.id/#/compress-audio) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

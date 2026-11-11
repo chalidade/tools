@@ -9,7 +9,7 @@ the visitor's browser**; nothing is sent anywhere.
 every supermarket shelf of different pack sizes. Prices are labelled in rupiah,
 but the comparison works in any currency.
 
-This is the [Which Is Cheaper](https://chalidade.github.io/tools/#/mana-lebih-murah) tool from
+This is the [Which Is Cheaper](https://toowl.my.id/#/mana-lebih-murah) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

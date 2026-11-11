@@ -6,7 +6,7 @@ shapes, your colors, an optional logo in the middle, and PNG or SVG downloads.
 Every code is read back by a real scanner before you download it, so you know
 it scans. **Everything runs in the visitor's browser**; nothing is uploaded.
 
-This is the [QR Code Generator](https://chalidade.github.io/tools/#/qr-generator) tool from
+This is the [QR Code Generator](https://toowl.my.id/#/qr-generator) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

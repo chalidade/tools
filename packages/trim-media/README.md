@@ -6,7 +6,7 @@ save. The result keeps the input's format (MP4 stays MP4, MP3 stays MP3), and
 the part you keep is copied, not re-encoded, so quality does not drop.
 **Everything runs in the visitor's browser**: there is no server and nothing is uploaded.
 
-This is the [Trim Video & Audio](https://chalidade.github.io/tools/#/trim-media) tool from
+This is the [Trim Video & Audio](https://toowl.my.id/#/trim-media) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

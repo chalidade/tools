@@ -6,7 +6,7 @@ object streams; text stays text and stays sharp. **Everything runs in the
 visitor's browser** with qpdf compiled to WebAssembly; the file is never
 uploaded.
 
-This is the [Compress PDF](https://chalidade.github.io/tools/#/compress-pdf) tool from
+This is the [Compress PDF](https://toowl.my.id/#/compress-pdf) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

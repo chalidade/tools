@@ -5,7 +5,7 @@ clicking them, type ranges like `1-3, 5, 8-`, or cut every N pages. Several
 parts download as one ZIP. **Everything runs in the visitor's browser** with
 pdf-lib; the file is never uploaded.
 
-This is the [Split PDF](https://chalidade.github.io/tools/#/split-pdf) tool from
+This is the [Split PDF](https://toowl.my.id/#/split-pdf) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

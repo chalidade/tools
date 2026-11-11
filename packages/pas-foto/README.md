@@ -5,7 +5,7 @@ photo to 2×3, 3×4 or 4×6 cm, swap its plain backdrop for red, blue or white,
 then lay copies out on 4R or A4 paper and save a print-ready JPG, PNG or PDF at
 300 DPI. **Everything runs in the visitor's browser**: there is no server and nothing is uploaded.
 
-This is the [ID Photo](https://chalidade.github.io/tools/#/pas-foto) tool from
+This is the [ID Photo](https://toowl.my.id/#/pas-foto) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

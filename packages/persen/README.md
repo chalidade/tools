@@ -8,7 +8,7 @@ Stacked discounts are the ones shops advertise as "50% + 20%": each applies to
 the price left by the one before, so together they take 60% off, not 70%. Inputs
 accept both Indonesian (`1.500,5`) and English (`1,500.5`) number formats.
 
-This is the [Percentage & Discount Calculator](https://chalidade.github.io/tools/#/persen) tool from
+This is the [Percentage & Discount Calculator](https://toowl.my.id/#/persen) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

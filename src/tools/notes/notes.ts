@@ -167,7 +167,7 @@ export function welcomeNote() {
       `Catatan tersimpan otomatis di browser ini — tidak dikirim ke mana pun.
 
 ## Bisa pakai Markdown
-**Tebal**, _miring_, \`kode\`, dan [tautan](https://chalidade.github.io/tools/).
+**Tebal**, _miring_, \`kode\`, dan [tautan](https://toowl.my.id/).
 
 - [x] Buka tool Catatan
 - [ ] Centang kotak ini di tampilan Pratinjau
@@ -177,7 +177,7 @@ export function welcomeNote() {
       `Notes are saved automatically in this browser — never sent anywhere.
 
 ## Markdown works
-**Bold**, _italic_, \`code\`, and [links](https://chalidade.github.io/tools/).
+**Bold**, _italic_, \`code\`, and [links](https://toowl.my.id/).
 
 - [x] Open the Notes tool
 - [ ] Tick this box in the Preview view

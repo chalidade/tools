@@ -9,7 +9,7 @@ sanitized with [DOMPurify](https://github.com/cure53/DOMPurify), and saved
 automatically. Checklist boxes stay clickable in the preview and write back
 to the Markdown.
 
-This is the [Notes](https://chalidade.github.io/tools/#/notes) tool from
+This is the [Notes](https://toowl.my.id/#/notes) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

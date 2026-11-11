@@ -8,7 +8,7 @@ browser** with pdf-lib; neither the PDF nor the signature is uploaded.
 The result is a PDF with an image of the signature, not a certified
 (cryptographic) digital signature. The element says so too.
 
-This is the [Sign PDF](https://chalidade.github.io/tools/#/sign-pdf) tool from
+This is the [Sign PDF](https://toowl.my.id/#/sign-pdf) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

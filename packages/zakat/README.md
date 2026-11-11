@@ -13,7 +13,7 @@ person, paid before Eid al-Fitr. The rules follow common Indonesian guidance
 The visitor enters today's gold price themselves. It is a calculation aid, not
 a religious ruling.
 
-This is the [Zakat Calculator](https://chalidade.github.io/tools/#/zakat) tool from
+This is the [Zakat Calculator](https://toowl.my.id/#/zakat) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

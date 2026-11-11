@@ -5,7 +5,7 @@ element. 16 chord types in all 12 keys, several shapes each, playable with a
 tap, plus a song transposer that keeps chords lined up over the lyrics.
 **Everything runs in the visitor's browser**; nothing is stored or sent anywhere.
 
-This is the [Chord Finder & Transpose](https://chalidade.github.io/tools/#/chords) tool from
+This is the [Chord Finder & Transpose](https://toowl.my.id/#/chords) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

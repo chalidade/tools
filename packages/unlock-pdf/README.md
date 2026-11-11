@@ -10,7 +10,7 @@ decrypted when the visitor types that password. A PDF that opens freely but
 forbids printing or copying (an owner password only) has those restrictions
 removed.
 
-This is the [Unlock PDF](https://chalidade.github.io/tools/#/unlock-pdf) tool from
+This is the [Unlock PDF](https://toowl.my.id/#/unlock-pdf) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 

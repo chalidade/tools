@@ -6,7 +6,7 @@ cello or any note. The string is detected automatically, and a reference drone
 helps tuning by ear. **Everything runs in the visitor's browser**: the microphone
 sound is analysed on the spot, never recorded or sent anywhere.
 
-This is the [Guitar Tuner](https://chalidade.github.io/tools/#/guitar-tuner) tool from
+This is the [Guitar Tuner](https://toowl.my.id/#/guitar-tuner) tool from
 [chalidade/tools](https://github.com/chalidade/tools), packaged so you can drop
 it into your own site. Try it there first.
 
