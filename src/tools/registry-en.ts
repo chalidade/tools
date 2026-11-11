@@ -259,6 +259,7 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
   'sensor-foto': { title: 'Censor Photo', description: 'Cover ID numbers, faces, licence plates or addresses with a box or brush — black block, pixelate or blur.', keywords: ['censor', 'blur', 'redact', 'hide', 'pixelate', 'face', 'privacy'] },
   'extract-frames': { title: 'Extract Video Frames', description: 'Grab video frames as full-resolution images — one by one or every N seconds.', keywords: ['screenshot', 'frame', 'still'] },
   'change-speed': { title: 'Change Speed', description: 'Speed up or slow down video and audio (0.25×–4×) while keeping the pitch natural.', keywords: ['speed', 'slow motion', 'fast'] },
+  denoise: { title: 'Noise Remover', description: 'Remove background noise, hiss, and hum from recorded voices in video or audio.', keywords: ['noise', 'denoise', 'clean', 'hiss', 'hum', 'voice'] },
   'merge-audio': { title: 'Merge Audio', description: 'Join several audio files into one — mixed formats welcome; set the order and gaps.', keywords: ['join', 'combine'] },
   'screen-recorder': {
     title: 'Screen Recorder',

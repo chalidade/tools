@@ -464,7 +464,7 @@ jaringan) dan tombol utamanya besar, bisa ditekan tanpa membaca.
 
 ## Hari 42 — 2026-11-28 · Audio
 
-- [ ] **Peredam Noise** (`#/denoise`): bersihkan dengung dan desis dari
+- [x] **Peredam Noise** (`#/denoise`): bersihkan dengung dan desis dari
   rekaman suara dengan RNNoise (wasm kecil, di-host sendiri), bandingkan
   sebelum/sesudah, lalu simpan.
 - [ ] **Penghapus Vokal** (`#/vocal-remover`): hilangkan vokal yang ada di

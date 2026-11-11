@@ -3,6 +3,12 @@
 Catatan harian apa yang berubah di [tools](https://chalidade.github.io/tools/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-11 — Peredam Noise
+
+Satu tool baru di kategori Media; total sekarang **92 tools**. Diambil lebih awal dari rencana Hari 42.
+
+- **Peredam Noise** (`#/denoise`): bersihkan bising, desis, dengung, kipas, dan AC dari suara orang bicara di video maupun audio, dengan RNNoise (wasm ~110 KB, di-host sendiri, dimuat hanya saat tool dibuka). Kekuatan bisa dipilih (Ringan, Sedang, Penuh), lalu hasilnya dibandingkan dengan aslinya sebelum diunduh. Gambar video disalin tanpa di-encode ulang dan suaranya tetap pas dengan bibir; audio disimpan sebagai MP3, M4A, atau WAV.
+
 ## 2026-11-11 — Bareng teman
 
 Dua tool baru di kategori Produktivitas; total sekarang **91 tools**.

@@ -13,6 +13,7 @@
     "build:packages": "for p in packages/*/package.json; do npm run build --prefix \"$(dirname $p)\" || exit 1; done"
   },
   "dependencies": {
+    "@jitsi/rnnoise-wasm": "^0.2.1",
     "@jvmr/pptx-to-html": "^1.1.2",
     "@mediabunny/aac-encoder": "^1.61.1",
     "@mediabunny/mp3-encoder": "^1.61.1",
