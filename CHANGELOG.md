@@ -3,6 +3,12 @@
 Catatan harian apa yang berubah di [tools](https://chalidade.github.io/tools/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-11 — Tambah Musik ke Video
+
+Satu tool baru di kategori Media; total sekarang **93 tools**.
+
+- **Tambah Musik ke Video** (`#/add-music`): beri musik latar (MP3, M4A, WAV, OGG, FLAC) pada video. Volume musik dan suara asli diatur terpisah (suara asli bisa dibisukan), musik bisa dimulai dari detik tertentu, diulang bila lebih pendek dari video, diberi fade in/out, dan dikecilkan otomatis saat video bersuara (orang bicara). Video tanpa suara juga bisa. Gambar disalin tanpa di-encode ulang; hasilnya MP4.
+
 ## 2026-11-11 — Peredam Noise
 
 Satu tool baru di kategori Media; total sekarang **92 tools**. Diambil lebih awal dari rencana Hari 42.

@@ -260,6 +260,7 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
   'extract-frames': { title: 'Extract Video Frames', description: 'Grab video frames as full-resolution images — one by one or every N seconds.', keywords: ['screenshot', 'frame', 'still'] },
   'change-speed': { title: 'Change Speed', description: 'Speed up or slow down video and audio (0.25×–4×) while keeping the pitch natural.', keywords: ['speed', 'slow motion', 'fast'] },
   denoise: { title: 'Noise Remover', description: 'Remove background noise, hiss, and hum from recorded voices in video or audio.', keywords: ['noise', 'denoise', 'clean', 'hiss', 'hum', 'voice'] },
+  'add-music': { title: 'Add Music to Video', description: 'Put background music under a video: set the volume, loop, fade, and auto-lower it when someone talks.', formats: 'Video + Music → MP4', keywords: ['music', 'song', 'background', 'soundtrack', 'bgm', 'ducking'] },
   'merge-audio': { title: 'Merge Audio', description: 'Join several audio files into one — mixed formats welcome; set the order and gaps.', keywords: ['join', 'combine'] },
   'screen-recorder': {
     title: 'Screen Recorder',
