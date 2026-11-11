@@ -43,6 +43,12 @@ picture; the rules that matter when editing:
   `hasWebCodecs()`. A cut, speed change, or merge re-encodes audio, so call
   `ensureAudioEncoder` first for MP3/AAC. Trim timelines use
   `src/components/tool/MediaRange.tsx` (`MediaRange`, `Filmstrip`, `Waveform`).
+- `denoise` runs one of two self-hosted models per channel at 48 kHz through
+  `Denoiser` (`src/tools/denoise/rnnoise.ts`), which removes each model's
+  latency so video keeps lip sync: DeepFilterNet 3 (`deepfilter.ts`, default,
+  34 MB wasm with baked-in weights, `DF_DELAY` = 1440 measured) and RNNoise
+  (110 KB, `keepHighs` restores the >6 kHz band it dulls). Re-measure the
+  delay if either package is upgraded.
 - Music tools (`guitar-tuner`, `metronome`, `chords`, `bpm-key`, `piano`, `guitar`, `drums`) use only the
   Web Audio API plus in-house DSP; shared note/frequency helpers and the
   Karplus–Strong `pluck()` live in `src/lib/music.ts`. Heavy analysis runs in a

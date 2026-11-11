@@ -1,6 +1,6 @@
 // Removes background noise from the audio of a video or audio file, in the
-// visitor's browser. The audio is resampled to 48 kHz (what RNNoise expects),
-// cleaned channel by channel, and re-encoded; a video's picture is copied
+// visitor's browser. The audio is resampled to 48 kHz (what both engines,
+// DeepFilterNet and RNNoise, expect), cleaned channel by channel, and re-encoded; a video's picture is copied
 // over untouched when the MP4 container can hold it. Built on src/lib/media.ts.
 
 import type { AudioSample } from 'mediabunny'

@@ -183,7 +183,11 @@ export default function Denoise() {
 
         {job && (
           <ProgressCard
-            label={t('Membersihkan suara…', 'Cleaning audio…')}
+            label={
+              job.progress === 0 && opts.engine === 'deepfilter'
+                ? t('Menyiapkan model DeepFilterNet (±13 MB, sekali saja)…', 'Preparing the DeepFilterNet model (±13 MB, once)…')
+                : t('Membersihkan suara…', 'Cleaning audio…')
+            }
             progress={job.progress}
             startedAt={job.startedAt}
             action={

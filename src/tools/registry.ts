@@ -808,7 +808,7 @@ export const TOOLS: Tool[] = [
   {
     slug: 'denoise',
     category: 'media',
-    keywords: ['noise', 'bising', 'derau', 'desis', 'dengung', 'jernihkan', 'bersihkan', 'suara', 'audio', 'video', 'rekaman', 'podcast', 'rnnoise'],
+    keywords: ['noise', 'bising', 'derau', 'desis', 'dengung', 'jernihkan', 'bersihkan', 'suara', 'audio', 'video', 'rekaman', 'podcast', 'rnnoise', 'deepfilternet', 'ai'],
     title: 'Peredam Noise',
     description: 'Hilangkan bising, desis, dan dengung dari suara rekaman di video atau audio.',
     icon: AudioLines,
