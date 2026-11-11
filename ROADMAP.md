@@ -277,10 +277,10 @@ jaringan) dan tombol utamanya besar, bisa ditekan tanpa membaca.
 
 ## Hari 25 — 2026-11-11 · Bareng teman
 
-- [ ] **Patungan** (`#/patungan`): item per orang atau dibagi rata, pajak dan
+- [x] **Patungan** (`#/patungan`): item per orang atau dibagi rata, pajak dan
   service dibagi proporsional, pembulatan yang jumlahnya tetap pas, lalu
   rangkuman siap kirim ke WhatsApp.
-- [ ] **Undian & Arisan** (`#/undian`): acak nama dengan
+- [x] **Undian & Arisan** (`#/undian`): acak nama dengan
   `crypto.getRandomValues` dan animasi, mode arisan yang mengecualikan
   pemenang sebelumnya sampai semua dapat giliran, riwayat tersimpan di
   perangkat, dan hasil siap dibagikan.

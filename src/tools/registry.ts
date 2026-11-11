@@ -2,6 +2,8 @@ import { lazy, type ComponentType, type LazyExoticComponent } from 'react'
 import type { Lang } from '@/lib/i18n'
 import { CATEGORIES_EN, TOOLS_EN } from './registry-en'
 import {
+  Dices,
+  UsersRound,
   ScanText,
   AppWindow,
   CalendarDays,
@@ -546,6 +548,28 @@ export const TOOLS: Tool[] = [
     badge: 'Baru',
     component: lazy(() => import('./cicilan/Cicilan')),
     package: { name: '@chalidade/cicilan', element: 'loan-calculator', dir: 'cicilan', published: false },
+  },
+  {
+    slug: 'patungan',
+    category: 'productivity',
+    keywords: ['patungan', 'split bill', 'bagi tagihan', 'urunan', 'iuran', 'makan bareng', 'nongkrong', 'pajak', 'service', 'dibagi rata', 'restoran', 'bill', 'whatsapp', 'teman'],
+    title: 'Patungan & Split Bill',
+    description: 'Bagi tagihan makan bareng: per item atau rata, pajak dan service proporsional, pembulatan pas, lalu rangkuman siap kirim ke WhatsApp.',
+    icon: UsersRound,
+    formats: 'Tagihan → Bagian per orang',
+    badge: 'Baru',
+    component: lazy(() => import('./patungan/Patungan')),
+  },
+  {
+    slug: 'undian',
+    category: 'productivity',
+    keywords: ['undian', 'acak nama', 'arisan', 'random picker', 'lottery', 'giliran', 'pemenang', 'giveaway', 'randomizer', 'cabut nama', 'draw', 'winner'],
+    title: 'Undian & Arisan',
+    description: 'Acak nama dengan angka acak aman, mode arisan yang tidak mengulang pemenang sampai semua dapat giliran, riwayat tersimpan di perangkat.',
+    icon: Dices,
+    formats: 'Daftar nama → Pemenang',
+    badge: 'Baru',
+    component: lazy(() => import('./undian/Undian')),
   },
   {
     slug: 'gaji-bersih',

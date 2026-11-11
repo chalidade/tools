@@ -3,6 +3,15 @@
 Catatan harian apa yang berubah di [tools](https://chalidade.github.io/tools/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-11 — Bareng teman
+
+Dua tool baru di kategori Produktivitas; total sekarang **91 tools**.
+
+- **Patungan & Split Bill** (`#/patungan`): bagi tagihan makan bareng per item (tiap item bisa dimakan satu orang, beberapa, atau semua) atau dibagi rata. Service dihitung dari subtotal, pajak dari subtotal + service, lalu dibagi sesuai porsi tiap orang. Sisa rupiah dibagikan dengan metode sisa terbesar sehingga jumlah semua bagian selalu pas dengan tagihan; pembulatan ke atas 100/500/1.000 menampilkan kelebihannya. Rangkuman bisa disalin atau dikirim lewat Bagikan/WhatsApp.
+- **Undian & Arisan** (`#/undian`): acak nama dengan `crypto.getRandomValues` (tanpa bias modulo) dan animasi singkat (dilewati bila perangkat meminta gerak dikurangi). Mode arisan mengecualikan pemenang putaran ini sampai semua dapat giliran, lalu putaran baru dimulai. Daftar nama dan riwayat tersimpan di perangkat; hasil bisa disalin atau dibagikan.
+
+Semuanya diproses di browser; tidak ada data yang dikirim.
+
 ## 2026-11-10 — Privasi foto
 
 Dua tool baru di kategori Media; total sekarang **89 tools**.
