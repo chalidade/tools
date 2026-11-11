@@ -7,7 +7,7 @@ terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
 Satu tool baru di kategori Media; total sekarang **92 tools**. Diambil lebih awal dari rencana Hari 42.
 
-- **Peredam Noise** (`#/denoise`): bersihkan bising, desis, dengung, kipas, dan AC dari suara orang bicara di video maupun audio, dengan RNNoise (wasm ~110 KB, di-host sendiri, dimuat hanya saat tool dibuka). Kekuatan bisa dipilih (Ringan, Sedang, Penuh), lalu hasilnya dibandingkan dengan aslinya sebelum diunduh. Gambar video disalin tanpa di-encode ulang dan suaranya tetap pas dengan bibir; audio disimpan sebagai MP3, M4A, atau WAV.
+- **Peredam Noise** (`#/denoise`): bersihkan bising, desis, dengung, kipas, dan AC dari suara orang bicara di video maupun audio, dengan RNNoise (wasm ~110 KB, di-host sendiri, dimuat hanya saat tool dibuka). Kekuatan bisa dipilih (Ringan, Sedang, Penuh), lalu hasilnya dibandingkan dengan aslinya sebelum diunduh. Gambar video disalin tanpa di-encode ulang dan suaranya tetap pas dengan bibir; audio disimpan sebagai MP3, M4A, atau WAV. Suara di atas 6 kHz diambil dari aslinya dan hanya diredam di jeda antar ucapan, karena RNNoise sendiri membuat suara terdengar mendem (−8 sampai −9 dB di nada tinggi).
 
 ## 2026-11-11 — Bareng teman
 

@@ -54,10 +54,48 @@ export function rnnoiseChannels(mod: RnnoiseModule, channels: number) {
  * late; that delay is dropped here, so output sample n lines up with input
  * sample n and a video keeps its lip sync. `mix` (0–1) blends the cleaned
  * signal with the original, for a gentler result.
+ *
+ * RNNoise dulls speech above ~6 kHz (measured −4 to −9 dB on a voice-over), so
+ * only the band below SPLIT comes from it. The band above is the original's,
+ * scaled each frame by how much RNNoise kept: full during speech, down with it
+ * in pauses — so sibilance and air survive while hiss between words still goes.
  */
+const SPLIT = 6000
+
+/** 2nd-order Butterworth low-pass; `x - lowpass(x)` is the exactly complementary high band. */
+class Lowpass {
+  private b0: number
+  private a1: number
+  private a2: number
+  private x1 = 0
+  private x2 = 0
+  private y1 = 0
+  private y2 = 0
+
+  constructor(fc: number, rate: number) {
+    const k = Math.tan((Math.PI * fc) / rate)
+    const norm = 1 / (1 + Math.SQRT2 * k + k * k)
+    this.b0 = k * k * norm
+    this.a1 = 2 * (k * k - 1) * norm
+    this.a2 = (1 - Math.SQRT2 * k + k * k) * norm
+  }
+
+  run(x: number) {
+    const y = this.b0 * (x + 2 * this.x1 + this.x2) - this.a1 * this.y1 - this.a2 * this.y2
+    this.x2 = this.x1
+    this.x1 = x
+    this.y2 = this.y1
+    this.y1 = y
+    return y
+  }
+}
+
 export class Denoiser {
   private pending: Float32Array[]
   private dry: Float32Array[]
+  private lowWet: Lowpass[]
+  private lowDry: Lowpass[]
+  private gain: number[]
   private fill = 0
   private frames = 0
   private taken = 0
@@ -73,6 +111,9 @@ export class Denoiser {
     this.mix = mix
     this.pending = Array.from({ length: channels }, () => new Float32Array(FRAME))
     this.dry = Array.from({ length: channels }, () => new Float32Array(FRAME))
+    this.lowWet = Array.from({ length: channels }, () => new Lowpass(SPLIT, RATE))
+    this.lowDry = Array.from({ length: channels }, () => new Lowpass(SPLIT, RATE))
+    this.gain = Array.from({ length: channels }, () => 1)
   }
 
   /** Planar input chunk → planar output chunk (lengths differ; the total does not). */
@@ -107,7 +148,23 @@ export class Denoiser {
     for (let c = 0; c < this.channels; c++) {
       const wet = this.pending[c].slice()
       this.denoise(c, wet)
-      if (this.mix < 1) for (let i = 0; i < FRAME; i++) wet[i] = wet[i] * this.mix + this.dry[c][i] * (1 - this.mix)
+      const dry = this.dry[c]
+      let ew = 0
+      let ed = 0
+      for (let i = 0; i < FRAME; i++) {
+        ew += wet[i] * wet[i]
+        ed += dry[i] * dry[i]
+      }
+      // How much RNNoise kept; rises at once, falls over ~20 ms so the highs do not click.
+      const target = ed > 0 ? Math.sqrt(Math.min(1, ew / ed)) : 1
+      const from = this.gain[c]
+      const to = target > from ? target : from * 0.6 + target * 0.4
+      this.gain[c] = to
+      for (let i = 0; i < FRAME; i++) {
+        const g = from + ((to - from) * (i + 1)) / FRAME
+        const clean = this.lowWet[c].run(wet[i]) + (dry[i] - this.lowDry[c].run(dry[i])) * g
+        wet[i] = clean * this.mix + dry[i] * (1 - this.mix)
+      }
       // Keep this frame's input to blend with its output, which arrives next frame.
       this.dry[c].set(this.pending[c])
       // Frame 0's output is the delay (silence); never emit past the input length.
