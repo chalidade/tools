@@ -50,15 +50,15 @@ export function rnnoiseChannels(mod: RnnoiseModule, channels: number) {
 }
 
 /**
- * Streams audio through a frame denoiser. RNNoise outputs each frame one frame
- * late; that delay is dropped here, so output sample n lines up with input
- * sample n and a video keeps its lip sync. `mix` (0–1) blends the cleaned
- * signal with the original, for a gentler result.
+ * Streams audio through a frame denoiser (FRAME samples a call, in place).
+ * The model's own latency (`delay` samples) is dropped here, so output sample
+ * n lines up with input sample n and a video keeps its lip sync. `mix` (0–1)
+ * blends the cleaned signal with the original, for a gentler result.
  *
- * RNNoise dulls speech above ~6 kHz (measured −4 to −9 dB on a voice-over), so
- * only the band below SPLIT comes from it. The band above is the original's,
- * scaled each frame by how much RNNoise kept: full during speech, down with it
- * in pauses — so sibilance and air survive while hiss between words still goes.
+ * `keepHighs`: RNNoise dulls speech above ~6 kHz (measured −4 to −9 dB on a
+ * voice-over), so only the band below SPLIT comes from it. The band above is
+ * the original's, scaled each frame by how much the model kept: full during
+ * speech, down with it in pauses — sibilance and air survive, hiss still goes.
  */
 const SPLIT = 6000
 
@@ -90,27 +90,37 @@ class Lowpass {
   }
 }
 
+export interface DenoiserOptions {
+  /** 0–1, see above. */
+  mix: number
+  /** The model's latency in samples. */
+  delay: number
+  keepHighs: boolean
+}
+
 export class Denoiser {
   private pending: Float32Array[]
-  private dry: Float32Array[]
+  /** The last `delay` input samples per channel, to line the original up with the output. */
+  private history: Float32Array[]
   private lowWet: Lowpass[]
   private lowDry: Lowpass[]
   private gain: number[]
   private fill = 0
-  private frames = 0
+  private skip: number
   private taken = 0
   private given = 0
 
   private channels: number
   private denoise: (channel: number, frame: Float32Array) => void
-  private mix: number
+  private opts: DenoiserOptions
 
-  constructor(channels: number, denoise: (channel: number, frame: Float32Array) => void, mix: number) {
+  constructor(channels: number, denoise: (channel: number, frame: Float32Array) => void, opts: DenoiserOptions) {
     this.channels = channels
     this.denoise = denoise
-    this.mix = mix
+    this.opts = opts
+    this.skip = opts.delay
     this.pending = Array.from({ length: channels }, () => new Float32Array(FRAME))
-    this.dry = Array.from({ length: channels }, () => new Float32Array(FRAME))
+    this.history = Array.from({ length: channels }, () => new Float32Array(opts.delay))
     this.lowWet = Array.from({ length: channels }, () => new Lowpass(SPLIT, RATE))
     this.lowDry = Array.from({ length: channels }, () => new Lowpass(SPLIT, RATE))
     this.gain = Array.from({ length: channels }, () => 1)
@@ -134,8 +144,8 @@ export class Denoiser {
   /** The audio still held back: call once after the last chunk. */
   flush(): Float32Array[] {
     const out: Float32Array[][] = Array.from({ length: this.channels }, () => [])
-    // Pad the partial frame, then one silent frame to push out the delayed one.
-    for (let k = 0; k < 2 && this.given < this.taken; k++) {
+    // Pad the partial frame, then silent frames until the delayed output is all out.
+    while (this.given < this.taken) {
       for (const p of this.pending) p.fill(0, this.fill)
       this.fill = FRAME
       this.runFrame(out)
@@ -144,35 +154,44 @@ export class Denoiser {
   }
 
   private runFrame(out: Float32Array[][]) {
-    const want = this.taken - this.given
+    const { mix, delay, keepHighs } = this.opts
+    const from = Math.min(this.skip, FRAME)
+    const count = Math.min(FRAME - from, this.taken - this.given)
     for (let c = 0; c < this.channels; c++) {
-      const wet = this.pending[c].slice()
+      const input = this.pending[c]
+      // The original as it was `delay` samples ago: history, then this frame.
+      const line = new Float32Array(delay + FRAME)
+      line.set(this.history[c])
+      line.set(input, delay)
+      const dry = line.subarray(0, FRAME)
+      this.history[c] = line.slice(FRAME)
+      const wet = input.slice()
       this.denoise(c, wet)
-      const dry = this.dry[c]
-      let ew = 0
-      let ed = 0
-      for (let i = 0; i < FRAME; i++) {
-        ew += wet[i] * wet[i]
-        ed += dry[i] * dry[i]
-      }
-      // How much RNNoise kept; rises at once, falls over ~20 ms so the highs do not click.
-      const target = ed > 0 ? Math.sqrt(Math.min(1, ew / ed)) : 1
-      const from = this.gain[c]
-      const to = target > from ? target : from * 0.6 + target * 0.4
-      this.gain[c] = to
-      for (let i = 0; i < FRAME; i++) {
-        const g = from + ((to - from) * (i + 1)) / FRAME
-        const clean = this.lowWet[c].run(wet[i]) + (dry[i] - this.lowDry[c].run(dry[i])) * g
-        wet[i] = clean * this.mix + dry[i] * (1 - this.mix)
-      }
-      // Keep this frame's input to blend with its output, which arrives next frame.
-      this.dry[c].set(this.pending[c])
-      // Frame 0's output is the delay (silence); never emit past the input length.
-      if (this.frames > 0) out[c].push(wet.subarray(0, Math.min(FRAME, want)))
+      if (keepHighs) this.restoreHighs(c, wet, dry)
+      if (mix < 1) for (let i = 0; i < FRAME; i++) wet[i] = wet[i] * mix + dry[i] * (1 - mix)
+      if (count > 0) out[c].push(wet.subarray(from, from + count))
     }
-    if (this.frames > 0) this.given += Math.min(FRAME, want)
-    this.frames++
+    this.skip -= from
+    this.given += Math.max(0, count)
     this.fill = 0
+  }
+
+  private restoreHighs(c: number, wet: Float32Array, dry: Float32Array) {
+    let ew = 0
+    let ed = 0
+    for (let i = 0; i < FRAME; i++) {
+      ew += wet[i] * wet[i]
+      ed += dry[i] * dry[i]
+    }
+    // How much the model kept; rises at once, falls over ~20 ms so the highs do not click.
+    const target = ed > 0 ? Math.sqrt(Math.min(1, ew / ed)) : 1
+    const from = this.gain[c]
+    const to = target > from ? target : from * 0.6 + target * 0.4
+    this.gain[c] = to
+    for (let i = 0; i < FRAME; i++) {
+      const g = from + ((to - from) * (i + 1)) / FRAME
+      wet[i] = this.lowWet[c].run(wet[i]) + (dry[i] - this.lowDry[c].run(dry[i])) * g
+    }
   }
 
   private join(out: Float32Array[][]) {

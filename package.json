@@ -15,6 +15,7 @@
   "dependencies": {
     "@jitsi/rnnoise-wasm": "^0.2.1",
     "@jvmr/pptx-to-html": "^1.1.2",
+    "@lofcz/deepfilternet-web": "^0.1.0",
     "@mediabunny/aac-encoder": "^1.61.1",
     "@mediabunny/mp3-encoder": "^1.61.1",
     "@neslinesli93/qpdf-wasm": "^0.3.0",

@@ -5,9 +5,13 @@
 
 import type { AudioSample } from 'mediabunny'
 import { AUDIO_OUTPUTS, convertMedia, ensureAudioEncoder, NoEncoderError, type AudioOut, type MediaInfo } from '@/lib/media'
-import { Denoiser, loadRnnoise, RATE, rnnoiseChannels } from './rnnoise'
+import { DF_DELAY, deepFilterChannels } from './deepfilter'
+import { Denoiser, FRAME, loadRnnoise, RATE, rnnoiseChannels } from './rnnoise'
+
+export type Engine = 'rnnoise' | 'deepfilter'
 
 export interface DenoiseOptions {
+  engine: Engine
   /** 0–1: how much of the cleaned signal replaces the original. */
   strength: number
   /** Output for audio-only files. */
@@ -27,21 +31,25 @@ export async function denoiseMedia(
   onProgress: (p: number) => void,
   onStart: (cancel: () => void) => void,
 ) {
-  const [mb, mod] = await Promise.all([import('mediabunny'), loadRnnoise()])
+  const mb = await import('mediabunny')
+  const channels = info.audio?.channels ?? 1
   const audioCodec = info.video ? 'aac' : AUDIO_OUTPUTS[opts.audioOut].codec
   if (audioCodec && !(await ensureAudioEncoder(audioCodec))) throw new NoEncoderError('audio')
+  // Load (and for DeepFilterNet, download) the model before the conversion starts.
+  const model =
+    opts.engine === 'deepfilter'
+      ? { ...(await deepFilterChannels(channels)), delay: DF_DELAY, keepHighs: false }
+      : { ...rnnoiseChannels(await loadRnnoise(), channels), delay: FRAME, keepHighs: true }
 
-  let rn: ReturnType<typeof rnnoiseChannels> | null = null
   let den: Denoiser | null = null
   let start = 0
   let written = 0
   let flushed = false
 
   const process = (sample: AudioSample) => {
-    const channels = sample.numberOfChannels
     if (!den) {
-      rn = rnnoiseChannels(mod, channels)
-      den = new Denoiser(channels, rn.process, opts.strength)
+      if (sample.numberOfChannels !== channels) throw new Error('channel count changed')
+      den = new Denoiser(channels, model.process, { mix: opts.strength, delay: model.delay, keepHighs: model.keepHighs })
       start = sample.timestamp
     }
     const planes = Array.from({ length: channels }, (_, c) => {
@@ -87,6 +95,6 @@ export async function denoiseMedia(
       onStart,
     })
   } finally {
-    ;(rn as ReturnType<typeof rnnoiseChannels> | null)?.destroy()
+    model.destroy()
   }
 }

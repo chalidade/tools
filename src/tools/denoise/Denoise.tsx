@@ -8,7 +8,7 @@ import { ProgressCard } from '@/components/tool/SizeResult'
 import { downloadBlob } from '@/lib/download'
 import { formatDuration, formatSize, hasWebCodecs, isCanceled, NoEncoderError, probeMedia, type AudioOut, type MediaInfo } from '@/lib/media'
 import { useT } from '@/lib/i18n'
-import { denoiseMedia, outputFor, type DenoiseOptions } from './denoise'
+import { denoiseMedia, outputFor, type DenoiseOptions, type Engine } from './denoise'
 
 type Status = { kind: 'idle' } | { kind: 'reading' } | { kind: 'ready'; info: MediaInfo } | { kind: 'error'; message: string }
 
@@ -25,10 +25,14 @@ export default function Denoise() {
     { value: 0.85, label: t('Sedang', 'Medium') },
     { value: 1, label: t('Penuh', 'Full') },
   ]
+  const ENGINE_OPTIONS: { value: Engine; label: string }[] = [
+    { value: 'deepfilter', label: t('Jernih (DeepFilterNet)', 'Clear (DeepFilterNet)') },
+    { value: 'rnnoise', label: t('Cepat (RNNoise)', 'Fast (RNNoise)') },
+  ]
   const [status, setStatus] = useState<Status>({ kind: 'idle' })
   const [file, setFile] = useState<File | null>(null)
   const [url, setUrl] = useState<string | null>(null)
-  const [opts, setOpts] = useState<DenoiseOptions>({ strength: 1, audioOut: 'mp3' })
+  const [opts, setOpts] = useState<DenoiseOptions>({ engine: 'deepfilter', strength: 1, audioOut: 'mp3' })
   const [job, setJob] = useState<{ progress: number; startedAt: number } | null>(null)
   const [result, setResult] = useState<{ blob: Blob; url: string } | null>(null)
   const [error, setError] = useState<string | null>(null)
@@ -142,6 +146,17 @@ export default function Denoise() {
           </div>
 
           <div className="space-y-5 rounded-2xl border bg-card p-5">
+            <div className="space-y-2">
+              <Segmented label={t('Mesin', 'Engine')} value={opts.engine} options={ENGINE_OPTIONS} onChange={(v) => setOpts((o) => ({ ...o, engine: v }))} />
+              <p className="text-xs text-muted-foreground">
+                {opts.engine === 'deepfilter'
+                  ? t(
+                      'Suara lebih jernih dan tidak mendem. Unduh model ±13 MB sekali saja (lalu tersimpan), proses lebih lama, berat di HP lama.',
+                      'Clearer, not muffled. A one-time ±13 MB model download (then cached), slower, heavy on older phones.',
+                    )
+                  : t('Ringan (110 KB) dan cepat, tapi suara bisa sedikit mendem.', 'Light (110 KB) and fast, but voices can sound slightly muffled.')}
+              </p>
+            </div>
             <Segmented
               label={t('Kekuatan', 'Strength')}
               value={opts.strength}
