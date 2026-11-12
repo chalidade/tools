@@ -3,6 +3,15 @@
 Catatan harian apa yang berubah di [tools](https://toowl.my.id/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-12 — Kuliah & tabungan
+
+Dua tool baru di kategori Produktivitas; total sekarang **95 tools**.
+
+- **Hitung IPK** (`#/ipk`): IPS per semester dan IPK dari SKS × nilai huruf, dengan dua skala (A/AB/B/BC atau A/A-/B+). Simulasi "butuh rata-rata nilai berapa di sisa SKS supaya IPK jadi X" (memberi tahu bila sudah aman atau mustahil), plus mode nilai rapor (rata-rata berbobot). Data tersimpan di perangkat.
+- **Kalkulator Tabungan & Investasi** (`#/tabungan`): bunga majemuk deposito (frekuensi bunga bulanan/3 bulan/6 bulan/tahunan, pajak bunga 20% bisa dinyalakan), nabung rutin per bulan, dan target dana ("berapa per bulan supaya mencapai Rp100 juta"). Hasil berupa grafik pertumbuhan SVG buatan sendiri dan tabel per tahun, ditandai sebagai perkiraan.
+
+Semuanya diproses di browser; tidak ada data yang dikirim.
+
 ## 2026-11-11 — Tambah Musik ke Video
 
 Satu tool baru di kategori Media; total sekarang **93 tools**.

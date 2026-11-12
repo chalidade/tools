@@ -190,6 +190,18 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
     formats: 'Loan → Schedule',
     keywords: ['loan', 'instalment', 'installment', 'mortgage', 'amortization', 'flat rate', 'annuity', 'effective rate', 'repayment schedule', 'csv'],
   },
+  ipk: {
+    title: 'GPA Calculator',
+    description: 'Work out semester and cumulative GPA from credits × letter grades, simulate the grades needed to hit a target GPA, and average report-card scores with weights.',
+    formats: 'Credits & grades → GPA',
+    keywords: ['gpa', 'grade point', 'credits', 'semester', 'university', 'college', 'report card', 'weighted average', 'target gpa', 'cum laude'],
+  },
+  tabungan: {
+    title: 'Savings & Investment Calculator',
+    description: 'Compound interest on a deposit, regular monthly saving, or how much to save to reach a target, with a growth chart and a year-by-year table.',
+    formats: 'Deposits & interest → Balance',
+    keywords: ['savings', 'compound interest', 'deposit', 'investment', 'target', 'monthly', 'interest tax', 'goal', 'emergency fund'],
+  },
   patungan: { title: 'Bill Split', description: 'Split a group bill per item or equally, with tax and service shared proportionally, exact rounding and a summary ready for WhatsApp.', formats: 'Bill → Share per person', keywords: ['split bill', 'split', 'dutch', 'restaurant', 'tax', 'service', 'friends', 'group'] },
   undian: { title: 'Random Draw & Arisan', description: 'Draw names with secure randomness; arisan mode never repeats a winner until everyone has had a turn, with history kept on the device.', formats: 'Names → Winner', keywords: ['random picker', 'raffle', 'lottery', 'arisan', 'giveaway', 'winner', 'name picker', 'draw'] },
   'gaji-bersih': {

@@ -85,6 +85,8 @@ import {
   EyeOff,
   LayoutGrid,
   ListOrdered,
+  GraduationCap,
+  PiggyBank,
   type LucideIcon,
 } from 'lucide-react'
 
@@ -550,6 +552,28 @@ export const TOOLS: Tool[] = [
     badge: 'Baru',
     component: lazy(() => import('./cicilan/Cicilan')),
     package: { name: '@chalidade/cicilan', element: 'loan-calculator', dir: 'cicilan', published: false },
+  },
+  {
+    slug: 'ipk',
+    category: 'productivity',
+    keywords: ['ipk', 'ips', 'gpa', 'sks', 'nilai', 'kuliah', 'mahasiswa', 'kampus', 'semester', 'rapor', 'rata-rata', 'target ipk', 'cumlaude', 'university', 'grade point', 'report card'],
+    title: 'Hitung IPK',
+    description: 'Hitung IPS per semester dan IPK dari SKS × nilai huruf, simulasi nilai yang dibutuhkan untuk target IPK, serta rata-rata nilai rapor berbobot.',
+    icon: GraduationCap,
+    formats: 'SKS & nilai → IPS / IPK',
+    badge: 'Baru',
+    component: lazy(() => import('./ipk/Ipk')),
+  },
+  {
+    slug: 'tabungan',
+    category: 'productivity',
+    keywords: ['tabungan', 'deposito', 'bunga majemuk', 'investasi', 'menabung', 'target dana', 'dana pendidikan', 'dana darurat', 'pajak bunga', 'savings', 'compound interest', 'investment', 'goal', 'per bulan'],
+    title: 'Kalkulator Tabungan & Investasi',
+    description: 'Hitung bunga majemuk deposito, tabungan rutin per bulan, atau berapa harus menabung untuk mencapai target dana, dengan grafik dan tabel per tahun.',
+    icon: PiggyBank,
+    formats: 'Setoran & bunga → Saldo',
+    badge: 'Baru',
+    component: lazy(() => import('./tabungan/Tabungan')),
   },
   {
     slug: 'patungan',
