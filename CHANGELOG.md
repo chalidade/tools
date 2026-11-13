@@ -3,6 +3,15 @@
 Catatan harian apa yang berubah di [tools](https://toowl.my.id/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-13 — Darurat: medis
+
+Dua tool baru di kategori Darurat; total sekarang **97 tools**.
+
+- **Kartu Medis / ICE** (`#/kartu-medis`): golongan darah, alergi, obat rutin, kondisi medis, dan kontak darurat disimpan di perangkat saja. Bisa diekspor jadi wallpaper layar kunci PNG (empat ukuran layar HP) dengan kartu diletakkan di bawah area jam dan notifikasi, supaya penolong bisa membaca tanpa membuka kunci HP.
+- **Panduan CPR** (`#/cpr`): ketukan 100–120 per menit dengan klik metronom dan getar, hitungan 30 tekanan : 2 napas (atau tekan saja), langkah singkat bergambar SVG, tombol telepon 112 di paling atas, dan Wake Lock agar layar tetap menyala. Teks mengikuti pedoman AHA/PMI dan menegaskan bahwa ini bukan pengganti pelatihan.
+
+Semuanya diproses di browser; tidak ada data yang dikirim.
+
 ## 2026-11-12 — Kuliah & tabungan
 
 Dua tool baru di kategori Produktivitas; total sekarang **95 tools**.

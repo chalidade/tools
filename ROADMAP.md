@@ -303,12 +303,12 @@ jaringan) dan tombol utamanya besar, bisa ditekan tanpa membaca.
 
 ## Hari 27 — 2026-11-13 · Darurat: medis
 
-- [ ] **Kartu Medis / ICE** (`#/kartu-medis`): golongan darah, alergi, obat
+- [x] **Kartu Medis / ICE** (`#/kartu-medis`): golongan darah, alergi, obat
   rutin, kondisi medis, dan kontak darurat — disimpan di perangkat saja
   (`src/lib/local-store.ts`). Bisa diekspor jadi gambar wallpaper lock screen
   (ukuran layar HP, area aman jam/notifikasi) supaya penolong bisa membacanya
   tanpa membuka kunci HP.
-- [ ] **Panduan CPR** (`#/cpr`): ketukan 100–120/menit (pakai klik dari
+- [x] **Panduan CPR** (`#/cpr`): ketukan 100–120/menit (pakai klik dari
   metronom), hitungan 30 tekanan : 2 napas, langkah singkat bergambar (SVG),
   dan pengingat menelepon 112/119 lebih dulu. Wake Lock aktif. Teksnya
   mengikuti pedoman resmi (AHA/PMI) dan bilang bahwa ini bukan pengganti
