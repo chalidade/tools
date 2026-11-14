@@ -291,11 +291,11 @@ jaringan) dan tombol utamanya besar, bisa ditekan tanpa membaca.
 
 ## Hari 26 — 2026-11-12 · Kuliah & tabungan
 
-- [ ] **Hitung IPK** (`#/ipk`): IPS per semester dan IPK dari SKS × nilai
+- [x] **Hitung IPK** (`#/ipk`): IPS per semester dan IPK dari SKS × nilai
   huruf (skala bisa diatur: A/AB/B/…, atau A/A-/B+/…), plus simulasi "butuh
   rata-rata nilai berapa di sisa SKS supaya IPK jadi X". Nilai rapor (rata-rata
   berbobot) sebagai mode kedua. Tersimpan di perangkat.
-- [ ] **Kalkulator Tabungan & Investasi** (`#/tabungan`): bunga majemuk
+- [x] **Kalkulator Tabungan & Investasi** (`#/tabungan`): bunga majemuk
   (deposito, frekuensi bunga bisa diatur, pajak bunga 20% bisa dinyalakan),
   menabung rutin per bulan, dan target dana ("Rp100 juta dalam 5 tahun → nabung
   berapa per bulan"), dengan grafik pertumbuhan (Recharts tidak ada di repo ini
@@ -303,12 +303,12 @@ jaringan) dan tombol utamanya besar, bisa ditekan tanpa membaca.
 
 ## Hari 27 — 2026-11-13 · Darurat: medis
 
-- [ ] **Kartu Medis / ICE** (`#/kartu-medis`): golongan darah, alergi, obat
+- [x] **Kartu Medis / ICE** (`#/kartu-medis`): golongan darah, alergi, obat
   rutin, kondisi medis, dan kontak darurat — disimpan di perangkat saja
   (`src/lib/local-store.ts`). Bisa diekspor jadi gambar wallpaper lock screen
   (ukuran layar HP, area aman jam/notifikasi) supaya penolong bisa membacanya
   tanpa membuka kunci HP.
-- [ ] **Panduan CPR** (`#/cpr`): ketukan 100–120/menit (pakai klik dari
+- [x] **Panduan CPR** (`#/cpr`): ketukan 100–120/menit (pakai klik dari
   metronom), hitungan 30 tekanan : 2 napas, langkah singkat bergambar (SVG),
   dan pengingat menelepon 112/119 lebih dulu. Wake Lock aktif. Teksnya
   mengikuti pedoman resmi (AHA/PMI) dan bilang bahwa ini bukan pengganti
@@ -316,12 +316,12 @@ jaringan) dan tombol utamanya besar, bisa ditekan tanpa membaca.
 
 ## Hari 28 — 2026-11-14 · Darurat: P3K & aman
 
-- [ ] **Panduan P3K** (`#/p3k`): kartu langkah bergambar (SVG) untuk tersedak
+- [x] **Panduan P3K** (`#/p3k`): kartu langkah bergambar (SVG) untuk tersedak
   (Heimlich, termasuk bayi), luka bakar, pendarahan, pingsan, kejang, gigitan
   ular, dan patah tulang. Teks mengikuti pedoman PMI/WHO (sumber dan tanggal
   di satu file data), tombol 112/119 selalu terlihat, dan bilang bahwa ini
   bukan pengganti pelatihan. Tautkan dengan Panduan CPR.
-- [ ] **Panggilan Palsu** (`#/panggilan-palsu`): layar telepon masuk tiruan
+- [x] **Panggilan Palsu** (`#/panggilan-palsu`): layar telepon masuk tiruan
   (nama penelepon bisa diatur) dengan nada dering dari Web Audio dan getar,
   dipicu langsung atau dengan timer. Layar penuh + Wake Lock; tombol angkat
   menampilkan durasi panggilan berjalan.

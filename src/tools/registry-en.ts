@@ -190,6 +190,42 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
     formats: 'Loan → Schedule',
     keywords: ['loan', 'instalment', 'installment', 'mortgage', 'amortization', 'flat rate', 'annuity', 'effective rate', 'repayment schedule', 'csv'],
   },
+  'kartu-medis': {
+    title: 'Medical ID Card (ICE)',
+    description: 'Blood type, allergies, regular medication, medical conditions and an emergency contact — kept on your device and exportable as a lock screen wallpaper.',
+    formats: 'Medical data → PNG wallpaper',
+    keywords: ['medical id', 'ice', 'in case of emergency', 'blood type', 'allergies', 'medication', 'emergency contact', 'lock screen', 'wallpaper', 'first responder'],
+  },
+  cpr: {
+    title: 'CPR Guide',
+    description: 'A 100–120 per minute beat, 30 compressions : 2 breaths count, short illustrated steps and a reminder to call 112 first.',
+    formats: 'Guide + metronome',
+    keywords: ['cpr', 'cardiac arrest', 'chest compressions', 'rescue breaths', 'aed', 'first aid', 'metronome', 'resuscitation', 'emergency'],
+  },
+  p3k: {
+    title: 'First Aid Guide',
+    description: 'Illustrated step cards for choking, burns, bleeding, fainting, seizures, snake bites and broken bones, with a 112/119 button always in view.',
+    formats: 'Illustrated guide',
+    keywords: ['first aid', 'choking', 'heimlich', 'burns', 'bleeding', 'fainting', 'seizure', 'snake bite', 'broken bone', 'fracture', 'red cross', 'emergency'],
+  },
+  'panggilan-palsu': {
+    title: 'Fake Call',
+    description: 'A mock incoming-call screen with a caller name, ringtone and vibration, triggered now or on a timer, full screen.',
+    formats: 'Timer → incoming call',
+    keywords: ['fake call', 'incoming call', 'ringtone', 'excuse', 'escape', 'prank', 'timer', 'phone call'],
+  },
+  ipk: {
+    title: 'GPA Calculator',
+    description: 'Work out semester and cumulative GPA from credits × letter grades, simulate the grades needed to hit a target GPA, and average report-card scores with weights.',
+    formats: 'Credits & grades → GPA',
+    keywords: ['gpa', 'grade point', 'credits', 'semester', 'university', 'college', 'report card', 'weighted average', 'target gpa', 'cum laude'],
+  },
+  tabungan: {
+    title: 'Savings & Investment Calculator',
+    description: 'Compound interest on a deposit, regular monthly saving, or how much to save to reach a target, with a growth chart and a year-by-year table.',
+    formats: 'Deposits & interest → Balance',
+    keywords: ['savings', 'compound interest', 'deposit', 'investment', 'target', 'monthly', 'interest tax', 'goal', 'emergency fund'],
+  },
   patungan: { title: 'Bill Split', description: 'Split a group bill per item or equally, with tax and service shared proportionally, exact rounding and a summary ready for WhatsApp.', formats: 'Bill → Share per person', keywords: ['split bill', 'split', 'dutch', 'restaurant', 'tax', 'service', 'friends', 'group'] },
   undian: { title: 'Random Draw & Arisan', description: 'Draw names with secure randomness; arisan mode never repeats a winner until everyone has had a turn, with history kept on the device.', formats: 'Names → Winner', keywords: ['random picker', 'raffle', 'lottery', 'arisan', 'giveaway', 'winner', 'name picker', 'draw'] },
   'gaji-bersih': {
