@@ -202,6 +202,18 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
     formats: 'Guide + metronome',
     keywords: ['cpr', 'cardiac arrest', 'chest compressions', 'rescue breaths', 'aed', 'first aid', 'metronome', 'resuscitation', 'emergency'],
   },
+  p3k: {
+    title: 'First Aid Guide',
+    description: 'Illustrated step cards for choking, burns, bleeding, fainting, seizures, snake bites and broken bones, with a 112/119 button always in view.',
+    formats: 'Illustrated guide',
+    keywords: ['first aid', 'choking', 'heimlich', 'burns', 'bleeding', 'fainting', 'seizure', 'snake bite', 'broken bone', 'fracture', 'red cross', 'emergency'],
+  },
+  'panggilan-palsu': {
+    title: 'Fake Call',
+    description: 'A mock incoming-call screen with a caller name, ringtone and vibration, triggered now or on a timer, full screen.',
+    formats: 'Timer → incoming call',
+    keywords: ['fake call', 'incoming call', 'ringtone', 'excuse', 'escape', 'prank', 'timer', 'phone call'],
+  },
   ipk: {
     title: 'GPA Calculator',
     description: 'Work out semester and cumulative GPA from credits × letter grades, simulate the grades needed to hit a target GPA, and average report-card scores with weights.',

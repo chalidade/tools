@@ -3,6 +3,15 @@
 Catatan harian apa yang berubah di [tools](https://toowl.my.id/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-14 — Darurat: P3K & aman
+
+Dua tool baru di kategori Darurat; total sekarang **99 tools**.
+
+- **Panduan P3K** (`#/p3k`): kartu langkah bergambar (SVG) untuk tersedak (Heimlich, termasuk bayi), luka bakar, pendarahan, pingsan, kejang, gigitan ular, dan patah tulang, lengkap dengan daftar "jangan". Tombol telepon 112/119 selalu terlihat, tertaut ke Panduan CPR, dan teks mengikuti pedoman PMI/WHO (sumber dan tanggal pemeriksaan ada di satu file data) serta menegaskan bahwa ini bukan pengganti pelatihan.
+- **Panggilan Palsu** (`#/panggilan-palsu`): layar telepon masuk tiruan dengan nama penelepon dan label yang bisa diatur, nada dering dari Web Audio dan getar, dipicu langsung atau dengan timer (10 detik sampai 5 menit). Layar penuh + Wake Lock; tombol angkat menampilkan durasi panggilan berjalan.
+
+Semuanya diproses di browser; tidak ada data yang dikirim.
+
 ## 2026-11-13 — Darurat: medis
 
 Dua tool baru di kategori Darurat; total sekarang **97 tools**.
