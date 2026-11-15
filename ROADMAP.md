@@ -328,12 +328,12 @@ jaringan) dan tombol utamanya besar, bisa ditekan tanpa membaca.
 
 ## Hari 29 — 2026-11-15 · Kalender & data
 
-- [ ] **Hitung Weton** (`#/weton`): tanggal → hari pasaran Jawa (Legi,
+- [x] **Hitung Weton** (`#/weton`): tanggal → hari pasaran Jawa (Legi,
   Pahing, Pon, Wage, Kliwon), neptu hari + pasaran, wuku, dan tanggal Jawa;
   plus kebalikannya (cari tanggal dengan weton tertentu). Hitungan kalender
   murni, diuji dengan beberapa tanggal yang diketahui; bagian ramalan/primbon
   tidak dibuat.
-- [ ] **Cek NIK** (`#/cek-nik`): baca format NIK — kode provinsi/kabupaten/
+- [x] **Cek NIK** (`#/cek-nik`): baca format NIK — kode provinsi/kabupaten/
   kecamatan (data wilayah dibundel, nama di-title-case), tanggal lahir, dan
   jenis kelamin (tanggal + 40 untuk perempuan). Jelas ditulis bahwa ini hanya
   membaca format, bukan memastikan NIK terdaftar di Dukcapil, dan NIK tidak

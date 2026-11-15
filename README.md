@@ -3,7 +3,7 @@
 **English** · [Bahasa Indonesia](README.id.md)
 
 **My everyday file toolbox, built for the file work I do every day and published free for everyone.**
-99 tools for PDF, Office files, images, video, audio and QR codes, and every one of them runs entirely in your browser.
+101 tools for PDF, Office files, images, video, audio and QR codes, and every one of them runs entirely in your browser.
 Your files are never uploaded.
 
 [![Live demo](https://img.shields.io/badge/live%20demo-chalidade.github.io%2Ftools-6366f1)](https://toowl.my.id/)
@@ -120,6 +120,8 @@ All 45, grouped the way the home page groups them. Each name links to the live t
 - [Receipt & Invoice](https://toowl.my.id/en/kwitansi/): PDF receipt or invoice with items, discount and tax, amount in words from Terbilang, last entry kept on the device (pdf-lib)
 - [Loan Instalment Calculator](https://toowl.my.id/en/cicilan/): flat or annuity interest, month-by-month schedule, total interest, CSV export
 - [GPA Calculator](https://toowl.my.id/en/ipk/): semester GPA and cumulative GPA from credits × letter grades (A/AB/B or A/A-/B+ scale), "what average do I need for GPA X" simulation, weighted report-card average, saved on the device
+- [Weton Calculator](https://toowl.my.id/en/weton/): date → Javanese market day (Legi/Pahing/Pon/Wage/Kliwon), neptu, wuku and Javanese date, plus finding dates for a given weton; calendar arithmetic only, checked against known dates
+- [NIK Checker](https://toowl.my.id/en/cek-nik/): reads the 16-digit NIK layout (province, regency, district from a bundled 2025 region table, birth date, sex = day + 40 for women); format only, nothing stored or sent
 - [Savings & Investment Calculator](https://toowl.my.id/en/tabungan/): compound interest on a deposit (compounding frequency, optional 20% interest tax), regular monthly saving, monthly amount for a target, SVG growth chart and year table
 - [Bill Split](https://toowl.my.id/en/patungan/): split a group bill per item or equally, tax and service shared proportionally, exact rounding (largest remainder), summary for WhatsApp
 - [Random Draw & Arisan](https://toowl.my.id/en/undian/): unbiased `crypto.getRandomValues` name draw with a short animation, arisan mode that excludes earlier winners until everyone has had a turn, history in localStorage

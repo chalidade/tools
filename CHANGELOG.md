@@ -3,6 +3,15 @@
 Catatan harian apa yang berubah di [tools](https://toowl.my.id/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-15 — Kalender & data
+
+Dua tool baru di kategori Produktivitas; total sekarang **101 tools**.
+
+- **Hitung Weton** (`#/weton`): tanggal → hari pasaran Jawa (Legi, Pahing, Pon, Wage, Kliwon), neptu hari + pasaran, wuku, dan tanggal Jawa (dari kalender Hijriah, tahun Jawa = Hijriah + 512); juga kebalikannya, mencari tanggal dengan weton tertentu (tiap 35 hari). Hitungan kalender murni yang diuji dengan tanggal yang dikenal (17 Agustus 1945 Jumat Legi, Galungan 28 Februari 2024 Rabu Kliwon wuku Dungulan, 1 Sura 1958 = 7 Juli 2024); tanpa ramalan/primbon.
+- **Cek NIK** (`#/cek-nik`): membaca susunan 16 digit NIK — provinsi, kabupaten/kota, kecamatan (tabel wilayah Kepmendagri 2025 dibundel dan dimuat terpisah saat tool dibuka), tanggal lahir (tanggal + 40 untuk perempuan, abad ditampilkan bila ambigu), dan nomor urut. Tertulis jelas bahwa ini hanya membaca format, bukan memastikan NIK terdaftar di Dukcapil, dan NIK tidak pernah disimpan atau dikirim.
+
+Semuanya diproses di browser; tidak ada data yang dikirim.
+
 ## 2026-11-14 — Darurat: P3K & aman
 
 Dua tool baru di kategori Darurat; total sekarang **99 tools**.
