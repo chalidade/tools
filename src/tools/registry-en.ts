@@ -220,6 +220,18 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
     formats: 'Credits & grades → GPA',
     keywords: ['gpa', 'grade point', 'credits', 'semester', 'university', 'college', 'report card', 'weighted average', 'target gpa', 'cum laude'],
   },
+  weton: {
+    title: 'Weton Calculator',
+    description: 'Turn a date into its Javanese market day (pasaran), neptu, wuku and Javanese date, or find the dates that fall on a given weton. Calendar arithmetic only, no fortune-telling.',
+    formats: 'Date ↔ weton',
+    keywords: ['weton', 'pasaran', 'market day', 'javanese calendar', 'javanese date', 'neptu', 'wuku', 'legi', 'pahing', 'pon', 'wage', 'kliwon', 'birth day'],
+  },
+  'cek-nik': {
+    title: 'NIK Checker',
+    description: 'Read how a 16-digit Indonesian NIK is laid out: province, regency/city, district, birth date and sex. Reads the format only; the number is never stored or sent.',
+    formats: 'NIK → region & birth date',
+    keywords: ['nik', 'ktp', 'national id', 'identity number', 'region code', 'province', 'regency', 'district', 'birth date', 'sex', 'dukcapil'],
+  },
   tabungan: {
     title: 'Savings & Investment Calculator',
     description: 'Compound interest on a deposit, regular monthly saving, or how much to save to reach a target, with a growth chart and a year-by-year table.',
