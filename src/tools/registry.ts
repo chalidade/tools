@@ -88,6 +88,8 @@ import {
   GraduationCap,
   PiggyBank,
   Stethoscope,
+  Bandage,
+  PhoneIncoming,
   type LucideIcon,
 } from 'lucide-react'
 
@@ -1400,6 +1402,28 @@ export const TOOLS: Tool[] = [
     formats: 'Panduan + metronom',
     badge: 'Baru',
     component: lazy(() => import('./cpr/Cpr')),
+  },
+  {
+    slug: 'p3k',
+    category: 'emergency',
+    keywords: ['p3k', 'pertolongan pertama', 'tersedak', 'heimlich', 'luka bakar', 'pendarahan', 'pingsan', 'kejang', 'gigitan ular', 'patah tulang', 'pmi', 'first aid', 'choking', 'burns', 'bleeding', 'seizure', 'snake bite', 'fracture', '112', '119'],
+    title: 'Panduan P3K',
+    description: 'Kartu langkah bergambar untuk tersedak, luka bakar, pendarahan, pingsan, kejang, gigitan ular, dan patah tulang — dengan tombol 112/119.',
+    icon: Bandage,
+    formats: 'Panduan bergambar',
+    badge: 'Baru',
+    component: lazy(() => import('./p3k/P3k')),
+  },
+  {
+    slug: 'panggilan-palsu',
+    category: 'emergency',
+    keywords: ['panggilan palsu', 'telepon palsu', 'telepon masuk', 'fake call', 'dering', 'kabur', 'alasan pergi', 'keluar situasi', 'prank', 'incoming call', 'ringtone', 'excuse'],
+    title: 'Panggilan Palsu',
+    description: 'Layar telepon masuk tiruan dengan nama penelepon, nada dering, dan getar — langsung atau dengan timer, layar penuh.',
+    icon: PhoneIncoming,
+    formats: 'Timer → panggilan masuk',
+    badge: 'Baru',
+    component: lazy(() => import('./panggilan-palsu/PanggilanPalsu')),
   },
 ]
 

@@ -316,12 +316,12 @@ jaringan) dan tombol utamanya besar, bisa ditekan tanpa membaca.
 
 ## Hari 28 — 2026-11-14 · Darurat: P3K & aman
 
-- [ ] **Panduan P3K** (`#/p3k`): kartu langkah bergambar (SVG) untuk tersedak
+- [x] **Panduan P3K** (`#/p3k`): kartu langkah bergambar (SVG) untuk tersedak
   (Heimlich, termasuk bayi), luka bakar, pendarahan, pingsan, kejang, gigitan
   ular, dan patah tulang. Teks mengikuti pedoman PMI/WHO (sumber dan tanggal
   di satu file data), tombol 112/119 selalu terlihat, dan bilang bahwa ini
   bukan pengganti pelatihan. Tautkan dengan Panduan CPR.
-- [ ] **Panggilan Palsu** (`#/panggilan-palsu`): layar telepon masuk tiruan
+- [x] **Panggilan Palsu** (`#/panggilan-palsu`): layar telepon masuk tiruan
   (nama penelepon bisa diatur) dengan nada dering dari Web Audio dan getar,
   dipicu langsung atau dengan timer. Layar penuh + Wake Lock; tombol angkat
   menampilkan durasi panggilan berjalan.
