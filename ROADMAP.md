@@ -291,11 +291,11 @@ jaringan) dan tombol utamanya besar, bisa ditekan tanpa membaca.
 
 ## Hari 26 — 2026-11-12 · Kuliah & tabungan
 
-- [ ] **Hitung IPK** (`#/ipk`): IPS per semester dan IPK dari SKS × nilai
+- [x] **Hitung IPK** (`#/ipk`): IPS per semester dan IPK dari SKS × nilai
   huruf (skala bisa diatur: A/AB/B/…, atau A/A-/B+/…), plus simulasi "butuh
   rata-rata nilai berapa di sisa SKS supaya IPK jadi X". Nilai rapor (rata-rata
   berbobot) sebagai mode kedua. Tersimpan di perangkat.
-- [ ] **Kalkulator Tabungan & Investasi** (`#/tabungan`): bunga majemuk
+- [x] **Kalkulator Tabungan & Investasi** (`#/tabungan`): bunga majemuk
   (deposito, frekuensi bunga bisa diatur, pajak bunga 20% bisa dinyalakan),
   menabung rutin per bulan, dan target dana ("Rp100 juta dalam 5 tahun → nabung
   berapa per bulan"), dengan grafik pertumbuhan (Recharts tidak ada di repo ini
