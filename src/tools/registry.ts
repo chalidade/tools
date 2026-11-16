@@ -87,6 +87,7 @@ import {
   ListOrdered,
   GraduationCap,
   PiggyBank,
+  Stethoscope,
   type LucideIcon,
 } from 'lucide-react'
 
@@ -1377,6 +1378,28 @@ export const TOOLS: Tool[] = [
     formats: 'Foto → JPG / PNG',
     badge: 'Baru',
     component: lazy(() => import('./sensor-foto/SensorFoto')),
+  },
+  {
+    slug: 'kartu-medis',
+    category: 'emergency',
+    keywords: ['kartu medis', 'ice', 'golongan darah', 'alergi', 'obat', 'kontak darurat', 'lock screen', 'wallpaper', 'layar kunci', 'penolong', 'medical id', 'blood type', 'allergy', 'emergency contact', 'medical card'],
+    title: 'Kartu Medis / ICE',
+    description: 'Golongan darah, alergi, obat rutin, kondisi medis, dan kontak darurat — simpan di perangkat dan jadikan wallpaper layar kunci.',
+    icon: Stethoscope,
+    formats: 'Data medis → PNG wallpaper',
+    badge: 'Baru',
+    component: lazy(() => import('./kartu-medis/KartuMedis')),
+  },
+  {
+    slug: 'cpr',
+    category: 'emergency',
+    keywords: ['cpr', 'rjp', 'resusitasi', 'henti jantung', 'pijat jantung', 'napas buatan', 'aed', 'pertolongan pertama', 'p3k', 'metronom', 'cardiac arrest', 'first aid', 'chest compressions', '112', '119'],
+    title: 'Panduan CPR',
+    description: 'Ketukan 100–120 per menit, hitungan 30 tekanan : 2 napas, langkah singkat bergambar, dan pengingat menelepon 112 lebih dulu.',
+    icon: HeartPulse,
+    formats: 'Panduan + metronom',
+    badge: 'Baru',
+    component: lazy(() => import('./cpr/Cpr')),
   },
 ]
 

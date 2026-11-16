@@ -3,7 +3,7 @@
 **English** · [Bahasa Indonesia](README.id.md)
 
 **My everyday file toolbox, built for the file work I do every day and published free for everyone.**
-95 tools for PDF, Office files, images, video, audio and QR codes, and every one of them runs entirely in your browser.
+97 tools for PDF, Office files, images, video, audio and QR codes, and every one of them runs entirely in your browser.
 Your files are never uploaded.
 
 [![Live demo](https://img.shields.io/badge/live%20demo-chalidade.github.io%2Ftools-6366f1)](https://toowl.my.id/)
@@ -139,6 +139,8 @@ All 45, grouped the way the home page groups them. Each name links to the live t
 **Emergency**
 - [SOS & Flashlight](https://toowl.my.id/en/sos/): phone torch (Chrome Android) blinking Morse SOS, flashing white screen, siren from Web Audio, plain flashlight mode, screen Wake Lock; screen only on iPhone
 - [Emergency Info](https://toowl.my.id/en/darurat/): Indonesian emergency numbers as `tel:` buttons (list and check date in one data file), and GPS location as text with a map link via Share or WhatsApp, with accuracy shown
+- [Medical ID Card (ICE)](https://toowl.my.id/en/kartu-medis/): blood type, allergies, medication, conditions and emergency contact kept on the device, exported as a lock screen wallpaper PNG with the card placed below the clock area
+- [CPR Guide](https://toowl.my.id/en/cpr/): 100–120/min beat (metronome click), 30 : 2 or hands-only count, short illustrated steps, call-112-first reminder, Wake Lock; follows AHA/PMI and is not a substitute for training
 
 The [Indonesian README](README.id.md) has a longer per-tool table with every option and limitation.
 

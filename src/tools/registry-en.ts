@@ -190,6 +190,18 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
     formats: 'Loan → Schedule',
     keywords: ['loan', 'instalment', 'installment', 'mortgage', 'amortization', 'flat rate', 'annuity', 'effective rate', 'repayment schedule', 'csv'],
   },
+  'kartu-medis': {
+    title: 'Medical ID Card (ICE)',
+    description: 'Blood type, allergies, regular medication, medical conditions and an emergency contact — kept on your device and exportable as a lock screen wallpaper.',
+    formats: 'Medical data → PNG wallpaper',
+    keywords: ['medical id', 'ice', 'in case of emergency', 'blood type', 'allergies', 'medication', 'emergency contact', 'lock screen', 'wallpaper', 'first responder'],
+  },
+  cpr: {
+    title: 'CPR Guide',
+    description: 'A 100–120 per minute beat, 30 compressions : 2 breaths count, short illustrated steps and a reminder to call 112 first.',
+    formats: 'Guide + metronome',
+    keywords: ['cpr', 'cardiac arrest', 'chest compressions', 'rescue breaths', 'aed', 'first aid', 'metronome', 'resuscitation', 'emergency'],
+  },
   ipk: {
     title: 'GPA Calculator',
     description: 'Work out semester and cumulative GPA from credits × letter grades, simulate the grades needed to hit a target GPA, and average report-card scores with weights.',
