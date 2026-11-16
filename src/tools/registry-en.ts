@@ -232,6 +232,18 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
     formats: 'NIK → region & birth date',
     keywords: ['nik', 'ktp', 'national id', 'identity number', 'region code', 'province', 'regency', 'district', 'birth date', 'sex', 'dukcapil'],
   },
+  'signature-png': {
+    title: 'Signature to PNG',
+    description: 'Draw a signature or photograph one on paper, drop the background, pick the ink colour — and get a transparent PNG ready to paste.',
+    formats: 'Image / photo → transparent PNG',
+    keywords: ['signature', 'transparent png', 'remove paper', 'ink', 'sign', 'background'],
+  },
+  'pdf-grayscale': {
+    title: 'Ink-Saver PDF',
+    description: 'Turn a PDF grayscale or black & white before printing, with light backgrounds made white. Pages are re-rendered as images.',
+    formats: 'PDF → grayscale / B&W PDF',
+    keywords: ['ink saver', 'grayscale', 'black and white', 'print', 'toner', 'printer', 'monochrome'],
+  },
   tabungan: {
     title: 'Savings & Investment Calculator',
     description: 'Compound interest on a deposit, regular monthly saving, or how much to save to reach a target, with a growth chart and a year-by-year table.',

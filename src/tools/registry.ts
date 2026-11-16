@@ -91,6 +91,7 @@ import {
   Stethoscope,
   Bandage,
   PhoneIncoming,
+  Contrast,
   type LucideIcon,
 } from 'lucide-react'
 
@@ -1447,6 +1448,28 @@ export const TOOLS: Tool[] = [
     formats: 'Timer → panggilan masuk',
     badge: 'Baru',
     component: lazy(() => import('./panggilan-palsu/PanggilanPalsu')),
+  },
+  {
+    slug: 'signature-png',
+    category: 'media',
+    keywords: ['tanda tangan', 'ttd', 'tandatangan', 'png transparan', 'latar transparan', 'hapus latar tanda tangan', 'foto tanda tangan', 'signature', 'transparent png', 'remove paper', 'ink', 'tinta'],
+    title: 'Tanda Tangan ke PNG',
+    description: 'Gambar tanda tangan atau foto dari kertas, latarnya dibuang, warna tinta bisa diganti — jadi PNG transparan siap tempel.',
+    icon: PenLine,
+    formats: 'Gambar / foto → PNG transparan',
+    badge: 'Baru',
+    component: lazy(() => import('./signature-png/SignaturePng')),
+  },
+  {
+    slug: 'pdf-grayscale',
+    category: 'pdf',
+    keywords: ['hemat tinta', 'abu-abu', 'grayscale', 'hitam putih', 'black and white', 'cetak', 'print', 'printer', 'toner', 'ink saver', 'monokrom', 'pdf'],
+    title: 'PDF Hemat Tinta',
+    description: 'Ubah PDF jadi abu-abu atau hitam-putih sebelum dicetak, dengan latar terang dibuat putih. Halaman dirender ulang jadi gambar.',
+    icon: Contrast,
+    formats: 'PDF → PDF abu-abu / hitam-putih',
+    badge: 'Baru',
+    component: lazy(() => import('./pdf-grayscale/PdfGrayscale')),
   },
 ]
 
