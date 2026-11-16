@@ -341,11 +341,11 @@ jaringan) dan tombol utamanya besar, bisa ditekan tanpa membaca.
 
 ## Hari 30 — 2026-11-16 · Tanda tangan & cetak
 
-- [ ] **Tanda Tangan ke PNG** (`#/signature-png`): gambar tanda tangan atau
+- [x] **Tanda Tangan ke PNG** (`#/signature-png`): gambar tanda tangan atau
   foto tanda tangan di kertas, latarnya dibuang (ambang + pembersih noise),
   warna tinta bisa diganti, lalu PNG transparan siap tempel. Pakai ulang kanvas
   gambar dari Tanda Tangan PDF.
-- [ ] **PDF Hemat Tinta** (`#/pdf-grayscale`): ubah ke abu-abu atau
+- [x] **PDF Hemat Tinta** (`#/pdf-grayscale`): ubah ke abu-abu atau
   hitam-putih (dengan ambang yang bisa diatur dan opsi latar jadi putih)
   sebelum dicetak. Halaman dirender ulang, jadi beri tahu bahwa teksnya jadi
   gambar.

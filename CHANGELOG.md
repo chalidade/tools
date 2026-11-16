@@ -3,6 +3,15 @@
 Catatan harian apa yang berubah di [tools](https://toowl.my.id/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-16 — Tanda tangan & cetak
+
+Dua tool baru; total sekarang **103 tools**.
+
+- **Tanda Tangan ke PNG** (`#/signature-png`): gambar tanda tangan di layar (memakai ulang kanvas Tanda Tangan PDF) atau unggah foto dari kertas. Latar dibuang lewat ambang kecerahan dengan tepi lembut, bintik kecil dibersihkan, warna tinta bisa diganti (asli/hitam/biru), lalu hasilnya dipotong rapat jadi PNG transparan. Pratinjau di atas pola kotak-kotak.
+- **PDF Hemat Tinta** (`#/pdf-grayscale`): ubah PDF jadi abu-abu atau hitam-putih (ambang bisa diatur) sebelum dicetak, dengan opsi latar terang jadi putih dan pilihan 100/150/200 dpi. Tiap halaman dirender ulang dengan pdf.js lalu dirakit kembali dengan pdf-lib, jadi teksnya menjadi gambar dan tidak bisa dipilih lagi — hal ini tertulis di layar. Ada progres, tombol batal, dan perbandingan ukuran sebelum/sesudah.
+
+Semuanya diproses di browser; tidak ada data yang dikirim.
+
 ## 2026-11-15 — Kalender & data
 
 Dua tool baru di kategori Produktivitas; total sekarang **101 tools**.

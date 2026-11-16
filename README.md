@@ -3,7 +3,7 @@
 **English** · [Bahasa Indonesia](README.id.md)
 
 **My everyday file toolbox, built for the file work I do every day and published free for everyone.**
-101 tools for PDF, Office files, images, video, audio and QR codes, and every one of them runs entirely in your browser.
+103 tools for PDF, Office files, images, video, audio and QR codes, and every one of them runs entirely in your browser.
 Your files are never uploaded.
 
 [![Live demo](https://img.shields.io/badge/live%20demo-chalidade.github.io%2Ftools-6366f1)](https://toowl.my.id/)
@@ -55,6 +55,7 @@ All 45, grouped the way the home page groups them. Each name links to the live t
 - [Organize PDF Pages](https://toowl.my.id/en/organize-pdf/): thumbnails you drag to reorder, rotate, duplicate or delete
 - [PDF Page Numbers](https://toowl.my.id/en/page-numbers/): position, format (`1`, `1 / 10`, `Page 1`) and the first numbered page
 - [Sign PDF](https://toowl.my.id/en/sign-pdf/): draw (pressure-sensitive) or upload a signature, then place it anywhere
+- [Ink-Saver PDF](https://toowl.my.id/en/pdf-grayscale/): grayscale or black & white (adjustable threshold, light backgrounds to white) before printing; pages are re-rendered, so text becomes an image
 - [Edit PDF](https://toowl.my.id/en/edit-pdf/): add text (font, size, colour), images, boxes, lines, ticks and scribbles on any page of a non-AcroForm form
 - [Compress PDF](https://toowl.my.id/en/compress-pdf/): re-encodes embedded JPEGs and optimises the structure with qpdf; never returns a larger file
 - [Protect PDF](https://toowl.my.id/en/protect-pdf/) (AES-256 password and permissions) and [Unlock PDF](https://toowl.my.id/en/unlock-pdf/)
@@ -68,6 +69,7 @@ All 45, grouped the way the home page groups them. Each name links to the live t
 - [Censor Photo](https://toowl.my.id/en/sensor-foto/): box or brush over ID numbers, faces or plates; black block (default), pixelate or blur, with a warning that light blur on small text can be guessed
 - [Remove Photo Metadata](https://toowl.my.id/en/strip-exif/): shows camera, date and GPS; JPG/PNG are cleaned losslessly
 - [Remove Background](https://toowl.my.id/en/remove-background/): magic wand, color select, lasso and brush, with no AI model to download
+- [Signature to PNG](https://toowl.my.id/en/signature-png/): draw or photograph a signature, remove the paper and specks, recolour the ink, download a transparent PNG
 - [Document Scanner](https://toowl.my.id/en/scan/): photograph paper, drag the four corners (found automatically as a first guess), straighten the perspective on a canvas without OpenCV, pick black-and-white, grayscale or color, and combine pages into one PDF (pdf-lib)
 - [OCR — Photo to Text](https://toowl.my.id/en/ocr/): Indonesian and English text from photos and screenshots with Tesseract (wasm); the worker, core and language data are bundled with the site, never fetched from a CDN, and loaded only when you press Read text
 - [Compress Video](https://toowl.my.id/en/compress-video/): MP4 output using the device's own encoder, with a size estimate up front
