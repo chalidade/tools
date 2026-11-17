@@ -1,23 +1,19 @@
 import { Suspense, useEffect } from 'react'
-import { ArrowLeft, Loader2, ShieldCheck } from 'lucide-react'
+import { ChevronRight, Loader2, ShieldCheck } from 'lucide-react'
 import { InstallCard } from '@/components/InstallCard'
 import { ToolAbout } from '@/components/ToolAbout'
 import { ToolBoundary } from '@/components/tool/ToolBoundary'
-import { toolText, type Tool } from '@/tools/registry'
+import { categoryText, toolText, type Tool } from '@/tools/registry'
 import { useLang, useT } from '@/lib/i18n'
 import { pageUrl } from '@/lib/route'
+import { rememberTool } from '@/lib/recent'
 import { cn } from '@/lib/utils'
 import { absoluteUrl, applyHead, toolMeta } from '@/lib/seo'
 
-function NoUploadBadge({ className }: { className: string }) {
+function NoUploadBadge({ className }: { className?: string }) {
   const t = useT()
   return (
-    <p
-      className={cn(
-        'items-center gap-1.5 rounded-full border bg-card/70 px-3 py-1 text-xs whitespace-nowrap text-muted-foreground backdrop-blur',
-        className,
-      )}
-    >
+    <p className={cn('inline-flex items-center gap-1.5 text-xs whitespace-nowrap text-muted-foreground', className)}>
       <ShieldCheck className="size-3.5 text-emerald-600 dark:text-emerald-400" />
       {t('File tidak di-upload', 'Nothing is uploaded')}
     </p>
@@ -40,6 +36,11 @@ export function ToolView({ tool, embed = false }: { tool: Tool; embed?: boolean 
     }
     applyHead(toolMeta(tool, lang))
   }, [embed, tool, lang, text.title])
+
+  // The home page offers the tools opened last (kept in this browser only).
+  useEffect(() => {
+    if (!embed) rememberTool(tool.slug)
+  }, [embed, tool.slug])
 
   const loading = (
     <div className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -65,47 +66,41 @@ export function ToolView({ tool, embed = false }: { tool: Tool; embed?: boolean 
     )
 
   return (
-    <section className="relative isolate">
-      <div aria-hidden className="bg-glow absolute inset-x-0 top-0 -z-10 h-80 opacity-60" />
-      <div aria-hidden className="bg-grid absolute inset-x-0 top-0 -z-10 h-80" />
-
-      <div className="mx-auto max-w-5xl px-5 py-10 sm:px-6 sm:py-14">
-        <a
-          href={pageUrl('', lang)}
-          className="inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
-        >
-          <ArrowLeft className="size-4" />
-          {t('Kembali', 'Back')}
+    <section key={tool.slug} className="page-in mx-auto max-w-5xl px-4 pt-4 pb-10 sm:px-6 sm:pt-8 sm:pb-14">
+      <nav aria-label={t('Lokasi halaman', 'Breadcrumb')} className="flex items-center gap-1 text-sm text-muted-foreground">
+        <a href={pageUrl('all', lang)} className="rounded transition-colors hover:text-foreground">
+          {t('Semua tools', 'All tools')}
         </a>
+        <ChevronRight className="size-3.5 opacity-60" />
+        <a href={pageUrl('all', lang, `c=${tool.category}`)} className="truncate rounded transition-colors hover:text-foreground">
+          {categoryText(tool.category, lang).title}
+        </a>
+      </nav>
 
-        {/* On phones the tool comes first and its title block follows it, above the install card. */}
-        <div className="mt-8 flex flex-col gap-10">
-          <div className="order-2 flex items-start gap-4 sm:order-1">
-            <span className="grid size-14 shrink-0 place-items-center rounded-2xl bg-gradient-brand text-white shadow-lg shadow-brand-2/25">
-              <tool.icon className="size-6" />
-            </span>
-            <div>
-              <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-                <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">{text.title}</h1>
-                {/* Beside the title on desktop; under the description on phones. */}
-                <NoUploadBadge className="hidden sm:inline-flex" />
-              </div>
-              <p className="mt-1 text-muted-foreground">{text.description}</p>
-              <NoUploadBadge className="mt-3 inline-flex sm:hidden" />
-            </div>
+      {/* Compact on a phone, so the tool itself starts within the first screen. */}
+      <header className="mt-4 flex items-start gap-3.5 sm:mt-6 sm:gap-4">
+        <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-gradient-brand text-white shadow-sm sm:size-12">
+          <tool.icon className="size-5 sm:size-6" />
+        </span>
+        <div className="min-w-0 flex-1">
+          <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
+            <h1 className="text-2xl leading-tight font-semibold tracking-tight sm:text-3xl">{text.title}</h1>
+            <NoUploadBadge className="hidden rounded-full border bg-card px-2.5 py-1 sm:inline-flex" />
           </div>
-
-          <div className="order-1 sm:order-2">
-            <ToolBoundary key={tool.slug}>
-              <Suspense fallback={loading}>
-                <Component key={tool.slug} />
-              </Suspense>
-            </ToolBoundary>
-          </div>
+          <p className="mt-1 text-[15px] leading-snug text-muted-foreground text-pretty sm:text-base">{text.description}</p>
+          <NoUploadBadge className="mt-2 sm:hidden" />
         </div>
-        <InstallCard tool={tool} />
-        <ToolAbout tool={tool} />
+      </header>
+
+      <div className="mt-6 sm:mt-8">
+        <ToolBoundary key={tool.slug}>
+          <Suspense fallback={loading}>
+            <Component key={tool.slug} />
+          </Suspense>
+        </ToolBoundary>
       </div>
+      <InstallCard tool={tool} />
+      <ToolAbout tool={tool} />
     </section>
   )
 }

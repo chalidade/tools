@@ -88,13 +88,25 @@ picture; the rules that matter when editing:
   at the root, so `--base=/`) ship with the build. A new tool needs nothing extra: its pages come from the registry.
 - The home page is one search box (`SearchHome`): type, tap a result. It is
   built for a phone — results sit right under the box as compact rows, and
-  the title folds away while typing. Its motion is CSS only (`blur-in`,
-  `collapse-blur` in `src/theme.css`). The full catalogue — `Hero`,
-  `ToolGrid` (search + category chips + cards, reads `?q=`) and
-  `HowItWorks` — lives at `/all/` (Header → "All tools"); `scripts/seo.mjs`
-  writes `all/index.html` with the home page's meta (canonical = home). No animation
-  library and no per-frame JS on the home page — the walkable town that used
-  to be here was removed to keep it fast; don't bring heavy visuals back.
+  the title folds away (and the box moves up) while typing. On a laptop `/`
+  focuses the box, the arrow keys move through the results and Enter opens
+  the marked one. Under the box: the tools this visitor opened last
+  (`src/lib/recent.ts`, localStorage only) and the popular ones. The full
+  catalogue — `Hero`, `ToolGrid` (search + category chips + compact cards,
+  reads `?q=` and `?c=<category>`) and `HowItWorks` — lives at `/all/`
+  (Header → "All tools"); `scripts/seo.mjs` writes `all/index.html` with the
+  home page's meta (canonical = home). No animation library and no per-frame
+  JS on the home page — the walkable town that used to be here was removed to
+  keep it fast; don't bring heavy visuals back.
+- **Motion** is CSS only and lives in `src/theme.css`: `page-in` (a page
+  arrives), `rise-in` (results, chips, the toast; stagger with
+  `animationDelay`), `fold` (the home title), `header-line` (the header's
+  hairline appears on scroll, via a scroll timeline). Opacity and transform
+  only, short, off under `prefers-reduced-motion`. Entrances fill `backwards`,
+  never `forwards`/`both`: a finished transform animation that still fills
+  acts like `will-change: transform` and would trap a tool's fixed overlay
+  (`Stage` full screen on iPhone). The theme switch cross-fades with
+  `document.startViewTransition` where it exists.
 - **Installable packages** live in `packages/<tool>/` (see packages/README.md):
   each builds the site's own tool source (alias `@` → `../../src`, never a
   copy) into an npm package with a custom element rendering the React UI in a
@@ -132,11 +144,20 @@ picture; the rules that matter when editing:
   packages: it never touches the host page's `<html lang>` or storage.
 - `npm run build` (tsc -b + vite build) is the correctness gate; there is no
   test runner.
-- Design: Geist font, zinc neutrals, blue→violet brand gradient (`--brand-1`,
-  `--brand-2`; utilities `text-gradient`, `bg-gradient-brand`, `bg-grid`,
-  `bg-glow` in `src/index.css`), dark by default (`class="dark"` on `<html>`;
-  a stored "light" choice from the Header toggle wins, applied by the
-  pre-paint script in `index.html`). Public assets are referenced with
-  `import.meta.env.BASE_URL` — the site is served under `/tools/`.
+- Design: quiet and neutral, one accent. Geist (sans + mono) is served from
+  this site — `src/assets/fonts/*.woff2`, `@font-face` in `src/index.css`,
+  the sans file preloaded in `index.html`; never from a font CDN. Zinc
+  neutrals; the accent is the indigo-violet of the owl's helmet: `--brand-1`,
+  `--brand-2` for text, borders and focus rings (a lighter shade in dark),
+  `--brand-fill-1/2` for filled tiles under white (`bg-gradient-brand`, same
+  in both themes). `text-gradient` is now plain accent text for the one
+  number that matters. Surfaces stay neutral: tool cards and result rows use
+  a `bg-muted` icon tile that turns accent on hover or when marked; only the
+  tool page's own icon and the drop zone are filled. No glow, grid or
+  gradient backdrops. Dark by default (`class="dark"` on `<html>`; a stored
+  "light" choice from the Header toggle wins, applied by the pre-paint script
+  in `index.html`, which also sets `theme-color`). Public assets are
+  referenced with `import.meta.env.BASE_URL` — the site is served under
+  `/tools/`.
 - Link preview: `public/og.png` is rendered from `og/og.html` by
   `npm run og`; meta tags live in `index.html` with absolute URLs.

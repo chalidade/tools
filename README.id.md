@@ -241,5 +241,5 @@ belum pernah dibagikan (atau setelah cache-nya kedaluwarsa).
 
 ## Stack
 
-Vite + React 19 + TypeScript, Tailwind CSS v4, shadcn/ui, ikon lucide-react, font Geist. Tema gelap secara default;
+Vite + React 19 + TypeScript, Tailwind CSS v4, shadcn/ui, ikon lucide-react, font Geist (disajikan dari situs ini sendiri). Tema gelap secara default;
 pengunjung bisa beralih ke terang dari header.

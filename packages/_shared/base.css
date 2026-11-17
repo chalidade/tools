@@ -23,10 +23,12 @@
 /* The page embedding the element can recolour it, in both themes:
    my-element { --sr-brand-1: …; --sr-brand-2: … } */
 .sr-frame {
-  --brand-1: var(--sr-brand-1, oklch(0.623 0.214 259.815));
-  --brand-2: var(--sr-brand-2, oklch(0.606 0.25 292.717));
+  --brand-1: var(--sr-brand-1, oklch(0.52 0.21 272));
+  --brand-2: var(--sr-brand-2, oklch(0.5 0.22 280));
+  --brand-fill-1: var(--sr-brand-1, oklch(0.57 0.21 276));
+  --brand-fill-2: var(--sr-brand-2, oklch(0.5 0.22 280));
 }
 .sr-frame.dark {
-  --brand-1: var(--sr-brand-1, oklch(0.707 0.165 254.624));
-  --brand-2: var(--sr-brand-2, oklch(0.702 0.183 293.541));
+  --brand-1: var(--sr-brand-1, oklch(0.76 0.12 272));
+  --brand-2: var(--sr-brand-2, oklch(0.77 0.125 282));
 }

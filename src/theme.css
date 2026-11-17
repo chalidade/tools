@@ -4,60 +4,61 @@
  * Shadow DOM — hence `:host` alongside `:root`.
  */
 
-/* Zinc neutrals + a blue→violet brand gradient, shared with the portfolio
-   (chalidade.github.io) so the two read as one family. */
+/* Zinc neutrals and one accent: the indigo-violet of the owl's helmet. The
+   accent is for things you can act on (links, focus, the selected state);
+   surfaces stay neutral. `--brand-1`/`--brand-2` are the accent as text or a
+   border in each theme; `--brand-fill-*` is the accent as a filled surface
+   under white text, the same in both themes so the contrast holds. */
 :root,
 :host {
-  --radius: 0.875rem;
-  --background: oklch(0.985 0 0);
-  --foreground: oklch(0.141 0.005 285.823);
+  --radius: 0.75rem;
+  --background: oklch(0.985 0.001 286);
+  --foreground: oklch(0.16 0.006 285.8);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.141 0.005 285.823);
+  --card-foreground: oklch(0.16 0.006 285.8);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.141 0.005 285.823);
+  --popover-foreground: oklch(0.16 0.006 285.8);
   --primary: oklch(0.21 0.006 285.885);
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.967 0.001 286.375);
+  --secondary: oklch(0.962 0.002 286.375);
   --secondary-foreground: oklch(0.21 0.006 285.885);
-  --muted: oklch(0.967 0.001 286.375);
-  --muted-foreground: oklch(0.552 0.016 285.938);
-  --accent: oklch(0.967 0.001 286.375);
+  --muted: oklch(0.962 0.002 286.375);
+  --muted-foreground: oklch(0.5 0.014 285.938);
+  --accent: oklch(0.955 0.003 286.375);
   --accent-foreground: oklch(0.21 0.006 285.885);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.92 0.004 286.32);
-  --input: oklch(0.92 0.004 286.32);
+  --border: oklch(0.915 0.004 286.32);
+  --input: oklch(0.89 0.005 286.32);
   --ring: oklch(0.705 0.015 286.067);
 
-  --brand-1: oklch(0.623 0.214 259.815); /* blue-500 */
-  --brand-2: oklch(0.606 0.25 292.717); /* violet-500 */
-  --grid-line: oklch(0.141 0.005 285.823 / 6%);
-  --glow: 0.14;
+  --brand-1: oklch(0.52 0.21 272);
+  --brand-2: oklch(0.5 0.22 280);
+  --brand-fill-1: oklch(0.57 0.21 276);
+  --brand-fill-2: oklch(0.5 0.22 280);
 }
 
 .dark {
-  --background: oklch(0.141 0.005 285.823);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.18 0.006 285.885);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.18 0.006 285.885);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.985 0 0);
+  --background: oklch(0.145 0.004 285.823);
+  --foreground: oklch(0.97 0.001 286);
+  --card: oklch(0.182 0.005 285.885);
+  --card-foreground: oklch(0.97 0.001 286);
+  --popover: oklch(0.2 0.006 285.885);
+  --popover-foreground: oklch(0.97 0.001 286);
+  --primary: oklch(0.97 0.001 286);
   --primary-foreground: oklch(0.21 0.006 285.885);
-  --secondary: oklch(0.274 0.006 286.033);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.21 0.006 285.885);
-  --muted-foreground: oklch(0.705 0.015 286.067);
-  --accent: oklch(0.274 0.006 286.033);
-  --accent-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.262 0.006 286.033);
+  --secondary-foreground: oklch(0.97 0.001 286);
+  --muted: oklch(0.225 0.006 285.885);
+  --muted-foreground: oklch(0.71 0.013 286.067);
+  --accent: oklch(0.25 0.006 286.033);
+  --accent-foreground: oklch(0.97 0.001 286);
   --destructive: oklch(0.704 0.191 22.216);
   --border: oklch(1 0 0 / 9%);
   --input: oklch(1 0 0 / 14%);
   --ring: oklch(0.552 0.016 285.938);
 
-  --brand-1: oklch(0.707 0.165 254.624); /* blue-400 */
-  --brand-2: oklch(0.702 0.183 293.541); /* violet-400 */
-  --grid-line: oklch(1 0 0 / 5%);
-  --glow: 0.26;
+  --brand-1: oklch(0.76 0.12 272);
+  --brand-2: oklch(0.77 0.125 282);
 }
 
 @theme inline {
@@ -87,69 +88,106 @@
   --radius-md: calc(var(--radius) - 4px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: 1rem;
+  --radius-3xl: 1.25rem;
+  --ease-out-soft: cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-/* Brand gradient text, e.g. the second line of the hero title. */
+/* Accent text for the one number or phrase that matters, e.g. "−62%". The
+   name is historic: it used to be a blue→violet gradient. */
 @utility text-gradient {
-  background-image: linear-gradient(90deg, var(--brand-1), var(--brand-2));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: var(--brand-2);
 }
 
-/* Brand gradient fill, e.g. icon tiles. */
+/* Accent fill for icon tiles, under white. A tonal top-to-bottom shade of one
+   hue, so a tile reads as lit from above rather than as a gradient. */
 @utility bg-gradient-brand {
-  background-image: linear-gradient(135deg, var(--brand-1), var(--brand-2));
+  background-image: linear-gradient(180deg, var(--brand-fill-1), var(--brand-fill-2));
 }
 
-/* Fine grid that fades out toward the edges. */
-@utility bg-grid {
-  background-image:
-    linear-gradient(var(--grid-line) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
-  background-size: 44px 44px;
-  mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, #000 40%, transparent 100%);
-}
+/* ── Motion ─────────────────────────────────────────────────────────────
+   CSS only, short, and each one says something: a new page arrived, a
+   result appeared, the heading made room. Opacity and transform only, so it
+   stays smooth on a cheap phone. All of it is off under reduced motion.
+   Entrances fill `backwards` only: a finished animation that still filled
+   forwards would keep acting like `will-change: transform`, and a tool's
+   fixed overlay (full screen on iPhone) would then be trapped inside it. */
 
-/* Two soft colour glows behind the hero. */
-@utility bg-glow {
-  background:
-    radial-gradient(40rem 26rem at 85% -10%, oklch(from var(--brand-1) l c h / var(--glow)), transparent 70%),
-    radial-gradient(34rem 24rem at 10% 10%, oklch(from var(--brand-2) l c h / calc(var(--glow) * 0.8)), transparent 70%);
-}
-
-/* Search home: a result fades in out of a blur. */
-@keyframes blur-in {
+/* Something new appears: results, chips, the toast. Stagger with
+   `style={{ animationDelay }}`. */
+@keyframes rise-in {
   from {
     opacity: 0;
-    filter: blur(10px);
-    transform: translateY(8px) scale(0.98);
+    transform: translateY(6px);
   }
 }
-@utility blur-in {
-  animation: blur-in 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+@utility rise-in {
+  animation: rise-in 0.32s var(--ease-out-soft) backwards;
 }
 
-/* Search home: the title folds away (and blurs) once the visitor types. */
-@utility collapse-blur {
+/* A page arrives (App keys <main>'s child by route). */
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+@utility page-in {
+  animation: page-in 0.28s var(--ease-out-soft) backwards;
+}
+
+/* Search home: the title folds away once the visitor types. */
+@utility fold {
   display: grid;
   grid-template-rows: 1fr;
   transition:
-    grid-template-rows 0.45s cubic-bezier(0.2, 0.8, 0.2, 1),
-    opacity 0.35s,
-    filter 0.35s;
-  &.is-collapsed {
+    grid-template-rows 0.35s var(--ease-out-soft),
+    opacity 0.25s;
+  &.is-folded {
     grid-template-rows: 0fr;
     opacity: 0;
-    filter: blur(8px);
+  }
+}
+
+/* The header's hairline appears once the page has scrolled, and stays away
+   on a page too short to scroll. Where scroll timelines are missing the line
+   is simply always there. */
+@keyframes header-line {
+  to {
+    border-bottom-color: var(--border);
+  }
+}
+@utility header-line {
+  @supports (animation-timeline: scroll()) {
+    border-bottom-color: transparent;
+    animation: header-line linear both;
+    animation-timeline: scroll();
+    animation-range: 0 40px;
+  }
+}
+
+/* A row of chips that scrolls sideways on a phone, without a scrollbar. */
+@utility scroll-row {
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  &::-webkit-scrollbar {
+    display: none;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .blur-in {
+  .rise-in,
+  .page-in,
+  .header-line {
     animation: none;
   }
-  .collapse-blur {
+  .fold {
     transition: none;
+  }
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
   }
 }

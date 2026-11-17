@@ -42,18 +42,18 @@
     <meta name="apple-mobile-web-app-title" content="toowl" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap"
-      rel="stylesheet"
-    />
+    <!-- Geist is served from this site (src/index.css); the text face is
+         preloaded so the first paint already has it. -->
+    <link rel="preload" href="/src/assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin />
 
     <!-- Dark by default; a visitor's own choice (header toggle) wins. Applied
          before first paint so there is no light/dark flash. -->
     <script>
       try {
-        if (localStorage.getItem('theme') === 'light') document.documentElement.classList.remove('dark')
+        if (localStorage.getItem('theme') === 'light') {
+          document.documentElement.classList.remove('dark')
+          document.querySelector('meta[name="theme-color"]').content = '#fafafa'
+        }
       } catch (e) {}
     </script>
   </head>

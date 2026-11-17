@@ -43,11 +43,11 @@ function App() {
         {tool ? (
           <ToolView tool={tool} />
         ) : route.slug === 'all' ? (
-          <>
+          <div className="page-in">
             <Hero />
             <ToolGrid />
             <HowItWorks />
-          </>
+          </div>
         ) : (
           <SearchHome />
         )}
