@@ -352,12 +352,12 @@ jaringan) dan tombol utamanya besar, bisa ditekan tanpa membaca.
 
 ## Hari 31 — 2026-11-17 · Privasi file
 
-- [ ] **Redaksi PDF** (`#/redact-pdf`): tandai area di halaman, lalu halaman
+- [x] **Redaksi PDF** (`#/redact-pdf`): tandai area di halaman, lalu halaman
   yang ditandai dirender ulang jadi gambar (pdf.js) dengan area itu dihitamkan,
   sehingga teks aslinya hilang dari file, bukan cuma tertutup. Halaman lain
   tetap utuh. Beri tahu bahwa teks di halaman yang diredaksi tidak bisa
   disalin lagi.
-- [ ] **Enkripsi & Dekripsi File** (`#/encrypt-file`): kunci file apa saja
+- [x] **Enkripsi & Dekripsi File** (`#/encrypt-file`): kunci file apa saja
   dengan password lewat WebCrypto (AES-256-GCM, kunci dari PBKDF2-SHA-256
   dengan iterasi tinggi dan salt acak), nama file asli disimpan di dalamnya,
   dan buka lagi di tool yang sama. Tegaskan bahwa password yang lupa tidak bisa

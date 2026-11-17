@@ -244,6 +244,18 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
     formats: 'PDF → grayscale / B&W PDF',
     keywords: ['ink saver', 'grayscale', 'black and white', 'print', 'toner', 'printer', 'monochrome'],
   },
+  'redact-pdf': {
+    title: 'Redact PDF',
+    description: 'Mark areas on a page and black them out for good: the page is re-rendered as an image, so the original text is really gone from the file.',
+    formats: 'PDF → PDF with areas blacked out',
+    keywords: ['redact', 'blackout', 'censor', 'hide', 'privacy', 'sensitive', 'personal data'],
+  },
+  'encrypt-file': {
+    title: 'Encrypt & Decrypt File',
+    description: 'Lock any file with a password (AES-256-GCM) and open it again here. A forgotten password cannot be recovered.',
+    formats: 'Any file ↔ .enc file',
+    keywords: ['encrypt', 'decrypt', 'aes', 'password', 'lock', 'secure', 'privacy'],
+  },
   tabungan: {
     title: 'Savings & Investment Calculator',
     description: 'Compound interest on a deposit, regular monthly saving, or how much to save to reach a target, with a growth chart and a year-by-year table.',

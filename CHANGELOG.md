@@ -3,6 +3,15 @@
 Catatan harian apa yang berubah di [tools](https://toowl.my.id/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-17 — Privasi file
+
+Dua tool baru; total sekarang **105 tools**.
+
+- **Redaksi PDF** (`#/redact-pdf`): seret di atas pratinjau halaman untuk menandai area (bisa banyak per halaman, ada urungkan). Halaman yang ditandai dirender ulang dengan pdf.js, areanya dihitamkan, lalu menggantikan halaman asli lewat pdf-lib — jadi teks aslinya benar-benar hilang dari file, bukan cuma tertutup kotak. Halaman lain tetap utuh. Tertulis jelas bahwa teks di halaman yang diredaksi tidak bisa disalin lagi; pilihan 100/150/200 dpi, progres, dan tombol batal.
+- **Enkripsi & Dekripsi File** (`#/encrypt-file`): kunci file apa saja dengan password lewat WebCrypto — AES-256-GCM, kunci dari PBKDF2-SHA-256 (600.000 iterasi, salt acak), header ikut diautentikasi. Nama file asli disimpan di dalam file `.enc` dan dipulihkan saat dibuka; file `.enc` dikenali otomatis. Password salah atau file diubah ditolak dengan pesan jelas, dan tertulis bahwa password yang lupa tidak bisa dipulihkan.
+
+Semuanya diproses di browser; tidak ada data yang dikirim.
+
 ## 2026-11-16 — Tanda tangan & cetak
 
 Dua tool baru; total sekarang **103 tools**.

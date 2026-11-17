@@ -3,7 +3,7 @@
 **English** · [Bahasa Indonesia](README.id.md)
 
 **My everyday file toolbox, built for the file work I do every day and published free for everyone.**
-103 tools for PDF, Office files, images, video, audio and QR codes, and every one of them runs entirely in your browser.
+105 tools for PDF, Office files, images, video, audio and QR codes, and every one of them runs entirely in your browser.
 Your files are never uploaded.
 
 [![Live demo](https://img.shields.io/badge/live%20demo-chalidade.github.io%2Ftools-6366f1)](https://toowl.my.id/)
@@ -58,6 +58,7 @@ All 45, grouped the way the home page groups them. Each name links to the live t
 - [Ink-Saver PDF](https://toowl.my.id/en/pdf-grayscale/): grayscale or black & white (adjustable threshold, light backgrounds to white) before printing; pages are re-rendered, so text becomes an image
 - [Edit PDF](https://toowl.my.id/en/edit-pdf/): add text (font, size, colour), images, boxes, lines, ticks and scribbles on any page of a non-AcroForm form
 - [Compress PDF](https://toowl.my.id/en/compress-pdf/): re-encodes embedded JPEGs and optimises the structure with qpdf; never returns a larger file
+- [Redact PDF](https://toowl.my.id/en/redact-pdf/): drag to mark areas; those pages are re-rendered with the areas blacked out, so the original text is really removed
 - [Protect PDF](https://toowl.my.id/en/protect-pdf/) (AES-256 password and permissions) and [Unlock PDF](https://toowl.my.id/en/unlock-pdf/)
 
 **Images & Media**
@@ -104,6 +105,7 @@ All 45, grouped the way the home page groups them. Each name links to the live t
 **Productivity**
 - [Notes](https://toowl.my.id/en/notes/): Markdown with live checklists, saved in the browser, JSON backup/restore
 - [Calculator](https://toowl.my.id/en/calculator/): basic and scientific, with its own expression parser (no `eval`)
+- [Encrypt & Decrypt File](https://toowl.my.id/en/encrypt-file/): lock any file with a password (WebCrypto AES-256-GCM, PBKDF2-SHA-256 600k iterations, random salt), original name kept inside; forgotten passwords cannot be recovered
 - [Password Generator](https://toowl.my.id/en/password-generator/): random passwords and Indonesian/English passphrases from `crypto.getRandomValues`, plus a strength check with estimated guessing time
 - [Word Counter](https://toowl.my.id/en/word-counter/): words, characters, sentences, paragraphs, reading/speaking time and per-platform character limits
 - [Unit Converter](https://toowl.my.id/en/unit-converter/): length, weight (ons, quintal), area (hectare, are, tumbak), volume, temperature, speed and data

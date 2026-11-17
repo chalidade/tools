@@ -92,6 +92,8 @@ import {
   Bandage,
   PhoneIncoming,
   Contrast,
+  ScanEye,
+  FileKey,
   type LucideIcon,
 } from 'lucide-react'
 
@@ -1470,6 +1472,28 @@ export const TOOLS: Tool[] = [
     formats: 'PDF → PDF abu-abu / hitam-putih',
     badge: 'Baru',
     component: lazy(() => import('./pdf-grayscale/PdfGrayscale')),
+  },
+  {
+    slug: 'redact-pdf',
+    category: 'pdf',
+    keywords: ['redaksi', 'sensor', 'hitamkan', 'coret', 'tutup', 'rahasiakan', 'privasi', 'data pribadi', 'redact', 'blackout', 'censor', 'hide', 'privacy', 'sensitive', 'pdf'],
+    title: 'Redaksi PDF',
+    description: 'Tandai area di halaman lalu hitamkan permanen: halaman itu dirender ulang jadi gambar, jadi teks aslinya benar-benar hilang dari file.',
+    icon: ScanEye,
+    formats: 'PDF → PDF dengan area dihitamkan',
+    badge: 'Baru',
+    component: lazy(() => import('./redact-pdf/RedactPdf')),
+  },
+  {
+    slug: 'encrypt-file',
+    category: 'productivity',
+    keywords: ['enkripsi', 'dekripsi', 'kunci file', 'sandi', 'password', 'rahasia', 'aman', 'privasi', 'encrypt', 'decrypt', 'aes', 'lock', 'secure', 'file', 'enc'],
+    title: 'Enkripsi & Dekripsi File',
+    description: 'Kunci file apa saja dengan password (AES-256-GCM) dan buka lagi di sini. Password yang lupa tidak bisa dipulihkan.',
+    icon: FileKey,
+    formats: 'File apa saja ↔ file .enc',
+    badge: 'Baru',
+    component: lazy(() => import('./encrypt-file/EncryptFile')),
   },
 ]
 
