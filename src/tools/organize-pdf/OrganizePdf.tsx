@@ -143,7 +143,7 @@ export default function OrganizePdf() {
                 </span>
               </div>
               <div className="mt-3 flex items-center gap-1">
-                <span className="grid size-6 shrink-0 place-items-center rounded-md bg-gradient-brand font-mono text-[11px] font-medium text-white">
+                <span className="grid size-6 shrink-0 place-items-center rounded-md bg-gradient-brand font-mono text-[11px] font-medium text-brand-ink">
                   {i + 1}
                 </span>
                 <div className="ml-auto flex">

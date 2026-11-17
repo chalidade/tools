@@ -14,7 +14,7 @@ function NoUploadBadge({ className }: { className?: string }) {
   const t = useT()
   return (
     <p className={cn('inline-flex items-center gap-1.5 text-xs whitespace-nowrap text-muted-foreground', className)}>
-      <ShieldCheck className="size-3.5 text-emerald-600 dark:text-emerald-400" />
+      <ShieldCheck className="size-3.5 text-brand-2" />
       {t('File tidak di-upload', 'Nothing is uploaded')}
     </p>
   )
@@ -65,40 +65,52 @@ export function ToolView({ tool, embed = false }: { tool: Tool; embed?: boolean 
       </div>
     )
 
+  const about = <p className="text-[15px] leading-snug text-muted-foreground text-pretty lg:mt-1.5 lg:text-base">{text.description}</p>
+
   return (
-    <section key={tool.slug} className="page-in mx-auto max-w-5xl px-4 pt-4 pb-10 sm:px-6 sm:pt-8 sm:pb-14">
-      <nav aria-label={t('Lokasi halaman', 'Breadcrumb')} className="flex items-center gap-1 text-sm text-muted-foreground">
-        <a href={pageUrl('all', lang)} className="rounded transition-colors hover:text-foreground">
-          {t('Semua tools', 'All tools')}
-        </a>
-        <ChevronRight className="size-3.5 opacity-60" />
-        <a href={pageUrl('all', lang, `c=${tool.category}`)} className="truncate rounded transition-colors hover:text-foreground">
-          {categoryText(tool.category, lang).title}
-        </a>
-      </nav>
-
-      {/* Compact on a phone, so the tool itself starts within the first screen. */}
-      <header className="mt-4 flex items-start gap-3.5 sm:mt-6 sm:gap-4">
-        <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-gradient-brand text-white shadow-sm sm:size-12">
-          <tool.icon className="size-5 sm:size-6" />
-        </span>
-        <div className="min-w-0 flex-1">
-          <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
-            <h1 className="text-2xl leading-tight font-semibold tracking-tight sm:text-3xl">{text.title}</h1>
-            <NoUploadBadge className="hidden rounded-full border bg-card px-2.5 py-1 sm:inline-flex" />
+    <section key={tool.slug} className="page-in mx-auto max-w-5xl px-4 pt-3 pb-10 sm:px-6 lg:pt-8 lg:pb-14">
+      {/* Laptop: where you are, then the tool's name. A phone has both in its app bar (Header). */}
+      <div className="hidden lg:block">
+        <nav aria-label={t('Lokasi halaman', 'Breadcrumb')} className="flex items-center gap-1.5 font-mono text-xs text-muted-foreground">
+          <a href={pageUrl('all', lang)} className="rounded transition-colors hover:text-foreground">
+            {t('Semua tools', 'All tools')}
+          </a>
+          <ChevronRight className="size-3.5 opacity-60" />
+          <a href={pageUrl('all', lang, `c=${tool.category}`)} className="truncate rounded transition-colors hover:text-foreground">
+            {categoryText(tool.category, lang).title}
+          </a>
+        </nav>
+        <header className="mt-5 flex items-start gap-4">
+          <span className="grid size-12 shrink-0 place-items-center rounded-[0.875rem] bg-gradient-brand text-brand-ink">
+            <tool.icon className="size-6" />
+          </span>
+          <div className="min-w-0 flex-1">
+            <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
+              <h1 className="text-4xl leading-none font-semibold tracking-[-0.04em]">{text.title}</h1>
+              <NoUploadBadge className="rounded-full border bg-card px-2.5 py-1" />
+            </div>
+            {about}
           </div>
-          <p className="mt-1 text-[15px] leading-snug text-muted-foreground text-pretty sm:text-base">{text.description}</p>
-          <NoUploadBadge className="mt-2 sm:hidden" />
-        </div>
-      </header>
+        </header>
+      </div>
 
-      <div className="mt-6 sm:mt-8">
+      <div className="lg:mt-8">
         <ToolBoundary key={tool.slug}>
           <Suspense fallback={loading}>
             <Component key={tool.slug} />
           </Suspense>
         </ToolBoundary>
       </div>
+
+      {/* Phone: the tool comes first; what it does and the privacy note follow it. */}
+      <div className="mt-5 flex gap-3 rounded-2xl border bg-card p-4 lg:hidden">
+        <ShieldCheck className="mt-0.5 size-5 shrink-0 text-brand-2" />
+        <div>
+          {about}
+          <p className="mt-1.5 font-mono text-xs text-muted-foreground">{t('Diproses di HP-mu · tidak di-upload', 'Runs on your phone · nothing is uploaded')}</p>
+        </div>
+      </div>
+
       <InstallCard tool={tool} />
       <ToolAbout tool={tool} />
     </section>

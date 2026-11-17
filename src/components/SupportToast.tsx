@@ -34,7 +34,7 @@ export function SupportToast() {
   if (!open) return null
   return (
     <div role="status" className="rise-in fixed inset-x-3 bottom-[max(0.75rem,env(safe-area-inset-bottom))] z-50 mx-auto flex max-w-md items-center gap-3 rounded-2xl border bg-popover p-3 pl-4 shadow-xl sm:bottom-5">
-      <span className="grid size-9 shrink-0 place-items-center rounded-xl bg-gradient-brand text-white">
+      <span className="grid size-9 shrink-0 place-items-center rounded-xl bg-gradient-brand text-brand-ink">
         <Coffee className="size-4" />
       </span>
       <p className="min-w-0 flex-1 text-sm">

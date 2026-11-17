@@ -38,7 +38,7 @@ function App() {
 
   return (
     <div className="flex min-h-dvh flex-col">
-      <Header />
+      <Header tool={tool} />
       <main className="flex-1">
         {tool ? (
           <ToolView tool={tool} />
@@ -52,7 +52,8 @@ function App() {
           <SearchHome />
         )}
       </main>
-      <Footer />
+      {/* The home page's search bar is fixed to the bottom of a phone's screen: leave room for it. */}
+      <Footer className={!tool && route.slug === '' ? 'max-lg:pb-24' : undefined} />
       <SupportToast />
     </div>
   )

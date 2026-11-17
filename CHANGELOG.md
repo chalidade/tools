@@ -5,13 +5,15 @@ terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
 ## 2026-11-17 — Tampilan baru
 
-Desain dirapikan supaya lebih tenang, cepat dibuka di HP, dan nyaman di laptop. Tidak ada tool yang berubah cara kerjanya.
+Desain diganti total: gelap pekat, satu aksen hijau neon, logo baru, dan cara pakai yang dibuat untuk HP lebih dulu. Tidak ada tool yang berubah cara kerjanya.
 
-- **Lebih sederhana**: latar glow, grid, dan gradasi biru→ungu dihapus. Sekarang netral dengan satu warna aksen (ungu-indigo dari helm si burung hantu) yang hanya dipakai untuk hal yang bisa diklik atau sedang dipilih. Logo burung hantu ikut tampil di header.
-- **Beranda**: kotak cari naik ke atas saat mengetik supaya hasil tidak tertutup keyboard HP. Di laptop, `/` fokus ke kotak cari, panah atas/bawah memilih hasil, Enter membuka. Tool yang terakhir dipakai muncul di bawah kotak cari (disimpan di browser ini saja).
-- **Semua tools** (`/all/`): kartu jadi baris ringkas, jadi satu layar HP memuat jauh lebih banyak tool. Kategori jadi satu baris yang bisa digeser dan tetap menempel di atas saat menggulir.
-- **Halaman tool**: judul ringkas di atas tool (dulu di HP judulnya ada di bawah), plus jejak "Semua tools › Kategori" yang membuka daftar kategori itu (`/all/?c=<kategori>`). Area tarik-file lebih rapi.
-- **Motion**: halaman dan hasil pencarian muncul dengan gerakan halus, garis header baru terlihat saat menggulir, dan ganti tema terang/gelap kini memudar. Semuanya CSS, pendek, dan mati otomatis kalau perangkat meminta gerakan dikurangi.
+- **Logo baru**: burung hantu dan tulisan "toowl" di header diganti monogram toowl. Favicon, ikon aplikasi (PWA), dan gambar pratinjau link ikut diganti.
+- **Warna**: latar hampir hitam dengan aksen hijau neon, dipakai hanya untuk hal yang bisa diklik atau sedang dipilih; label kecil memakai huruf mono. Tema terang tetap ada (aksen teksnya hijau tua supaya terbaca). Glow, grid, dan gradasi biru→ungu dihapus.
+- **Beranda di HP**: kotak cari sekarang menempel di bawah layar, dekat jempol, dan ikut naik di atas keyboard. Di atasnya ada tool yang terakhir dipakai (disimpan di browser ini saja), yang populer, dan daftar kategori. Saat mengetik, hasil bisa disaring per kategori.
+- **Beranda di laptop**: kotak cari jadi command palette di tengah. `/` atau `Ctrl/⌘ + K` fokus ke kotak cari, panah atas/bawah memilih, Enter membuka.
+- **Halaman tool di HP**: header diganti bar ringkas (kembali, nama tool, menu "⋯" untuk semua tools, bahasa, dan tema), jadi tool langsung terlihat tanpa menggulir. Di laptop ada jejak "Semua tools › Kategori" yang membuka daftar kategori itu (`/all/?c=<kategori>`). Area tarik-file sekarang punya tombol "Pilih file".
+- **Semua tools** (`/all/`): kartu jadi ringkas, jadi satu layar HP memuat jauh lebih banyak tool. Kategori jadi satu baris yang bisa digeser dan tetap menempel di atas saat menggulir.
+- **Motion**: halaman muncul dengan gerakan halus, garis header baru terlihat saat menggulir, dan ganti tema terang/gelap kini memudar. Semuanya CSS, pendek, dan mati otomatis kalau perangkat meminta gerakan dikurangi.
 - **Lebih cepat**: font Geist sekarang disajikan dari situs ini sendiri (dua file, 52 KB) dan dimuat lebih awal, bukan dari Google Fonts — dua koneksi ke pihak ketiga hilang, dan janji "tanpa pihak ketiga" jadi utuh.
 
 ## 2026-11-17 — Privasi file

@@ -269,7 +269,7 @@ export default function ImageToPdf() {
               </div>
 
               <div className="mt-3 flex items-center gap-1">
-                <span className="grid size-6 shrink-0 place-items-center rounded-md bg-gradient-brand font-mono text-[11px] font-medium text-white">
+                <span className="grid size-6 shrink-0 place-items-center rounded-md bg-gradient-brand font-mono text-[11px] font-medium text-brand-ink">
                   {i + 1}
                 </span>
                 <p className="min-w-0 flex-1 truncate px-1 text-xs text-muted-foreground" title={item.file.name}>

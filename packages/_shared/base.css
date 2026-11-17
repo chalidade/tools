@@ -21,14 +21,19 @@
 }
 
 /* The page embedding the element can recolour it, in both themes:
-   my-element { --sr-brand-1: …; --sr-brand-2: … } */
+   my-element { --sr-brand-1: …; --sr-brand-2: …; --sr-brand-ink: … }
+   The two brand colours are the accent (text, borders) and, as before, the
+   two ends of the filled tiles; `--sr-brand-ink` is the text on a filled
+   tile — near-black by default, because the default accent is a light lime,
+   so a page with dark brand colours sets it to white. */
 .sr-frame {
-  --brand-1: var(--sr-brand-1, oklch(0.52 0.21 272));
-  --brand-2: var(--sr-brand-2, oklch(0.5 0.22 280));
-  --brand-fill-1: var(--sr-brand-1, oklch(0.57 0.21 276));
-  --brand-fill-2: var(--sr-brand-2, oklch(0.5 0.22 280));
+  --brand-1: var(--sr-brand-1, #0f766e);
+  --brand-2: var(--sr-brand-2, #3f7d00);
+  --brand-fill-1: var(--sr-brand-1, #c6ff3a);
+  --brand-fill-2: var(--sr-brand-2, #c6ff3a);
+  --brand-ink: var(--sr-brand-ink, #0b0b0c);
 }
 .sr-frame.dark {
-  --brand-1: var(--sr-brand-1, oklch(0.76 0.12 272));
-  --brand-2: var(--sr-brand-2, oklch(0.77 0.125 282));
+  --brand-1: var(--sr-brand-1, #5eead4);
+  --brand-2: var(--sr-brand-2, #c6ff3a);
 }

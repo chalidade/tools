@@ -4,7 +4,7 @@ import { flushSync } from 'react-dom'
 type Theme = 'light' | 'dark'
 
 /** The browser bar on a phone follows the page background. */
-const BAR = { dark: '#09090b', light: '#fafafa' }
+const BAR = { dark: '#09090a', light: '#fafafa' }
 
 // index.html applies the stored theme before first paint; this hook only
 // reads that result and toggles it.

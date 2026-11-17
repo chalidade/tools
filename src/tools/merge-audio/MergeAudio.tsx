@@ -178,7 +178,7 @@ export default function MergeAudio() {
       <ol className="divide-y overflow-hidden rounded-2xl border bg-card">
         {items.map((item, i) => (
           <li key={item.id} className="flex items-center gap-3 px-3 py-2">
-            <span className="grid size-7 shrink-0 place-items-center rounded-md bg-gradient-brand font-mono text-xs font-medium text-white">
+            <span className="grid size-7 shrink-0 place-items-center rounded-md bg-gradient-brand font-mono text-xs font-medium text-brand-ink">
               {i + 1}
             </span>
             <Music className="size-4 shrink-0 text-muted-foreground" />

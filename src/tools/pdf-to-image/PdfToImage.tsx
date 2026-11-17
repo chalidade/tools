@@ -164,7 +164,7 @@ export default function PdfToImage() {
                   <span
                     className={cn(
                       'grid size-5 place-items-center rounded-md border',
-                      on ? 'border-transparent bg-gradient-brand text-white' : 'bg-background',
+                      on ? 'border-transparent bg-gradient-brand text-brand-ink' : 'bg-background',
                     )}
                   >
                     {on && <Check className="size-3.5" />}

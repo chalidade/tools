@@ -372,7 +372,7 @@ function Pad({ k, onPress, small }: { k: Key; onPress: (k: Key) => void; small?:
         k.kind === 'digit' && 'bg-background shadow-xs hover:bg-accent',
         k.kind === 'op' && 'bg-brand-2/15 text-brand-2 hover:bg-brand-2/25',
         k.kind === 'fn' && 'bg-muted text-foreground hover:bg-accent',
-        k.kind === 'accent' && 'bg-gradient-brand text-white shadow-md shadow-brand-2/25 hover:opacity-90',
+        k.kind === 'accent' && 'bg-gradient-brand text-brand-ink shadow-md shadow-brand-2/25 hover:opacity-90',
         !k.kind && 'bg-muted/70 text-foreground hover:bg-accent',
       )}
     >

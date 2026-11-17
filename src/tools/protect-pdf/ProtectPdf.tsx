@@ -153,7 +153,7 @@ export default function ProtectPdf() {
                     <span
                       className={cn(
                         'grid size-4 place-items-center rounded border',
-                        on ? 'border-transparent bg-gradient-brand text-white' : 'bg-background',
+                        on ? 'border-transparent bg-gradient-brand text-brand-ink' : 'bg-background',
                       )}
                     >
                       {on && <Check className="size-3" />}

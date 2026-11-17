@@ -21,7 +21,7 @@ export function ToolAbout({ tool }: { tool: Tool }) {
         <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
           {aboutPoints(tool, lang).map((point) => (
             <li key={point} className="flex gap-2.5">
-              <Check className="mt-0.5 size-4 shrink-0 text-emerald-600 dark:text-emerald-400" />
+              <Check className="mt-0.5 size-4 shrink-0 text-brand-2" />
               {point}
             </li>
           ))}

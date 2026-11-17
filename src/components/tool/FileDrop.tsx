@@ -1,5 +1,5 @@
 import { useState, type DragEvent } from 'react'
-import { Loader2, Upload } from 'lucide-react'
+import { Loader2, Plus, Upload } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useT } from '@/lib/i18n'
 
@@ -36,16 +36,16 @@ export function FileDrop({ accept, label, busyLabel, multiple = false, onFiles }
       onDragLeave={() => setDragging(false)}
       onDrop={onDrop}
       className={cn(
-        'group relative flex cursor-pointer flex-col items-center justify-center rounded-2xl border-[1.5px] border-dashed border-input bg-card px-6 py-12 text-center transition-[border-color,background-color] duration-200 sm:py-16',
+        'group relative flex cursor-pointer flex-col items-center justify-center rounded-[1.25rem] border-[1.5px] border-dashed border-input bg-card px-6 py-11 text-center transition-[border-color,background-color] duration-200 sm:py-14',
         dragging
           ? 'border-brand-2 bg-[color-mix(in_oklab,var(--brand-2)_9%,var(--card))]'
-          : 'hover:border-brand-2/50 hover:bg-[color-mix(in_oklab,var(--brand-2)_4%,var(--card))]',
+          : 'hover:border-brand-2/60 hover:bg-[color-mix(in_oklab,var(--brand-2)_4%,var(--card))]',
         busyLabel && 'pointer-events-none',
       )}
     >
       <span
         className={cn(
-          'grid size-12 place-items-center rounded-xl bg-gradient-brand text-white shadow-sm transition-transform duration-200 ease-out',
+          'grid size-12 place-items-center rounded-[0.875rem] border bg-background text-brand-2 transition-transform duration-200 ease-out',
           dragging ? '-translate-y-1 scale-110' : 'group-hover:-translate-y-0.5',
         )}
       >
@@ -57,6 +57,13 @@ export function FileDrop({ accept, label, busyLabel, multiple = false, onFiles }
           ? t('Diproses di perangkatmu…', 'Processing on your device…')
           : t('atau klik untuk memilih dari perangkat', 'or click to choose from your device')}
       </p>
+      {/* Looks like the button it is: the whole zone is the file input's label. */}
+      {!busyLabel && (
+        <span className="mt-5 inline-flex h-11 items-center gap-2 rounded-[0.875rem] bg-gradient-brand px-5 text-[15px] font-semibold tracking-tight text-brand-ink transition-transform group-active:scale-[0.97]">
+          <Plus className="size-[18px]" />
+          {multiple ? t('Pilih file', 'Choose files') : t('Pilih file', 'Choose a file')}
+        </span>
+      )}
       <input
         type="file"
         accept={accept}

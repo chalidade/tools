@@ -594,7 +594,7 @@ export default function Guitar() {
                 key={i}
                 className={cn(
                   'grid h-9 flex-1 place-items-center rounded-lg border text-sm transition-colors duration-75',
-                  slot === i ? 'border-transparent bg-brand-2 text-white' : 'bg-background text-muted-foreground',
+                  slot === i ? 'border-transparent bg-brand-fill text-brand-ink' : 'bg-background text-muted-foreground',
                 )}
               >
                 {m === 'D' ? '↓' : m === 'U' ? '↑' : '·'}

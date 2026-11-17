@@ -65,7 +65,7 @@ export function ToolGrid() {
             }
           }}
           placeholder={t(`Cari ${TOOLS.length} tools… (mp3, password, excel)`, `Search ${TOOLS.length} tools… (mp3, password, excel)`)}
-          className="h-11 w-full rounded-xl border border-input bg-card pr-10 pl-10 text-base shadow-xs transition-[border-color,box-shadow] duration-200 outline-none placeholder:text-muted-foreground focus:border-brand-2/60 focus:ring-4 focus:ring-brand-2/15 sm:text-sm [&::-webkit-search-cancel-button]:hidden"
+          className="h-12 w-full rounded-[0.875rem] border border-input bg-card pr-10 pl-10 text-base caret-brand-2 transition-[border-color] duration-200 outline-none placeholder:text-muted-foreground focus:border-brand-2/60 sm:h-11 sm:text-sm [&::-webkit-search-cancel-button]:hidden"
         />
         {searching ? (
           <button
@@ -134,7 +134,7 @@ export function ToolGrid() {
                 <div key={c.id}>
                   <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
                     <h2 className="text-lg font-semibold tracking-tight">{categoryText(c.id, lang).title}</h2>
-                    <span className="font-mono text-xs text-muted-foreground">{tools.length}</span>
+                    <span className="font-mono text-xs text-brand-2">{String(tools.length).padStart(2, '0')}</span>
                     <p className="w-full text-sm text-muted-foreground sm:ml-auto sm:w-auto">{categoryText(c.id, lang).description}</p>
                   </div>
                   <div className="mt-4 grid grid-cols-1 gap-2.5 sm:grid-cols-2 sm:gap-3 lg:grid-cols-3">
@@ -173,8 +173,8 @@ function CategoryChip({
       className={cn(
         'inline-flex h-9 shrink-0 items-center gap-2 rounded-full border px-3.5 text-sm whitespace-nowrap transition-colors disabled:opacity-40',
         active
-          ? 'border-transparent bg-primary font-medium text-primary-foreground'
-          : 'bg-card text-muted-foreground hover:border-foreground/20 hover:text-foreground',
+          ? 'border-transparent bg-gradient-brand font-medium text-brand-ink'
+          : 'bg-card text-muted-foreground hover:border-foreground/25 hover:text-foreground',
       )}
     >
       {label}
@@ -192,16 +192,16 @@ function ToolCard({ tool }: { tool: Tool }) {
   return (
     <a
       href={pageUrl(tool.slug, lang)}
-      className="group flex gap-3 rounded-xl border bg-card p-3 sm:gap-3.5 transition-[border-color,box-shadow,transform] duration-200 hover:-translate-y-px hover:border-foreground/20 hover:shadow-md active:translate-y-0 active:bg-accent/60 sm:p-4"
+      className="group flex gap-3 rounded-2xl border bg-card p-3 transition-[border-color,background-color] duration-200 hover:border-brand-2/40 hover:bg-[color-mix(in_oklab,var(--brand-2)_5%,var(--card))] active:bg-accent sm:gap-3.5 sm:p-4"
     >
-      <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-muted text-foreground/80 transition-colors duration-200 group-hover:bg-gradient-brand group-hover:text-white">
+      <span className="grid size-10 shrink-0 place-items-center rounded-[0.6875rem] border bg-background text-muted-foreground transition-colors duration-200 group-hover:border-transparent group-hover:bg-gradient-brand group-hover:text-brand-ink">
         <tool.icon className="size-5" />
       </span>
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2">
           <h3 className="truncate font-medium tracking-tight">{text.title}</h3>
           {tool.badge && (
-            <span className="shrink-0 rounded-full bg-brand-2/10 px-1.5 py-px text-[10px] font-medium tracking-wide text-brand-2 uppercase">
+            <span className="shrink-0 rounded-full border border-brand-2/30 px-1.5 py-px font-mono text-[9px] tracking-wider text-brand-2 uppercase">
               {tool.badge === 'Baru' && lang === 'en' ? 'New' : tool.badge}
             </span>
           )}

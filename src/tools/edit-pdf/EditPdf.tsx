@@ -643,7 +643,7 @@ export default function EditPdf() {
                   <img src={thumb.src} alt={t(`Halaman ${n}`, `Page ${n}`)} className="h-24 rounded-sm" />
                   <span className="mt-1 block text-center font-mono text-[11px] text-muted-foreground">{n}</span>
                   {count > 0 && (
-                    <span className="absolute -top-1.5 -right-1.5 grid size-5 place-items-center rounded-full bg-gradient-brand text-[10px] font-medium text-white">
+                    <span className="absolute -top-1.5 -right-1.5 grid size-5 place-items-center rounded-full bg-gradient-brand text-[10px] font-medium text-brand-ink">
                       {count}
                     </span>
                   )}
