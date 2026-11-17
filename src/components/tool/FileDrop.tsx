@@ -1,5 +1,5 @@
 import { useState, type DragEvent } from 'react'
-import { Loader2, Upload } from 'lucide-react'
+import { Loader2, Plus, Upload } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useT } from '@/lib/i18n'
 
@@ -36,27 +36,34 @@ export function FileDrop({ accept, label, busyLabel, multiple = false, onFiles }
       onDragLeave={() => setDragging(false)}
       onDrop={onDrop}
       className={cn(
-        'group relative flex cursor-pointer flex-col items-center justify-center overflow-hidden rounded-3xl border-2 border-dashed bg-card px-6 py-16 text-center transition-all sm:py-20',
-        dragging ? 'scale-[1.01] border-brand-2/60' : 'hover:border-brand-2/40',
+        'group relative flex cursor-pointer flex-col items-center justify-center rounded-[1.25rem] border-[1.5px] border-dashed border-input bg-card px-6 py-11 text-center transition-[border-color,background-color] duration-200 sm:py-14',
+        dragging
+          ? 'border-brand-2 bg-[color-mix(in_oklab,var(--brand-2)_9%,var(--card))]'
+          : 'hover:border-brand-2/60 hover:bg-[color-mix(in_oklab,var(--brand-2)_4%,var(--card))]',
         busyLabel && 'pointer-events-none',
       )}
     >
       <span
-        aria-hidden
         className={cn(
-          'bg-glow pointer-events-none absolute inset-0 transition-opacity duration-300',
-          dragging ? 'opacity-100' : 'opacity-0 group-hover:opacity-60',
+          'grid size-12 place-items-center rounded-[0.875rem] border bg-background text-brand-2 transition-transform duration-200 ease-out',
+          dragging ? '-translate-y-1 scale-110' : 'group-hover:-translate-y-0.5',
         )}
-      />
-      <span className="relative grid size-14 place-items-center rounded-2xl bg-gradient-brand text-white shadow-lg shadow-brand-2/25 transition-transform group-hover:-translate-y-0.5">
-        {busyLabel ? <Loader2 className="size-6 animate-spin" /> : <Upload className="size-6" />}
+      >
+        {busyLabel ? <Loader2 className="size-5 animate-spin" /> : <Upload className="size-5" />}
       </span>
-      <p className="relative mt-5 text-lg font-medium tracking-tight">{busyLabel ?? label}</p>
-      <p className="relative mt-1 text-sm text-muted-foreground">
+      <p className="mt-4 text-base font-medium tracking-tight sm:text-lg">{busyLabel ?? label}</p>
+      <p className="mt-1 text-sm text-muted-foreground">
         {busyLabel
           ? t('Diproses di perangkatmu…', 'Processing on your device…')
           : t('atau klik untuk memilih dari perangkat', 'or click to choose from your device')}
       </p>
+      {/* Looks like the button it is: the whole zone is the file input's label. */}
+      {!busyLabel && (
+        <span className="mt-5 inline-flex h-11 items-center gap-2 rounded-[0.875rem] bg-gradient-brand px-5 text-[15px] font-semibold tracking-tight text-brand-ink transition-transform group-active:scale-[0.97]">
+          <Plus className="size-[18px]" />
+          {multiple ? t('Pilih file', 'Choose files') : t('Pilih file', 'Choose a file')}
+        </span>
+      )}
       <input
         type="file"
         accept={accept}

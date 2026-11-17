@@ -5,6 +5,24 @@
 
 @import "./theme.css";
 
+/* Geist, served from this site (SIL OFL, see assets/fonts/OFL.txt): one
+   variable file per family, Latin only — no request to a font CDN, and the
+   sans file is preloaded from index.html. */
+@font-face {
+  font-family: "Geist";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("./assets/fonts/geist-latin.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Geist Mono";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("./assets/fonts/geist-mono-latin.woff2") format("woff2");
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -15,9 +33,23 @@
   html.dark {
     color-scheme: dark;
   }
+  html {
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+  }
   body {
     @apply bg-background text-foreground font-sans antialiased;
     font-feature-settings: "ss01", "cv11";
+    /* No double-tap zoom delay on buttons and links. */
+    touch-action: manipulation;
+  }
+  ::selection {
+    background-color: oklch(from var(--brand-2) l c h / 28%);
+  }
+  /* The theme switch cross-fades (use-theme.ts) instead of snapping. */
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 0.22s;
   }
   /* PowerPoint slides (div.slide from @jvmr/pptx-to-html) are laid out for
      browser defaults — list bullets, margins, content-box. Undo Tailwind's

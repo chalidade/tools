@@ -76,7 +76,7 @@ export function MediaRange({ duration, start, end, onChange, time, onSeek, child
             onPointerMove={move}
             onPointerUp={() => (drag.current = null)}
             className={cn(
-              'absolute inset-y-0 z-10 flex w-4 cursor-ew-resize items-center justify-center bg-brand-2 text-white',
+              'absolute inset-y-0 z-10 flex w-4 cursor-ew-resize items-center justify-center bg-brand-fill text-brand-ink',
               which === 'start' ? 'rounded-l-lg' : '-translate-x-full rounded-r-lg',
             )}
             style={{ left: pct(which === 'start' ? start : end) }}

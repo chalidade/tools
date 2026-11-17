@@ -15,13 +15,13 @@ export function ToolAbout({ tool }: { tool: Tool }) {
   const related = relatedTools(tool)
 
   return (
-    <div className="mt-12 grid gap-8 border-t pt-10 sm:grid-cols-2">
+    <div className="mt-10 grid gap-8 border-t pt-8 sm:grid-cols-2 sm:pt-10">
       <div>
-        <h2 className="text-lg font-semibold tracking-tight">{t('Kenapa aman dipakai', 'Why it is safe to use')}</h2>
-        <ul className="mt-4 space-y-2.5 text-sm text-muted-foreground">
+        <h2 className="font-semibold tracking-tight">{t('Kenapa aman dipakai', 'Why it is safe to use')}</h2>
+        <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
           {aboutPoints(tool, lang).map((point) => (
             <li key={point} className="flex gap-2.5">
-              <Check className="mt-0.5 size-4 shrink-0 text-emerald-600 dark:text-emerald-400" />
+              <Check className="mt-0.5 size-4 shrink-0 text-brand-2" />
               {point}
             </li>
           ))}
@@ -29,15 +29,15 @@ export function ToolAbout({ tool }: { tool: Tool }) {
       </div>
       {related.length > 0 && (
         <nav aria-label={relatedHeading(tool, lang)}>
-          <h2 className="text-lg font-semibold tracking-tight">{relatedHeading(tool, lang)}</h2>
-          <ul className="mt-4 grid gap-2 text-sm">
+          <h2 className="font-semibold tracking-tight">{relatedHeading(tool, lang)}</h2>
+          <ul className="mt-3 flex flex-wrap gap-2 text-sm">
             {related.map((other) => (
               <li key={other.slug}>
                 <a
                   href={pageUrl(other.slug, lang)}
-                  className="inline-flex items-center gap-2 text-muted-foreground transition-colors hover:text-foreground"
+                  className="group inline-flex h-9 items-center gap-2 rounded-full border bg-card pr-3.5 pl-3 text-foreground/80 transition-colors hover:border-brand-2/50 hover:text-foreground active:bg-accent"
                 >
-                  <other.icon className="size-4" />
+                  <other.icon className="size-4 text-muted-foreground transition-colors group-hover:text-brand-2" />
                   {toolText(other, lang).title}
                 </a>
               </li>

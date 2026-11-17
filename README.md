@@ -194,7 +194,7 @@ More detail, including how the npm package isolates its styles in a Shadow DOM, 
 
 | Area | Libraries |
 | --- | --- |
-| App | React 19, TypeScript 6, Vite 8, Tailwind CSS v4, shadcn/ui, lucide-react, Geist font |
+| App | React 19, TypeScript 6, Vite 8, Tailwind CSS v4, shadcn/ui, lucide-react, Geist font (self-hosted) |
 | PDF | pdf.js (legacy build), pdf-lib, qpdf (wasm), jsPDF + jspdf-autotable |
 | Office | docx-preview, docx, ExcelJS + numfmt, pptxgenjs, @jvmr/pptx-to-html, html2canvas-pro, DOMPurify |
 | Audio / video | Mediabunny on WebCodecs, @mediabunny/aac-encoder and mp3-encoder (wasm), gifenc, gifuct-js |

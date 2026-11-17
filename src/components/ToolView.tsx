@@ -1,24 +1,20 @@
 import { Suspense, useEffect } from 'react'
-import { ArrowLeft, Loader2, ShieldCheck } from 'lucide-react'
+import { ChevronRight, Loader2, ShieldCheck } from 'lucide-react'
 import { InstallCard } from '@/components/InstallCard'
 import { ToolAbout } from '@/components/ToolAbout'
 import { ToolBoundary } from '@/components/tool/ToolBoundary'
-import { toolText, type Tool } from '@/tools/registry'
+import { categoryText, toolText, type Tool } from '@/tools/registry'
 import { useLang, useT } from '@/lib/i18n'
 import { pageUrl } from '@/lib/route'
+import { rememberTool } from '@/lib/recent'
 import { cn } from '@/lib/utils'
 import { absoluteUrl, applyHead, toolMeta } from '@/lib/seo'
 
-function NoUploadBadge({ className }: { className: string }) {
+function NoUploadBadge({ className }: { className?: string }) {
   const t = useT()
   return (
-    <p
-      className={cn(
-        'items-center gap-1.5 rounded-full border bg-card/70 px-3 py-1 text-xs whitespace-nowrap text-muted-foreground backdrop-blur',
-        className,
-      )}
-    >
-      <ShieldCheck className="size-3.5 text-emerald-600 dark:text-emerald-400" />
+    <p className={cn('inline-flex items-center gap-1.5 text-xs whitespace-nowrap text-muted-foreground', className)}>
+      <ShieldCheck className="size-3.5 text-brand-2" />
       {t('File tidak di-upload', 'Nothing is uploaded')}
     </p>
   )
@@ -40,6 +36,11 @@ export function ToolView({ tool, embed = false }: { tool: Tool; embed?: boolean 
     }
     applyHead(toolMeta(tool, lang))
   }, [embed, tool, lang, text.title])
+
+  // The home page offers the tools opened last (kept in this browser only).
+  useEffect(() => {
+    if (!embed) rememberTool(tool.slug)
+  }, [embed, tool.slug])
 
   const loading = (
     <div className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -64,48 +65,54 @@ export function ToolView({ tool, embed = false }: { tool: Tool; embed?: boolean 
       </div>
     )
 
+  const about = <p className="text-[15px] leading-snug text-muted-foreground text-pretty lg:mt-1.5 lg:text-base">{text.description}</p>
+
   return (
-    <section className="relative isolate">
-      <div aria-hidden className="bg-glow absolute inset-x-0 top-0 -z-10 h-80 opacity-60" />
-      <div aria-hidden className="bg-grid absolute inset-x-0 top-0 -z-10 h-80" />
-
-      <div className="mx-auto max-w-5xl px-5 py-10 sm:px-6 sm:py-14">
-        <a
-          href={pageUrl('', lang)}
-          className="inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
-        >
-          <ArrowLeft className="size-4" />
-          {t('Kembali', 'Back')}
-        </a>
-
-        {/* On phones the tool comes first and its title block follows it, above the install card. */}
-        <div className="mt-8 flex flex-col gap-10">
-          <div className="order-2 flex items-start gap-4 sm:order-1">
-            <span className="grid size-14 shrink-0 place-items-center rounded-2xl bg-gradient-brand text-white shadow-lg shadow-brand-2/25">
-              <tool.icon className="size-6" />
-            </span>
-            <div>
-              <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-                <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">{text.title}</h1>
-                {/* Beside the title on desktop; under the description on phones. */}
-                <NoUploadBadge className="hidden sm:inline-flex" />
-              </div>
-              <p className="mt-1 text-muted-foreground">{text.description}</p>
-              <NoUploadBadge className="mt-3 inline-flex sm:hidden" />
+    <section key={tool.slug} className="page-in mx-auto max-w-5xl px-4 pt-3 pb-10 sm:px-6 lg:pt-8 lg:pb-14">
+      {/* Laptop: where you are, then the tool's name. A phone has both in its app bar (Header). */}
+      <div className="hidden lg:block">
+        <nav aria-label={t('Lokasi halaman', 'Breadcrumb')} className="flex items-center gap-1.5 font-mono text-xs text-muted-foreground">
+          <a href={pageUrl('all', lang)} className="rounded transition-colors hover:text-foreground">
+            {t('Semua tools', 'All tools')}
+          </a>
+          <ChevronRight className="size-3.5 opacity-60" />
+          <a href={pageUrl('all', lang, `c=${tool.category}`)} className="truncate rounded transition-colors hover:text-foreground">
+            {categoryText(tool.category, lang).title}
+          </a>
+        </nav>
+        <header className="mt-5 flex items-start gap-4">
+          <span className="grid size-12 shrink-0 place-items-center rounded-[0.875rem] bg-gradient-brand text-brand-ink">
+            <tool.icon className="size-6" />
+          </span>
+          <div className="min-w-0 flex-1">
+            <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
+              <h1 className="text-4xl leading-none font-semibold tracking-[-0.04em]">{text.title}</h1>
+              <NoUploadBadge className="rounded-full border bg-card px-2.5 py-1" />
             </div>
+            {about}
           </div>
-
-          <div className="order-1 sm:order-2">
-            <ToolBoundary key={tool.slug}>
-              <Suspense fallback={loading}>
-                <Component key={tool.slug} />
-              </Suspense>
-            </ToolBoundary>
-          </div>
-        </div>
-        <InstallCard tool={tool} />
-        <ToolAbout tool={tool} />
+        </header>
       </div>
+
+      <div className="lg:mt-8">
+        <ToolBoundary key={tool.slug}>
+          <Suspense fallback={loading}>
+            <Component key={tool.slug} />
+          </Suspense>
+        </ToolBoundary>
+      </div>
+
+      {/* Phone: the tool comes first; what it does and the privacy note follow it. */}
+      <div className="mt-5 flex gap-3 rounded-2xl border bg-card p-4 lg:hidden">
+        <ShieldCheck className="mt-0.5 size-5 shrink-0 text-brand-2" />
+        <div>
+          {about}
+          <p className="mt-1.5 font-mono text-xs text-muted-foreground">{t('Diproses di HP-mu · tidak di-upload', 'Runs on your phone · nothing is uploaded')}</p>
+        </div>
+      </div>
+
+      <InstallCard tool={tool} />
+      <ToolAbout tool={tool} />
     </section>
   )
 }

@@ -86,15 +86,38 @@ picture; the rules that matter when editing:
   `#/<slug>` links are rewritten on load; embeds keep `#/<slug>?embed`.
   `public/robots.txt` and `public/CNAME` (custom domain toowl.my.id, served
   at the root, so `--base=/`) ship with the build. A new tool needs nothing extra: its pages come from the registry.
-- The home page is one search box (`SearchHome`): type, tap a result. It is
-  built for a phone — results sit right under the box as compact rows, and
-  the title folds away while typing. Its motion is CSS only (`blur-in`,
-  `collapse-blur` in `src/theme.css`). The full catalogue — `Hero`,
-  `ToolGrid` (search + category chips + cards, reads `?q=`) and
-  `HowItWorks` — lives at `/all/` (Header → "All tools"); `scripts/seo.mjs`
-  writes `all/index.html` with the home page's meta (canonical = home). No animation
-  library and no per-frame JS on the home page — the walkable town that used
-  to be here was removed to keep it fast; don't bring heavy visuals back.
+- The home page is one search box (`SearchHome`): type, pick a result. On a
+  laptop it is a command palette in the middle of the page: `/` or ⌘/Ctrl-K
+  focuses it, the arrow keys move through the rows and Enter opens the marked
+  one; idle, it lists the tools this visitor opened last (`src/lib/recent.ts`,
+  localStorage only) and the popular ones. On a phone the box is a dock fixed
+  to the bottom, in thumb reach, with the lime button to `/all/`; the page
+  above it shows tiles, rows and the category list, and while typing the title
+  folds away and category chips appear over the dock. The dock sits at
+  `bottom: var(--kb)`: `--kb` is the on-screen keyboard's height from
+  `visualViewport` (iOS), and the viewport meta's
+  `interactive-widget=resizes-content` covers Android — keep both. The full
+  catalogue — `Hero`, `ToolGrid` (search + sticky category chips + compact
+  cards, reads `?q=` and `?c=<category>`) and `HowItWorks` — lives at `/all/`
+  (Header → "All tools"); `scripts/seo.mjs` writes `all/index.html` with the
+  home page's meta (canonical = home). No animation library and no per-frame
+  JS on the home page — the walkable town that used to be here was removed to
+  keep it fast; don't bring heavy visuals back.
+- **Tool pages** differ by screen. A phone gets an app bar from `Header`
+  (`tool` prop): back, the tool's name, and a "⋯" menu holding All tools,
+  language and theme — so the tool starts right under it, and its
+  description sits in a card below. A laptop keeps the full header plus a
+  breadcrumb (to `/all/?c=<category>`), icon and title above the tool. Both
+  titles are `<h1>`; only one is displayed at a time.
+- **Motion** is CSS only and lives in `src/theme.css`: `page-in` (a page
+  arrives), `rise-in` (chips, menus, the toast; stagger with
+  `animationDelay`), `fold` (the home title on a phone), `header-line` (the
+  header's hairline appears on scroll, via a scroll timeline). Opacity and
+  transform only, short, off under `prefers-reduced-motion`. Entrances fill
+  `backwards`, never `forwards`/`both`: a finished transform animation that
+  still fills acts like `will-change: transform` and would trap a tool's
+  fixed overlay (`Stage` full screen on iPhone). The theme switch cross-fades
+  with `document.startViewTransition` where it exists.
 - **Installable packages** live in `packages/<tool>/` (see packages/README.md):
   each builds the site's own tool source (alias `@` → `../../src`, never a
   copy) into an npm package with a custom element rendering the React UI in a
@@ -132,11 +155,24 @@ picture; the rules that matter when editing:
   packages: it never touches the host page's `<html lang>` or storage.
 - `npm run build` (tsc -b + vite build) is the correctness gate; there is no
   test runner.
-- Design: Geist font, zinc neutrals, blue→violet brand gradient (`--brand-1`,
-  `--brand-2`; utilities `text-gradient`, `bg-gradient-brand`, `bg-grid`,
-  `bg-glow` in `src/index.css`), dark by default (`class="dark"` on `<html>`;
-  a stored "light" choice from the Header toggle wins, applied by the
-  pre-paint script in `index.html`). Public assets are referenced with
-  `import.meta.env.BASE_URL` — the site is served under `/tools/`.
+- Design ("Command"): near-black, one acid-lime accent, mono for small labels.
+  Geist (sans + mono) is served from this site — `src/assets/fonts/*.woff2`,
+  `@font-face` in `src/index.css`, the sans file preloaded in `index.html`;
+  never from a font CDN. Tokens live in `src/theme.css`: `--brand-2` is the
+  accent as text, borders and focus (lime in dark, a deep green in light,
+  where lime on white is unreadable); `--brand-fill-1/2` is the lime fill
+  (`bg-gradient-brand`, `bg-brand-fill`, same in both themes) and anything on
+  it is `--brand-ink` (`text-brand-ink`) — never white. In dark, `--primary`
+  is the lime too. Surfaces stay neutral: cards and rows use a bordered icon
+  tile that turns lime on hover or when marked; the drop zone has one lime
+  "Pilih file" button. `bg-dots` (a masked dot grid behind the laptop
+  palette) is the only backdrop — no glow or gradients. The logo is the
+  owner's monogram, alone, with no wordmark: one traced path in `Logo.tsx`
+  drawn in `currentColor`; the favicon and app icons are that mark in lime on
+  the dark background. Dark by default (`class="dark"` on `<html>`; a stored
+  "light" choice from the Header toggle wins, applied by the pre-paint script
+  in `index.html`, which also sets `theme-color`). Public assets are
+  referenced with `import.meta.env.BASE_URL`.
 - Link preview: `public/og.png` is rendered from `og/og.html` by
-  `npm run og`; meta tags live in `index.html` with absolute URLs.
+  `npm run og` (fonts and logo come from the repo, no network); meta tags
+  live in `index.html` with absolute URLs.

@@ -61,7 +61,7 @@ export function InstallCard({ tool }: { tool: Tool }) {
 
   return (
     // Folded by default: one line under the tool, opened only by someone who wants it.
-    <details className="group mt-14 rounded-2xl border bg-card">
+    <details className="group mt-10 rounded-2xl border bg-card sm:mt-14">
       <summary className="flex cursor-pointer list-none items-center gap-3 p-4 sm:px-5 [&::-webkit-details-marker]:hidden">
         <span className="grid size-9 shrink-0 place-items-center rounded-xl border bg-background">
           <Code2 className="size-4" />
