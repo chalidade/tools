@@ -256,6 +256,12 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
     formats: 'Any file ↔ .enc file',
     keywords: ['encrypt', 'decrypt', 'aes', 'password', 'lock', 'secure', 'privacy'],
   },
+  brankas: {
+    title: 'Document Vault',
+    description: 'Keep photos/PDFs of your ID card, family card, health insurance and policies in this browser, encrypted with a password. A forgotten password cannot be recovered. Encrypted backup included.',
+    formats: 'Document photos/PDFs → encrypted vault (.twlvault)',
+    keywords: ['vault', 'documents', 'id card', 'ktp', 'insurance', 'encrypted', 'backup', 'emergency', 'safe', 'password'],
+  },
   tabungan: {
     title: 'Savings & Investment Calculator',
     description: 'Compound interest on a deposit, regular monthly saving, or how much to save to reach a target, with a growth chart and a year-by-year table.',

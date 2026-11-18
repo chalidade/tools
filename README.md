@@ -3,7 +3,7 @@
 **English** · [Bahasa Indonesia](README.id.md)
 
 **My everyday file toolbox, built for the file work I do every day and published free for everyone.**
-105 tools for PDF, Office files, images, video, audio and QR codes, and every one of them runs entirely in your browser.
+106 tools for PDF, Office files, images, video, audio and QR codes, and every one of them runs entirely in your browser.
 Your files are never uploaded.
 
 [![Live demo](https://img.shields.io/badge/live%20demo-chalidade.github.io%2Ftools-6366f1)](https://toowl.my.id/)
@@ -106,6 +106,7 @@ All 45, grouped the way the home page groups them. Each name links to the live t
 - [Notes](https://toowl.my.id/en/notes/): Markdown with live checklists, saved in the browser, JSON backup/restore
 - [Calculator](https://toowl.my.id/en/calculator/): basic and scientific, with its own expression parser (no `eval`)
 - [Encrypt & Decrypt File](https://toowl.my.id/en/encrypt-file/): lock any file with a password (WebCrypto AES-256-GCM, PBKDF2-SHA-256 600k iterations, random salt), original name kept inside; forgotten passwords cannot be recovered
+- [Document Vault](https://toowl.my.id/en/brankas/): keep ID, KK, BPJS and policy photos/PDFs in this browser (IndexedDB), encrypted per file with AES-256-GCM (PBKDF2-SHA-256 600k iterations, fresh IV each), auto-locks when the tab is hidden, encrypted backup/restore as one file; forgotten passwords cannot be recovered
 - [Password Generator](https://toowl.my.id/en/password-generator/): random passwords and Indonesian/English passphrases from `crypto.getRandomValues`, plus a strength check with estimated guessing time
 - [Word Counter](https://toowl.my.id/en/word-counter/): words, characters, sentences, paragraphs, reading/speaking time and per-platform character limits
 - [Unit Converter](https://toowl.my.id/en/unit-converter/): length, weight (ons, quintal), area (hectare, are, tumbak), volume, temperature, speed and data

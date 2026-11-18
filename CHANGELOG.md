@@ -3,6 +3,14 @@
 Catatan harian apa yang berubah di [tools](https://toowl.my.id/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-18 — Darurat: dokumen
+
+Satu tool baru; total sekarang **106 tools**.
+
+- **Brankas Dokumen** (`#/brankas`): simpan foto/PDF KTP, KK, BPJS, polis di IndexedDB browser ini, dienkripsi per file dengan AES-256-GCM (kunci dari PBKDF2-SHA-256 600.000 iterasi, salt acak, IV baru tiap file; nama file ikut terenkripsi). Password tidak pernah disimpan, dan sebelum brankas dibuat pengguna harus mencentang bahwa password yang lupa berarti data tidak bisa dibuka. Terkunci otomatis saat tab disembunyikan. Bisa melihat gambar/PDF di tempat, mengunduh, menghapus, serta mengekspor/memulihkan brankas terenkripsi sebagai satu file `.twlvault` untuk cadangan di perangkat lain.
+
+Semuanya diproses di browser; tidak ada data yang dikirim.
+
 ## 2026-11-17 — Tampilan baru
 
 Desain diganti total: gelap pekat, satu aksen hijau neon, logo baru, dan cara pakai yang dibuat untuk HP lebih dulu. Tidak ada tool yang berubah cara kerjanya.
