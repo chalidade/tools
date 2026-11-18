@@ -515,3 +515,107 @@ jaringan) dan tombol utamanya besar, bisa ditekan tanpa membaca.
   selimut, pembalut, popok, dan lainnya menurut standar Sphere / BNPB (sumber
   dan angka di satu file data). Hasil bisa dicetak atau disalin sebagai daftar
   kebutuhan untuk penggalangan donasi.
+
+## Hari 47 — 2026-12-03 · Foto: bingkai & vektor
+
+- [ ] **Twibbon** (`#/twibbon`): buka bingkai PNG transparan dari pembuat
+  acara, masukkan foto, lalu geser, perbesar (cubit di HP), dan putar sampai
+  pas di lubang bingkai. Unduh PNG/JPG pada ukuran asli bingkai, atau bagikan
+  langsung lewat `navigator.share` bila didukung. Foto dibaca dengan
+  `decodeImage`. Tool ini tidak punya galeri twibbon (itu butuh server);
+  bingkai selalu berasal dari file pengguna.
+- [ ] **Gambar ke SVG** (`#/image-to-svg`): jiplak logo, tanda tangan, atau
+  gambar garis jadi vektor. Mode hitam-putih (ambang bisa diatur) dan mode
+  beberapa warna (palet dikuantisasi), penghalusan sudut, pratinjau
+  berdampingan, unduh SVG. Penjiplakan jalan di Web Worker. Periksa lisensi
+  library sebelum dipakai: potrace berlisensi GPL sedangkan repo ini MIT,
+  jadi pilih yang lisensinya cocok atau tulis sendiri. Jelaskan bahwa foto
+  biasa tidak cocok dijiplak.
+
+## Hari 48 — 2026-12-04 · Cetak identitas
+
+- [ ] **Cetak KTP Ukuran Asli** (`#/cetak-ktp`): foto depan dan belakang KTP
+  (atau kartu lain berukuran sama: SIM, NPWP, BPJS) diluruskan dengan
+  homografi dari Scan Dokumen, lalu disusun di satu lembar A4 pada ukuran
+  kartu sebenarnya (85,6 × 53,98 mm) seperti hasil fotokopi. Pilihan warna
+  atau hitam-putih, beberapa salinan per lembar, dan watermark "hanya untuk
+  …" dengan memakai ulang Watermark KTP. Unduh PDF lewat pdf-lib; ingatkan
+  untuk mencetak pada skala 100%.
+
+## Hari 49 — 2026-12-05 · Usaha & mengetik
+
+- [ ] **Kalkulator Harga Jual & HPP** (`#/harga-jual`): HPP per unit dari
+  bahan, kemasan, tenaga, dan biaya lain dibagi jumlah produksi; lalu harga
+  jual dari margin atau markup yang diinginkan (bedakan keduanya dengan
+  jelas). Potongan admin marketplace, biaya layanan, diskon, dan pajak diisi
+  pengguna sebagai persen atau rupiah. Jangan menanam tarif marketplace di
+  kode karena sering berubah. Hasil: harga jual, laba per unit, dan titik
+  impas (unit). Isian terakhir tersimpan di perangkat.
+- [ ] **Tes Mengetik** (`#/tes-mengetik`): tes 15/30/60 detik dengan kata
+  umum bahasa Indonesia atau Inggris (daftar kata di satu file data), hasil
+  kata per menit dan akurasi, kesalahan disorot saat mengetik, riwayat dan
+  rekor tersimpan di perangkat. Waktu dihitung dari jam, bukan interval.
+
+## Hari 50 — 2026-12-06 · Kesehatan
+
+- [ ] **Kalkulator Masa Subur & Haid** (`#/masa-subur`): dari hari pertama
+  haid terakhir dan panjang siklus (atau beberapa tanggal haid untuk
+  menghitung rata-rata dan rentangnya) → perkiraan ovulasi, jendela subur,
+  dan haid berikutnya dalam kalender tiga bulan. Berbagi hitungan tanggal
+  dengan Hitung HPL. Riwayat hanya tersimpan di perangkat dan bisa dihapus
+  dengan satu tombol. Tulis jelas bahwa ini perkiraan metode kalender, bukan
+  alat kontrasepsi dan bukan nasihat medis, dan sebut sumber rumusnya.
+
+## Hari 51 — 2026-12-07 · Developer: teks & data
+
+- [ ] **Generator Hash** (`#/hash`): MD5, SHA-1, SHA-256, SHA-384, dan
+  SHA-512 untuk teks atau file, plus kotak untuk mencocokkan dengan checksum
+  yang ditempel. SHA lewat WebCrypto; MD5 ditulis sendiri karena WebCrypto
+  tidak punya. File besar dihitung bertahap di Web Worker supaya tidak
+  memuat seluruh file ke memori. Beri tahu bahwa MD5 dan SHA-1 tidak aman
+  untuk keamanan, hanya untuk cek keutuhan file.
+- [ ] **Regex Tester** (`#/regex`): pola dan flag, kecocokan disorot
+  langsung di teks uji, daftar grup tangkapan, mode ganti (replace), contekan
+  singkat, dan contoh siap pakai (email, nomor HP Indonesia, tanggal).
+  Pencocokan jalan di Web Worker dengan batas waktu, supaya pola yang
+  macet (catastrophic backtracking) tidak membekukan tab. Sebut bahwa
+  mesinnya RegExp JavaScript.
+- [ ] **CSV ⇄ JSON** (`#/csv-json`): pemisah dikenali otomatis (koma, titik
+  koma seperti ekspor Excel berbahasa Indonesia, atau tab), sel berkutip dan
+  baris baru di dalam sel ditangani, baris pertama jadi kunci, pratinjau
+  tabel, lalu salin atau unduh. Pindahkan `parseCsv` dari Excel ke PDF ke
+  `src/lib/` supaya dipakai bersama.
+
+## Hari 52 — 2026-12-08 · Developer: waktu & teks contoh
+
+- [ ] **Unix Timestamp** (`#/timestamp`): epoch (detik atau milidetik,
+  dikenali otomatis) ⇄ tanggal dalam WIB, WITA, WIT, UTC, dan zona
+  perangkat, format ISO 8601, jam "sekarang" yang berjalan, dan selisih
+  relatif ("3 hari lalu"). Pakai `Intl.DateTimeFormat` dengan `locale()`.
+- [ ] **Lorem Ipsum** (`#/lorem-ipsum`): paragraf, kalimat, atau kata
+  dengan jumlah yang bisa diatur, pilihan teks contoh berbahasa Indonesia,
+  opsi dibungkus `<p>`, dan salin dengan satu ketukan.
+
+## Hari 53 — 2026-12-09 · Musik
+
+- [ ] **Ubah Nada Lagu** (`#/ubah-nada`): naik atau turunkan kunci per
+  semiton (−12 sampai +12) tanpa mengubah tempo, untuk karaoke atau latihan
+  di kunci yang lebih nyaman. Pakai ulang `TimeStretch` dan `Resample` dari
+  Ubah Kecepatan (ubah nada = regangkan waktu lalu resample). Pratinjau
+  sebelum disimpan, tampilkan kunci baru bila kunci asal dikenali oleh
+  Deteksi BPM & Kunci Lagu, simpan MP3/WAV (`ensureAudioEncoder` untuk MP3).
+
+## Hari 54 — 2026-12-10 · AI di perangkat: suara
+
+- [ ] **Transkrip Suara ke Teks** (`#/transkrip`): audio atau video jadi
+  teks dengan model pengenal suara yang jalan di perangkat (Whisper lewat
+  wasm/WebGPU, di-host sendiri), bahasa Indonesia dan Inggris. Hasil bisa
+  diedit, disalin, atau diunduh sebagai TXT, SRT, dan VTT dengan cap waktu,
+  jadi tersambung ke tool Subtitle. Audio diambil lewat `src/lib/media.ts`
+  dan di-resample ke 16 kHz; pengenalan jalan di Web Worker dengan progres
+  dan tombol batal. **Uji dulu sebelum dikerjakan**: bandingkan ukuran model
+  dan akurasi bahasa Indonesia (tiny vs base). Perhatikan batas GitHub
+  (file di repo maksimal 100 MB, situs Pages maksimal 1 GB). Model hanya
+  diunduh saat tool dibuka dengan ukuran ditampilkan di awal, dan tidak
+  ikut di-precache. Bila akurasinya tidak layak pada ukuran yang masuk
+  akal, batalkan dan catat alasannya di sini.
