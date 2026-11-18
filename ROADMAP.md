@@ -612,7 +612,23 @@ sesudahnya.
   IG/TikTok, salin dengan satu ketukan. Beri tahu bahwa pembaca layar dan
   pencarian tidak membacanya sebagai huruf biasa.
 
-## Hari 52 — 2026-12-08 · Developer: teks & data
+## Hari 52 — 2026-12-08 · Developer: data
+
+- [ ] **CSV ⇄ JSON** (`#/csv-json`): pemisah dikenali otomatis (koma, titik
+  koma seperti ekspor Excel berbahasa Indonesia, atau tab), sel berkutip dan
+  baris baru di dalam sel ditangani, baris pertama jadi kunci, pratinjau
+  tabel, lalu salin atau unduh. Pindahkan `parseCsv` dari Excel ke PDF ke
+  `src/lib/` supaya dipakai bersama.
+- [ ] **YAML ⇄ JSON** (`#/yaml-json`): ubah dua arah dengan pesan galat
+  yang menunjuk baris dan kolom, pilihan indentasi, dan dukungan beberapa
+  dokumen dalam satu file YAML (`---`). Pakai library YAML kecil berlisensi
+  MIT/ISC yang di-bundel dan dimuat lewat `import()` saat tool dibuka.
+- [ ] **SQL Formatter** (`#/sql-formatter`): rapikan atau padatkan query
+  dengan pilihan dialek (MySQL, PostgreSQL, SQLite, SQL Server, BigQuery),
+  huruf besar untuk kata kunci, dan indentasi. Pakai library formatter
+  berlisensi MIT lewat `import()`. Query tidak pernah dijalankan.
+
+## Hari 53 — 2026-12-09 · Developer: teks & kode
 
 - [ ] **Generator Hash** (`#/hash`): MD5, SHA-1, SHA-256, SHA-384, dan
   SHA-512 untuk teks atau file, plus kotak untuk mencocokkan dengan checksum
@@ -626,18 +642,31 @@ sesudahnya.
   Pencocokan jalan di Web Worker dengan batas waktu, supaya pola yang
   macet (catastrophic backtracking) tidak membekukan tab. Sebut bahwa
   mesinnya RegExp JavaScript.
-- [ ] **CSV ⇄ JSON** (`#/csv-json`): pemisah dikenali otomatis (koma, titik
-  koma seperti ekspor Excel berbahasa Indonesia, atau tab), sel berkutip dan
-  baris baru di dalam sel ditangani, baris pertama jadi kunci, pratinjau
-  tabel, lalu salin atau unduh. Pindahkan `parseCsv` dari Excel ke PDF ke
-  `src/lib/` supaya dipakai bersama.
+- [ ] **Minify HTML/CSS/JS** (`#/minify`): kecilkan kode dan tampilkan
+  ukuran sebelum/sesudah (dan perkiraan gzip) dengan `SizeResult`, plus mode
+  rapikan (beautify) untuk kebalikannya. Minifier di-bundel dan dimuat lewat
+  `import()` hanya untuk bahasa yang dipilih, dan jalan di Web Worker supaya
+  file besar tidak membekukan tab. Kesalahan sintaks ditunjukkan barisnya.
 
-## Hari 53 — 2026-12-09 · Developer: waktu & tampilan
+## Hari 54 — 2026-12-10 · Developer: waktu & tampilan
 
 - [ ] **Unix Timestamp** (`#/timestamp`): epoch (detik atau milidetik,
   dikenali otomatis) ⇄ tanggal dalam WIB, WITA, WIT, UTC, dan zona
   perangkat, format ISO 8601, jam "sekarang" yang berjalan, dan selisih
   relatif ("3 hari lalu"). Pakai `Intl.DateTimeFormat` dengan `locale()`.
+- [ ] **Penjelas Cron** (`#/cron`): ekspresi cron (5 kolom, plus 6 kolom
+  dengan detik) dijelaskan dalam kalimat bahasa Indonesia atau Inggris, lima
+  jadwal berikutnya dalam zona perangkat dan UTC, serta pembuat ekspresi lewat
+  pilihan (tiap N menit, hari tertentu, dan sebagainya). Kolom yang salah
+  ditandai. Penjelasan kalimat ditulis sendiri supaya dwibahasa.
+- [ ] **Cek Kontras Warna** (`#/kontras-warna`): rasio kontras teks dan
+  latar menurut WCAG 2.2 dengan status AA/AAA untuk teks biasa dan besar,
+  pratinjau teks, dan saran warna terdekat yang lolos. Terima HEX, RGB, HSL,
+  dan OKLCH, dan bisa ambil warna dari layar lewat EyeDropper API bila ada.
+  Pakai ulang konversi warna dari Color Picker.
+
+## Hari 55 — 2026-12-11 · Developer: aset
+
 - [ ] **Lorem Ipsum** (`#/lorem-ipsum`): paragraf, kalimat, atau kata
   dengan jumlah yang bisa diatur, pilihan teks contoh berbahasa Indonesia,
   opsi dibungkus `<p>`, dan salin dengan satu ketukan.
@@ -646,7 +675,7 @@ sesudahnya.
   gambar sendiri), bayangan, dan rasio, lalu unduh PNG untuk presentasi atau
   promosi. Bingkai digambar sendiri sebagai SVG, tanpa aset merek.
 
-## Hari 54 — 2026-12-10 · Hitung rumah & keluarga
+## Hari 56 — 2026-12-12 · Hitung rumah & keluarga
 
 - [ ] **Kalkulator Waris Islam** (`#/waris`): pilih ahli waris yang ada,
   isi harta setelah utang dan wasiat (maksimal sepertiga), lalu dapatkan
@@ -659,7 +688,7 @@ sesudahnya.
   koefisien dan sumbernya di satu file data, persen cadangan bisa diatur, dan
   ada catatan bahwa ini perkiraan untuk belanja awal.
 
-## Hari 55 — 2026-12-11 · Darurat: arah & pesan
+## Hari 57 — 2026-12-13 · Darurat: arah & pesan
 
 - [ ] **Papan Pesan** (`#/papan-pesan`): teks raksasa satu layar penuh yang
   menyesuaikan ukuran supaya muat, untuk ditunjukkan ke orang lain. Frasa siap
@@ -675,7 +704,7 @@ sesudahnya.
   panah kompas dan jarak ke titik itu. Pakai ulang pembacaan kompas dari Arah
   Kiblat; tampilkan akurasi GPS dan beri tahu bahwa kompas HP perlu kalibrasi.
 
-## Hari 56 — 2026-12-12 · Darurat: siaga
+## Hari 58 — 2026-12-14 · Darurat: siaga
 
 - [ ] **Checklist Tas Siaga Bencana** (`#/tas-siaga`): daftar isi tas siaga
   mengikuti panduan BNPB (sebut sumber dan tanggalnya), bisa dicentang,
@@ -689,7 +718,7 @@ sesudahnya.
   (aturan 30-30). Simpan beberapa hitungan terakhir untuk melihat badai
   mendekat atau menjauh.
 
-## Hari 57 — 2026-12-13 · Darurat: lokasi & posko
+## Hari 59 — 2026-12-15 · Darurat: lokasi & posko
 
 - [ ] **Koordinat Saya** (`#/koordinat`): lokasi dalam desimal, DMS, UTM,
   dan Plus Code sekaligus, plus ketinggian dan akurasi GPS, masing-masing
@@ -701,7 +730,7 @@ sesudahnya.
   dan angka di satu file data). Hasil bisa dicetak atau disalin sebagai daftar
   kebutuhan untuk penggalangan donasi.
 
-## Hari 58 — 2026-12-14 · Layar penuh
+## Hari 60 — 2026-12-16 · Layar penuh
 
 - [ ] **Papan Skor** (`#/papan-skor`): dua tim (atau lebih) dengan nama dan
   warna, ketuk untuk menambah dan geser untuk mengurangi, set/babak, dan
@@ -714,7 +743,7 @@ sesudahnya.
   keyboard. Layar penuh lewat `Stage`, Wake Lock, teks tersimpan di
   perangkat.
 
-## Hari 59 — 2026-12-15 · Sensor & konversi
+## Hari 61 — 2026-12-17 · Sensor & konversi
 
 - [ ] **Waterpass & Meter Desibel** (`#/waterpass`): waterpass dari sensor
   orientasi HP (gelembung dan sudut, bisa dikalibrasi di permukaan rata; di
