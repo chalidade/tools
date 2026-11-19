@@ -2,11 +2,31 @@
 // rendered to HTML by docx-preview, and turned into a PDF without any upload.
 // Heavy libraries are dynamic imports so they load only when used.
 
+import { EXTEND_CSS, pageHeight, patchParser, placeFloating, type Placement } from './docx-extend'
+import { fixPictures } from './metafile'
+
 const PX_TO_PT = 0.75
+
+/** docx-preview's parser class is internal; an empty package hands us an instance to patch. */
+let patching: Promise<void> | null = null
+function patchDocxPreview(parseAsync: typeof import('docx-preview').parseAsync) {
+  return (patching ??= (async () => {
+    try {
+      const { default: JSZip } = await import('jszip')
+      const zip = new JSZip()
+      zip.file('_rels/.rels', '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"/>')
+      const empty = (await parseAsync(await zip.generateAsync({ type: 'blob' }))) as unknown as { _parser?: object }
+      if (empty._parser) patchParser(Object.getPrototypeOf(empty._parser))
+    } catch {
+      // Unpatched, docx-preview still renders everything it did before.
+    }
+  })())
+}
 
 /** Renders the document into `body`; returns one <section> per page. */
 export async function renderDocx(file: File, body: HTMLElement, style: HTMLElement) {
   const { parseAsync, renderDocument } = await import('docx-preview')
+  await patchDocxPreview(parseAsync)
   const options = {
     className: 'docx',
     inWrapper: true,
@@ -22,11 +42,33 @@ export async function renderDocx(file: File, body: HTMLElement, style: HTMLEleme
   }
   // Rendered detached and cleaned before it touches the page, so nothing in
   // the file can make the browser fetch a URL, even for a moment.
-  const nodes = await renderDocument(await parseAsync(file, options), options)
+  const doc = await parseAsync(file, options)
+  const nodes = await renderDocument(doc, options)
   blockRemote(nodes)
+  const extra = document.createElement('style')
+  extra.textContent = EXTEND_CSS
+  nodes.push(extra)
+
+  // Floating pictures are placed by measuring the laid-out page, and `body`
+  // may still be hidden, so lay the document out off-screen first. Positions
+  // are relative to each page, so they hold once it moves into `body`.
+  const stage = document.createElement('div')
+  stage.setAttribute('aria-hidden', 'true')
+  stage.style.cssText = 'position:fixed;left:-100000px;top:0;visibility:hidden;pointer-events:none'
+  for (const n of nodes) stage.appendChild(n)
+  document.body.appendChild(stage)
+  try {
+    await fixPictures(stage)
+    await document.fonts?.ready
+    const list = (doc as unknown as { _parser?: { toowlPlacements?: Placement[] } })._parser?.toowlPlacements ?? []
+    if (list.length) placeFloating(stage, list)
+  } finally {
+    stage.remove()
+  }
+
   body.replaceChildren()
   style.replaceChildren()
-  for (const n of nodes) (n.nodeName === 'STYLE' ? style : body).appendChild(n)
+  for (const n of Array.from(stage.childNodes)) (n.nodeName === 'STYLE' ? style : body).appendChild(n)
   neutralizeLinks(body)
   return Array.from(body.querySelectorAll<HTMLElement>('section.docx'))
 }
@@ -112,13 +154,8 @@ function neutralizeLinks(root: HTMLElement) {
   }
 }
 
-/** Page height in CSS px — the section's min-height is the Word page size. */
-function pageHeight(section: HTMLElement) {
-  return parseFloat(getComputedStyle(section).minHeight) || section.offsetHeight
-}
-
 /** Vertical extent of every rendered line of text and every image, in section px. */
-function lineBoxes(section: HTMLElement, origin: number) {
+function lineBoxes(section: HTMLElement, origin: number, limitH: number) {
   const boxes: [number, number][] = []
   const range = document.createRange()
   const walker = document.createTreeWalker(section, NodeFilter.SHOW_TEXT)
@@ -132,6 +169,9 @@ function lineBoxes(section: HTMLElement, origin: number) {
   }
   for (const el of section.querySelectorAll('img, svg, canvas')) {
     const r = el.getBoundingClientRect()
+    // A floating picture as tall as the page (a page background behind the
+    // text) leaves no gap to cut in, so it would force a cut through text.
+    if (el.closest('.toowl-abs') && r.height >= limitH) continue
     if (r.height > 0) boxes.push([r.top - origin, r.bottom - origin])
   }
   return boxes
@@ -165,24 +205,29 @@ function safeCut(boxes: [number, number][], floor: number, limit: number) {
  */
 function contentRanges(section: HTMLElement, pageH: number) {
   const style = getComputedStyle(section)
-  const padTop = parseFloat(style.paddingTop) || 0
-  const padBottom = parseFloat(style.paddingBottom) || 0
+  const header = section.querySelector<HTMLElement>(':scope > header')
+  const footer = section.querySelector<HTMLElement>(':scope > footer')
+  // Later pages repeat the header and footer, so their text starts below the
+  // header and stops above the footer, even when those outgrow the margins.
+  const padTop = Math.max(parseFloat(style.paddingTop) || 0, header ? header.offsetTop + header.offsetHeight : 0)
+  const footerTop = footer ? footer.offsetTop : section.offsetHeight
+  const padBottom = Math.max(parseFloat(style.paddingBottom) || 0, section.offsetHeight - footerTop)
   const usable = pageH - padTop - padBottom
-  const end = section.offsetHeight - padBottom
+  const end = Math.min(section.offsetHeight - (parseFloat(style.paddingBottom) || 0), footerTop)
 
   if (section.offsetHeight <= pageH + 1 || usable <= 0) return null
 
-  const boxes = lineBoxes(section, section.getBoundingClientRect().top)
+  const boxes = lineBoxes(section, section.getBoundingClientRect().top, usable)
 
   const ranges: [number, number][] = []
-  let from = padTop
+  let from = header ? header.offsetTop + header.offsetHeight : padTop
   while (end - from > 1) {
     const limit = Math.min(from + usable, end)
     const to = limit < end ? safeCut(boxes, from, limit) : limit
     ranges.push([from, to])
     from = to
   }
-  return { ranges, padTop }
+  return { ranges, padTop, header, footer }
 }
 
 /**
@@ -231,9 +276,19 @@ export async function downloadPdf(
       const ctx = page.getContext('2d')!
       ctx.fillStyle = '#ffffff'
       ctx.fillRect(0, 0, page.width, page.height)
-      const sy = Math.round(from * ratio)
-      const sh = Math.round((to - from) * ratio)
-      ctx.drawImage(canvas, 0, sy, canvas.width, sh, 0, Math.round(dest * ratio), canvas.width, sh)
+      const copy = (top: number, bottom: number, at: number) => {
+        const sh = Math.round((bottom - top) * ratio)
+        if (sh > 0) ctx.drawImage(canvas, 0, Math.round(top * ratio), canvas.width, sh, 0, Math.round(at * ratio), canvas.width, sh)
+      }
+      copy(from, to, dest)
+      if (split) {
+        // A section that runs over several pages has one Word header and
+        // footer, rendered once at its top and bottom: repeat them on every
+        // page, as Word does, so their pictures and text are not lost.
+        const { header, footer } = split
+        if (header && from > 0) copy(header.offsetTop, header.offsetTop + header.offsetHeight, header.offsetTop)
+        if (footer) copy(footer.offsetTop, footer.offsetTop + footer.offsetHeight, pageH - (section.offsetHeight - footer.offsetTop))
+      }
 
       const format: [number, number] = [width * PX_TO_PT, pageH * PX_TO_PT]
       const orientation = format[0] > format[1] ? 'landscape' : 'portrait'
@@ -278,6 +333,10 @@ export function buildPrintHtml(body: HTMLElement, style: HTMLElement, sections: 
     .docx-wrapper > section.docx > footer { margin: 0 !important; min-height: 0 !important }
     .docx-wrapper p { orphans: 2; widows: 2 }
     .docx-wrapper tr, .docx-wrapper img { break-inside: avoid }
+    /* Floating pictures and frames are placed against the screen page, whose
+       top margin is padding; here that margin moves to @page. */
+    .docx-wrapper .toowl-abs { translate: 0 calc(-1 * var(--toowl-pad, 0px)) }
+    .docx-wrapper > section.docx.toowl-one-page { height: var(--toowl-body) !important; overflow: clip !important }
   </style></head><body>${body.innerHTML}</body></html>`
 }
 
