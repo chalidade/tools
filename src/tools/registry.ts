@@ -187,7 +187,7 @@ export const TOOLS: Tool[] = [
     category: 'from-pdf',
     keywords: ['word', 'docx', 'edit', 'ubah', 'dokumen', 'konversi'],
     title: 'PDF ke Word',
-    description: 'Ambil teks dari PDF jadi dokumen Word (.docx) yang bisa diedit.',
+    description: 'Ubah PDF jadi dokumen Word (.docx) yang tampilannya sama dan teksnya bisa diedit.',
     icon: FileType,
     formats: 'PDF → DOCX',
     component: lazy(() => import('./pdf-to-word/PdfToWord')),

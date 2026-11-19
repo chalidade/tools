@@ -10,6 +10,13 @@ Dua tool baru; total sekarang **111 tools**.
 - **Gabung & Pisah Excel/CSV** (`#/merge-excel`): gabung banyak file `.xlsx`/`.csv` (atau sheet tertentu dari tiap file) jadi satu — kolom dicocokkan dari judulnya tanpa peduli huruf besar/kecil dan spasi ganda, atau dari urutan; kolom yang tidak ada di sebuah file dibiarkan kosong, dan bisa ditambah kolom "Sumber" berisi nama file/sheet asal. Hasilnya satu sheet atau satu sheet per sumber. Mode pisah memecah satu sheet menurut nilai sebuah kolom jadi sheet-sheet dalam satu file, atau ZIP berisi `.xlsx`/`.csv` per nilai. Rumus dibaca hasilnya, nama sheet/file dibersihkan dan dibuat unik. ExcelJS dan JSZip dimuat hanya saat tool dibuka.
 - **Markdown & Teks ke PDF / Word** (`#/markdown-to-pdf`): tulis, tempel, atau buka `.md`/`.txt`, lihat pratinjau halaman (A4/Letter, margin, huruf sans/serif), lalu unduh PDF lewat mesin halaman Word ke PDF (tiap halaman berupa gambar; "Cetak / Simpan PDF" menghasilkan teks yang bisa diseleksi) atau DOCX dengan judul, daftar bersarang/bernomor, checklist, kutipan, kode, tabel, dan tautan asli. HTML disaring DOMPurify dan gambar dari internet tidak pernah dimuat, jadi tidak ada koneksi keluar.
 
+## 2026-11-19 — PDF ke Word yang sama persis
+
+- **PDF ke Word** (`/pdf-to-word/`) sekarang punya pilihan hasil **"Sama persis seperti PDF"** (bawaan). Sebelumnya hanya teks yang diambil lalu disusun ulang jadi paragraf, jadi gambar, garis tabel, warna, kolom, dan posisi hilang dan hasil Word terlihat beda dari PDF-nya. Sekarang tiap halaman Word dibuat seukuran halaman PDF: gambar, logo, garis dan warna tabel, serta latar digambar di belakang persis seperti aslinya, lalu teksnya ditaruh di atas pada posisi aslinya dengan font, ukuran, tebal/miring, warna, dan rata kanan-kiri yang sama, dan tetap bisa diedit. Teks miring/diputar dan lapisan OCR tak terlihat tetap jadi bagian gambar supaya tidak muncul dua kali. Ada pratinjau halaman sebelum diunduh. Cara lama masih ada sebagai **"Teks mengalir (mudah diedit)"** untuk yang ingin menulis ulang banyak teks.
+
+Semuanya tetap diproses di browser; tidak ada file yang dikirim.
+
+
 ## 2026-11-19 — CAD & upscale
 
 Tiga tool baru; total sekarang **108 tools**.

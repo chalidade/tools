@@ -20,7 +20,7 @@ export const CATEGORIES_EN: Record<CategoryId, { title: string; description: str
 
 export const TOOLS_EN: Record<string, { title: string; description: string; formats?: string; keywords?: string[] }> = {
   'doc-to-pdf': { title: 'Word to PDF', description: 'Turn a Word document (.docx) into a PDF and download it.', keywords: ['convert', 'document', 'letter', 'resume'] },
-  'pdf-to-word': { title: 'PDF to Word', description: 'Get the text of a PDF into an editable Word document (.docx).', keywords: ['convert', 'edit', 'document'] },
+  'pdf-to-word': { title: 'PDF to Word', description: 'Turn a PDF into an editable Word document (.docx) that looks like the original.', keywords: ['convert', 'edit', 'document'] },
   'image-to-pdf': {
     title: 'Images to PDF',
     description: 'Combine photos and images into one PDF — reorder, rotate and pick a paper size.',
