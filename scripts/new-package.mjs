@@ -38,7 +38,7 @@ write('package.json', JSON.stringify({
   version: '0.1.0',
   description,
   keywords: ['web component', 'custom element'],
-  license: 'MIT',
+  license: 'AGPL-3.0-only',
   author: 'Chalid Ade Rahman',
   homepage: `https://toowl.my.id/#/${name}`, // package name = the tool's slug
   repository: { type: 'git', url: 'git+https://github.com/chalidade/tools.git', directory: `packages/${name}` },

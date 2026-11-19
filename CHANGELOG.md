@@ -3,6 +3,12 @@
 Catatan harian apa yang berubah di [tools](https://toowl.my.id/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-19 — Lisensi jadi AGPL-3.0
+
+- Lisensi repo dan semua paket di `packages/` berganti dari MIT ke **AGPL-3.0-only**. Kode tetap terbuka dan boleh dipakai siapa saja, tapi yang mendistribusikan atau menjalankan versi modifikasinya untuk orang lain wajib membuka kodenya juga. Lisensi komersial tersedia bagi yang ingin memakai kode toowl di produk tertutup.
+- Kode sampai commit 43c1e4a tetap berlaku MIT.
+- Teks "open source (MIT)" di halaman tool dan kartu **Pasang di situsmu** ikut diganti.
+
 ## 2026-11-19 — README dan video pengenalan baru
 
 - README (English dan Indonesia) diperbarui ke kondisi sekarang: 113 tools, alamat `/<tool>/` dan `/en/<tool>/` di toowl.my.id, beranda satu kotak pencarian, dan desain baru. Tiga tool yang belum tercatat ditambahkan: **Gambar ke SVG**, **Peredam Noise**, dan **Tambah Musik ke Video**.

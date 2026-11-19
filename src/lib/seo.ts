@@ -73,7 +73,7 @@ export function aboutPoints(tool: Tool, lang: Lang): string[] {
     en
       ? 'Installable as an app; a tool you have opened keeps working offline.'
       : 'Bisa dipasang sebagai aplikasi; tool yang pernah dibuka tetap jalan saat offline.',
-    en ? 'Open source (MIT) on GitHub.' : 'Kode sumbernya terbuka (MIT) di GitHub.',
+    en ? 'Open source (AGPL-3.0) on GitHub.' : 'Kode sumbernya terbuka (AGPL-3.0) di GitHub.',
   ]
 }
 

@@ -8,7 +8,7 @@ Your files are never uploaded.
 
 [![Live demo](https://img.shields.io/badge/live-toowl.my.id-c8f031)](https://toowl.my.id/)
 [![Deploy to GitHub Pages](https://github.com/chalidade/tools/actions/workflows/pages.yml/badge.svg)](https://github.com/chalidade/tools/actions/workflows/pages.yml)
-[![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+[![License: AGPL-3.0](https://img.shields.io/badge/license-AGPL--3.0-blue)](LICENSE)
 ![TypeScript](https://img.shields.io/badge/TypeScript-6-3178c6?logo=typescript&logoColor=white)
 ![React](https://img.shields.io/badge/React-19-61dafb?logo=react&logoColor=black)
 ![Vite](https://img.shields.io/badge/Vite-8-646cff?logo=vite&logoColor=white)
@@ -30,7 +30,7 @@ or an ID scan, that is a bad trade. This site makes one promise and is built aro
 third-party processing API. Heavy work is done with libraries compiled to WebAssembly or with the
 browser's own media encoders, and a library is downloaded only when you open the tool that needs it.
 
-- **Free and open source** (MIT)
+- **Free and open source** ([AGPL-3.0](#license))
 - **One search box**: the home page is a command palette (`/` or Ctrl/⌘+K, arrow keys, Enter); on a phone it is a dock at the bottom, in thumb reach
 - **Bilingual UI**: English and Indonesian; every tool has its own address in both (`/<tool>/` and `/en/<tool>/`)
 - **Installable app**: add it to a phone's home screen or a desktop ("Install app" in the header); it opens without browser bars, and every tool you have opened once keeps working offline
@@ -334,7 +334,20 @@ real files and on the outputs they produce.
 
 ## License
 
-[MIT](LICENSE) © Chalid Ade Rahman · [chalidade.github.io](https://chalidade.github.io)
+[AGPL-3.0-only](LICENSE) © Chalid Ade Rahman · [chalidade.github.io](https://chalidade.github.io)
+
+In short: you may use, study, change and share the code, including commercially, but if you
+distribute it or run a modified version for others over a network (a site, an app, an embedded
+package), you must publish your complete source under the AGPL too. Embedding a tool from
+toowl.my.id with an `<iframe>` does not put your own site under the AGPL.
+
+**Commercial licence.** If you want to use toowl's code in a closed-source product without the
+AGPL's obligations, a commercial licence is available; contact me through
+[GitHub](https://github.com/chalidade). It cannot cover the third-party GPL code noted below.
+
+**Earlier versions.** Everything up to and including commit
+[43c1e4a](https://github.com/chalidade/tools/commit/43c1e4a) (19 November 2026) was released under
+the MIT licence and stays available under MIT; later changes are AGPL-3.0-only.
 
 Bundled third-party pieces keep their own licences: the DWG/DXF reader used by DWG to PDF is
 [LibreDWG](https://www.gnu.org/software/libredwg/) via `@mlightcad/libredwg-web` (GPL-3.0), and
