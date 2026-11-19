@@ -208,6 +208,20 @@ picture; the rules that matter when editing:
   "light" choice from the Header toggle wins, applied by the pre-paint script
   in `index.html`, which also sets `theme-color`). Public assets are
   referenced with `import.meta.env.BASE_URL`.
+- **iOS app (App Store):** Capacitor 8 (`capacitor.config.ts`, app ID
+  `id.my.toowl`, Xcode project in `ios/`), built by `npm run build:ios`
+  (`--base=/`, then `cap sync ios`); steps in `docs/IOS.md`. The whole `dist/`
+  is bundled, so no service worker there. `src/lib/native.ts`: `isNativeApp()`
+  (reads `window.Capacitor`, set by the native bridge), `downloadBlob` saves via
+  the share sheet (`saveNative`; WKWebView ignores `<a download>`), and files
+  opened with the app ("Open in toowl", `CFBundleDocumentTypes` in Info.plist)
+  go to the matching tool, whose `FileDrop` takes them (`takeIncoming`).
+  Capacitor plugins are dynamic imports only. Inside the app the install
+  button and the Trakteer links are hidden (guideline 3.1.1), and slugs in
+  `IOS_UNSUPPORTED` (`registry.ts`) are left out. Freemium goes through
+  `src/lib/premium.ts` only (`usePremium`, `buyPremium`, `restorePremium`;
+  product `toowl.pro`), backed on iOS by the local StoreKit 2 plugin in
+  `native/store/` (auto-registered by `cap sync`); the website sells nothing.
 - Link preview: `public/og.png` is rendered from `og/og.html` by
   `npm run og` (fonts and logo come from the repo, no network); meta tags
   live in `index.html` with absolute URLs.

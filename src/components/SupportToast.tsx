@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Coffee, X } from 'lucide-react'
 import { useT } from '@/lib/i18n'
+import { isNativeApp } from '@/lib/native'
 
 export const SUPPORT_URL = 'https://trakteer.id/chalidade/tip'
 const SEEN = 'tools:support-seen'
@@ -13,6 +14,8 @@ export function SupportToast() {
   const [open, setOpen] = useState(false)
 
   useEffect(() => {
+    // The iOS app may not point to outside payments (App Store guideline 3.1.1).
+    if (isNativeApp()) return
     let timer = 0
     const onSave = () => {
       try {

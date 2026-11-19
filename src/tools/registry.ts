@@ -173,7 +173,7 @@ export const CATEGORIES: { id: CategoryId; title: string; description: string }[
 
 // Adding a tool: create src/tools/<slug>/ with a default-exported component,
 // then add one entry here (with its category). Nothing else needs to change.
-export const TOOLS: Tool[] = [
+const ALL_TOOLS: Tool[] = [
   {
     slug: 'pdf-reader',
     category: 'reader',
@@ -1593,6 +1593,16 @@ export const TOOLS: Tool[] = [
     component: lazy(() => import('./encrypt-file/EncryptFile')),
   },
 ]
+
+// The iOS app's web view (WKWebView) has no screen capture, so the tools that
+// need it are left out there instead of failing (App Store guideline 2.1).
+// Read window.Capacitor directly: this module also runs in Node for seo.mjs.
+const IOS_UNSUPPORTED = new Set(['screen-recorder'])
+const inIosApp =
+  typeof window !== 'undefined' &&
+  (window as Window & { Capacitor?: { getPlatform?: () => string } }).Capacitor?.getPlatform?.() === 'ios'
+
+export const TOOLS: Tool[] = inIosApp ? ALL_TOOLS.filter((t) => !IOS_UNSUPPORTED.has(t.slug)) : ALL_TOOLS
 
 /** A tool's title, description and formats in the given language (English lives in registry-en.ts). */
 export function toolText(tool: Tool, lang: Lang) {

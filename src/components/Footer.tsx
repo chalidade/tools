@@ -2,6 +2,7 @@ import { Coffee, Github } from 'lucide-react'
 import { Logo } from '@/components/Logo'
 import { SUPPORT_URL } from '@/components/SupportToast'
 import { useT } from '@/lib/i18n'
+import { isNativeApp } from '@/lib/native'
 
 const link = 'inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground'
 
@@ -17,10 +18,13 @@ export function Footer({ className }: { className?: string }) {
           </span>
         </div>
         <div className="flex items-center gap-5">
-          <a href={SUPPORT_URL} target="_blank" rel="noreferrer" className={link}>
-            <Coffee className="size-4" />
-            {t('Traktir kopi', 'Buy me a coffee')}
-          </a>
+          {/* No tip link in the iOS app: App Store rules allow only in-app purchase there. */}
+          {!isNativeApp() && (
+            <a href={SUPPORT_URL} target="_blank" rel="noreferrer" className={link}>
+              <Coffee className="size-4" />
+              {t('Traktir kopi', 'Buy me a coffee')}
+            </a>
+          )}
           <a href="https://github.com/chalidade/tools" target="_blank" rel="noreferrer" className={link}>
             <Github className="size-4" />
             GitHub

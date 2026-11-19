@@ -3,6 +3,13 @@
 Catatan harian apa yang berubah di [tools](https://toowl.my.id/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-19 — Persiapan aplikasi iOS (App Store)
+
+- toowl disiapkan jadi aplikasi iOS dengan **Capacitor**: seluruh situs dibundel di dalam app, jadi semua tool jalan offline. Proyek Xcode ada di `ios/`, build dengan `npm run build:ios`, panduan build, signing, dan submit di [docs/IOS.md](docs/IOS.md).
+- Di app, file dari app **Files** atau app lain bisa dibuka lewat **Bagikan → toowl** dan langsung masuk ke tool yang cocok (PDF, Word, Excel, PowerPoint, gambar, audio, video). Hasil disimpan lewat share sheet (Simpan ke File, AirDrop, WhatsApp).
+- Kerangka **In-App Purchase** (StoreKit 2, tanpa server dan tanpa SDK pihak ketiga) untuk freemium nanti; belum ada tool yang dikunci.
+- Di dalam app, tombol "Pasang aplikasi" dan link Traktir kopi disembunyikan, dan **Rekam Layar** tidak tampil karena iOS tidak mengizinkannya di app. Situs web tidak berubah.
+
 ## 2026-11-19 — Nominal Kwitansi rapi di PDF
 
 - **Kwitansi** (`/kwitansi/`): di PDF, nominal sekarang duduk di tengah kotaknya. Sebelumnya teksnya naik menimpa garis atas kotak (laporan pengguna).
