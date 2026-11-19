@@ -5,8 +5,7 @@
       "namespace": "android_app",
       "package_name": "id.my.toowl",
       "sha256_cert_fingerprints": [
-        "GANTI_DENGAN_SHA256_APP_SIGNING_KEY_DARI_PLAY_CONSOLE",
-        "GANTI_DENGAN_SHA256_UPLOAD_KEY_DARI_KEYSTORE_KAMU"
+        "B7:CA:55:F7:80:4C:A6:13:2F:02:50:3C:74:92:C9:7E:26:CD:67:BB:75:0E:81:1B:62:6E:C6:02:8D:02:A0:7E"
       ]
     }
   }
