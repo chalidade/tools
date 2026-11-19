@@ -38,6 +38,20 @@ picture; the rules that matter when editing:
   area in px. A wasm panic poisons the instance, hence a fresh worker each
   time. Binary mode takes dark pixels as the shape, so `binarize` flattens
   alpha onto white first. Don't use potrace: it is GPL.
+- RAW photo tools: `arw-to-jpg` develops RAW files with LibRaw from
+  `libraw-wasm` (ISC wrapper, LibRaw LGPL-2.1/CDDL), one instance (its own
+  worker) per file, disposed after. That build uses wasm threads; it works on
+  this non-isolated page in Chromium, and where shared wasm memory cannot be
+  created `raw.ts` falls back to the largest embedded baseline JPEG found by
+  walking the TIFF IFDs. `image-to-dng` writes the DNG itself (`dng.ts`,
+  `ljpeg.ts`, encoded in a worker): IFD0 is a small RGB preview, the SubIFD
+  is LinearRaw, 16-bit linear sRGB in 256 px lossless-JPEG tiles (SOF3,
+  predictor 1), ColorMatrix1 = XYZ→sRGB under D65, AsShotNeutral 1/1/1 and a
+  linear ProfileToneCurve. Check output with rawpy/tifffile when changing it.
+- A registry entry may carry `faq` (Indonesian; English in `TOOLS_EN`):
+  shown under the tool by `ToolAbout`, in the static page, and as FAQPage
+  JSON-LD — use it for searches the tool answers indirectly (e.g. "JPG ke
+  ARW" lands on `image-to-dng`).
 - `doc-to-pdf` renders with docx-preview, extended in `docx-extend.ts` by
   wrapping its internal parser's methods once (the prototype comes from
   parsing an empty package): floating pictures (wrapNone/behind) and framePr
@@ -104,6 +118,22 @@ picture; the rules that matter when editing:
   the iOS "Add to Home Screen" steps. `ToolView` wraps each tool in
   `ToolBoundary`, so a chunk that cannot load (offline, stale tab after a
   deploy) shows a message instead of blanking the page.
+- **Android app (Play Store):** a Trusted Web Activity built with Bubblewrap
+  from `android/twa-manifest.json` (package `id.my.toowl`, same as the iOS
+  bundle ID); only that file and `android/README.md` (the owner's build/sign/
+  upload guide, Indonesian) are in git — the Gradle project, builds and the
+  keystore are generated/ignored. The app trusts the site through
+  `public/.well-known/assetlinks.json` (SHA-256 fingerprints filled in by the
+  owner), which is why `pages.yml` uploads with `include-hidden-files: true` —
+  without it the dot-folder is dropped and the app shows an address bar. The
+  manifest's maskable and monochrome icons feed the Android launcher icon.
+  `public/privacy/index.html` is a static bilingual privacy policy (store
+  listings link to it); the footer links it with `rel="external"`, which
+  `useLinkNavigation` leaves as a real page load.
+  Tools marked `webOnly` in the registry (medical ones: cpr, p3k,
+  kartu-medis, hpl) are left out of `TOOLS` inside the app (`isPlayApp()` in
+  `src/lib/platform.ts`: TWA referrer, kept in sessionStorage), because Play
+  requires an organization account for medical features.
 - **Full screen:** `src/components/tool/Stage.tsx` (`useStage`, `Stage`,
   `StageButton`) — Fullscreen API plus a landscape orientation lock, falling
   back to a fixed overlay where element full screen does not exist (iPhone).
@@ -165,11 +195,17 @@ picture; the rules that matter when editing:
   snippets once `published: true`, and always offers the iframe embed —
   `#/<tool>?embed[&theme=light|dark]` renders the tool alone (any tool).
   `npm run build:packages` builds them; publishing is done by the owner.
+- **Analytics:** `src/lib/analytics.ts` loads the Cloudflare Web Analytics
+  beacon (cookieless, `spa: true`) from `main.tsx`, only in production, only on
+  host toowl.my.id (so never in the iOS bundle) and never in an embed. It is the
+  one third-party script the site loads; it never sees file contents. Keep the
+  "Statistik kunjungan" section of `public/privacy/index.html` and the Play
+  Data safety form in step with what it sends.
 - **Support link (Trakteer):** `SUPPORT_URL` in `src/components/SupportToast.tsx`
   is used by the footer and by a once-per-session toast shown after the first
   save (`downloadBlob` fires `tools:downloaded`). Plain links only — never
   Trakteer's embed `<script>`, which would break the no-third-party promise.
-- The repo is MIT-licensed (`LICENSE`).
+- The repo is AGPL-3.0-only (`LICENSE`), packages included; releases up to commit 43c1e4a (2026-11-19) were MIT. The owner also sells commercial licences, so keep every new dependency AGPL-compatible (MIT, BSD, Apache-2.0, GPL-3.0 are fine).
 - `App.tsx` only composes sections; each section lives in
   `src/components/<Section>.tsx`. Style with the semantic shadcn tokens in
   `src/index.css`, not hard-coded colors. Prefer plain CSS transitions; there is no animation

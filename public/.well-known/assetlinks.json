@@ -1,0 +1,15 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "id.my.toowl",
+      "sha256_cert_fingerprints": [
+        "8B:BF:6A:AB:5F:27:CC:AA:37:00:BE:C6:5D:E0:4F:AA:B5:7E:DA:79:A9:22:83:FD:39:AE:3F:B3:3A:94:8B:CC",
+        "B7:CA:55:F7:80:4C:A6:13:2F:02:50:3C:74:92:C9:7E:26:CD:67:BB:75:0E:81:1B:62:6E:C6:02:8D:02:A0:7E"
+      ]
+    }
+  }
+]

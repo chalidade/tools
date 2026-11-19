@@ -3,6 +3,42 @@
 Catatan harian apa yang berubah di [tools](https://toowl.my.id/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-20 — ARW ke JPG dan Gambar ke DNG
+
+Dua tool foto RAW baru; total sekarang **115 tools**.
+
+- **ARW ke JPG** (`/arw-to-jpg/`): foto RAW Sony (ARW) — juga CR2/CR3 Canon, NEF Nikon, RAF Fujifilm, ORF, RW2, PEF, dan DNG — diproses dari data sensornya jadi JPG atau PNG ukuran penuh, dengan white balance dari kamera. Bisa banyak sekaligus, ada pilihan ukuran setengah yang lebih cepat. Mesinnya LibRaw yang dikompilasi jadi wasm (`libraw-wasm`, di-host sendiri). Browser yang belum bisa menjalankannya di halaman ini memakai JPG pratinjau bawaan kamera.
+- **Gambar ke DNG** (`/image-to-dng/`): JPG, PNG, atau HEIC jadi DNG, format RAW terbuka Adobe, yang bisa diedit di Lightroom, Photoshop, dan Snapseed. Gambarnya disimpan sebagai data linear 16-bit dengan kompresi lossless, warna sRGB, dan white balance "As Shot", jadi tampilan awalnya sama dengan aslinya. Penulis DNG dan encoder lossless JPEG-nya ditulis sendiri.
+- Orang yang mencari "JPG ke ARW" diarahkan ke tool DNG. Halamannya menjelaskan kenapa ARW tidak bisa dibuat dari JPG, dan tool dengan bagian **Tanya jawab** sekarang ikut menampilkannya di halaman statis dan data terstruktur (FAQPage) untuk mesin pencari.
+
+## 2026-11-19 — Tool medis hanya di web
+
+- Di aplikasi Android, tool CPR, P3K, Kartu Medis, dan HPL Kehamilan disembunyikan (flag `webOnly` di registry, deteksi app lewat `src/lib/platform.ts`). Play Store mewajibkan akun organisasi untuk fitur medis. Di toowl.my.id semuanya tetap ada.
+
+## 2026-11-19 — Statistik kunjungan tanpa cookie
+
+- toowl.my.id (dan aplikasi Android) sekarang menghitung kunjungan dengan **Cloudflare Web Analytics** (`src/lib/analytics.ts`): tanpa cookie, tanpa ID pengunjung, IP tidak disimpan. Yang terkirim hanya alamat halaman, referrer, jenis browser/perangkat, negara, dan waktu muat; isi file dan teks yang diketik tidak pernah.
+- Tidak jalan di mode dev, di embed (`#/<tool>?embed`), dan di build iOS.
+- **Kebijakan Privasi** diperbarui dengan bagian "Statistik kunjungan".
+
+## 2026-11-19 — Persiapan aplikasi Android (Play Store)
+
+- toowl disiapkan jadi aplikasi Android lewat **Trusted Web Activity**: konfigurasi Bubblewrap di `android/twa-manifest.json` (package `id.my.toowl`) dan panduan build, tanda tangan, dan upload ke Play Console di `android/README.md`.
+- `/.well-known/assetlinks.json` ikut ter-deploy (fingerprint diisi setelah keystore dan Play App Signing siap), supaya aplikasinya tampil tanpa address bar.
+- Manifest PWA: ikon **monochrome** baru untuk ikon bertema Android 13+, dan shortcut Piano/Gitar/Drum/Tuner sekarang memakai alamat halaman (`/piano/`), bukan `#/piano`.
+- Halaman **Kebijakan Privasi** baru di `/privacy/` (Indonesia dan English), ditautkan dari footer. Play Store mewajibkannya.
+
+## 2026-11-19 — Nominal Kwitansi rapi di PDF
+
+- **Kwitansi** (`/kwitansi/`): di PDF, nominal sekarang duduk di tengah kotaknya. Sebelumnya teksnya naik menimpa garis atas kotak (laporan pengguna).
+- Kotak nominal ikut melebar untuk nominal panjang, dan ukuran hurufnya baru mengecil kalau kotaknya sudah selebar halaman.
+
+## 2026-11-19 — Lisensi jadi AGPL-3.0
+
+- Lisensi repo dan semua paket di `packages/` berganti dari MIT ke **AGPL-3.0-only**. Kode tetap terbuka dan boleh dipakai siapa saja, tapi yang mendistribusikan atau menjalankan versi modifikasinya untuk orang lain wajib membuka kodenya juga. Lisensi komersial tersedia bagi yang ingin memakai kode toowl di produk tertutup.
+- Kode sampai commit 43c1e4a tetap berlaku MIT.
+- Teks "open source (MIT)" di halaman tool dan kartu **Pasang di situsmu** ikut diganti.
+
 ## 2026-11-19 — README dan video pengenalan baru
 
 - README (English dan Indonesia) diperbarui ke kondisi sekarang: 113 tools, alamat `/<tool>/` dan `/en/<tool>/` di toowl.my.id, beranda satu kotak pencarian, dan desain baru. Tiga tool yang belum tercatat ditambahkan: **Gambar ke SVG**, **Peredam Noise**, dan **Tambah Musik ke Video**.
@@ -54,7 +90,7 @@ Tiga tool baru; total sekarang **108 tools**.
 
 ## 2026-11-18 — Darurat: dokumen
 
-Satu tool baru; total sekarang **114 tools**.
+Satu tool baru; total sekarang **116 tools**.
 
 - **Brankas Dokumen** (`#/brankas`): simpan foto/PDF KTP, KK, BPJS, polis di IndexedDB browser ini, dienkripsi per file dengan AES-256-GCM (kunci dari PBKDF2-SHA-256 600.000 iterasi, salt acak, IV baru tiap file; nama file ikut terenkripsi). Password tidak pernah disimpan, dan sebelum brankas dibuat pengguna harus mencentang bahwa password yang lupa berarti data tidak bisa dibuka. Terkunci otomatis saat tab disembunyikan. Bisa melihat gambar/PDF di tempat, mengunduh, menghapus, serta mengekspor/memulihkan brankas terenkripsi sebagai satu file `.twlvault` untuk cadangan di perangkat lain.
 

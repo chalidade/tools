@@ -2,14 +2,14 @@
 
 [English](README.md) · **Bahasa Indonesia**
 
-Kotak perkakas file sehari-hari: **113 tools gratis** untuk PDF, Office, gambar
+Kotak perkakas file sehari-hari: **115 tools gratis** untuk PDF, Office, gambar
 CAD, foto, video, audio, musik, dan hitungan sehari-hari yang jalan **sepenuhnya
 di browser**. File diproses di perangkat pengguna: tidak di-upload ke server dan
 tidak disimpan di mana pun.
 
 **Live:** https://toowl.my.id/
 
-<a href="https://toowl.my.id/"><img src="docs/intro-id.gif" alt="Pengenalan toowl: ketik yang dibutuhkan, buka Gambar ke SVG, jiplak logo, buka file Excel, lihat semua 113 tools" width="720"></a>
+<a href="https://toowl.my.id/"><img src="docs/intro-id.gif" alt="Pengenalan toowl: ketik yang dibutuhkan, buka Gambar ke SVG, jiplak logo, buka file Excel, lihat semua 115 tools" width="720"></a>
 
 ▶ [Tonton video pengenalan 30 detik (MP4)](docs/intro-id.mp4) · [Versi English](docs/intro-en.mp4)
 
@@ -23,8 +23,10 @@ header (atau lewat alamatnya: `/en/<tool>/` selalu English).
 
 ## Pasang di situsmu
 
-Lisensinya **MIT**, jadi setiap tool boleh dipasang di website-mu sendiri,
-gratis. Tool tetap berjalan di browser pengunjungmu, tanpa server.
+Setiap tool boleh dipasang di website-mu sendiri, gratis. Tool tetap berjalan
+di browser pengunjungmu, tanpa server. Lewat iframe, situsmu tidak ikut terikat
+lisensi apa pun. Kalau memakai paket npm-nya, berlaku lisensi
+[AGPL-3.0](#lisensi) (lihat di bawah).
 
 **1. Iframe (semua tool, bisa dipakai sekarang).** Ganti `screen-recorder`
 dengan alamat tool mana pun dari tabel di bawah, misalnya `whiteboard`,
@@ -92,6 +94,8 @@ dan mengirim event berisi file rekaman. Ada juga API tanpa UI untuk developer.
 | Kompres Video | [`/compress-video/`](https://toowl.my.id/compress-video/) | MP4/MOV/WebM/MKV → MP4 (Mediabunny + WebCodecs, encoder bawaan perangkat — biasanya lebih cepat dari durasi videonya). Kualitas Ringan/Sedang/Kuat (bitrate dari resolusi × fps), resolusi 1080p/720p/480p, audio dipertahankan atau dihapus; perkiraan ukuran sebelum mulai, progress + bisa dibatalkan. Butuh browser dengan WebCodecs. |
 | Crop & Resize Gambar | [`/crop-resize-image/`](https://toowl.my.id/crop-resize-image/) | Kotak potong yang bisa digeser/ditarik dengan rasio bebas, asli, 1:1, 4:3, 3:2, 16:9, 4:5, 9:16; putar 90° dan balik; ukuran hasil 100/75/50/25% atau piksel kustom (rasio bisa dikunci); simpan sebagai JPG/PNG/WebP. Rotasi EXIF foto ponsel ikut. |
 | Ubah Format Gambar | [`/convert-image/`](https://toowl.my.id/convert-image/) | HEIC (foto iPhone), WebP, AVIF, PNG, JPG, GIF, BMP, SVG → JPG/PNG/WebP, banyak file sekaligus (ZIP). HEIC didekode libheif (wasm) yang di-host sendiri; JPG meratakan transparansi ke putih. |
+| ARW ke JPG | [`/arw-to-jpg/`](https://toowl.my.id/arw-to-jpg/) | RAW Sony (ARW), juga CR2/CR3, NEF, RAF, ORF, RW2, DNG → JPG/PNG ukuran penuh dengan LibRaw (wasm) dan white balance kamera; di browser tanpa memori wasm bersama, pakai JPG bawaan kamera. |
+| Gambar ke DNG | [`/image-to-dng/`](https://toowl.my.id/image-to-dng/) | JPG/PNG/HEIC → DNG LinearRaw (sRGB linear 16-bit, tile lossless JPEG, profil linear) yang dibuka Lightroom, Photoshop, dan Snapseed; halamannya menjelaskan kenapa "JPG ke ARW" tidak mungkin. |
 | Pas Foto | [`/pas-foto/`](https://toowl.my.id/pas-foto/) | Potong 2×3, 3×4, 4×6 (geser + zoom), ganti latar merah/biru/putih (dikenali dari tepi atas foto, toleransi diatur), susun di kertas 4R/A4 300 dpi dengan garis potong. Simpan JPG/PNG/PDF. |
 | Watermark KTP & Dokumen Identitas | [`/watermark-ktp/`](https://toowl.my.id/watermark-ktp/) | Teks melintang berulang ("Hanya untuk verifikasi … · tanggal") di foto KTP/SIM/paspor; ukuran, sudut, transparansi, kerapatan, dan warna diatur; hasil digambar ulang tanpa EXIF (JPG/PNG). |
 | Sensor Foto | [`/sensor-foto/`](https://toowl.my.id/sensor-foto/) | Tutup NIK, wajah, plat, atau alamat dengan kotak atau kuas: blok hitam (bawaan), piksel, atau blur (box blur sendiri). Ada peringatan bahwa blur tipis pada teks kecil bisa ditebak; foto disimpan ulang tanpa EXIF. |
@@ -271,3 +275,24 @@ belum pernah dibagikan (atau setelah cache-nya kedaluwarsa).
 
 Vite + React 19 + TypeScript, Tailwind CSS v4, shadcn/ui, ikon lucide-react, font Geist (disajikan dari situs ini sendiri). Tema gelap secara default;
 pengunjung bisa beralih ke terang dari header.
+
+## Lisensi
+
+[AGPL-3.0-only](LICENSE) © Chalid Ade Rahman.
+
+Singkatnya: kode ini boleh dipakai, dipelajari, diubah, dan dibagikan, termasuk
+untuk keperluan komersial. Tapi kalau kamu mendistribusikannya atau menjalankan
+versi yang sudah diubah untuk orang lain lewat jaringan (situs, aplikasi, paket
+yang dipasang di situs), seluruh kode sumbermu juga wajib dibuka dengan lisensi
+AGPL. Memasang tool dari toowl.my.id lewat `<iframe>` tidak membuat situsmu ikut
+AGPL.
+
+**Lisensi komersial.** Kalau ingin memakai kode toowl di produk tertutup tanpa
+kewajiban AGPL, tersedia lisensi komersial; hubungi lewat
+[GitHub](https://github.com/chalidade). Lisensi ini tidak mencakup kode pihak
+ketiga berlisensi GPL, yaitu LibreDWG di tool DWG ke PDF.
+
+**Versi sebelumnya.** Semua kode sampai commit
+[43c1e4a](https://github.com/chalidade/tools/commit/43c1e4a) (19 November 2026)
+dirilis dengan lisensi MIT dan tetap berlaku MIT; perubahan sesudahnya
+AGPL-3.0-only.

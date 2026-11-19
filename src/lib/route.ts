@@ -120,7 +120,8 @@ export function useLinkNavigation() {
     const onClick = (e: MouseEvent) => {
       if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return
       const a = (e.target as Element | null)?.closest?.('a')
-      if (!a || a.target || a.hasAttribute('download')) return
+      // rel="external": a static page outside the app (e.g. /privacy/) — load it for real.
+      if (!a || a.target || a.hasAttribute('download') || a.relList.contains('external')) return
       const url = new URL(a.href, location.href)
       if (url.origin !== location.origin || !url.pathname.startsWith(BASE) || url.hash) return
       e.preventDefault()
