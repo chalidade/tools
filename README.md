@@ -242,7 +242,11 @@ npm run preview          # serve the production build
 npm run lint             # oxlint
 npm run build:packages   # build the embeddable npm package(s)
 npm run og               # re-render the Open Graph image (needs Chrome/Chromium)
+npm run build:ios        # build for the iOS app and copy it into ios/ (then open it in Xcode on a Mac)
 ```
+
+The iOS app (App Store) bundles this same build with Capacitor; build, signing and
+submission are described in [docs/IOS.md](docs/IOS.md).
 
 The site is served from the domain root (custom domain `toowl.my.id` on GitHub Pages), so a local
 build matches production. Every push to `main` is built and deployed by
