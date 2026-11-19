@@ -571,14 +571,6 @@ sesudahnya.
   kata per menit dan akurasi, kesalahan disorot saat mengetik, riwayat dan
   rekor tersimpan di perangkat. Waktu dihitung dari jam, bukan interval.
 
-## Hari 48 — 2026-12-04 · AI di perangkat: foto
-
-- [ ] **Perjelas Foto** (`#/perjelas-foto`): upscale 2×/4× dengan model
-  super-resolution lewat ONNX Runtime Web (WebGPU bila ada, wasm sebagai
-  cadangan), model dan runtime di-host sendiri dan hanya diunduh saat tool
-  dibuka. Tampilkan ukuran unduhan model di awal dan peringatan bahwa di HP
-  lama prosesnya lambat.
-
 ## Hari 49 — 2026-12-05 · Waktu
 
 - [ ] **Timer Pomodoro** (`#/pomodoro`): fokus/istirahat yang bisa diatur,

@@ -322,6 +322,23 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
     description: 'Remove a background with a magic wand, color select, lasso or brush — then make it transparent or recolor it.',
     keywords: ['background', 'transparent', 'cut out'],
   },
+  'dwg-to-pdf': {
+    title: 'DWG to PDF',
+    description: 'Turn AutoCAD drawings (.dwg/.dxf) into vector PDFs — choose paper, scale, colour and layers.',
+    formats: 'DWG / DXF → PDF',
+    keywords: ['autocad', 'drawing', 'floor plan', 'blueprint', 'plot', 'print', 'convert'],
+  },
+  'pdf-to-dwg': {
+    title: 'PDF to DWG',
+    description: 'Pull the vector lines, curves and text out of a PDF into a CAD drawing you can edit in AutoCAD.',
+    formats: 'PDF → DXF (DWG)',
+    keywords: ['autocad', 'drawing', 'floor plan', 'blueprint', 'vector', 'convert'],
+  },
+  'upscale-image': {
+    title: 'Upscale Image',
+    description: 'Enlarge photos 2× or 4× with on-device AI so they stay sharp instead of pixelated.',
+    keywords: ['enlarge', 'enhance', 'sharpen', 'resolution', 'hd', 'super resolution', 'photo'],
+  },
   'compress-image': { title: 'Compress Images', description: 'Shrink many photos at once — JPG or WebP, with GPS metadata stripped.', keywords: ['shrink', 'photo', 'reduce'] },
   'trim-media': { title: 'Trim Video & Audio', description: 'Cut out part of a video or song by dragging the start/end markers — same format and quality.', keywords: ['cut', 'trim', 'clip'] },
   'gif-mp4': { title: 'GIF ⇄ MP4', description: 'Turn a GIF into a much smaller MP4 video, or a video clip into a GIF.', keywords: ['animation', 'gif'] },
