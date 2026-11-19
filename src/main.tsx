@@ -5,6 +5,7 @@ import App from './App.tsx'
 import { listenForInstall } from './lib/install'
 import { getRoute, settleUrl } from './lib/route'
 import { setLang } from './lib/i18n'
+import { startAnalytics } from './lib/analytics'
 
 // Old #/<slug> links become paths, then the first render speaks the language
 // of the address (a crawler gets the page it asked for, not its browser's).
@@ -18,6 +19,8 @@ listenForInstall()
 if ('serviceWorker' in navigator && import.meta.env.PROD && !embed) {
   window.addEventListener('load', () => void navigator.serviceWorker.register(`${import.meta.env.BASE_URL}sw.js`).catch(() => {}))
 }
+
+startAnalytics(embed)
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
