@@ -1,0 +1,13 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "id.my.toowl",
+      "sha256_cert_fingerprints": [
+        "GANTI_DENGAN_SHA256_APP_SIGNING_KEY_DARI_PLAY_CONSOLE",
+        "GANTI_DENGAN_SHA256_UPLOAD_KEY_DARI_KEYSTORE_KAMU"
+      ]
+    }
+  }
+]
