@@ -10,7 +10,7 @@ import { TOOLS, categoryText, toolText, type Tool } from '@/tools/registry'
 export const SITE = 'https://toowl.my.id/'
 
 /** Categories whose tools take the visitor's own files. */
-const FILE_CATEGORIES = new Set(['to-pdf', 'from-pdf', 'pdf', 'media'])
+const FILE_CATEGORIES = new Set(['reader', 'to-pdf', 'from-pdf', 'pdf', 'media'])
 const takesFiles = (tool: Tool) => FILE_CATEGORIES.has(tool.category)
 
 /** Absolute address of a page (home when slug is empty). */

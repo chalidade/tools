@@ -3,7 +3,7 @@
 **English** · [Bahasa Indonesia](README.id.md)
 
 **My everyday file toolbox, built for the file work I do every day and published free for everyone.**
-108 tools for PDF, Office files, images, video, audio and QR codes, and every one of them runs entirely in your browser.
+112 tools for PDF, Office files, images, video, audio and QR codes, and every one of them runs entirely in your browser.
 Your files are never uploaded.
 
 [![Live demo](https://img.shields.io/badge/live%20demo-chalidade.github.io%2Ftools-6366f1)](https://toowl.my.id/)
@@ -35,6 +35,14 @@ browser's own media encoders, and a library is downloaded only when you open the
 ## Tools
 
 All 45, grouped the way the home page groups them. Each name links to the live tool.
+
+**Open Documents**
+- [PDF Reader](https://toowl.my.id/en/pdf-reader/): pages drawn by pdf.js with its text layer on top (select, copy, Ctrl+F), working links, password-protected PDFs, zoom, page jump, full screen
+- [Word Reader](https://toowl.my.id/en/word-reader/): `.docx` page by page (docx-preview), zoom and full screen
+- [Excel Reader](https://toowl.my.id/en/excel-reader/): `.xlsx`/`.csv` as a grid with column letters, row numbers and sheet tabs; Excel number formats, colours, borders and merged cells
+- [PowerPoint Reader](https://toowl.my.id/en/ppt-reader/): `.pptx` slides at their real layout, plus a one-slide-at-a-time presentation mode
+
+Each reader opens the other three formats too.
 
 **To PDF**
 - [Word to PDF](https://toowl.my.id/en/doc-to-pdf/): `.docx` to PDF, paginated without cutting through lines of text
