@@ -10,5 +10,12 @@ dist/
 !.vscode/extensions.json
 .env
 .env.*
-android/
+# Android app (TWA): only the Bubblewrap config and the guide are kept; the
+# Gradle project, builds and the signing key are generated or private.
+android/*
+!android/twa-manifest.json
+!android/README.md
+*.aab
+*.keystore
+*.jks
 *.apk
