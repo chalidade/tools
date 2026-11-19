@@ -3,6 +3,10 @@
 Catatan harian apa yang berubah di [tools](https://toowl.my.id/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-19 — Tool medis hanya di web
+
+- Di aplikasi Android, tool CPR, P3K, Kartu Medis, dan HPL Kehamilan disembunyikan (flag `webOnly` di registry, deteksi app lewat `src/lib/platform.ts`). Play Store mewajibkan akun organisasi untuk fitur medis. Di toowl.my.id semuanya tetap ada.
+
 ## 2026-11-19 — Statistik kunjungan tanpa cookie
 
 - toowl.my.id (dan aplikasi Android) sekarang menghitung kunjungan dengan **Cloudflare Web Analytics** (`src/lib/analytics.ts`): tanpa cookie, tanpa ID pengunjung, IP tidak disimpan. Yang terkirim hanya alamat halaman, referrer, jenis browser/perangkat, negara, dan waktu muat; isi file dan teks yang diketik tidak pernah.

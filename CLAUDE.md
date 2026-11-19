@@ -116,6 +116,10 @@ picture; the rules that matter when editing:
   `public/privacy/index.html` is a static bilingual privacy policy (store
   listings link to it); the footer links it with `rel="external"`, which
   `useLinkNavigation` leaves as a real page load.
+  Tools marked `webOnly` in the registry (medical ones: cpr, p3k,
+  kartu-medis, hpl) are left out of `TOOLS` inside the app (`isPlayApp()` in
+  `src/lib/platform.ts`: TWA referrer, kept in sessionStorage), because Play
+  requires an organization account for medical features.
 - **Full screen:** `src/components/tool/Stage.tsx` (`useStage`, `Stage`,
   `StageButton`) — Fullscreen API plus a landscape orientation lock, falling
   back to a fixed overlay where element full screen does not exist (iPhone).
@@ -235,8 +239,8 @@ picture; the rules that matter when editing:
   opened with the app ("Open in toowl", `CFBundleDocumentTypes` in Info.plist)
   go to the matching tool, whose `FileDrop` takes them (`takeIncoming`).
   Capacitor plugins are dynamic imports only. Inside the app the install
-  button and the Trakteer links are hidden (guideline 3.1.1), and slugs in
-  `IOS_UNSUPPORTED` (`registry.ts`) are left out. Freemium goes through
+  button and the Trakteer links are hidden (guideline 3.1.1), and `webOnly`
+  tools plus slugs in `IOS_UNSUPPORTED` (`registry.ts`) are left out. Freemium goes through
   `src/lib/premium.ts` only (`usePremium`, `buyPremium`, `restorePremium`;
   product `toowl.pro`), backed on iOS by the local StoreKit 2 plugin in
   `native/store/` (auto-registered by `cap sync`); the website sells nothing.

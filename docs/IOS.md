@@ -25,7 +25,9 @@ langkah di bawah dijalankan di Mac.
 Yang berubah di situs hanya berlaku di dalam app: tombol "Pasang aplikasi",
 service worker, dan link Trakteer disembunyikan (Apple melarang link pembayaran
 di luar In-App Purchase, guideline 3.1.1), dan **Rekam Layar** tidak tampil
-karena web view iOS tidak bisa merekam layar.
+karena web view iOS tidak bisa merekam layar. Tool medis (`webOnly` di
+`src/tools/registry.ts`, sama seperti di app Play) juga tidak tampil, karena
+Apple meminta fitur kesehatan diterbitkan akun organisasi (guideline 5.1.1(ix)).
 
 ## 1. Sekali saja: siapkan Mac dan akun
 

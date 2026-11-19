@@ -104,6 +104,7 @@ import {
   Projector,
   type LucideIcon,
 } from 'lucide-react'
+import { isPlayApp } from '@/lib/platform'
 
 export interface Tool {
   /** URL segment: the tool lives at #/<slug>. */
@@ -123,6 +124,11 @@ export interface Tool {
   component: LazyExoticComponent<ComponentType>
   /** The tool as an installable npm package (packages/<dir>/), shown under "Pasang di situsmu". */
   package?: ToolPackage
+  /**
+   * Left out of the Android (Play Store) and iOS (App Store) apps. Medical/health
+   * features there need an organization developer account, so they stay web-only.
+   */
+  webOnly?: boolean
 }
 
 export interface ToolPackage {
@@ -1407,6 +1413,7 @@ const ALL_TOOLS: Tool[] = [
   },
   {
     slug: 'hpl',
+    webOnly: true,
     category: 'productivity',
     keywords: ['hpl', 'hari perkiraan lahir', 'hamil', 'kehamilan', 'hpht', 'naegele', 'usia kehamilan', 'trimester', 'usg', 'bidan', 'due date', 'pregnancy', 'ibu hamil', 'melahirkan'],
     title: 'Hitung HPL Kehamilan',
@@ -1495,6 +1502,7 @@ const ALL_TOOLS: Tool[] = [
   },
   {
     slug: 'kartu-medis',
+    webOnly: true,
     category: 'emergency',
     keywords: ['kartu medis', 'ice', 'golongan darah', 'alergi', 'obat', 'kontak darurat', 'lock screen', 'wallpaper', 'layar kunci', 'penolong', 'medical id', 'blood type', 'allergy', 'emergency contact', 'medical card'],
     title: 'Kartu Medis / ICE',
@@ -1506,6 +1514,7 @@ const ALL_TOOLS: Tool[] = [
   },
   {
     slug: 'cpr',
+    webOnly: true,
     category: 'emergency',
     keywords: ['cpr', 'rjp', 'resusitasi', 'henti jantung', 'pijat jantung', 'napas buatan', 'aed', 'pertolongan pertama', 'p3k', 'metronom', 'cardiac arrest', 'first aid', 'chest compressions', '112', '119'],
     title: 'Panduan CPR',
@@ -1517,6 +1526,7 @@ const ALL_TOOLS: Tool[] = [
   },
   {
     slug: 'p3k',
+    webOnly: true,
     category: 'emergency',
     keywords: ['p3k', 'pertolongan pertama', 'tersedak', 'heimlich', 'luka bakar', 'pendarahan', 'pingsan', 'kejang', 'gigitan ular', 'patah tulang', 'pmi', 'first aid', 'choking', 'burns', 'bleeding', 'seizure', 'snake bite', 'fracture', '112', '119'],
     title: 'Panduan P3K',
@@ -1602,7 +1612,16 @@ const inIosApp =
   typeof window !== 'undefined' &&
   (window as Window & { Capacitor?: { getPlatform?: () => string } }).Capacitor?.getPlatform?.() === 'ios'
 
-export const TOOLS: Tool[] = inIosApp ? ALL_TOOLS.filter((t) => !IOS_UNSUPPORTED.has(t.slug)) : ALL_TOOLS
+/**
+ * Every tool this visitor can use. Both store apps leave out the web-only
+ * (medical) ones: Play and App Store (guideline 5.1.1(ix)) want health
+ * features from an organization account. iOS also drops what WKWebView can't run.
+ */
+export const TOOLS: Tool[] = inIosApp
+  ? ALL_TOOLS.filter((t) => !t.webOnly && !IOS_UNSUPPORTED.has(t.slug))
+  : isPlayApp()
+    ? ALL_TOOLS.filter((t) => !t.webOnly)
+    : ALL_TOOLS
 
 /** A tool's title, description and formats in the given language (English lives in registry-en.ts). */
 export function toolText(tool: Tool, lang: Lang) {
