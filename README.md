@@ -1,21 +1,26 @@
-# tools
+# toowl
 
 **English** · [Bahasa Indonesia](README.id.md)
 
 **My everyday file toolbox, built for the file work I do every day and published free for everyone.**
-112 tools for PDF, Office files, images, video, audio and QR codes, and every one of them runs entirely in your browser.
+113 tools for PDF, Office files, CAD drawings, images, video, audio, music and everyday calculations, and every one of them runs entirely in your browser.
 Your files are never uploaded.
 
-[![Live demo](https://img.shields.io/badge/live%20demo-chalidade.github.io%2Ftools-6366f1)](https://toowl.my.id/)
+[![Live demo](https://img.shields.io/badge/live-toowl.my.id-c8f031)](https://toowl.my.id/)
 [![Deploy to GitHub Pages](https://github.com/chalidade/tools/actions/workflows/pages.yml/badge.svg)](https://github.com/chalidade/tools/actions/workflows/pages.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 ![TypeScript](https://img.shields.io/badge/TypeScript-6-3178c6?logo=typescript&logoColor=white)
 ![React](https://img.shields.io/badge/React-19-61dafb?logo=react&logoColor=black)
 ![Vite](https://img.shields.io/badge/Vite-8-646cff?logo=vite&logoColor=white)
 
-<a href="https://toowl.my.id/"><img src="docs/launch-en.gif" alt="tools launch preview: search for a tool, open it, convert a file in the browser" width="480"></a>
+<a href="https://toowl.my.id/en/"><img src="docs/intro-en.gif" alt="toowl intro: type what you need, open Image to SVG, trace a logo, open an Excel file, browse all 113 tools" width="720"></a>
 
-▶ [Watch the 16-second launch video with sound](https://github.com/user-attachments/assets/d0f73458-88ca-4a23-937d-e8166ab4079d) · [Bahasa Indonesia version](https://github.com/user-attachments/assets/4270efe2-2e7e-4d1a-a5db-766ac01e369b)
+▶ [Watch the 30-second intro (MP4)](docs/intro-en.mp4) · [Bahasa Indonesia version](docs/intro-id.mp4)
+
+<p>
+  <img src="docs/screenshot.png" alt="Home page on a laptop: one search box listing popular tools" width="68%">
+  <img src="docs/screenshot-mobile.png" alt="Home page on a phone: popular tiles, categories and a search dock at the bottom" width="26%">
+</p>
 
 ## Why
 
@@ -26,7 +31,8 @@ third-party processing API. Heavy work is done with libraries compiled to WebAss
 browser's own media encoders, and a library is downloaded only when you open the tool that needs it.
 
 - **Free and open source** (MIT)
-- **Bilingual UI**: English and Indonesian, with a toggle in the header
+- **One search box**: the home page is a command palette (`/` or Ctrl/⌘+K, arrow keys, Enter); on a phone it is a dock at the bottom, in thumb reach
+- **Bilingual UI**: English and Indonesian; every tool has its own address in both (`/<tool>/` and `/en/<tool>/`)
 - **Installable app**: add it to a phone's home screen or a desktop ("Install app" in the header); it opens without browser bars, and every tool you have opened once keeps working offline
 - **Full screen instruments**: piano, guitar and drums have a full-screen mode that turns a phone sideways
 - **Embeddable**: any tool can go on your own site through an iframe, and the first tool is packaged
@@ -34,7 +40,7 @@ browser's own media encoders, and a library is downloaded only when you open the
 
 ## Tools
 
-All 45, grouped the way the home page groups them. Each name links to the live tool.
+All 113, grouped the way the site groups them. Each name links to the live tool.
 
 **Open Documents**
 - [PDF Reader](https://toowl.my.id/en/pdf-reader/): pages drawn by pdf.js with its text layer on top (select, copy, Ctrl+F), working links, password-protected PDFs, zoom, page jump, full screen
@@ -72,6 +78,7 @@ Each reader opens the other three formats too.
 - [Protect PDF](https://toowl.my.id/en/protect-pdf/) (AES-256 password and permissions) and [Unlock PDF](https://toowl.my.id/en/unlock-pdf/)
 
 **Images & Media**
+- [Image to SVG](https://toowl.my.id/en/image-to-svg/): trace a logo, icon, sticker or signature from PNG/JPG into a vector SVG with VTracer (wasm), in colour or black & white, with curve/polygon modes and speckle filtering
 - [Upscale Image](https://toowl.my.id/en/upscale-image/): 2× or 4× with Real-ESRGAN (realesr-general-x4v3) on ONNX Runtime Web, WebGPU or WebAssembly, tiled
 - [Compress Images](https://toowl.my.id/en/compress-image/): batch JPG/WebP, optional "max N KB" size limit, metadata (including GPS) stripped
 - [Crop & Resize Image](https://toowl.my.id/en/crop-resize-image/): free or fixed ratios, rotate, flip, exact pixels
@@ -90,6 +97,8 @@ Each reader opens the other three formats too.
 - [Photo Collage](https://toowl.my.id/en/kolase/): 2–9 photos in grid, strip or one-big layouts, spacing, rounded corners, 1:1 / 4:5 / 9:16, JPG or PNG
 - [GIF ⇄ MP4](https://toowl.my.id/en/gif-mp4/), [Extract Video Frames](https://toowl.my.id/en/extract-frames/)
 - [Change Speed](https://toowl.my.id/en/change-speed/): 0.25× to 4× with the pitch kept natural (a hand-written WSOLA time-stretch)
+- [Noise Remover](https://toowl.my.id/en/denoise/): removes background noise, hiss and hum from voices in video or audio with DeepFilterNet 3 or RNNoise (self-hosted wasm), latency compensated so lips stay in sync
+- [Add Music to Video](https://toowl.my.id/en/add-music/): background music under a video with volume, loop, fade and automatic ducking when someone talks
 - [Merge Audio](https://toowl.my.id/en/merge-audio/), [Compress Audio](https://toowl.my.id/en/compress-audio/) (MP3, AAC or Opus)
 - [Screen Recorder](https://toowl.my.id/en/screen-recorder/): screen, window or tab, with mic and tab audio mixed, a floating camera, and WebM or MP4 export
 - [Voice Recorder](https://toowl.my.id/en/audio-recorder/): live waveform, recordings kept in IndexedDB, export to MP3/M4A/WAV
@@ -178,8 +187,8 @@ packages/screen-recorder/  the same tool source built as an npm package / web co
 ```
 
 - **One folder per tool, one registry entry.** Adding an entry is all it takes: the home-page card,
-  the search index and the `#/<slug>` route are all derived from the
-  registry. Each tool is `React.lazy`-loaded, and heavy libraries (pdf.js, ExcelJS, Mediabunny…)
+  the search index, the `/<slug>/` and `/en/<slug>/` pages and the sitemap are all derived from
+  the registry. Each tool is `React.lazy`-loaded, and heavy libraries (pdf.js, ExcelJS, Mediabunny…)
   are dynamic `import()`s inside the tool, so the home page never pays for them.
 - **Shared engines instead of copy-paste.** PDF text extraction (`lib/pdf-text.ts`) feeds PDF to
   Word, Excel, PowerPoint and Markdown; PDF editing (`lib/pdf-doc.ts`, pdf-lib) handles rotated
@@ -189,14 +198,18 @@ packages/screen-recorder/  the same tool source built as an npm package / web co
   optimisation (a fresh module per command, files in its in-memory FS). zxing-wasm reads barcodes,
   with its `.wasm` bundled by Vite instead of fetched from a CDN. MP3 and AAC encoders are wasm
   fallbacks registered only when the browser has no native encoder.
-- **Hash routing under `/tools/`.** Routes are `#/<slug>` so a reload on GitHub Pages' sub-path never
-  404s and no server rewrite is needed.
-- **A light home page.** A short static intro, then the searchable tool grid (press `/` to
-  search) grouped by category. No animation library and no per-frame JavaScript, so it opens fast
-  even on a phone.
+- **Real addresses for search engines.** Every tool has `/<slug>/` (Indonesian) and `/en/<slug>/`
+  (English); the address decides the language. `scripts/seo.mjs` writes an `index.html` per page
+  with its own title, description, `hreflang` and JSON-LD, plus `sitemap.xml` and `404.html`, so a
+  reload on static hosting never 404s. Old `#/<slug>` links are rewritten on load.
+- **A fast, one-box home page.** On a laptop it is a command palette that lists recent and popular
+  tools; on a phone, tiles and categories with a search dock at the bottom. The full catalogue
+  lives at [`/all/`](https://toowl.my.id/en/all/). Motion is CSS only: no animation library and
+  no per-frame JavaScript.
+- **Design.** Near-black with one acid-lime accent, Geist sans and mono served from the site
+  itself (never a font CDN), dark by default with a light theme in the header.
 - **Bilingual by construction.** Every string is written in both languages at the point of use
-  (`t('Indonesian', 'English')`). English is the default unless the browser language is Indonesian
-  or Malay; `?lang=en` in a link forces it.
+  (`t('Indonesian', 'English')`).
 
 More detail, including how the npm package isolates its styles in a Shadow DOM, is in
 [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
@@ -209,7 +222,9 @@ More detail, including how the npm package isolates its styles in a Shadow DOM, 
 | PDF | pdf.js (legacy build), pdf-lib, qpdf (wasm), jsPDF + jspdf-autotable |
 | Office | docx-preview, docx, ExcelJS + numfmt, pptxgenjs, @jvmr/pptx-to-html, html2canvas-pro, DOMPurify |
 | Audio / video | Mediabunny on WebCodecs, @mediabunny/aac-encoder and mp3-encoder (wasm), gifenc, gifuct-js |
-| Images / QR | Canvas 2D, zxing-wasm, node-qrcode |
+| Images / QR | Canvas 2D, VTracer (wasm), ONNX Runtime Web + Real-ESRGAN, libheif (wasm), Tesseract (wasm), zxing-wasm, node-qrcode |
+| CAD | LibreDWG (wasm, via `@mlightcad/libredwg-web`), own DXF writer |
+| Noise removal | DeepFilterNet 3 and RNNoise (wasm, self-hosted) |
 | Music | Web Audio API only — pitch, tempo and key detection and the chord shapes are written in-house |
 | Other | marked + DOMPurify (Notes), perfect-freehand (Whiteboard), JSZip |
 
@@ -227,13 +242,8 @@ npm run build:packages   # build the embeddable npm package(s)
 npm run og               # re-render the Open Graph image (needs Chrome/Chromium)
 ```
 
-A local build uses base `/`. To reproduce the GitHub Pages build exactly:
-
-```bash
-npx tsc -b && npx vite build --base=/tools/ && npx vite preview --base=/tools/
-```
-
-Every push to `main` is built and deployed to GitHub Pages by
+The site is served from the domain root (custom domain `toowl.my.id` on GitHub Pages), so a local
+build matches production. Every push to `main` is built and deployed by
 [`.github/workflows/pages.yml`](.github/workflows/pages.yml).
 
 ## Adding a tool
@@ -268,7 +278,8 @@ third-party service.
 - **Smaller notes:** the Color Picker's screen eyedropper needs the EyeDropper API (Chrome/Edge);
   HEIC images open only in Safari.
 
-**Known limitations**, also stated in each tool: scanned PDFs are not supported (that needs OCR);
+**Known limitations**, also stated in each tool: the PDF converters need a text layer, so scanned PDFs
+come out as images (use [OCR](https://toowl.my.id/en/ocr/) on a photo or screenshot instead);
 legacy `.doc`, `.ppt` and `.xls` are not supported; Excel to PDF and Watermark PDF write text with
 PDF's built-in Helvetica, so non-Latin scripts do not render correctly.
 

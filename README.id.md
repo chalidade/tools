@@ -1,18 +1,25 @@
-# tools
+# toowl
 
 [English](README.md) · **Bahasa Indonesia**
 
-Kumpulan tools gratis yang jalan **sepenuhnya di browser**. File diproses di
-perangkat pengguna: tidak di-upload ke server dan tidak disimpan di mana pun.
+Kotak perkakas file sehari-hari: **113 tools gratis** untuk PDF, Office, gambar
+CAD, foto, video, audio, musik, dan hitungan sehari-hari yang jalan **sepenuhnya
+di browser**. File diproses di perangkat pengguna: tidak di-upload ke server dan
+tidak disimpan di mana pun.
 
 **Live:** https://toowl.my.id/
 
-<a href="https://toowl.my.id/"><img src="docs/launch-id.gif" alt="Cuplikan launch tools: cari tool, buka, konversi file langsung di browser" width="480"></a>
+<a href="https://toowl.my.id/"><img src="docs/intro-id.gif" alt="Pengenalan toowl: ketik yang dibutuhkan, buka Gambar ke SVG, jiplak logo, buka file Excel, lihat semua 113 tools" width="720"></a>
 
-▶ [Tonton video launch 16 detik dengan suara](https://github.com/user-attachments/assets/4270efe2-2e7e-4d1a-a5db-766ac01e369b) · [Versi English](https://github.com/user-attachments/assets/d0f73458-88ca-4a23-937d-e8166ab4079d)
+▶ [Tonton video pengenalan 30 detik (MP4)](docs/intro-id.mp4) · [Versi English](docs/intro-en.mp4)
+
+<p>
+  <img src="docs/screenshot-id.png" alt="Beranda di laptop: satu kotak pencarian berisi tools populer" width="68%">
+  <img src="docs/screenshot-mobile-id.png" alt="Beranda di HP: kotak tools populer, kategori, dan kolom cari di bawah" width="26%">
+</p>
 
 Tersedia dalam **Bahasa Indonesia dan English** — ganti lewat tombol ID/EN di
-header (atau lewat alamatnya: `/tools/en/<tool>/` selalu English).
+header (atau lewat alamatnya: `/en/<tool>/` selalu English).
 
 ## Pasang di situsmu
 
@@ -93,6 +100,7 @@ dan mengirim event berisi file rekaman. Ada juga API tanpa UI untuk developer.
 | Tanda Tangan ke PNG | [`/signature-png/`](https://toowl.my.id/signature-png/) | Gambar tanda tangan atau foto dari kertas; latar dan bintik dibuang, warna tinta bisa diganti, hasilnya PNG transparan yang dipotong rapat. |
 | Scan Dokumen | [`/scan/`](https://toowl.my.id/scan/) | Foto kertas, tarik empat sudut (tebakan awal otomatis), luruskan perspektif di canvas tanpa OpenCV, pilih hitam-putih/abu-abu/warna, lalu gabung beberapa halaman jadi satu PDF (pdf-lib). |
 | OCR — Foto ke Teks | [`/ocr/`](https://toowl.my.id/ocr/) | Teks Indonesia dan Inggris dari foto atau tangkapan layar dengan Tesseract (wasm); worker, core, dan data bahasa ikut dibundel situs, tanpa CDN, dan baru dimuat saat Baca teks ditekan. |
+| Gambar ke SVG | [`/image-to-svg/`](https://toowl.my.id/image-to-svg/) | Jiplak logo, ikon, stiker, atau tanda tangan dari PNG/JPG jadi vektor SVG dengan VTracer (wasm, MIT): berwarna atau hitam-putih, mode kurva/garis lurus/piksel, detail warna, dan pembersih bintik. Tiap jiplakan jalan di worker sendiri. Cocok untuk gambar dengan warna rata; foto biasa jadi ribuan bentuk kecil. |
 | Upscale Gambar | [`/upscale-image/`](https://toowl.my.id/upscale-image/) | Perbesar 2×/4× dengan Real-ESRGAN `realesr-general-x4v3` (BSD-3-Clause, 4,8 MB, diekspor ke ONNX oleh `build-model.py`) lewat ONNX Runtime Web: WebGPU bila ada, WebAssembly bila tidak. Diproses per petak dengan tumpang tindih supaya tidak ada sambungan; transparansi PNG ikut; penggeser sebelum/sesudah. |
 | Kompres Gambar | [`/compress-image/`](https://toowl.my.id/compress-image/) | Banyak gambar sekaligus → JPG/WebP (atau format asli), kualitas dan ukuran maksimum diatur, atau batas ukuran file (mis. maksimal 200 KB); rotasi EXIF diterapkan, metadata (termasuk GPS) dihapus, transparansi terjaga di WebP. Hasil yang tidak lebih kecil disimpan apa adanya. |
 | Rekam Layar | [`/screen-recorder/`](https://toowl.my.id/screen-recorder/) | Rekam seluruh layar, satu jendela, atau satu tab (getDisplayMedia + MediaRecorder, VP9/Opus WebM; MP4 di Safari). Suara tab/sistem dan mikrofon bisa dipakai bersamaan (dicampur lewat Web Audio), 30/60 fps, hitung mundur 3 detik, jeda/lanjut/batal, judul tab menunjukkan durasi rekaman, dan berhenti otomatis saat "Berhenti berbagi" ditekan. Kamera melayang lewat picture-in-picture (ikut terekam saat merekam seluruh layar). Rekaman tersimpan di IndexedDB browser ini; unduh WebM atau ubah ke MP4 (H.264/AAC, Mediabunny). Hanya di browser komputer. |
@@ -113,6 +121,8 @@ dan mengirim event berisi file rekaman. Ada juga API tanpa UI untuk developer.
 | Potong Video untuk Status WhatsApp | [`/status-wa/`](https://toowl.my.id/status-wa/) | Pecah video panjang jadi bagian sama panjang (maks. 15/30/60 detik, pilih sesuai batas aplikasimu), tiap bagian di-encode ulang di bawah 16 MB (maks. 720p) lewat `convertMedia` dengan `trim`. Unduh satuan atau ZIP. |
 | Kolase Foto | [`/kolase/`](https://toowl.my.id/kolase/) | 2–9 foto dalam tata letak grid, strip tegak/datar, atau satu besar; atur urutan, jarak, sudut membulat, latar, rasio 1:1/4:5/9:16 (1080 px), unduh JPG/PNG. |
 | Ubah Kecepatan | [`/change-speed/`](https://toowl.my.id/change-speed/) | 0,25×–4× untuk video dan audio. Nada suara tetap normal (time-stretch WSOLA sendiri, streaming per potongan) atau ikut berubah. Video jadi MP4 dengan frame rate tetap saat dipercepat; audio jadi MP3/M4A/WAV. Pratinjau langsung memakai kecepatan yang dipilih. |
+| Peredam Noise | [`/denoise/`](https://toowl.my.id/denoise/) | Hilangkan bising, desis, dan dengung dari suara di video atau audio dengan DeepFilterNet 3 (bawaan) atau RNNoise yang lebih ringan, keduanya wasm yang di-host situs ini. Jeda model dikompensasi, jadi suara tetap pas dengan gerak bibir. |
+| Tambah Musik ke Video | [`/add-music/`](https://toowl.my.id/add-music/) | Musik latar di bawah video: atur volume, ulangi, fade masuk/keluar, dan kecilkan otomatis saat ada yang bicara (ducking). Hasil MP4. |
 | Gabung Audio | [`/merge-audio/`](https://toowl.my.id/merge-audio/) | Banyak file audio (atau suara dari video), boleh beda format/sample rate/kanal, digabung berurutan dengan jeda 0–2 detik → MP3/M4A/WAV. Tiap file di-decode dan di-resample oleh Mediabunny lalu dialirkan ke satu encoder, jadi file panjang tidak dimuat utuh ke memori. |
 | Generator QR Code | [`/qr-generator/`](https://toowl.my.id/qr-generator/) | Tautan, teks, Wi-Fi (langsung tersambung saat dipindai), WhatsApp (nomor 08… jadi +62), kontak vCard, email, telepon (node-qrcode). Bentuk kotak/membulat/titik, warna, tepi kosong, logo di tengah (koreksi kesalahan otomatis H), unduh PNG 512–2048 px atau SVG. Hasil langsung dipindai ulang (zxing-wasm) untuk memastikan terbaca; peringatan untuk warna terbalik atau kontras rendah. |
 | Pembaca QR & Barcode | [`/qr-reader/`](https://toowl.my.id/qr-reader/) | Dari gambar, screenshot yang ditempel, atau kamera (zxing-wasm, wasm-nya ikut di-host situs — tidak dari CDN). Membaca QR, Micro QR, Data Matrix, Aztec, PDF417, dan barcode EAN/UPC/Code 128/Code 39/ITF; beberapa kode dalam satu gambar; kode terbalik warna dan miring. Isi Wi-Fi, kontak, WhatsApp, email, dan tautan ditampilkan per kolom dengan tombol salin; password Wi-Fi disembunyikan dulu. Tautan tidak pernah dibuka otomatis, dan hanya http/https/mailto/tel/sms yang bisa diklik. |
@@ -168,9 +178,17 @@ dan mengirim event berisi file rekaman. Ada juga API tanpa UI untuk developer.
 
 ## Beranda
 
-Halaman depan sengaja dibuat ringan: judul singkat, kotak pencarian (tekan
-**/** untuk langsung mencari), pilihan kategori, dan kartu tiap tool — tanpa
-animasi berat, jadi cepat dibuka bahkan di ponsel.
+Halaman depan adalah satu kotak pencarian. Di laptop bentuknya command palette
+di tengah layar: tekan **/** atau **Ctrl/⌘+K**, pilih dengan panah, buka dengan
+Enter; saat kosong ia menampilkan tool yang terakhir kamu buka dan yang
+populer. Di HP kotaknya menempel di bawah (mudah dijangkau jempol), dengan
+kotak tool populer dan daftar kategori di atasnya. Katalog lengkap ada di
+[`/all/`](https://toowl.my.id/all/). Animasinya CSS saja, tanpa library
+animasi, jadi tetap cepat di ponsel.
+
+Desainnya hitam pekat dengan satu aksen hijau limau, font Geist (sans dan mono)
+yang disajikan dari situs ini sendiri, gelap secara default dengan pilihan tema
+terang di header.
 
 ## Pasang sebagai aplikasi
 
@@ -207,7 +225,8 @@ npm run build     # type-check + build (gerbang kebenaran)
 npm run lint      # oxlint
 ```
 
-Setiap push ke `main` otomatis di-deploy ke GitHub Pages lewat
+Setiap push ke `main` otomatis di-deploy ke GitHub Pages (domain
+`toowl.my.id`) lewat
 `.github/workflows/pages.yml`.
 
 ## Menambah tool baru
@@ -224,9 +243,10 @@ Setiap push ke `main` otomatis di-deploy ke GitHub Pages lewat
    misalnya ekstensi file dan istilah sehari-hari) (slug, judul, deskripsi,
    ikon lucide, format, `lazy(() => import(...))`).
 
-Kartu di halaman depan dan rute `#/<slug>` muncul otomatis. Routing sengaja
-memakai hash supaya jalan di sub-path Pages (dan di dalam APK) tanpa rewrite di
-server.
+Hasil pencarian, halaman `/<slug>/` dan `/en/<slug>/`, serta sitemap muncul
+otomatis. `scripts/seo.mjs` menulis `index.html` untuk tiap halaman saat build,
+jadi reload tidak 404 walau hostingnya statis. Teks Inggris tool ditaruh di
+`src/tools/registry-en.ts`.
 
 **Aturan main:** semua pemrosesan wajib di sisi klien. Jangan menambahkan
 backend atau mengirim file pengguna ke layanan pihak ketiga.
