@@ -1,4 +1,4 @@
-import { Coffee, Github } from 'lucide-react'
+import { Coffee, Github, Shield } from 'lucide-react'
 import { Logo } from '@/components/Logo'
 import { SUPPORT_URL } from '@/components/SupportToast'
 import { useT } from '@/lib/i18n'
@@ -16,7 +16,11 @@ export function Footer({ className }: { className?: string }) {
             {t('Semua diproses di browser · tidak ada yang di-upload', 'Everything runs in your browser · nothing is uploaded')}
           </span>
         </div>
-        <div className="flex items-center gap-5">
+        <div className="flex flex-wrap items-center gap-5">
+          <a href={`${import.meta.env.BASE_URL}privacy/`} rel="external" className={link}>
+            <Shield className="size-4" />
+            {t('Privasi', 'Privacy')}
+          </a>
           <a href={SUPPORT_URL} target="_blank" rel="noreferrer" className={link}>
             <Coffee className="size-4" />
             {t('Traktir kopi', 'Buy me a coffee')}
