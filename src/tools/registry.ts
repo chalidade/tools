@@ -102,6 +102,8 @@ import {
   BookOpenText,
   Table2,
   Projector,
+  Aperture,
+  SlidersHorizontal,
   type LucideIcon,
 } from 'lucide-react'
 import { isPlayApp } from '@/lib/platform'
@@ -124,6 +126,8 @@ export interface Tool {
   component: LazyExoticComponent<ComponentType>
   /** The tool as an installable npm package (packages/<dir>/), shown under "Pasang di situsmu". */
   package?: ToolPackage
+  /** Questions people search with, answered under the tool and in its static page (English in registry-en.ts). */
+  faq?: { q: string; a: string }[]
   /**
    * Left out of the Android (Play Store) app. Medical/health features there
    * need an organization developer account, so they stay web-only.
@@ -830,6 +834,52 @@ const ALL_TOOLS: Tool[] = [
     badge: 'Baru',
     component: lazy(() => import('./convert-image/ConvertImage')),
     package: { name: '@chalidade/convert-image', element: 'convert-image', dir: 'convert-image', published: false },
+  },
+  {
+    slug: 'arw-to-jpg',
+    category: 'media',
+    keywords: ['arw', 'raw', 'sony', 'arw ke jpg', 'arw to jpg', 'arw ke png', 'cr2', 'cr3', 'canon', 'nef', 'nikon', 'raf', 'fujifilm', 'orf', 'rw2', 'dng', 'kamera', 'camera', 'foto', 'jpg', 'png'],
+    title: 'ARW ke JPG',
+    description: 'Ubah foto RAW Sony (ARW) — juga CR2, NEF, RAF, DNG — jadi JPG atau PNG ukuran penuh, banyak sekaligus.',
+    icon: Aperture,
+    formats: 'ARW / CR2 / NEF / RAF / DNG → JPG / PNG',
+    badge: 'Baru',
+    component: lazy(() => import('./arw-to-jpg/ArwToJpg')),
+    faq: [
+      {
+        q: 'Bagaimana cara membuka file ARW tanpa Lightroom?',
+        a: 'Buka file .ARW di halaman ini. Data sensornya diproses di browser dengan LibRaw (white balance dari kamera, warna sRGB), lalu disimpan sebagai JPG atau PNG. Tidak perlu memasang aplikasi.',
+      },
+      {
+        q: 'Kamera apa saja yang didukung?',
+        a: 'Hampir semua kamera Sony (ARW, SR2, SRF), juga Canon (CR2, CR3), Nikon (NEF), Fujifilm (RAF), Olympus/OM (ORF), Panasonic (RW2), Pentax (PEF), dan DNG.',
+      },
+    ],
+  },
+  {
+    slug: 'image-to-dng',
+    category: 'media',
+    keywords: ['dng', 'raw', 'jpg ke dng', 'png ke dng', 'jpg to dng', 'image to dng', 'jpg ke raw', 'jpg ke arw', 'png ke arw', 'image to arw', 'jpg to arw', 'arw', 'cr2', 'nef', 'lightroom', 'photoshop', 'camera raw', 'snapseed', 'preset', 'foto', 'gambar'],
+    title: 'Gambar ke DNG',
+    description: 'Ubah JPG, PNG, atau HEIC jadi DNG (RAW terbuka Adobe) yang bisa diedit di Lightroom, Photoshop, dan Snapseed.',
+    icon: SlidersHorizontal,
+    formats: 'JPG / PNG / HEIC → DNG',
+    badge: 'Baru',
+    component: lazy(() => import('./image-to-dng/ImageToDng')),
+    faq: [
+      {
+        q: 'Bisakah JPG diubah jadi ARW?',
+        a: 'Tidak dengan benar. ARW adalah file RAW kamera Sony yang berisi data mentah sensor kamera tertentu; JPG tidak punya data itu, jadi "JPG ke ARW" hanya menghasilkan file palsu yang ditolak Lightroom. Yang bisa adalah DNG, format RAW terbuka yang dibaca Lightroom, Photoshop, dan Snapseed — itulah yang dibuat tool ini.',
+      },
+      {
+        q: 'Apakah DNG dari JPG kualitasnya jadi seperti RAW?',
+        a: 'Tidak. Detail dan rentang dinamis yang sudah hilang saat foto disimpan sebagai JPG tidak kembali. DNG berguna untuk memakai preset Lightroom dan alur kerja RAW, dan tidak menurunkan kualitas lagi saat disimpan karena kompresinya lossless.',
+      },
+      {
+        q: 'Kenapa ukuran DNG lebih besar dari JPG?',
+        a: 'DNG menyimpan setiap piksel sebagai data linear 16-bit dengan kompresi lossless, sedangkan JPG membuang sebagian informasi supaya kecil.',
+      },
+    ],
   },
   {
     slug: 'pas-foto',

@@ -6,6 +6,7 @@
 
 import type { Lang } from '@/lib/i18n'
 import { TOOLS, categoryText, toolText, type Tool } from '@/tools/registry'
+import { TOOLS_EN } from '@/tools/registry-en'
 
 export const SITE = 'https://toowl.my.id/'
 
@@ -77,6 +78,15 @@ export function aboutPoints(tool: Tool, lang: Lang): string[] {
   ]
 }
 
+/** Questions and answers shown under a tool (and in its static page), if it has any. */
+export function toolFaq(tool: Tool, lang: Lang) {
+  return (lang === 'en' ? TOOLS_EN[tool.slug]?.faq : undefined) ?? tool.faq ?? []
+}
+
+export function faqHeading(lang: Lang) {
+  return lang === 'en' ? 'Questions' : 'Tanya jawab'
+}
+
 /** Other tools in the same category, for the "related" links. */
 export function relatedTools(tool: Tool, max = 6): Tool[] {
   return TOOLS.filter((t) => t.category === tool.category && t.slug !== tool.slug).slice(0, max)
@@ -93,7 +103,7 @@ export function structuredData(meta: PageMeta) {
   if (!meta.slug)
     return { '@context': 'https://schema.org', '@type': 'WebSite', name: 'toowl', url, inLanguage: meta.lang, description: meta.description }
   const tool = TOOLS.find((t) => t.slug === meta.slug)!
-  return {
+  const app = {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     name: toolText(tool, meta.lang).title,
@@ -107,6 +117,17 @@ export function structuredData(meta: PageMeta) {
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'IDR' },
     isPartOf: { '@type': 'WebSite', name: 'toowl', url: SITE },
   }
+  const faq = toolFaq(tool, meta.lang)
+  if (!faq.length) return app
+  return [
+    app,
+    {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      inLanguage: meta.lang,
+      mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+    },
+  ]
 }
 
 /**

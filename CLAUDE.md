@@ -38,6 +38,20 @@ picture; the rules that matter when editing:
   area in px. A wasm panic poisons the instance, hence a fresh worker each
   time. Binary mode takes dark pixels as the shape, so `binarize` flattens
   alpha onto white first. Don't use potrace: it is GPL.
+- RAW photo tools: `arw-to-jpg` develops RAW files with LibRaw from
+  `libraw-wasm` (ISC wrapper, LibRaw LGPL-2.1/CDDL), one instance (its own
+  worker) per file, disposed after. That build uses wasm threads; it works on
+  this non-isolated page in Chromium, and where shared wasm memory cannot be
+  created `raw.ts` falls back to the largest embedded baseline JPEG found by
+  walking the TIFF IFDs. `image-to-dng` writes the DNG itself (`dng.ts`,
+  `ljpeg.ts`, encoded in a worker): IFD0 is a small RGB preview, the SubIFD
+  is LinearRaw, 16-bit linear sRGB in 256 px lossless-JPEG tiles (SOF3,
+  predictor 1), ColorMatrix1 = XYZ→sRGB under D65, AsShotNeutral 1/1/1 and a
+  linear ProfileToneCurve. Check output with rawpy/tifffile when changing it.
+- A registry entry may carry `faq` (Indonesian; English in `TOOLS_EN`):
+  shown under the tool by `ToolAbout`, in the static page, and as FAQPage
+  JSON-LD — use it for searches the tool answers indirectly (e.g. "JPG ke
+  ARW" lands on `image-to-dng`).
 - `doc-to-pdf` renders with docx-preview, extended in `docx-extend.ts` by
   wrapping its internal parser's methods once (the prototype comes from
   parsing an empty package): floating pictures (wrapNone/behind) and framePr

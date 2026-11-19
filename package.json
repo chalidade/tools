@@ -35,6 +35,7 @@
     "jspdf-autotable": "^5.0.8",
     "jszip": "^3.10.2",
     "libheif-js": "^1.23.5",
+    "libraw-wasm": "1.6.0",
     "lucide-react": "^0.469.0",
     "marked": "^18.1.0",
     "mediabunny": "^1.61.1",
