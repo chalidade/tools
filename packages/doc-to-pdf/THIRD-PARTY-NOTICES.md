@@ -12,6 +12,7 @@ The files in `dist/` bundle the following open-source software, unmodified.
 | tailwind-merge | MIT | https://github.com/dcastil/tailwind-merge |
 | class-variance-authority | Apache-2.0 | https://github.com/joe-bell/cva |
 | docx-preview (with JSZip) | Apache-2.0 (JSZip: MIT or GPL-3.0; used under MIT) | https://github.com/VolodymyrBaydalka/docxjs |
+| rtf.js (its EMF/WMF players only) | MIT | https://github.com/tbluemel/rtf.js |
 | html2canvas-pro (with css-line-break, text-segmentation) | MIT | https://github.com/yorickshan/html2canvas-pro |
 | jsPDF (with fflate, fast-png, iobuffer, pako, @babel/runtime) | MIT (pako: MIT and Zlib) | https://github.com/parallax/jsPDF |
 | jsPDF's optional modules, shipped as chunks this tool never loads: html2canvas, canvg (with core-js, rgbcolor, stackblur-canvas, svg-pathdata, raf, regenerator-runtime), DOMPurify | MIT (DOMPurify: MPL-2.0 or Apache-2.0; used under Apache-2.0) | https://github.com/niklasvh/html2canvas, https://github.com/canvg/canvg, https://github.com/cure53/DOMPurify |
