@@ -2,6 +2,8 @@ import { lazy, type ComponentType, type LazyExoticComponent } from 'react'
 import type { Lang } from '@/lib/i18n'
 import { CATEGORIES_EN, TOOLS_EN } from './registry-en'
 import {
+  FileOutput,
+  TableProperties,
   Dices,
   Vault,
   UsersRound,
@@ -1506,6 +1508,28 @@ export const TOOLS: Tool[] = [
     formats: 'Foto/PDF dokumen → brankas terenkripsi (.twlvault)',
     badge: 'Baru',
     component: lazy(() => import('./brankas/Brankas')),
+  },
+  {
+    slug: 'merge-excel',
+    category: 'productivity',
+    keywords: ['excel', 'xlsx', 'csv', 'gabung', 'pisah', 'pecah', 'sheet', 'spreadsheet', 'tabel', 'kolom', 'merge', 'split', 'combine', 'join', 'column', 'rows'],
+    title: 'Gabung & Pisah Excel/CSV',
+    description: 'Gabung banyak file Excel/CSV jadi satu (kolom dicocokkan dari judulnya), atau pecah satu sheet per nilai sebuah kolom.',
+    icon: TableProperties,
+    formats: 'XLSX / CSV → XLSX / CSV / ZIP',
+    badge: 'Baru',
+    component: lazy(() => import('./merge-excel/MergeExcel')),
+  },
+  {
+    slug: 'markdown-to-pdf',
+    category: 'to-pdf',
+    keywords: ['markdown', 'md', 'txt', 'teks', 'text', 'docx', 'word', 'pdf', 'catatan', 'readme', 'konversi', 'convert', 'notes'],
+    title: 'Markdown & Teks ke PDF / Word',
+    description: 'Tulis atau buka Markdown/TXT, lihat pratinjau halaman, lalu unduh PDF atau DOCX.',
+    icon: FileOutput,
+    formats: 'MD / TXT → PDF / DOCX',
+    badge: 'Baru',
+    component: lazy(() => import('./markdown-to-pdf/MarkdownToPdf')),
   },
 ]
 
