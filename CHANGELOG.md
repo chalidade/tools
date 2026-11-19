@@ -3,6 +3,14 @@
 Catatan harian apa yang berubah di [tools](https://toowl.my.id/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-20 — ARW ke JPG dan Gambar ke DNG
+
+Dua tool foto RAW baru; total sekarang **115 tools**.
+
+- **ARW ke JPG** (`/arw-to-jpg/`): foto RAW Sony (ARW) — juga CR2/CR3 Canon, NEF Nikon, RAF Fujifilm, ORF, RW2, PEF, dan DNG — diproses dari data sensornya jadi JPG atau PNG ukuran penuh, dengan white balance dari kamera. Bisa banyak sekaligus, ada pilihan ukuran setengah yang lebih cepat. Mesinnya LibRaw yang dikompilasi jadi wasm (`libraw-wasm`, di-host sendiri). Browser yang belum bisa menjalankannya di halaman ini memakai JPG pratinjau bawaan kamera.
+- **Gambar ke DNG** (`/image-to-dng/`): JPG, PNG, atau HEIC jadi DNG, format RAW terbuka Adobe, yang bisa diedit di Lightroom, Photoshop, dan Snapseed. Gambarnya disimpan sebagai data linear 16-bit dengan kompresi lossless, warna sRGB, dan white balance "As Shot", jadi tampilan awalnya sama dengan aslinya. Penulis DNG dan encoder lossless JPEG-nya ditulis sendiri.
+- Orang yang mencari "JPG ke ARW" diarahkan ke tool DNG. Halamannya menjelaskan kenapa ARW tidak bisa dibuat dari JPG, dan tool dengan bagian **Tanya jawab** sekarang ikut menampilkannya di halaman statis dan data terstruktur (FAQPage) untuk mesin pencari.
+
 ## 2026-11-19 — Statistik kunjungan tanpa cookie
 
 - toowl.my.id (dan aplikasi Android) sekarang menghitung kunjungan dengan **Cloudflare Web Analytics** (`src/lib/analytics.ts`): tanpa cookie, tanpa ID pengunjung, IP tidak disimpan. Yang terkirim hanya alamat halaman, referrer, jenis browser/perangkat, negara, dan waktu muat; isi file dan teks yang diketik tidak pernah.

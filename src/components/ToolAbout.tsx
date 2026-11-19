@@ -1,5 +1,5 @@
 import { Check } from 'lucide-react'
-import { aboutPoints, relatedHeading, relatedTools } from '@/lib/seo'
+import { aboutPoints, faqHeading, relatedHeading, relatedTools, toolFaq } from '@/lib/seo'
 import { pageUrl } from '@/lib/route'
 import { toolText, type Tool } from '@/tools/registry'
 import { useLang, useT } from '@/lib/i18n'
@@ -13,9 +13,23 @@ export function ToolAbout({ tool }: { tool: Tool }) {
   const t = useT()
   const lang = useLang()
   const related = relatedTools(tool)
+  const faq = toolFaq(tool, lang)
 
   return (
     <div className="mt-10 grid gap-8 border-t pt-8 sm:grid-cols-2 sm:pt-10">
+      {faq.length > 0 && (
+        <section className="sm:col-span-2">
+          <h2 className="font-semibold tracking-tight">{faqHeading(lang)}</h2>
+          <dl className="mt-3 grid gap-x-8 gap-y-4 text-sm sm:grid-cols-2">
+            {faq.map((item) => (
+              <div key={item.q}>
+                <dt className="font-medium text-foreground">{item.q}</dt>
+                <dd className="mt-1 text-muted-foreground">{item.a}</dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+      )}
       <div>
         <h2 className="font-semibold tracking-tight">{t('Kenapa aman dipakai', 'Why it is safe to use')}</h2>
         <ul className="mt-3 space-y-2 text-sm text-muted-foreground">

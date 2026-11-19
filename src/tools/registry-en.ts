@@ -19,7 +19,7 @@ export const CATEGORIES_EN: Record<CategoryId, { title: string; description: str
   emergency: { title: 'Emergency', description: 'SOS, flashlight, emergency numbers and sharing your location. Works offline.' },
 }
 
-export const TOOLS_EN: Record<string, { title: string; description: string; formats?: string; keywords?: string[] }> = {
+export const TOOLS_EN: Record<string, { title: string; description: string; formats?: string; keywords?: string[]; faq?: { q: string; a: string }[] }> = {
   'pdf-reader': {
     title: 'PDF Reader',
     description: 'Open and read a PDF in your browser: selectable, searchable text, working links, zoom and full screen.',
@@ -342,6 +342,40 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
   'compress-video': { title: 'Compress Video', description: "Shrink a video with your device's own encoder — fast, and nothing is uploaded.", keywords: ['shrink', 'reduce', 'smaller'] },
   'crop-resize-image': { title: 'Crop & Resize Image', description: 'Crop freely or to 1:1, 16:9, 4:5; rotate, flip and resize in pixels.', keywords: ['crop', 'resize', 'rotate'] },
   'convert-image': { title: 'Convert Image Format', description: 'Turn HEIC (iPhone photos), WebP, AVIF, PNG or JPG into JPG, PNG or WebP — many files at once.', keywords: ['heic', 'convert', 'format'] },
+  'arw-to-jpg': {
+    title: 'ARW to JPG',
+    description: 'Turn Sony RAW photos (ARW) — and CR2, NEF, RAF, DNG — into full-size JPG or PNG, many at once.',
+    keywords: ['raw converter', 'sony raw', 'open arw', 'raw to jpg'],
+    faq: [
+      {
+        q: 'How do I open an ARW file without Lightroom?',
+        a: 'Open the .ARW file on this page. Its sensor data is developed in your browser with LibRaw (camera white balance, sRGB colour) and saved as JPG or PNG. Nothing to install.',
+      },
+      {
+        q: 'Which cameras are supported?',
+        a: 'Nearly every Sony camera (ARW, SR2, SRF), plus Canon (CR2, CR3), Nikon (NEF), Fujifilm (RAF), Olympus/OM (ORF), Panasonic (RW2), Pentax (PEF) and DNG.',
+      },
+    ],
+  },
+  'image-to-dng': {
+    title: 'Image to DNG',
+    description: 'Turn a JPG, PNG or HEIC into a DNG (Adobe’s open RAW format) you can edit in Lightroom, Photoshop and Snapseed.',
+    keywords: ['jpg to raw', 'convert to dng', 'lightroom preset'],
+    faq: [
+      {
+        q: 'Can I convert a JPG to ARW?',
+        a: 'Not in any real sense. ARW is a Sony camera RAW file holding the raw sensor data of one specific camera; a JPG has no such data, so "JPG to ARW" can only produce a fake file that Lightroom rejects. What works is DNG, the open RAW format read by Lightroom, Photoshop and Snapseed — which is what this tool makes.',
+      },
+      {
+        q: 'Does a DNG made from a JPG have RAW quality?',
+        a: 'No. Detail and dynamic range lost when the photo was saved as JPG do not come back. A DNG lets you use Lightroom presets and a RAW workflow, and it loses nothing more on save because its compression is lossless.',
+      },
+      {
+        q: 'Why is the DNG larger than the JPG?',
+        a: 'A DNG stores every pixel as 16-bit linear data with lossless compression, while a JPG throws information away to stay small.',
+      },
+    ],
+  },
   'pas-foto': { title: 'ID Photo', description: 'Crop to 2×3, 3×4 or 4×6, swap the background to red/blue/white, then lay it out on 4R or A4 paper ready to print.', keywords: ['passport', 'id photo', 'visa', 'print'] },
   'strip-exif': { title: 'Remove Photo Metadata', description: 'See a photo’s EXIF (camera, date, GPS location), then save it again without any metadata.', keywords: ['exif', 'gps', 'privacy', 'metadata'] },
   'remove-background': {

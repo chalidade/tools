@@ -3,7 +3,7 @@
 **English** · [Bahasa Indonesia](README.id.md)
 
 **My everyday file toolbox, built for the file work I do every day and published free for everyone.**
-113 tools for PDF, Office files, CAD drawings, images, video, audio, music and everyday calculations, and every one of them runs entirely in your browser.
+115 tools for PDF, Office files, CAD drawings, images, video, audio, music and everyday calculations, and every one of them runs entirely in your browser.
 Your files are never uploaded.
 
 [![Live demo](https://img.shields.io/badge/live-toowl.my.id-c8f031)](https://toowl.my.id/)
@@ -13,7 +13,7 @@ Your files are never uploaded.
 ![React](https://img.shields.io/badge/React-19-61dafb?logo=react&logoColor=black)
 ![Vite](https://img.shields.io/badge/Vite-8-646cff?logo=vite&logoColor=white)
 
-<a href="https://toowl.my.id/en/"><img src="docs/intro-en.gif" alt="toowl intro: type what you need, open Image to SVG, trace a logo, open an Excel file, browse all 113 tools" width="720"></a>
+<a href="https://toowl.my.id/en/"><img src="docs/intro-en.gif" alt="toowl intro: type what you need, open Image to SVG, trace a logo, open an Excel file, browse all 115 tools" width="720"></a>
 
 ▶ [Watch the 30-second intro (MP4)](docs/intro-en.mp4) · [Bahasa Indonesia version](docs/intro-id.mp4)
 
@@ -40,7 +40,7 @@ browser's own media encoders, and a library is downloaded only when you open the
 
 ## Tools
 
-All 113, grouped the way the site groups them. Each name links to the live tool.
+All 115, grouped the way the site groups them. Each name links to the live tool.
 
 **Open Documents**
 - [PDF Reader](https://toowl.my.id/en/pdf-reader/): pages drawn by pdf.js with its text layer on top (select, copy, Ctrl+F), working links, password-protected PDFs, zoom, page jump, full screen
@@ -83,6 +83,8 @@ Each reader opens the other three formats too.
 - [Compress Images](https://toowl.my.id/en/compress-image/): batch JPG/WebP, optional "max N KB" size limit, metadata (including GPS) stripped
 - [Crop & Resize Image](https://toowl.my.id/en/crop-resize-image/): free or fixed ratios, rotate, flip, exact pixels
 - [Convert Image Format](https://toowl.my.id/en/convert-image/): HEIC (iPhone), WebP, AVIF, PNG, JPG to JPG/PNG/WebP, in batches; HEIC decoded by a self-hosted libheif wasm
+- [ARW to JPG](https://toowl.my.id/en/arw-to-jpg/): develop Sony RAW (ARW) — and CR2/CR3, NEF, RAF, ORF, RW2, DNG — to full-size JPG/PNG with LibRaw (wasm) and the camera's white balance; falls back to the embedded camera JPG where the browser lacks shared wasm memory
+- [Image to DNG](https://toowl.my.id/en/image-to-dng/): JPG/PNG/HEIC to a LinearRaw DNG (16-bit linear sRGB, lossless-JPEG tiles, linear profile) that Lightroom, Photoshop and Snapseed open; the page explains why "JPG to ARW" is not possible
 - [ID Photo](https://toowl.my.id/en/pas-foto/): 2×3 / 3×4 / 4×6 crop, red/blue/white backdrop, 4R or A4 print sheet (JPG/PNG/PDF)
 - [ID Document Watermark](https://toowl.my.id/en/watermark-ktp/): tiled "only for verification" text with the date over an ID photo, size/angle/opacity adjustable, re-saved without EXIF
 - [Censor Photo](https://toowl.my.id/en/sensor-foto/): box or brush over ID numbers, faces or plates; black block (default), pixelate or blur, with a warning that light blur on small text can be guessed

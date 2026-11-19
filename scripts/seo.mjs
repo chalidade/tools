@@ -92,6 +92,10 @@ function toolBody(tool, lang) {
   const text = toolText(tool, lang)
   const en = lang === 'en'
   const points = seo.aboutPoints(tool, lang).map((p) => `<li>${esc(p)}</li>`).join('')
+  const faq = seo
+    .toolFaq(tool, lang)
+    .map((f) => `<dt class="font-medium">${esc(f.q)}</dt><dd class="mt-1 mb-4 text-muted-foreground">${esc(f.a)}</dd>`)
+    .join('')
   const related = seo
     .relatedTools(tool)
     .map((t) => `<li><a class="${LINK}" href="${href(t.slug, lang)}">${esc(toolText(t, lang).title)}</a></li>`)
@@ -103,6 +107,7 @@ function toolBody(tool, lang) {
 <p class="mt-3 font-mono text-xs text-muted-foreground">${esc(text.formats)}</p>
 <h2 class="mt-10 text-lg font-semibold">${en ? 'Why it is safe to use' : 'Kenapa aman dipakai'}</h2>
 <ul class="mt-3 space-y-1.5 text-sm text-muted-foreground">${points}</ul>
+${faq ? `<h2 class="mt-8 text-lg font-semibold">${esc(seo.faqHeading(lang))}</h2><dl class="mt-3 text-sm">${faq}</dl>` : ''}
 ${related ? `<h2 class="mt-8 text-lg font-semibold">${esc(seo.relatedHeading(tool, lang))}</h2><ul class="mt-3 space-y-1.5 text-sm">${related}</ul>` : ''}
 </main>`
 }
