@@ -23,8 +23,10 @@ header (atau lewat alamatnya: `/en/<tool>/` selalu English).
 
 ## Pasang di situsmu
 
-Lisensinya **MIT**, jadi setiap tool boleh dipasang di website-mu sendiri,
-gratis. Tool tetap berjalan di browser pengunjungmu, tanpa server.
+Setiap tool boleh dipasang di website-mu sendiri, gratis. Tool tetap berjalan
+di browser pengunjungmu, tanpa server. Lewat iframe, situsmu tidak ikut terikat
+lisensi apa pun. Kalau memakai paket npm-nya, berlaku lisensi
+[AGPL-3.0](#lisensi) (lihat di bawah).
 
 **1. Iframe (semua tool, bisa dipakai sekarang).** Ganti `screen-recorder`
 dengan alamat tool mana pun dari tabel di bawah, misalnya `whiteboard`,
@@ -273,3 +275,24 @@ belum pernah dibagikan (atau setelah cache-nya kedaluwarsa).
 
 Vite + React 19 + TypeScript, Tailwind CSS v4, shadcn/ui, ikon lucide-react, font Geist (disajikan dari situs ini sendiri). Tema gelap secara default;
 pengunjung bisa beralih ke terang dari header.
+
+## Lisensi
+
+[AGPL-3.0-only](LICENSE) © Chalid Ade Rahman.
+
+Singkatnya: kode ini boleh dipakai, dipelajari, diubah, dan dibagikan, termasuk
+untuk keperluan komersial. Tapi kalau kamu mendistribusikannya atau menjalankan
+versi yang sudah diubah untuk orang lain lewat jaringan (situs, aplikasi, paket
+yang dipasang di situs), seluruh kode sumbermu juga wajib dibuka dengan lisensi
+AGPL. Memasang tool dari toowl.my.id lewat `<iframe>` tidak membuat situsmu ikut
+AGPL.
+
+**Lisensi komersial.** Kalau ingin memakai kode toowl di produk tertutup tanpa
+kewajiban AGPL, tersedia lisensi komersial; hubungi lewat
+[GitHub](https://github.com/chalidade). Lisensi ini tidak mencakup kode pihak
+ketiga berlisensi GPL, yaitu LibreDWG di tool DWG ke PDF.
+
+**Versi sebelumnya.** Semua kode sampai commit
+[43c1e4a](https://github.com/chalidade/tools/commit/43c1e4a) (19 November 2026)
+dirilis dengan lisensi MIT dan tetap berlaku MIT; perubahan sesudahnya
+AGPL-3.0-only.

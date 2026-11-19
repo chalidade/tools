@@ -169,7 +169,7 @@ picture; the rules that matter when editing:
   is used by the footer and by a once-per-session toast shown after the first
   save (`downloadBlob` fires `tools:downloaded`). Plain links only — never
   Trakteer's embed `<script>`, which would break the no-third-party promise.
-- The repo is MIT-licensed (`LICENSE`).
+- The repo is AGPL-3.0-only (`LICENSE`), packages included; releases up to commit 43c1e4a (2026-11-19) were MIT. The owner also sells commercial licences, so keep every new dependency AGPL-compatible (MIT, BSD, Apache-2.0, GPL-3.0 are fine).
 - `App.tsx` only composes sections; each section lives in
   `src/components/<Section>.tsx`. Style with the semantic shadcn tokens in
   `src/index.css`, not hard-coded colors. Prefer plain CSS transitions; there is no animation

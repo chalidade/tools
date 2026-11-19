@@ -102,5 +102,5 @@ Worker from a `blob:` URL, so a strict Content-Security-Policy needs
 
 ## License
 
-MIT © Chalid Ade Rahman. This package bundles third-party libraries, see
+AGPL-3.0-only © Chalid Ade Rahman (a commercial licence is available, see the [main repository](https://github.com/chalidade/tools#license)). This package bundles third-party libraries, see
 [THIRD-PARTY-NOTICES.md](./THIRD-PARTY-NOTICES.md).

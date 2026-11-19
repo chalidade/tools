@@ -92,5 +92,5 @@ For a steady beat, schedule clicks about 100 ms ahead from a `setInterval`
 
 ## License
 
-MIT © Chalid Ade Rahman. The element bundles third-party libraries, see
+AGPL-3.0-only © Chalid Ade Rahman (a commercial licence is available, see the [main repository](https://github.com/chalidade/tools#license)). The element bundles third-party libraries, see
 [THIRD-PARTY-NOTICES.md](./THIRD-PARTY-NOTICES.md).

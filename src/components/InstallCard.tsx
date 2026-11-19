@@ -69,7 +69,7 @@ export function InstallCard({ tool }: { tool: Tool }) {
         <span className="min-w-0 flex-1">
           <span className="block font-semibold tracking-tight">{t('Pasang di situsmu', 'Add it to your site')}</span>
           <span className="block truncate text-sm text-muted-foreground">
-            {t('Gratis dan open source (MIT) — tetap berjalan di browser pengunjungmu.', "Free and open source (MIT) — it still runs in your visitors' browsers.")}
+            {t('Gratis dan open source (AGPL-3.0) — tetap berjalan di browser pengunjungmu.', "Free and open source (AGPL-3.0) — it still runs in your visitors' browsers.")}
           </span>
         </span>
         <ChevronDown className="size-4 shrink-0 text-muted-foreground transition-transform group-open:rotate-180" />
