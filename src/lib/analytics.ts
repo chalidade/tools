@@ -10,7 +10,7 @@
 // counts. public/privacy/index.html describes this — keep the two in step.
 
 /** The site token from Cloudflare → Web Analytics → toowl.my.id. Public by design. */
-const TOKEN = ''
+const TOKEN = '2a959764a47d447daf155523146800b9'
 const HOST = 'toowl.my.id'
 
 export function startAnalytics(embed: boolean) {
