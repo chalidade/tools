@@ -130,6 +130,10 @@ picture; the rules that matter when editing:
   `public/privacy/index.html` is a static bilingual privacy policy (store
   listings link to it); the footer links it with `rel="external"`, which
   `useLinkNavigation` leaves as a real page load.
+  Tools marked `webOnly` in the registry (medical ones: cpr, p3k,
+  kartu-medis, hpl) are left out of `TOOLS` inside the app (`isPlayApp()` in
+  `src/lib/platform.ts`: TWA referrer, kept in sessionStorage), because Play
+  requires an organization account for medical features.
 - **Full screen:** `src/components/tool/Stage.tsx` (`useStage`, `Stage`,
   `StageButton`) — Fullscreen API plus a landscape orientation lock, falling
   back to a fixed overlay where element full screen does not exist (iPhone).
