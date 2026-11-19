@@ -110,9 +110,21 @@ export async function buildPdf(d: DocData): Promise<Blob> {
     label(tr('Untuk pembayaran', 'For payment of'), d.purpose)
     y -= 6
     ensure(60)
-    page.drawRectangle({ x: M, y: y - 34, width: 230, height: 44, borderColor: ink, borderWidth: 1 })
-    text(rupiahText(d.amount), M + 14, 18, bold)
-    y -= 50
+    // The amount sits centred in its box: the box grows with long amounts
+    // and the text shrinks only once the box reaches the full page width.
+    const amount = rupiahText(d.amount)
+    const pad = 14
+    const boxH = 44
+    let size = 18
+    const maxText = W - 2 * M - 2 * pad
+    if (widthOf(amount, size, bold) > maxText) size = Math.max(8, (size * maxText) / widthOf(amount, size, bold))
+    const boxW = Math.max(230, widthOf(amount, size, bold) + 2 * pad)
+    const boxTop = y + 6
+    page.drawRectangle({ x: M, y: boxTop - boxH, width: boxW, height: boxH, borderColor: ink, borderWidth: 1 })
+    // Digits have no descenders: centre on the cap height (Helvetica Bold 718/1000).
+    const baseline = boxTop - boxH / 2 - (0.718 * size) / 2
+    page.drawText(clean(amount), { x: M + pad, y: baseline, size, font: bold, color: ink })
+    y = boxTop - boxH - 22
     if (d.notes.trim()) paragraph(d.notes, M, W - 2 * M, 9.5, font, muted)
     signature()
   } else {
