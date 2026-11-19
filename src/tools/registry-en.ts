@@ -253,6 +253,12 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
     formats: 'NIK → region & birth date',
     keywords: ['nik', 'ktp', 'national id', 'identity number', 'region code', 'province', 'regency', 'district', 'birth date', 'sex', 'dukcapil'],
   },
+  'image-to-svg': {
+    title: 'Image to SVG',
+    description: 'Trace a logo, icon, sticker or signature from PNG/JPG into an SVG vector that stays sharp at any size — in colour or black & white.',
+    formats: 'PNG / JPG / WebP → SVG',
+    keywords: ['svg', 'vector', 'vectorizer', 'vectorize', 'trace', 'tracing', 'png to svg', 'jpg to svg', 'image to svg', 'raster to vector', 'logo', 'icon', 'sticker', 'cricut', 'vinyl cut', 'embroidery'],
+  },
   'signature-png': {
     title: 'Signature to PNG',
     description: 'Draw a signature or photograph one on paper, drop the background, pick the ink colour — and get a transparent PNG ready to paste.',
