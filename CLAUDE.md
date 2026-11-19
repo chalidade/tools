@@ -177,6 +177,12 @@ picture; the rules that matter when editing:
   snippets once `published: true`, and always offers the iframe embed —
   `#/<tool>?embed[&theme=light|dark]` renders the tool alone (any tool).
   `npm run build:packages` builds them; publishing is done by the owner.
+- **Analytics:** `src/lib/analytics.ts` loads the Cloudflare Web Analytics
+  beacon (cookieless, `spa: true`) from `main.tsx`, only in production, only on
+  host toowl.my.id (so never in the iOS bundle) and never in an embed. It is the
+  one third-party script the site loads; it never sees file contents. Keep the
+  "Statistik kunjungan" section of `public/privacy/index.html` and the Play
+  Data safety form in step with what it sends.
 - **Support link (Trakteer):** `SUPPORT_URL` in `src/components/SupportToast.tsx`
   is used by the footer and by a once-per-session toast shown after the first
   save (`downloadBlob` fires `tools:downloaded`). Plain links only — never

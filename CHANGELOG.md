@@ -3,6 +3,12 @@
 Catatan harian apa yang berubah di [tools](https://toowl.my.id/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-19 — Statistik kunjungan tanpa cookie
+
+- toowl.my.id (dan aplikasi Android) sekarang menghitung kunjungan dengan **Cloudflare Web Analytics** (`src/lib/analytics.ts`): tanpa cookie, tanpa ID pengunjung, IP tidak disimpan. Yang terkirim hanya alamat halaman, referrer, jenis browser/perangkat, negara, dan waktu muat; isi file dan teks yang diketik tidak pernah.
+- Tidak jalan di mode dev, di embed (`#/<tool>?embed`), dan di build iOS.
+- **Kebijakan Privasi** diperbarui dengan bagian "Statistik kunjungan".
+
 ## 2026-11-19 — Persiapan aplikasi Android (Play Store)
 
 - toowl disiapkan jadi aplikasi Android lewat **Trusted Web Activity**: konfigurasi Bubblewrap di `android/twa-manifest.json` (package `id.my.toowl`) dan panduan build, tanda tangan, dan upload ke Play Console di `android/README.md`.
