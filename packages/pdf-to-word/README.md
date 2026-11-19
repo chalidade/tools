@@ -1,8 +1,8 @@
 # @chalidade/pdf-to-word
 
 Convert PDFs to editable Word documents (.docx) on any website: one `<script>`
-tag, one element. Lines are rebuilt into paragraphs, keeping font size, bold,
-italic, centring and indents. **Everything runs in the visitor's browser** with
+tag, one element. The Word file looks like the PDF — images, table borders and
+colours included — with the text still editable. **Everything runs in the visitor's browser** with
 PDF.js and docx; the file is never uploaded.
 
 This is the [PDF to Word](https://toowl.my.id/#/pdf-to-word) tool from
@@ -22,8 +22,11 @@ Paste this into any HTML page (WordPress, Blogger, Webflow, plain HTML):
 `element.js` is 95.18 kB gzipped (React and styles included). The
 heavy libraries are separate files that load only when a visitor uses the
 tool, from the same place as `element.js` (gzipped: PDF.js + its worker ~759 kB, docx ~120 kB).
-Text is carried over, not the exact layout: images and drawn table borders are
-left out. A scanned PDF (no text layer) throws `ScannedPdfError`.
+The element offers two results: **Same as the PDF** (default) keeps the look —
+each page drawn behind (images, table borders, colours), the text editable in
+front at its original position, font, size and colour — and **Flowing text**
+rebuilds plain paragraphs that are easiest to rewrite. A scanned PDF (no text
+layer) throws `ScannedPdfError`.
 
 ### Attributes
 
@@ -86,6 +89,14 @@ conversion.paragraphs[0].runs[0]
 
 const docx = await buildDocx(conversion)
 docx.type // 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+
+// Same look as the PDF: pages of the PDF's size, the page drawing behind,
+// editable text in positioned frames in front.
+import { buildLayoutDocx, convertPdfLayout } from '@chalidade/pdf-to-word'
+const layout = await convertPdfLayout(file, (done, total) => {})
+layout.pages[0].blocks[0].lines[0][0]
+// { text: 'Quarterly report', size: 22, bold: true, italic: false, font: 'Arial', color: '1F4E79' }
+const exact = await buildLayoutDocx(layout)
 ```
 
 ## License

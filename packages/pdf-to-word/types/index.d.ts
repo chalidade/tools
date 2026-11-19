@@ -77,3 +77,49 @@ export declare function convertPdf(file: File, onProgress: (done: number, total:
 export declare function paragraphsFromPages(textPages: PageText[], skip?: (page: number, line: number) => boolean): PdfConversion
 /** The .docx file. */
 export declare function buildDocx(conversion: PdfConversion): Promise<Blob>
+
+export interface LayoutRun {
+  text: string
+  size: number
+  bold: boolean
+  italic: boolean
+  font: string
+  /** 6-digit hex without '#'. */
+  color: string
+}
+
+export interface LayoutBlock {
+  /** Left edge and top of the first line, in points from the page's top-left. */
+  x: number
+  top: number
+  width: number
+  /** Baseline-to-baseline distance used for every line of the block. */
+  pitch: number
+  /** One entry per PDF line. */
+  lines: LayoutRun[][]
+  /** Per line: stretched to the block's full width, as in justified text. */
+  justify: boolean[]
+}
+
+export interface LayoutPage {
+  width: number
+  height: number
+  /** JPEG of the page without its text; absent when that is plain white. */
+  background?: { data: Uint8Array; px: number; py: number }
+  blocks: LayoutBlock[]
+}
+
+export interface LayoutConversion {
+  pages: LayoutPage[]
+  /** Text blocks in total, for the summary line. */
+  blocks: number
+}
+
+/**
+ * Reads the PDF for a Word file that looks like it: each page drawn without
+ * its text (images, borders, colours), plus the text in positioned blocks.
+ * Throws LockedPdfError / ScannedPdfError like convertPdf.
+ */
+export declare function convertPdfLayout(file: File, onProgress: (done: number, total: number) => void): Promise<LayoutConversion>
+/** The .docx file: pages of the PDF's size, the page drawing behind, editable text in frames in front. */
+export declare function buildLayoutDocx(conversion: LayoutConversion): Promise<Blob>
