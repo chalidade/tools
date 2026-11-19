@@ -3,6 +3,12 @@
 Catatan harian apa yang berubah di [tools](https://toowl.my.id/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-19 — Gambar ke SVG
+
+Satu tool baru dari roadmap, dikerjakan lebih awal atas permintaan; total sekarang **113 tools**.
+
+- **Gambar ke SVG** (`/image-to-svg/`): jiplak logo, ikon, stiker, tanda tangan, atau ilustrasi dari PNG/JPG/WebP jadi vektor SVG yang tajam di ukuran berapa pun. Mode **Warna** (detail warna dan gabung warna mirip bisa diatur) dan **Hitam-putih** (ambang gelap, warna hasil bisa dipilih, bisa menjiplak bagian terang), bentuk garis kurva, garis lurus, atau piksel, plus bersihkan bintik dan sudut tajam. Pratinjau asli dan SVG berdampingan diperbarui otomatis setiap pengaturan berubah; hasilnya diunduh sebagai SVG atau kodenya disalin. Mesinnya VTracer (MIT) yang dikompilasi jadi wasm (137 KB, di-host sendiri) dan jalan di Web Worker, jadi halaman tidak macet. Gambar di atas 2000 px diperkecil dulu, dan muncul peringatan kalau hasilnya terlalu banyak bentuk (biasanya karena gambarnya foto).
+
 ## 2026-11-19 — Buka dokumen
 
 Kategori baru **Buka Dokumen** dengan empat tool; total sekarang **112 tools**. Tiap tool juga bisa membuka tiga format lainnya, jadi tidak perlu mencari halaman yang pas.

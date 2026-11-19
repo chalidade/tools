@@ -31,6 +31,13 @@ picture; the rules that matter when editing:
   matrix to draw in that space; `pageThumbs` renders previews with pdf.js.
 - Image tools decode with `decodeImage` from `src/lib/image.ts` (EXIF
   rotation applied; SVG via <img>) and encode with `canvasBlob`.
+- `image-to-svg` traces with VTracer from `vtracer-wasm` (MIT; wasm bundled
+  via `?url`), one throwaway worker per trace (`trace.ts`). That build feeds
+  VTracer's internal config: corner/splice thresholds are radians,
+  `colorPrecision` is bits dropped (0–7; 8 panics), `filterSpeckle` is an
+  area in px. A wasm panic poisons the instance, hence a fresh worker each
+  time. Binary mode takes dark pixels as the shape, so `binarize` flattens
+  alpha onto white first. Don't use potrace: it is GPL.
 - Document readers live together in `src/tools/reader/` (`pdf-reader`,
   `word-reader`, `excel-reader`, `ppt-reader`: one `Reader` shell, each page
   leads with its format but opens all four). They reuse the converters'
