@@ -45,12 +45,33 @@ function cleanDeclarations(style: CSSStyleDeclaration) {
   for (const prop of Array.from(style)) if (loadsRemote(style.getPropertyValue(prop))) style.removeProperty(prop)
 }
 
+/**
+ * Word bullets are often a private-use character drawn in the Symbol or
+ * Wingdings font (U+F0B7 is "•" in Symbol). Phones and Linux have neither
+ * font, so the bullet vanished. Swap in the real Unicode character, which any
+ * font can draw.
+ */
+const SYMBOL_BULLETS: Record<string, string> = {
+  '\uf0b7': '•', '\uf0a7': '▪', '\uf0d8': '➢', '\uf0fc': '✓', '\uf076': '❖',
+  '\uf071': '❑', '\uf06e': '■', '\uf06c': '●', '\uf0a8': '◆', '\uf0e0': '➔', '\uf0f0': '⇨',
+}
+
+function plainBullets(style: CSSStyleDeclaration) {
+  const content = style.getPropertyValue('content')
+  if (!/[\uf000-\uf0ff]/.test(content)) return
+  style.setProperty('content', content.replace(/[\uf000-\uf0ff]/g, (c) => SYMBOL_BULLETS[c] ?? '•'))
+  if (/symbol|wingdings|webdings/i.test(style.getPropertyValue('font-family'))) style.removeProperty('font-family')
+}
+
 function cleanCss(css: string) {
   const sheet = new CSSStyleSheet()
   sheet.replaceSync(css) // ignores @import
   const walk = (rules: CSSRuleList) => {
     for (const rule of Array.from(rules)) {
-      if ('style' in rule) cleanDeclarations((rule as CSSStyleRule).style)
+      if ('style' in rule) {
+        cleanDeclarations((rule as CSSStyleRule).style)
+        plainBullets((rule as CSSStyleRule).style)
+      }
       if ('cssRules' in rule) walk((rule as CSSGroupingRule).cssRules)
     }
   }

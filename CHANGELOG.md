@@ -5,10 +5,29 @@ terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
 ## 2026-11-19 — Dokumen
 
-Dua tool baru; total sekarang **111 tools**.
+Dua tool baru; total sekarang **116 tools**.
 
 - **Gabung & Pisah Excel/CSV** (`#/merge-excel`): gabung banyak file `.xlsx`/`.csv` (atau sheet tertentu dari tiap file) jadi satu — kolom dicocokkan dari judulnya tanpa peduli huruf besar/kecil dan spasi ganda, atau dari urutan; kolom yang tidak ada di sebuah file dibiarkan kosong, dan bisa ditambah kolom "Sumber" berisi nama file/sheet asal. Hasilnya satu sheet atau satu sheet per sumber. Mode pisah memecah satu sheet menurut nilai sebuah kolom jadi sheet-sheet dalam satu file, atau ZIP berisi `.xlsx`/`.csv` per nilai. Rumus dibaca hasilnya, nama sheet/file dibersihkan dan dibuat unik. ExcelJS dan JSZip dimuat hanya saat tool dibuka.
 - **Markdown & Teks ke PDF / Word** (`#/markdown-to-pdf`): tulis, tempel, atau buka `.md`/`.txt`, lihat pratinjau halaman (A4/Letter, margin, huruf sans/serif), lalu unduh PDF lewat mesin halaman Word ke PDF (tiap halaman berupa gambar; "Cetak / Simpan PDF" menghasilkan teks yang bisa diseleksi) atau DOCX dengan judul, daftar bersarang/bernomor, checklist, kutipan, kode, tabel, dan tautan asli. HTML disaring DOMPurify dan gambar dari internet tidak pernah dimuat, jadi tidak ada koneksi keluar.
+
+## 2026-11-19 — Gambar ke SVG
+
+Satu tool baru dari roadmap, dikerjakan lebih awal atas permintaan; total sekarang **113 tools**.
+
+- **Gambar ke SVG** (`/image-to-svg/`): jiplak logo, ikon, stiker, tanda tangan, atau ilustrasi dari PNG/JPG/WebP jadi vektor SVG yang tajam di ukuran berapa pun. Mode **Warna** (detail warna dan gabung warna mirip bisa diatur) dan **Hitam-putih** (ambang gelap, warna hasil bisa dipilih, bisa menjiplak bagian terang), bentuk garis kurva, garis lurus, atau piksel, plus bersihkan bintik dan sudut tajam. Pratinjau asli dan SVG berdampingan diperbarui otomatis setiap pengaturan berubah; hasilnya diunduh sebagai SVG atau kodenya disalin. Mesinnya VTracer (MIT) yang dikompilasi jadi wasm (137 KB, di-host sendiri) dan jalan di Web Worker, jadi halaman tidak macet. Gambar di atas 2000 px diperkecil dulu, dan muncul peringatan kalau hasilnya terlalu banyak bentuk (biasanya karena gambarnya foto).
+
+## 2026-11-19 — Buka dokumen
+
+Kategori baru **Buka Dokumen** dengan empat tool; total sekarang **112 tools**. Tiap tool juga bisa membuka tiga format lainnya, jadi tidak perlu mencari halaman yang pas.
+
+- **Baca PDF** (`/pdf-reader/`): halaman digambar pdf.js, dengan lapisan teks di atasnya, jadi teks bisa diseleksi, disalin, dan dicari dengan Ctrl+F. Link ke situs web dan link di dalam dokumen (mis. daftar isi) bisa diklik. PDF berpassword bisa dibuka setelah password dimasukkan. Ada zoom, lompat ke halaman, dan layar penuh. Hanya halaman di sekitar layar yang digambar, jadi PDF ratusan halaman tetap ringan.
+- **Baca Word** (`/word-reader/`): dokumen .docx tampil per halaman seperti di Word (ukuran kertas, margin, header/footer, tabel, gambar), dengan zoom, lompat halaman, dan layar penuh.
+- **Baca Excel** (`/excel-reader/`): .xlsx atau .csv tampil seperti spreadsheet, lengkap dengan huruf kolom, nomor baris yang menempel saat digulir, dan tab sheet di bawah. Angka dan tanggal diformat seperti di Excel, warna, border, dan sel gabungan ikut. Baris dimuat bertahap, jadi sheet ribuan baris tetap cepat dibuka.
+- **Baca PowerPoint** (`/ppt-reader/`): slide .pptx tampil sesuai tata letaknya, dan tombol **Presentasi** memutar slide satu per satu di layar penuh (panah, spasi, atau ketuk untuk pindah).
+- **Bullet Word yang hilang**: bullet dari font Symbol/Wingdings (mis. `•` bawaan Word) tidak muncul di HP dan Linux karena font itu tidak ada. Sekarang diganti karakter biasa, di Baca Word maupun Word ke PDF.
+
+Format lama (.doc, .xls, .ppt) belum bisa dibuka. Semuanya diproses di browser; file tidak dikirim ke mana pun.
+
 
 ## 2026-11-19 — PDF ke Word yang sama persis
 
