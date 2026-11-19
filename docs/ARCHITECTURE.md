@@ -7,17 +7,18 @@ A deeper look at how the site is put together. For the overview, see the [README
 1. **Client-side only.** No backend, no uploads, no third-party processing APIs. A feature that
    cannot work in the browser is not built (for example, a video downloader that would need a
    server-side proxy).
-2. **Static hosting under a sub-path.** The site is plain files on GitHub Pages at `/tools/`. Public
-   assets are referenced through `import.meta.env.BASE_URL`, and CI builds with `--base=/tools/`.
-3. **Pay only for what you open.** 113 tools share one page, so nothing heavy may load until a tool
+2. **Static hosting.** The site is plain files on GitHub Pages under the custom domain
+   `toowl.my.id`, served from the root. Public assets are referenced through
+   `import.meta.env.BASE_URL`, and CI builds with `--base=/`.
+3. **Pay only for what you open.** 114 tools share one page, so nothing heavy may load until a tool
    needs it.
 
 ## App shell
 
-- `src/App.tsx` only composes sections (`Header`, `Hero`, `ToolGrid`, `HowItWorks`,
+- `src/App.tsx` only composes sections (`Header`, `SearchHome`, `Hero`, `ToolGrid`, `HowItWorks`,
   `ToolView`, `Footer`); each section is its own file in `src/components/`.
-- **Routing** is `src/lib/route.ts`. Every page has a real address: `/tools/<slug>/` in
-  Indonesian and `/tools/en/<slug>/` in English, and the address decides the language, so a
+- **Routing** is `src/lib/route.ts`. Every page has a real address: `/<slug>/` in
+  Indonesian and `/en/<slug>/` in English, and the address decides the language, so a
   crawler with an English browser still gets the Indonesian page it asked for. Same-site links
   are plain `<a href>` (crawlable, work without JS) and switch pages with `pushState`. Reloads
   don't 404 because the build writes an `index.html` into every page's folder (below). Old
@@ -85,9 +86,14 @@ Files are parsed in the page's origin, so their contents are treated as hostile 
 
 ## Home page
 
-Kept deliberately light: `Hero.tsx` is a short static intro, then `ToolGrid` (search, category
-chips, cards) and `HowItWorks`. There is no animation library and no per-frame JavaScript; cards
-use plain CSS transitions. An earlier walkable RPG town lived here and was removed because it
+The home page is one search box, `SearchHome`. On a laptop it is a command palette in the middle of
+the page: `/` or Ctrl/⌘+K focuses it, the arrow keys move through the rows and Enter opens the
+marked one; idle, it lists the tools this visitor opened last (`src/lib/recent.ts`, localStorage
+only) and the popular ones. On a phone the box is a dock fixed to the bottom, in thumb reach, kept
+above the on-screen keyboard (`--kb` from `visualViewport`); the page above it shows popular tiles,
+rows and the category list. The full catalogue (`Hero`, `ToolGrid` with sticky category chips, and
+`HowItWorks`) lives at `/all/`. Motion is CSS only (`src/theme.css`): no animation library and no
+per-frame JavaScript. An earlier walkable RPG town lived here and was removed because it
 nearly doubled the main bundle and got in the way of simply finding a tool.
 
 ## Internationalisation
@@ -122,6 +128,6 @@ published to npm; the tool page shows npm/script snippets only once a package is
 
 - `npm run build` = `tsc -b && vite build`. The strict type-check is the correctness gate; there is
   no automated test runner.
-- `.github/workflows/pages.yml` runs `npm ci`, the type-check and `vite build --base=/tools/` on Node
+- `.github/workflows/pages.yml` runs `npm ci`, the type-check and `vite build --base=/` on Node
   22, then deploys `dist/` to GitHub Pages on every push to `main`.
 - `public/og.png` (the link-preview card) is rendered from `og/og.html` by `npm run og`.

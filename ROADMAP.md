@@ -582,7 +582,7 @@ sesudahnya.
 
 ## Hari 50 — 2026-12-06 · Foto: vektor & duplikat
 
-- [ ] **Gambar ke SVG** (`#/image-to-svg`): jiplak logo, tanda tangan, atau
+- [x] **Gambar ke SVG** (`#/image-to-svg`): jiplak logo, tanda tangan, atau
   gambar garis jadi vektor. Mode hitam-putih (ambang bisa diatur) dan mode
   beberapa warna (palet dikuantisasi), penghalusan sudut, pratinjau
   berdampingan, unduh SVG. Penjiplakan jalan di Web Worker. Periksa lisensi

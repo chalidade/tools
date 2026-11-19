@@ -3,6 +3,29 @@
 Catatan harian apa yang berubah di [tools](https://toowl.my.id/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-19 — README dan video pengenalan baru
+
+- README (English dan Indonesia) diperbarui ke kondisi sekarang: 113 tools, alamat `/<tool>/` dan `/en/<tool>/` di toowl.my.id, beranda satu kotak pencarian, dan desain baru. Tiga tool yang belum tercatat ditambahkan: **Gambar ke SVG**, **Peredam Noise**, dan **Tambah Musik ke Video**.
+- Video pengenalan 30 detik (ID dan EN, GIF dan MP4) direkam dari situsnya sendiri dan menggantikan animasi launch lama; screenshot laptop dan HP ikut diperbarui.
+- `docs/ARCHITECTURE.md` tidak lagi menyebut sub-path `/tools/` dan menjelaskan beranda yang baru.
+
+## 2026-11-19 — Gambar Word yang hilang
+
+- **Word ke PDF** (`/doc-to-pdf/`) dan **Baca Word** (`/word-reader/`) sekarang menampilkan gambar yang sebelumnya hilang atau lari ke halaman lain:
+  - gambar "di belakang teks" / "di depan teks" ditaruh di posisinya di halaman, termasuk latar halaman dari hasil **PDF ke Word**, dan kotak teks yang posisinya tetap (frame) tidak lagi ikut mengalir;
+  - pemisah section "halaman berikutnya" benar-benar memulai halaman baru, jadi isi tiap halaman tidak menumpuk lalu terpotong;
+  - gambar dalam grup, kanvas gambar, dan bentuk berisi gambar ikut tampil;
+  - gambar EMF/WMF (logo, grafik tempelan dari Excel, clip art) diputar ulang jadi SVG di browser dengan rtf.js (MIT);
+  - di dokumen panjang tanpa jeda halaman, header dan footer (beserta gambarnya) diulang di setiap halaman PDF.
+
+Semuanya tetap diproses di browser; file tidak dikirim ke mana pun.
+
+## 2026-11-19 — Gambar ke SVG
+
+Satu tool baru dari roadmap, dikerjakan lebih awal atas permintaan; total sekarang **113 tools**.
+
+- **Gambar ke SVG** (`/image-to-svg/`): jiplak logo, ikon, stiker, tanda tangan, atau ilustrasi dari PNG/JPG/WebP jadi vektor SVG yang tajam di ukuran berapa pun. Mode **Warna** (detail warna dan gabung warna mirip bisa diatur) dan **Hitam-putih** (ambang gelap, warna hasil bisa dipilih, bisa menjiplak bagian terang), bentuk garis kurva, garis lurus, atau piksel, plus bersihkan bintik dan sudut tajam. Pratinjau asli dan SVG berdampingan diperbarui otomatis setiap pengaturan berubah; hasilnya diunduh sebagai SVG atau kodenya disalin. Mesinnya VTracer (MIT) yang dikompilasi jadi wasm (137 KB, di-host sendiri) dan jalan di Web Worker, jadi halaman tidak macet. Gambar di atas 2000 px diperkecil dulu, dan muncul peringatan kalau hasilnya terlalu banyak bentuk (biasanya karena gambarnya foto).
+
 ## 2026-11-19 — Buka dokumen
 
 Kategori baru **Buka Dokumen** dengan empat tool; total sekarang **112 tools**. Tiap tool juga bisa membuka tiga format lainnya, jadi tidak perlu mencari halaman yang pas.
@@ -31,7 +54,7 @@ Tiga tool baru; total sekarang **108 tools**.
 
 ## 2026-11-18 — Darurat: dokumen
 
-Satu tool baru; total sekarang **113 tools**.
+Satu tool baru; total sekarang **114 tools**.
 
 - **Brankas Dokumen** (`#/brankas`): simpan foto/PDF KTP, KK, BPJS, polis di IndexedDB browser ini, dienkripsi per file dengan AES-256-GCM (kunci dari PBKDF2-SHA-256 600.000 iterasi, salt acak, IV baru tiap file; nama file ikut terenkripsi). Password tidak pernah disimpan, dan sebelum brankas dibuat pengguna harus mencentang bahwa password yang lupa berarti data tidak bisa dibuka. Terkunci otomatis saat tab disembunyikan. Bisa melihat gambar/PDF di tempat, mengunduh, menghapus, serta mengekspor/memulihkan brankas terenkripsi sebagai satu file `.twlvault` untuk cadangan di perangkat lain.
 
