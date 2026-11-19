@@ -14,7 +14,8 @@ import { useT } from '@/lib/i18n'
 
 type ScreenOrientationLock = ScreenOrientation & { lock?: (o: 'landscape') => Promise<void>; unlock?: () => void }
 
-export function useStage() {
+/** `landscape: false` for reading surfaces (documents) that should keep the phone's orientation. */
+export function useStage({ landscape = true }: { landscape?: boolean } = {}) {
   const ref = useRef<HTMLDivElement>(null)
   const [full, setFull] = useState(false)
   const native = useRef(false)
@@ -26,12 +27,12 @@ export function useStage() {
       try {
         await el.requestFullscreen({ navigationUI: 'hide' })
         native.current = true
-        await (screen.orientation as ScreenOrientationLock)?.lock?.('landscape').catch(() => {})
+        if (landscape) await (screen.orientation as ScreenOrientationLock)?.lock?.('landscape').catch(() => {})
       } catch {
         native.current = false
       }
     }
-  }, [])
+  }, [landscape])
 
   const exit = useCallback(() => {
     setFull(false)
@@ -60,7 +61,7 @@ export function useStage() {
     }
   }, [full, exit])
 
-  return { ref, full, enter, exit }
+  return { ref, full, enter, exit, landscape }
 }
 
 export function StageButton({ onClick }: { onClick: () => void }) {
@@ -89,7 +90,7 @@ export function Stage({
   const [hintClosed, setHintClosed] = useState(false)
 
   useEffect(() => {
-    if (!stage.full) return
+    if (!stage.full || !stage.landscape) return
     const mq = window.matchMedia('(orientation: portrait) and (pointer: coarse)')
     const update = () => setPortrait(mq.matches)
     update()

@@ -1,0 +1,89 @@
+/*
+ * The part of pdf.js's viewer stylesheet its TextLayer needs: invisible text
+ * placed exactly over the drawn page, so it can be selected and searched.
+ * Scoped to the reader's pages.
+ */
+.toowl-pdf-page {
+  --scale-round-x: 1px;
+  --scale-round-y: 1px;
+}
+
+.toowl-pdf-page .textLayer {
+  color-scheme: only light;
+  position: absolute;
+  text-align: initial;
+  inset: 0;
+  overflow: clip;
+  line-height: 1;
+  letter-spacing: normal;
+  word-spacing: normal;
+  -webkit-text-size-adjust: none;
+  text-size-adjust: none;
+  forced-color-adjust: none;
+  transform-origin: 0 0;
+  caret-color: CanvasText;
+  z-index: 1;
+  --min-font-size: 1;
+  --text-scale-factor: calc(var(--total-scale-factor) * var(--min-font-size));
+  --min-font-size-inv: calc(1 / var(--min-font-size));
+}
+
+.toowl-pdf-page .textLayer :is(span, br) {
+  color: transparent;
+  position: absolute;
+  white-space: pre;
+  cursor: text;
+  transform-origin: 0% 0%;
+  user-select: text;
+}
+
+.toowl-pdf-page .textLayer > :not(.markedContent),
+.toowl-pdf-page .textLayer .markedContent span:not(.markedContent) {
+  z-index: 1;
+  --font-height: 0;
+  font-size: calc(var(--text-scale-factor) * var(--font-height));
+  --scale-x: 1;
+  --rotate: 0deg;
+  transform: rotate(var(--rotate)) scaleX(var(--scale-x)) scale(var(--min-font-size-inv));
+}
+
+.toowl-pdf-page .textLayer .markedContent {
+  display: contents;
+}
+
+.toowl-pdf-page .textLayer span[role='img'] {
+  user-select: none;
+  cursor: default;
+}
+
+.toowl-pdf-page .textLayer ::selection {
+  background: rgb(0 100 255 / 0.28);
+  color: transparent;
+}
+
+.toowl-pdf-page .textLayer br::selection {
+  background: transparent;
+}
+
+.toowl-pdf-page .textLayer .endOfContent {
+  display: block;
+  position: absolute;
+  inset: 100% 0 0;
+  z-index: 0;
+  cursor: default;
+  user-select: none;
+}
+
+.toowl-pdf-page .textLayer.selecting .endOfContent {
+  top: 0;
+}
+
+.toowl-pdf-page [data-main-rotation='90'] {
+  transform: rotate(90deg) translateY(-100%);
+}
+.toowl-pdf-page [data-main-rotation='180'] {
+  transform: rotate(180deg) translate(-100%, -100%);
+}
+.toowl-pdf-page [data-main-rotation='270'] {
+  transform: rotate(270deg) translateX(-100%);
+}

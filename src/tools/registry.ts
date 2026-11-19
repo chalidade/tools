@@ -97,6 +97,10 @@ import {
   DraftingCompass,
   PencilRuler,
   ImageUpscale,
+  BookOpen,
+  BookOpenText,
+  Table2,
+  Projector,
   type LucideIcon,
 } from 'lucide-react'
 
@@ -131,10 +135,11 @@ export interface ToolPackage {
   published: boolean
 }
 
-export type CategoryId = 'to-pdf' | 'from-pdf' | 'pdf' | 'media' | 'music' | 'dev' | 'productivity' | 'emergency'
+export type CategoryId = 'reader' | 'to-pdf' | 'from-pdf' | 'pdf' | 'media' | 'music' | 'dev' | 'productivity' | 'emergency'
 
 /** Home page groups, in display order. */
 export const CATEGORIES: { id: CategoryId; title: string; description: string }[] = [
+  { id: 'reader', title: 'Buka Dokumen', description: 'Baca PDF, Word, Excel, dan PowerPoint langsung di browser, tanpa aplikasi.' },
   { id: 'to-pdf', title: 'Ke PDF', description: 'Dokumen, presentasi, spreadsheet, dan gambar jadi PDF.' },
   {
     id: 'from-pdf',
@@ -168,6 +173,50 @@ export const CATEGORIES: { id: CategoryId; title: string; description: string }[
 // Adding a tool: create src/tools/<slug>/ with a default-exported component,
 // then add one entry here (with its category). Nothing else needs to change.
 export const TOOLS: Tool[] = [
+  {
+    slug: 'pdf-reader',
+    category: 'reader',
+    keywords: ['pdf', 'baca', 'buka', 'lihat', 'reader', 'viewer', 'pembaca', 'ebook', 'password'],
+    title: 'Baca PDF',
+    description: 'Buka dan baca PDF di browser: teks bisa diseleksi dan dicari, link aktif, bisa zoom dan layar penuh.',
+    icon: BookOpen,
+    formats: 'PDF',
+    badge: 'Baru',
+    component: lazy(() => import('./reader/PdfReader')),
+  },
+  {
+    slug: 'word-reader',
+    category: 'reader',
+    keywords: ['word', 'docx', 'dokumen', 'baca', 'buka', 'lihat', 'reader', 'viewer', 'pembaca', 'surat'],
+    title: 'Baca Word',
+    description: 'Buka dokumen Word (.docx) tanpa Microsoft Word — tampil per halaman seperti aslinya.',
+    icon: BookOpenText,
+    formats: 'DOCX',
+    badge: 'Baru',
+    component: lazy(() => import('./reader/WordReader')),
+  },
+  {
+    slug: 'excel-reader',
+    category: 'reader',
+    keywords: ['excel', 'xlsx', 'csv', 'spreadsheet', 'tabel', 'sheet', 'baca', 'buka', 'lihat', 'reader', 'viewer', 'pembaca'],
+    title: 'Baca Excel',
+    description: 'Buka spreadsheet Excel (.xlsx) atau CSV tanpa Excel — format angka, warna, sel gabungan, dan semua sheet.',
+    icon: Table2,
+    formats: 'XLSX / CSV',
+    badge: 'Baru',
+    component: lazy(() => import('./reader/ExcelReader')),
+  },
+  {
+    slug: 'ppt-reader',
+    category: 'reader',
+    keywords: ['powerpoint', 'pptx', 'ppt', 'presentasi', 'slide', 'baca', 'buka', 'lihat', 'reader', 'viewer', 'pembaca'],
+    title: 'Baca PowerPoint',
+    description: 'Buka presentasi PowerPoint (.pptx) tanpa PowerPoint, lalu putar slide-nya dalam layar penuh.',
+    icon: Projector,
+    formats: 'PPTX',
+    badge: 'Baru',
+    component: lazy(() => import('./reader/PptReader')),
+  },
   {
     slug: 'doc-to-pdf',
     category: 'to-pdf',

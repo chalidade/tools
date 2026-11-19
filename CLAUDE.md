@@ -31,6 +31,14 @@ picture; the rules that matter when editing:
   matrix to draw in that space; `pageThumbs` renders previews with pdf.js.
 - Image tools decode with `decodeImage` from `src/lib/image.ts` (EXIF
   rotation applied; SVG via <img>) and encode with `canvasBlob`.
+- Document readers live together in `src/tools/reader/` (`pdf-reader`,
+  `word-reader`, `excel-reader`, `ppt-reader`: one `Reader` shell, each page
+  leads with its format but opens all four). They reuse the converters'
+  readers — `renderDocx` (doc-to-pdf), `readSpreadsheet` (excel-to-pdf),
+  `readPptx` (ppt-to-pdf) — so their sanitizing applies; PDF pages are pdf.js
+  canvases plus its `TextLayer` (styles in `pdf-view.css`), drawn only near
+  the view. Full screen uses `useStage({ landscape: false })` except the
+  slide presenter.
 - QR tools live together in `src/tools/qr/` (generator + reader share
   `payload.ts`). Reading uses zxing-wasm with `locateFile` pointed at the
   bundled `zxing_reader.wasm?url` — its default fetches the wasm from a CDN,

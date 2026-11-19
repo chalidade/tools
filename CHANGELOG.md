@@ -3,6 +3,18 @@
 Catatan harian apa yang berubah di [tools](https://toowl.my.id/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-19 — Buka dokumen
+
+Kategori baru **Buka Dokumen** dengan empat tool; total sekarang **112 tools**. Tiap tool juga bisa membuka tiga format lainnya, jadi tidak perlu mencari halaman yang pas.
+
+- **Baca PDF** (`/pdf-reader/`): halaman digambar pdf.js, dengan lapisan teks di atasnya, jadi teks bisa diseleksi, disalin, dan dicari dengan Ctrl+F. Link ke situs web dan link di dalam dokumen (mis. daftar isi) bisa diklik. PDF berpassword bisa dibuka setelah password dimasukkan. Ada zoom, lompat ke halaman, dan layar penuh. Hanya halaman di sekitar layar yang digambar, jadi PDF ratusan halaman tetap ringan.
+- **Baca Word** (`/word-reader/`): dokumen .docx tampil per halaman seperti di Word (ukuran kertas, margin, header/footer, tabel, gambar), dengan zoom, lompat halaman, dan layar penuh.
+- **Baca Excel** (`/excel-reader/`): .xlsx atau .csv tampil seperti spreadsheet, lengkap dengan huruf kolom, nomor baris yang menempel saat digulir, dan tab sheet di bawah. Angka dan tanggal diformat seperti di Excel, warna, border, dan sel gabungan ikut. Baris dimuat bertahap, jadi sheet ribuan baris tetap cepat dibuka.
+- **Baca PowerPoint** (`/ppt-reader/`): slide .pptx tampil sesuai tata letaknya, dan tombol **Presentasi** memutar slide satu per satu di layar penuh (panah, spasi, atau ketuk untuk pindah).
+- **Bullet Word yang hilang**: bullet dari font Symbol/Wingdings (mis. `•` bawaan Word) tidak muncul di HP dan Linux karena font itu tidak ada. Sekarang diganti karakter biasa, di Baca Word maupun Word ke PDF.
+
+Format lama (.doc, .xls, .ppt) belum bisa dibuka. Semuanya diproses di browser; file tidak dikirim ke mana pun.
+
 ## 2026-11-19 — CAD & upscale
 
 Tiga tool baru; total sekarang **108 tools**.
