@@ -3,12 +3,21 @@
 Catatan harian apa yang berubah di [tools](https://toowl.my.id/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-20 — ARW ke JPG dan Gambar ke DNG
+
+Dua tool foto RAW baru; total sekarang **115 tools**.
+
+- **ARW ke JPG** (`/arw-to-jpg/`): foto RAW Sony (ARW) — juga CR2/CR3 Canon, NEF Nikon, RAF Fujifilm, ORF, RW2, PEF, dan DNG — diproses dari data sensornya jadi JPG atau PNG ukuran penuh, dengan white balance dari kamera. Bisa banyak sekaligus, ada pilihan ukuran setengah yang lebih cepat. Mesinnya LibRaw yang dikompilasi jadi wasm (`libraw-wasm`, di-host sendiri). Browser yang belum bisa menjalankannya di halaman ini memakai JPG pratinjau bawaan kamera.
+- **Gambar ke DNG** (`/image-to-dng/`): JPG, PNG, atau HEIC jadi DNG, format RAW terbuka Adobe, yang bisa diedit di Lightroom, Photoshop, dan Snapseed. Gambarnya disimpan sebagai data linear 16-bit dengan kompresi lossless, warna sRGB, dan white balance "As Shot", jadi tampilan awalnya sama dengan aslinya. Penulis DNG dan encoder lossless JPEG-nya ditulis sendiri.
+- Orang yang mencari "JPG ke ARW" diarahkan ke tool DNG. Halamannya menjelaskan kenapa ARW tidak bisa dibuat dari JPG, dan tool dengan bagian **Tanya jawab** sekarang ikut menampilkannya di halaman statis dan data terstruktur (FAQPage) untuk mesin pencari.
+
 ## 2026-11-19 — Dokumen
 
-Dua tool baru; total sekarang **116 tools**.
+Dua tool baru; total sekarang **118 tools**.
 
 - **Gabung & Pisah Excel/CSV** (`#/merge-excel`): gabung banyak file `.xlsx`/`.csv` (atau sheet tertentu dari tiap file) jadi satu — kolom dicocokkan dari judulnya tanpa peduli huruf besar/kecil dan spasi ganda, atau dari urutan; kolom yang tidak ada di sebuah file dibiarkan kosong, dan bisa ditambah kolom "Sumber" berisi nama file/sheet asal. Hasilnya satu sheet atau satu sheet per sumber. Mode pisah memecah satu sheet menurut nilai sebuah kolom jadi sheet-sheet dalam satu file, atau ZIP berisi `.xlsx`/`.csv` per nilai. Rumus dibaca hasilnya, nama sheet/file dibersihkan dan dibuat unik. ExcelJS dan JSZip dimuat hanya saat tool dibuka.
 - **Markdown & Teks ke PDF / Word** (`#/markdown-to-pdf`): tulis, tempel, atau buka `.md`/`.txt`, lihat pratinjau halaman (A4/Letter, margin, huruf sans/serif), lalu unduh PDF lewat mesin halaman Word ke PDF (tiap halaman berupa gambar; "Cetak / Simpan PDF" menghasilkan teks yang bisa diseleksi) atau DOCX dengan judul, daftar bersarang/bernomor, checklist, kutipan, kode, tabel, dan tautan asli. HTML disaring DOMPurify dan gambar dari internet tidak pernah dimuat, jadi tidak ada koneksi keluar.
+
 
 ## 2026-11-19 — Tool medis hanya di web
 
