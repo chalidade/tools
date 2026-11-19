@@ -104,6 +104,18 @@ picture; the rules that matter when editing:
   the iOS "Add to Home Screen" steps. `ToolView` wraps each tool in
   `ToolBoundary`, so a chunk that cannot load (offline, stale tab after a
   deploy) shows a message instead of blanking the page.
+- **Android app (Play Store):** a Trusted Web Activity built with Bubblewrap
+  from `android/twa-manifest.json` (package `id.my.toowl`, same as the iOS
+  bundle ID); only that file and `android/README.md` (the owner's build/sign/
+  upload guide, Indonesian) are in git — the Gradle project, builds and the
+  keystore are generated/ignored. The app trusts the site through
+  `public/.well-known/assetlinks.json` (SHA-256 fingerprints filled in by the
+  owner), which is why `pages.yml` uploads with `include-hidden-files: true` —
+  without it the dot-folder is dropped and the app shows an address bar. The
+  manifest's maskable and monochrome icons feed the Android launcher icon.
+  `public/privacy/index.html` is a static bilingual privacy policy (store
+  listings link to it); the footer links it with `rel="external"`, which
+  `useLinkNavigation` leaves as a real page load.
 - **Full screen:** `src/components/tool/Stage.tsx` (`useStage`, `Stage`,
   `StageButton`) — Fullscreen API plus a landscape orientation lock, falling
   back to a fixed overlay where element full screen does not exist (iPhone).

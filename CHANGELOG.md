@@ -3,6 +3,13 @@
 Catatan harian apa yang berubah di [tools](https://toowl.my.id/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-19 — Persiapan aplikasi Android (Play Store)
+
+- toowl disiapkan jadi aplikasi Android lewat **Trusted Web Activity**: konfigurasi Bubblewrap di `android/twa-manifest.json` (package `id.my.toowl`) dan panduan build, tanda tangan, dan upload ke Play Console di `android/README.md`.
+- `/.well-known/assetlinks.json` ikut ter-deploy (fingerprint diisi setelah keystore dan Play App Signing siap), supaya aplikasinya tampil tanpa address bar.
+- Manifest PWA: ikon **monochrome** baru untuk ikon bertema Android 13+, dan shortcut Piano/Gitar/Drum/Tuner sekarang memakai alamat halaman (`/piano/`), bukan `#/piano`.
+- Halaman **Kebijakan Privasi** baru di `/privacy/` (Indonesia dan English), ditautkan dari footer. Play Store mewajibkannya.
+
 ## 2026-11-19 — Nominal Kwitansi rapi di PDF
 
 - **Kwitansi** (`/kwitansi/`): di PDF, nominal sekarang duduk di tengah kotaknya. Sebelumnya teksnya naik menimpa garis atas kotak (laporan pengguna).
