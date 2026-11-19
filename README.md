@@ -3,7 +3,7 @@
 **English** · [Bahasa Indonesia](README.id.md)
 
 **My everyday file toolbox, built for the file work I do every day and published free for everyone.**
-106 tools for PDF, Office files, images, video, audio and QR codes, and every one of them runs entirely in your browser.
+109 tools for PDF, Office files, images, video, audio and QR codes, and every one of them runs entirely in your browser.
 Your files are never uploaded.
 
 [![Live demo](https://img.shields.io/badge/live%20demo-chalidade.github.io%2Ftools-6366f1)](https://toowl.my.id/)
@@ -39,6 +39,7 @@ All 45, grouped the way the home page groups them. Each name links to the live t
 **To PDF**
 - [Word to PDF](https://toowl.my.id/en/doc-to-pdf/): `.docx` to PDF, paginated without cutting through lines of text
 - [Images to PDF](https://toowl.my.id/en/image-to-pdf/): reorder, rotate, A4/Letter/fit-to-image; phone EXIF rotation applied
+- [DWG to PDF](https://toowl.my.id/en/dwg-to-pdf/): AutoCAD .dwg/.dxf to a vector PDF (LibreDWG in WebAssembly), A4–A0, fit or 1:N scale, colour or black, layer on/off
 - [PowerPoint to PDF](https://toowl.my.id/en/ppt-to-pdf/): `.pptx` to PDF, one page per slide
 - [Excel to PDF](https://toowl.my.id/en/excel-to-pdf/): `.xlsx`/`.csv` to a selectable-text PDF table, with theme colors, borders, merged cells and number formats
 
@@ -47,6 +48,7 @@ All 45, grouped the way the home page groups them. Each name links to the live t
 - [PDF to Excel](https://toowl.my.id/en/pdf-to-excel/): tables rebuilt from text positions; currencies and percentages become real numbers
 - [PDF to PowerPoint](https://toowl.my.id/en/pdf-to-ppt/): one slide per page, with the text as editable text boxes
 - [PDF to Images](https://toowl.my.id/en/pdf-to-image/): PNG/JPG at 72, 150 or 300 dpi, zipped when there are several
+- [PDF to DWG](https://toowl.my.id/en/pdf-to-dwg/): vector lines, circles and text of a PDF into an R12 DXF that AutoCAD opens and saves as .dwg, at a chosen 1:N scale
 - [PDF to Markdown](https://toowl.my.id/en/pdf-to-markdown/): headings, emphasis, lists and tables, with tables joined across pages
 
 **Edit & Secure PDF**
@@ -62,6 +64,7 @@ All 45, grouped the way the home page groups them. Each name links to the live t
 - [Protect PDF](https://toowl.my.id/en/protect-pdf/) (AES-256 password and permissions) and [Unlock PDF](https://toowl.my.id/en/unlock-pdf/)
 
 **Images & Media**
+- [Upscale Image](https://toowl.my.id/en/upscale-image/): 2× or 4× with Real-ESRGAN (realesr-general-x4v3) on ONNX Runtime Web, WebGPU or WebAssembly, tiled
 - [Compress Images](https://toowl.my.id/en/compress-image/): batch JPG/WebP, optional "max N KB" size limit, metadata (including GPS) stripped
 - [Crop & Resize Image](https://toowl.my.id/en/crop-resize-image/): free or fixed ratios, rotate, flip, exact pixels
 - [Convert Image Format](https://toowl.my.id/en/convert-image/): HEIC (iPhone), WebP, AVIF, PNG, JPG to JPG/PNG/WebP, in batches; HEIC decoded by a self-hosted libheif wasm
@@ -314,3 +317,7 @@ real files and on the outputs they produce.
 ## License
 
 [MIT](LICENSE) © Chalid Ade Rahman · [chalidade.github.io](https://chalidade.github.io)
+
+Bundled third-party pieces keep their own licences: the DWG/DXF reader used by DWG to PDF is
+[LibreDWG](https://www.gnu.org/software/libredwg/) via `@mlightcad/libredwg-web` (GPL-3.0), and
+Upscale Image runs Real-ESRGAN's `realesr-general-x4v3` model (BSD-3-Clause).

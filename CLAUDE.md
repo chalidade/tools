@@ -49,6 +49,18 @@ picture; the rules that matter when editing:
   34 MB wasm with baked-in weights, `DF_DELAY` = 1440 measured) and RNNoise
   (110 KB, `keepHighs` restores the >6 kHz band it dulls). Re-measure the
   delay if either package is upgraded.
+- CAD tools: `dwg-to-pdf` reads DWG/DXF with LibreDWG compiled to wasm
+  (`@mlightcad/libredwg-web`, GPL-3.0; its glue finds the wasm through
+  `new URL(…, import.meta.url)`, so Vite bundles it) and draws the
+  `DwgDatabase` itself (`cad.ts` → shapes, `draw.ts` → canvas preview and
+  jsPDF vector PDF) — the package's own `dwg_to_svg` gets extents and stroke
+  widths wrong. Line weights are an index in DWG but 1/100 mm in DXF; DXF
+  text is cleaned of AutoCAD 2018's "Embedded Object" MTEXT block before
+  import. `pdf-to-dwg` walks pdf.js's operator list (`constructPath`) and
+  writes an R12 DXF (`dxf.ts`); no browser library writes DWG reliably.
+- `upscale-image` runs Real-ESRGAN `realesr-general-x4v3` (BSD-3) as ONNX
+  (exported without PyTorch by `build-model.py`) on `onnxruntime-web/webgpu`,
+  wasm path set to the bundled asyncify wasm; tiles with 12 px overlap.
 - Music tools (`guitar-tuner`, `metronome`, `chords`, `bpm-key`, `piano`, `guitar`, `drums`) use only the
   Web Audio API plus in-house DSP; shared note/frequency helpers and the
   Karplus–Strong `pluck()` live in `src/lib/music.ts`. Heavy analysis runs in a

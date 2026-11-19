@@ -95,6 +95,9 @@ import {
   Contrast,
   ScanEye,
   FileKey,
+  DraftingCompass,
+  PencilRuler,
+  ImageUpscale,
   type LucideIcon,
 } from 'lucide-react'
 
@@ -200,6 +203,17 @@ export const TOOLS: Tool[] = [
     package: { name: '@chalidade/image-to-pdf', element: 'image-to-pdf', dir: 'image-to-pdf', published: true },
   },
   {
+    slug: 'dwg-to-pdf',
+    category: 'to-pdf',
+    keywords: ['dwg', 'dxf', 'autocad', 'cad', 'gambar teknik', 'denah', 'arsitek', 'plot', 'cetak', 'konversi'],
+    title: 'DWG ke PDF',
+    description: 'Ubah gambar AutoCAD (.dwg/.dxf) jadi PDF vektor — pilih kertas, skala, warna, dan layer.',
+    icon: DraftingCompass,
+    formats: 'DWG / DXF → PDF',
+    badge: 'Baru',
+    component: lazy(() => import('./dwg-to-pdf/DwgToPdf')),
+  },
+  {
     slug: 'ppt-to-pdf',
     category: 'to-pdf',
     keywords: ['powerpoint', 'pptx', 'ppt', 'presentasi', 'slide', 'konversi'],
@@ -254,6 +268,17 @@ export const TOOLS: Tool[] = [
     formats: 'PDF → PNG / JPG',
     component: lazy(() => import('./pdf-to-image/PdfToImage')),
     package: { name: '@chalidade/pdf-to-image', element: 'pdf-to-image', dir: 'pdf-to-image', published: true },
+  },
+  {
+    slug: 'pdf-to-dwg',
+    category: 'from-pdf',
+    keywords: ['dwg', 'dxf', 'autocad', 'cad', 'gambar teknik', 'denah', 'arsitek', 'vektor', 'konversi'],
+    title: 'PDF ke DWG',
+    description: 'Ambil garis, kurva, dan teks vektor dari PDF jadi gambar CAD yang bisa diedit di AutoCAD.',
+    icon: PencilRuler,
+    formats: 'PDF → DXF (DWG)',
+    badge: 'Baru',
+    component: lazy(() => import('./pdf-to-dwg/PdfToDwg')),
   },
   {
     slug: 'merge-pdf',
@@ -786,6 +811,17 @@ export const TOOLS: Tool[] = [
     badge: 'Baru',
     component: lazy(() => import('./remove-background/RemoveBackground')),
     package: { name: '@chalidade/remove-background', element: 'remove-background', dir: 'remove-background', published: false },
+  },
+  {
+    slug: 'upscale-image',
+    category: 'media',
+    keywords: ['upscale', 'perbesar', 'perjelas', 'hd', 'resolusi', 'tajam', 'pecah', 'blur', 'foto lama', 'ai', 'super resolution', 'enhance'],
+    title: 'Upscale Gambar',
+    description: 'Perbesar foto 2× atau 4× dengan AI di perangkatmu, supaya tetap tajam dan tidak pecah.',
+    icon: ImageUpscale,
+    formats: 'JPG / PNG / WebP → PNG / JPG',
+    badge: 'Baru',
+    component: lazy(() => import('./upscale-image/UpscaleImage')),
   },
   {
     slug: 'compress-image',
