@@ -3,6 +3,24 @@
 Catatan harian apa yang berubah di [tools](https://toowl.my.id/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-19 — Buka dokumen
+
+Kategori baru **Buka Dokumen** dengan empat tool; total sekarang **112 tools**. Tiap tool juga bisa membuka tiga format lainnya, jadi tidak perlu mencari halaman yang pas.
+
+- **Baca PDF** (`/pdf-reader/`): halaman digambar pdf.js, dengan lapisan teks di atasnya, jadi teks bisa diseleksi, disalin, dan dicari dengan Ctrl+F. Link ke situs web dan link di dalam dokumen (mis. daftar isi) bisa diklik. PDF berpassword bisa dibuka setelah password dimasukkan. Ada zoom, lompat ke halaman, dan layar penuh. Hanya halaman di sekitar layar yang digambar, jadi PDF ratusan halaman tetap ringan.
+- **Baca Word** (`/word-reader/`): dokumen .docx tampil per halaman seperti di Word (ukuran kertas, margin, header/footer, tabel, gambar), dengan zoom, lompat halaman, dan layar penuh.
+- **Baca Excel** (`/excel-reader/`): .xlsx atau .csv tampil seperti spreadsheet, lengkap dengan huruf kolom, nomor baris yang menempel saat digulir, dan tab sheet di bawah. Angka dan tanggal diformat seperti di Excel, warna, border, dan sel gabungan ikut. Baris dimuat bertahap, jadi sheet ribuan baris tetap cepat dibuka.
+- **Baca PowerPoint** (`/ppt-reader/`): slide .pptx tampil sesuai tata letaknya, dan tombol **Presentasi** memutar slide satu per satu di layar penuh (panah, spasi, atau ketuk untuk pindah).
+- **Bullet Word yang hilang**: bullet dari font Symbol/Wingdings (mis. `•` bawaan Word) tidak muncul di HP dan Linux karena font itu tidak ada. Sekarang diganti karakter biasa, di Baca Word maupun Word ke PDF.
+
+Format lama (.doc, .xls, .ppt) belum bisa dibuka. Semuanya diproses di browser; file tidak dikirim ke mana pun.
+
+## 2026-11-19 — PDF ke Word yang sama persis
+
+- **PDF ke Word** (`/pdf-to-word/`) sekarang punya pilihan hasil **"Sama persis seperti PDF"** (bawaan). Sebelumnya hanya teks yang diambil lalu disusun ulang jadi paragraf, jadi gambar, garis tabel, warna, kolom, dan posisi hilang dan hasil Word terlihat beda dari PDF-nya. Sekarang tiap halaman Word dibuat seukuran halaman PDF: gambar, logo, garis dan warna tabel, serta latar digambar di belakang persis seperti aslinya, lalu teksnya ditaruh di atas pada posisi aslinya dengan font, ukuran, tebal/miring, warna, dan rata kanan-kiri yang sama, dan tetap bisa diedit. Teks miring/diputar dan lapisan OCR tak terlihat tetap jadi bagian gambar supaya tidak muncul dua kali. Ada pratinjau halaman sebelum diunduh. Cara lama masih ada sebagai **"Teks mengalir (mudah diedit)"** untuk yang ingin menulis ulang banyak teks.
+
+Semuanya tetap diproses di browser; tidak ada file yang dikirim.
+
 ## 2026-11-19 — CAD & upscale
 
 Tiga tool baru; total sekarang **108 tools**.
@@ -13,7 +31,7 @@ Tiga tool baru; total sekarang **108 tools**.
 
 ## 2026-11-18 — Darurat: dokumen
 
-Satu tool baru; total sekarang **109 tools**.
+Satu tool baru; total sekarang **113 tools**.
 
 - **Brankas Dokumen** (`#/brankas`): simpan foto/PDF KTP, KK, BPJS, polis di IndexedDB browser ini, dienkripsi per file dengan AES-256-GCM (kunci dari PBKDF2-SHA-256 600.000 iterasi, salt acak, IV baru tiap file; nama file ikut terenkripsi). Password tidak pernah disimpan, dan sebelum brankas dibuat pengguna harus mencentang bahwa password yang lupa berarti data tidak bisa dibuka. Terkunci otomatis saat tab disembunyikan. Bisa melihat gambar/PDF di tempat, mengunduh, menghapus, serta mengekspor/memulihkan brankas terenkripsi sebagai satu file `.twlvault` untuk cadangan di perangkat lain.
 

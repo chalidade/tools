@@ -5,6 +5,7 @@
 import type { CategoryId } from './registry'
 
 export const CATEGORIES_EN: Record<CategoryId, { title: string; description: string }> = {
+  reader: { title: 'Open Documents', description: 'Read PDF, Word, Excel and PowerPoint files right in your browser, no app needed.' },
   'to-pdf': { title: 'To PDF', description: 'Documents, slides, spreadsheets and images to PDF.' },
   'from-pdf': { title: 'From PDF', description: 'Get a PDF into Word, Excel, PowerPoint, images or Markdown.' },
   pdf: { title: 'Edit & Secure PDF', description: 'Merge, split, watermark, sign, compress, lock and unlock PDFs.' },
@@ -19,8 +20,28 @@ export const CATEGORIES_EN: Record<CategoryId, { title: string; description: str
 }
 
 export const TOOLS_EN: Record<string, { title: string; description: string; formats?: string; keywords?: string[] }> = {
+  'pdf-reader': {
+    title: 'PDF Reader',
+    description: 'Open and read a PDF in your browser: selectable, searchable text, working links, zoom and full screen.',
+    keywords: ['read', 'open', 'view', 'viewer'],
+  },
+  'word-reader': {
+    title: 'Word Reader',
+    description: 'Open a Word document (.docx) without Microsoft Word — shown page by page, like the original.',
+    keywords: ['read', 'open', 'view', 'viewer', 'document'],
+  },
+  'excel-reader': {
+    title: 'Excel Reader',
+    description: 'Open an Excel spreadsheet (.xlsx) or CSV without Excel — number formats, colors, merged cells and every sheet.',
+    keywords: ['read', 'open', 'view', 'viewer', 'spreadsheet', 'table'],
+  },
+  'ppt-reader': {
+    title: 'PowerPoint Reader',
+    description: 'Open a PowerPoint deck (.pptx) without PowerPoint, then play the slides full screen.',
+    keywords: ['read', 'open', 'view', 'viewer', 'slides', 'presentation', 'deck'],
+  },
   'doc-to-pdf': { title: 'Word to PDF', description: 'Turn a Word document (.docx) into a PDF and download it.', keywords: ['convert', 'document', 'letter', 'resume'] },
-  'pdf-to-word': { title: 'PDF to Word', description: 'Get the text of a PDF into an editable Word document (.docx).', keywords: ['convert', 'edit', 'document'] },
+  'pdf-to-word': { title: 'PDF to Word', description: 'Turn a PDF into an editable Word document (.docx) that looks like the original.', keywords: ['convert', 'edit', 'document'] },
   'image-to-pdf': {
     title: 'Images to PDF',
     description: 'Combine photos and images into one PDF — reorder, rotate and pick a paper size.',

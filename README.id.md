@@ -55,6 +55,10 @@ dan mengirim event berisi file rekaman. Ada juga API tanpa UI untuk developer.
 
 | Tool | Alamat | Keterangan |
 | --- | --- | --- |
+| Baca PDF | [`/pdf-reader/`](https://toowl.my.id/pdf-reader/) | Halaman digambar pdf.js + lapisan teks (bisa diseleksi, disalin, dicari dengan Ctrl+F), link aktif, PDF berpassword, zoom, lompat halaman, layar penuh. |
+| Baca Word | [`/word-reader/`](https://toowl.my.id/word-reader/) | `.docx` per halaman (docx-preview), zoom, layar penuh. |
+| Baca Excel | [`/excel-reader/`](https://toowl.my.id/excel-reader/) | `.xlsx`/`.csv` sebagai grid dengan huruf kolom, nomor baris, dan tab sheet; format angka, warna, border, sel gabungan. |
+| Baca PowerPoint | [`/ppt-reader/`](https://toowl.my.id/ppt-reader/) | Slide `.pptx` sesuai tata letaknya, plus mode presentasi satu slide per layar. |
 | Word ke PDF | [`/doc-to-pdf/`](https://toowl.my.id/doc-to-pdf/) | `.docx` → PDF (docx-preview + jsPDF). `.doc` lama belum didukung. |
 | PDF ke Word | [`/pdf-to-word/`](https://toowl.my.id/pdf-to-word/) | PDF → `.docx` yang bisa diedit (pdf.js + docx). Teks, ukuran, tebal/miring, font, tab, dan pemisah halaman ikut; gambar dan garis tabel tidak. PDF hasil scan belum didukung (butuh OCR). |
 | DWG ke PDF | [`/dwg-to-pdf/`](https://toowl.my.id/dwg-to-pdf/) | DWG (R14–2018) atau DXF → PDF vektor. Dibaca dengan LibreDWG versi WebAssembly (`@mlightcad/libredwg-web`, GPL-3.0, ±8 MB, dimuat saat tool dipakai), digambar sendiri: blok, dimensi, hatch berpola, tipe garis, ketebalan garis, ByLayer/ByBlock. Kertas A4–A0, pas kertas atau skala 1:N, warna asli atau hitam, layer bisa dimatikan. Model space saja. |
