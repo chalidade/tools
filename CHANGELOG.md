@@ -3,6 +3,11 @@
 Catatan harian apa yang berubah di [tools](https://toowl.my.id/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-19 — Nominal Kwitansi rapi di PDF
+
+- **Kwitansi** (`/kwitansi/`): di PDF, nominal sekarang duduk di tengah kotaknya. Sebelumnya teksnya naik menimpa garis atas kotak (laporan pengguna).
+- Kotak nominal ikut melebar untuk nominal panjang, dan ukuran hurufnya baru mengecil kalau kotaknya sudah selebar halaman.
+
 ## 2026-11-19 — Lisensi jadi AGPL-3.0
 
 - Lisensi repo dan semua paket di `packages/` berganti dari MIT ke **AGPL-3.0-only**. Kode tetap terbuka dan boleh dipakai siapa saja, tapi yang mendistribusikan atau menjalankan versi modifikasinya untuk orang lain wajib membuka kodenya juga. Lisensi komersial tersedia bagi yang ingin memakai kode toowl di produk tertutup.
