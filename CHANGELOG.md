@@ -3,6 +3,12 @@
 Catatan harian apa yang berubah di [tools](https://toowl.my.id/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-19 — README dan video pengenalan baru
+
+- README (English dan Indonesia) diperbarui ke kondisi sekarang: 113 tools, alamat `/<tool>/` dan `/en/<tool>/` di toowl.my.id, beranda satu kotak pencarian, dan desain baru. Tiga tool yang belum tercatat ditambahkan: **Gambar ke SVG**, **Peredam Noise**, dan **Tambah Musik ke Video**.
+- Video pengenalan 30 detik (ID dan EN, GIF dan MP4) direkam dari situsnya sendiri dan menggantikan animasi launch lama; screenshot laptop dan HP ikut diperbarui.
+- `docs/ARCHITECTURE.md` tidak lagi menyebut sub-path `/tools/` dan menjelaskan beranda yang baru.
+
 ## 2026-11-19 — Gambar Word yang hilang
 
 - **Word ke PDF** (`/doc-to-pdf/`) dan **Baca Word** (`/word-reader/`) sekarang menampilkan gambar yang sebelumnya hilang atau lari ke halaman lain:
