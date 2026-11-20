@@ -53,7 +53,7 @@ function App() {
         )}
       </main>
       {/* The home page's search bar is fixed to the bottom of a phone's screen: leave room for it. */}
-      <Footer className={!tool && route.slug === '' ? 'max-lg:pb-24' : undefined} />
+      <Footer quiet={!!tool} className={!tool && route.slug === '' ? 'max-lg:pb-24' : undefined} />
       <SupportToast />
     </div>
   )
