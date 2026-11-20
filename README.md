@@ -3,7 +3,7 @@
 **English** · [Bahasa Indonesia](README.id.md)
 
 **My everyday file toolbox, built for the file work I do every day and published free for everyone.**
-115 tools for PDF, Office files, CAD drawings, images, video, audio, music and everyday calculations, and every one of them runs entirely in your browser.
+126 tools for PDF, Office files, CAD drawings, images, video, audio, music and everyday calculations, and every one of them runs entirely in your browser.
 Your files are never uploaded.
 
 [![Live demo](https://img.shields.io/badge/live-toowl.my.id-c8f031)](https://toowl.my.id/)
@@ -40,7 +40,7 @@ browser's own media encoders, and a library is downloaded only when you open the
 
 ## Tools
 
-All 115, grouped the way the site groups them. Each name links to the live tool.
+All 126, grouped the way the site groups them. Each name links to the live tool.
 
 **Open Documents**
 - [PDF Reader](https://toowl.my.id/en/pdf-reader/): pages drawn by pdf.js with its text layer on top (select, copy, Ctrl+F), working links, password-protected PDFs, zoom, page jump, full screen
@@ -123,6 +123,12 @@ Each reader opens the other three formats too.
 - [JSON Beautifier](https://toowl.my.id/en/json-beautify/) and [JSON Minify](https://toowl.my.id/en/json-minify/): a custom parser that keeps numbers exactly as written
 - [Favicon Generator](https://toowl.my.id/en/favicon-generator/): `.ico`, iOS/Android icons, web manifest and the `<head>` snippet
 - [Image ⇄ Base64](https://toowl.my.id/en/image-to-base64/), [Color Picker](https://toowl.my.id/en/color-picker/) (HEX/RGB/HSL/OKLCH, WCAG contrast, 50–950 shades)
+- [CSV ⇄ JSON](https://toowl.my.id/en/csv-json/) (comma, semicolon or tab detected), [YAML ⇄ JSON](https://toowl.my.id/en/yaml-json/) (errors with line and column, multi-document), [SQL Formatter](https://toowl.my.id/en/sql-formatter/) (MySQL, PostgreSQL, SQLite, SQL Server, BigQuery)
+- [Hash Generator](https://toowl.my.id/en/hash/): MD5 and SHA-1/256/384/512 of text or multi-GB files, hashed in 4 MB slices in a worker, with a checksum check
+- [Regex Tester](https://toowl.my.id/en/regex/): live highlights, capture groups, replace, examples; matching runs in a worker with a time limit so a runaway pattern can't freeze the tab
+- [Minify HTML/CSS/JS](https://toowl.my.id/en/minify/): Terser, CSSO and an in-house HTML minifier, sizes before/after/gzipped, plus beautify
+- [Unix Timestamp](https://toowl.my.id/en/timestamp/), [Cron Explainer](https://toowl.my.id/en/cron/) (in-house parser, sentences in both languages, next runs, builder)
+- [Color Contrast Checker](https://toowl.my.id/en/kontras-warna/) (WCAG 2.2 AA/AAA with the nearest passing colour), [Lorem Ipsum](https://toowl.my.id/en/lorem-ipsum/), [Screenshot Mockup](https://toowl.my.id/en/mockup/) (browser, phone and laptop frames drawn from shapes)
 
 **Productivity**
 - [Notes](https://toowl.my.id/en/notes/): Markdown with live checklists, saved in the browser, JSON backup/restore
