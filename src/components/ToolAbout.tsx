@@ -16,7 +16,7 @@ export function ToolAbout({ tool }: { tool: Tool }) {
   const faq = toolFaq(tool, lang)
 
   return (
-    <div className="mt-10 grid gap-8 border-t pt-8 sm:grid-cols-2 sm:pt-10">
+    <div className="mt-6 grid gap-8 border-t pt-6 sm:grid-cols-2 lg:mt-2">
       {faq.length > 0 && (
         <section className="sm:col-span-2">
           <h2 className="font-semibold tracking-tight">{faqHeading(lang)}</h2>

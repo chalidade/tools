@@ -1,10 +1,12 @@
 import { Suspense, useEffect, useState } from 'react'
-import { ChevronRight, Loader2, ShieldCheck } from 'lucide-react'
+import { ChevronDown, ChevronRight, Loader2, ShieldCheck } from 'lucide-react'
 import { InstallCard } from '@/components/InstallCard'
 import { ToolAbout } from '@/components/ToolAbout'
 import { ToolBoundary } from '@/components/tool/ToolBoundary'
 import { categoryText, toolText, type Tool } from '@/tools/registry'
 import { useLang, useT } from '@/lib/i18n'
+import { isNativeApp } from '@/lib/native'
+import { isPlayApp } from '@/lib/platform'
 import { pageUrl, routeQuery } from '@/lib/route'
 import { applyAccent, checkLicense, licenseEnabled, parseAccent } from '@/lib/license'
 import { rememberTool } from '@/lib/recent'
@@ -130,17 +132,30 @@ export function ToolView({ tool, embed = false }: { tool: Tool; embed?: boolean 
         </ToolBoundary>
       </div>
 
-      {/* Phone: the tool comes first; what it does and the privacy note follow it. */}
-      <div className="mt-5 flex gap-3 rounded-2xl border bg-card p-4 lg:hidden">
-        <ShieldCheck className="mt-0.5 size-5 shrink-0 text-brand-2" />
-        <div>
-          {about}
-          <p className="mt-1.5 font-mono text-xs text-muted-foreground">{t('Diproses di HP-mu · tidak di-upload', 'Runs on your phone · nothing is uploaded')}</p>
+      {/*
+        Everything that is not the tool sits behind one quiet line: what it does,
+        why it is safe, questions, related tools and the embed code. It stays in
+        the page (a closed <details>), so search engines still read it.
+      */}
+      <details className="group/about mt-8 lg:mt-10">
+        <summary className="flex cursor-pointer list-none items-center justify-between gap-3 rounded-xl py-2 text-muted-foreground transition-colors hover:text-foreground [&::-webkit-details-marker]:hidden">
+          {/* A laptop already says this next to the title. */}
+          <span className="inline-flex min-w-0 items-center gap-2 font-mono text-xs lg:invisible">
+            <ShieldCheck className="size-4 shrink-0 text-brand-2" />
+            <span className="truncate">{t('Diproses di perangkatmu', 'Runs on your device')}</span>
+          </span>
+          <span className="inline-flex shrink-0 items-center gap-1 text-sm">
+            {t('Tentang tool ini', 'About this tool')}
+            <ChevronDown className="size-4 transition-transform group-open/about:rotate-180" />
+          </span>
+        </summary>
+        <div className="rise-in pt-3">
+          <div className="lg:hidden">{about}</div>
+          <ToolAbout tool={tool} />
+          {/* Embed code is for site owners on the web, not for people using the store apps. */}
+          {!isNativeApp() && !isPlayApp() && <InstallCard tool={tool} />}
         </div>
-      </div>
-
-      <InstallCard tool={tool} />
-      <ToolAbout tool={tool} />
+      </details>
     </section>
   )
 }
