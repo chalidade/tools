@@ -1,4 +1,5 @@
 import { useSyncExternalStore } from 'react'
+import { isNativeApp } from '@/lib/native'
 
 /*
  * "Install as an app". Chrome/Edge/Samsung Internet fire beforeinstallprompt,
@@ -17,6 +18,7 @@ const listeners = new Set<() => void>()
 const emit = () => listeners.forEach((l) => l())
 
 export const isStandalone = () =>
+  isNativeApp() ||
   window.matchMedia('(display-mode: standalone)').matches ||
   (navigator as Navigator & { standalone?: boolean }).standalone === true
 

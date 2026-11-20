@@ -132,8 +132,8 @@ export interface Tool {
   /** Questions people search with, answered under the tool and in its static page (English in registry-en.ts). */
   faq?: { q: string; a: string }[]
   /**
-   * Left out of the Android (Play Store) app. Medical/health features there
-   * need an organization developer account, so they stay web-only.
+   * Left out of the Android (Play Store) and iOS (App Store) apps. Medical/health
+   * features there need an organization developer account, so they stay web-only.
    */
   webOnly?: boolean
 }
@@ -1690,8 +1690,24 @@ const ALL_TOOLS: Tool[] = [
   },
 ]
 
-/** Every tool this visitor can use: the Play app leaves out the web-only ones. */
-export const TOOLS: Tool[] = isPlayApp() ? ALL_TOOLS.filter((t) => !t.webOnly) : ALL_TOOLS
+// The iOS app's web view (WKWebView) has no screen capture, so the tools that
+// need it are left out there instead of failing (App Store guideline 2.1).
+// Read window.Capacitor directly: this module also runs in Node for seo.mjs.
+const IOS_UNSUPPORTED = new Set(['screen-recorder'])
+const inIosApp =
+  typeof window !== 'undefined' &&
+  (window as Window & { Capacitor?: { getPlatform?: () => string } }).Capacitor?.getPlatform?.() === 'ios'
+
+/**
+ * Every tool this visitor can use. Both store apps leave out the web-only
+ * (medical) ones: Play and App Store (guideline 5.1.1(ix)) want health
+ * features from an organization account. iOS also drops what WKWebView can't run.
+ */
+export const TOOLS: Tool[] = inIosApp
+  ? ALL_TOOLS.filter((t) => !t.webOnly && !IOS_UNSUPPORTED.has(t.slug))
+  : isPlayApp()
+    ? ALL_TOOLS.filter((t) => !t.webOnly)
+    : ALL_TOOLS
 
 /** A tool's title, description and formats in the given language (English lives in registry-en.ts). */
 export function toolText(tool: Tool, lang: Lang) {
