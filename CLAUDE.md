@@ -201,6 +201,15 @@ picture; the rules that matter when editing:
   one third-party script the site loads; it never sees file contents. Keep the
   "Statistik kunjungan" section of `public/privacy/index.html` and the Play
   Data safety form in step with what it sends.
+- **Embed licenses:** `src/lib/license.ts` checks keys sold on Lemon Squeezy
+  (UUID keys, `/v1/licenses/validate`, store/product ids must match) and
+  Gumroad (`XXXXXXXX-…` keys, `/v2/licenses/verify` with `product_id`) straight
+  from the browser — public endpoints, no secret key, result cached a week in
+  localStorage. A valid `#/<slug>?embed&key=…` hides the credit line and honours
+  `&accent=<hex>` (`applyAccent`). The `LICENSE` config starts empty; until a
+  store is filled in, `licenseEnabled()` is false, the Install card's
+  license panel stays hidden and `?key=` is ignored. It is a convenience gate,
+  not DRM. Keep the privacy page's "Lisensi embed" section in step.
 - **Support link (Trakteer):** `SUPPORT_URL` in `src/components/SupportToast.tsx`
   is used by the footer and by a once-per-session toast shown after the first
   save (`downloadBlob` fires `tools:downloaded`). Plain links only — never
