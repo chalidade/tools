@@ -3,12 +3,13 @@
 Catatan harian apa yang berubah di [tools](https://toowl.my.id/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
-## 2026-11-21 — Kompres Video: video besar dan pilihan frame rate
+## 2026-11-21 — Kompres Video untuk file besar, pilihan frame rate, dan Kalkulator Waris
 
 - **Video besar tidak gagal lagi.** Hasil kompres sebelumnya ditampung utuh di memori browser; untuk video panjang (mis. MOV 6 GB berdurasi 53 menit, hasil ~2,4 GB) memori tab habis dan muncul "Gagal mengompres video". Sekarang hasil yang diperkirakan di atas ~700 MB ditulis langsung ke disk (origin private file system) sedikit demi sedikit, lalu diunduh dari sana. File lama di penyimpanan itu dihapus setiap kali kompres baru dimulai.
 - Pesan galat lebih jelas: ruang penyimpanan tidak cukup, browser yang tidak bisa menulis ke disk (mis. jendela privat; tombol Kompres dinonaktifkan dengan saran), atau memori habis, masing-masing dengan saran resolusi/frame rate lebih rendah.
 - **Pengaturan frame rate**: Asli, 30, 24, atau 15 fps (hanya yang lebih rendah dari sumber). Bitrate dan perkiraan ukuran ikut turun. Kualitas Kuat tidak lagi diam-diam membatasi ke 30 fps; pilih sendiri lewat pengaturan ini.
 - Paket `@chalidade/compress-video` mendapat opsi `fps` (opsional) dan penulisan ke disk yang sama.
+- **Kalkulator Waris** (`/kalkulator-waris/`) baru, total sekarang **127 tools**: pembagian warisan menurut faraid (pendapat jumhur/Syafi'i). Harta dikurangi biaya jenazah, utang, dan wasiat (dibatasi 1/3), lalu dibagi ke suami/istri, anak dan cucu dari anak laki-laki, orang tua dan kakek-nenek, saudara kandung/seayah/seibu, sampai keponakan, paman, dan sepupu. Menangani hajb (siapa terhalang oleh siapa), ashabah bil ghair dan ma'al ghair, 'aul, radd, Umariyyatain, dan musytarakah, dengan pecahan pasti, asal masalah/tashih, dan rupiah per orang. Kakek dihitung menghalangi saudara; ahli waris pengganti KHI belum dihitung (disebutkan di halaman).
 
 ## 2026-11-20 — Lisensi embed tanpa branding
 

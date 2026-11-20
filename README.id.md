@@ -2,7 +2,7 @@
 
 [English](README.md) · **Bahasa Indonesia**
 
-Kotak perkakas file sehari-hari: **126 tools gratis** untuk PDF, Office, gambar
+Kotak perkakas file sehari-hari: **127 tools gratis** untuk PDF, Office, gambar
 CAD, foto, video, audio, musik, dan hitungan sehari-hari yang jalan **sepenuhnya
 di browser**. File diproses di perangkat pengguna: tidak di-upload ke server dan
 tidak disimpan di mana pun.
@@ -185,6 +185,7 @@ dan mengirim event berisi file rekaman. Ada juga API tanpa UI untuk developer.
 | Link WhatsApp | [`/link-wa/`](https://toowl.my.id/link-wa/) | Link chat `wa.me` dari nomor (08…, +62…) dan pesan opsional, tombol salin, dan QR-nya; chat tanpa simpan kontak. |
 | Kalkulator Persen & Diskon | [`/persen/`](https://toowl.my.id/persen/) | X% dari Y, berapa persen, naik/turun, dan diskon bertingkat dengan tabel langkah (50% + 20% = 60%). |
 | Mana Lebih Murah | [`/mana-lebih-murah/`](https://toowl.my.id/mana-lebih-murah/) | Bandingkan kemasan lewat harga per satuan (g/kg/ml/L/pcs, isi per kemasan); termurah ditandai beserta selisihnya. |
+| Kalkulator Waris | [`/kalkulator-waris/`](https://toowl.my.id/kalkulator-waris/) | Pembagian warisan menurut faraid: bagian tiap ahli waris, yang terhalang, aul dan radd, dan rupiah per orang. |
 | Kalkulator Gaji Bersih | [`/gaji-bersih/`](https://toowl.my.id/gaji-bersih/) | Perkiraan gaji bersih: PPh 21 (tarif Pasal 17, PTKP), BPJS Kesehatan, JHT, dan JP dengan rincian langkah; tarif di satu berkas. |
 | Encode / Decode | [`/encode-decode/`](https://toowl.my.id/encode-decode/) | Base64 teks (UTF-8, opsi URL-safe), URL encode (komponen atau seluruh URL), HTML entities, dan baca JWT (header + payload, waktu `iat`/`nbf`/`exp` dan status kedaluwarsa). Tanda tangan JWT tidak diverifikasi. |
 | Generator UUID | [`/uuid/`](https://toowl.my.id/uuid/) | UUID v4 (acak) dan v7 (urut waktu, tetap berurutan dalam milidetik yang sama) lewat `crypto.getRandomValues`, 1–1000 sekaligus, huruf besar, tanpa tanda hubung, atau dengan kurung kurawal. |
