@@ -1,11 +1,12 @@
-import { Suspense, useEffect } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import { ChevronRight, Loader2, ShieldCheck } from 'lucide-react'
 import { InstallCard } from '@/components/InstallCard'
 import { ToolAbout } from '@/components/ToolAbout'
 import { ToolBoundary } from '@/components/tool/ToolBoundary'
 import { categoryText, toolText, type Tool } from '@/tools/registry'
 import { useLang, useT } from '@/lib/i18n'
-import { pageUrl } from '@/lib/route'
+import { pageUrl, routeQuery } from '@/lib/route'
+import { applyAccent, checkLicense, licenseEnabled, parseAccent } from '@/lib/license'
 import { rememberTool } from '@/lib/recent'
 import { cn } from '@/lib/utils'
 import { absoluteUrl, applyHead, toolMeta } from '@/lib/seo'
@@ -20,11 +21,36 @@ function NoUploadBadge({ className }: { className?: string }) {
   )
 }
 
+/**
+ * An embed with a valid license key (?key=…) drops the credit line and may use
+ * its own accent color (?accent=7c3aed). 'checking' hides the credit while the
+ * store answers, so a licensed embed never flashes it.
+ */
+function useEmbedLicense(embed: boolean) {
+  const [key] = useState(() => (embed && licenseEnabled() ? (routeQuery().get('key') ?? '') : ''))
+  const [state, setState] = useState<'none' | 'checking' | 'valid'>(key ? 'checking' : 'none')
+  useEffect(() => {
+    if (!key) return
+    let live = true
+    checkLicense(key).then((r) => {
+      if (!live) return
+      setState(r.valid ? 'valid' : 'none')
+      const accent = parseAccent(routeQuery().get('accent'))
+      if (r.valid && accent) applyAccent(accent)
+    })
+    return () => {
+      live = false
+    }
+  }, [key])
+  return state
+}
+
 export function ToolView({ tool, embed = false }: { tool: Tool; embed?: boolean }) {
   const Component = tool.component
   const t = useT()
   const lang = useLang()
   const text = toolText(tool, lang)
+  const license = useEmbedLicense(embed)
 
   useEffect(() => {
     if (embed) {
@@ -57,11 +83,13 @@ export function ToolView({ tool, embed = false }: { tool: Tool; embed?: boolean 
             <Component key={tool.slug} />
           </Suspense>
         </ToolBoundary>
-        <p className="mt-4 text-center text-xs text-muted-foreground">
-          <a href={absoluteUrl(tool.slug, lang)} target="_blank" rel="noreferrer" className="hover:text-foreground">
-            {text.title} · toowl — {t('berjalan di browsermu, tanpa upload', 'runs in your browser, no upload')} ↗
-          </a>
-        </p>
+        {license === 'none' && (
+          <p className="mt-4 text-center text-xs text-muted-foreground">
+            <a href={absoluteUrl(tool.slug, lang)} target="_blank" rel="noreferrer" className="hover:text-foreground">
+              {text.title} · toowl — {t('berjalan di browsermu, tanpa upload', 'runs in your browser, no upload')} ↗
+            </a>
+          </p>
+        )}
       </div>
     )
 

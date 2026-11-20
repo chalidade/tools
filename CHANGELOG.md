@@ -3,6 +3,15 @@
 Catatan harian apa yang berubah di [tools](https://toowl.my.id/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-20 — Lisensi embed tanpa branding
+
+Dasar untuk menjual lisensi lewat **Lemon Squeezy** dan **Gumroad**; masih tersembunyi sampai produk di toko dibuat dan id-nya diisi di `src/lib/license.ts`.
+
+- Embed iframe gratis tetap seperti sekarang, dengan satu baris kecil "toowl" di bawah tool. Dengan kunci lisensi (`#/<tool>?embed&key=…`) baris itu hilang, dan warna aksen bisa diganti (`&accent=7c3aed`); tulisan di atas warna itu otomatis hitam atau putih supaya tetap terbaca.
+- Kartu **Pasang di situsmu** (tab Iframe) mendapat bagian "Tanpa tulisan toowl": tombol **Beli lisensi** dan kolom kunci. Kunci yang valid langsung masuk ke kode iframe, lengkap dengan pemilih warna.
+- Kunci dicek di browser ke endpoint lisensi publik toko (format kunci menentukan tokonya: UUID untuk Lemon Squeezy, empat kelompok 8 karakter untuk Gumroad), tanpa server dan tanpa API key rahasia. Hasilnya disimpan seminggu di perangkat. Kunci yang di-refund, dinonaktifkan, kedaluwarsa, atau dari toko lain ditolak.
+- Kebijakan privasi menjelaskan pengecekan kunci ini.
+
 ## 2026-11-20 — Sebelas tool developer
 
 Seluruh batch developer dari roadmap (Hari 52 sampai 55) dirilis sekaligus; total sekarang **126 tools**.
