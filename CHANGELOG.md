@@ -3,6 +3,13 @@
 Catatan harian apa yang berubah di [tools](https://toowl.my.id/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-21 — Kompres Video: video besar dan pilihan frame rate
+
+- **Video besar tidak gagal lagi.** Hasil kompres sebelumnya ditampung utuh di memori browser; untuk video panjang (mis. MOV 6 GB berdurasi 53 menit, hasil ~2,4 GB) memori tab habis dan muncul "Gagal mengompres video". Sekarang hasil yang diperkirakan di atas ~700 MB ditulis langsung ke disk (origin private file system) sedikit demi sedikit, lalu diunduh dari sana. File lama di penyimpanan itu dihapus setiap kali kompres baru dimulai.
+- Pesan galat lebih jelas: ruang penyimpanan tidak cukup, browser yang tidak bisa menulis ke disk (mis. jendela privat; tombol Kompres dinonaktifkan dengan saran), atau memori habis, masing-masing dengan saran resolusi/frame rate lebih rendah.
+- **Pengaturan frame rate**: Asli, 30, 24, atau 15 fps (hanya yang lebih rendah dari sumber). Bitrate dan perkiraan ukuran ikut turun. Kualitas Kuat tidak lagi diam-diam membatasi ke 30 fps; pilih sendiri lewat pengaturan ini.
+- Paket `@chalidade/compress-video` mendapat opsi `fps` (opsional) dan penulisan ke disk yang sama.
+
 ## 2026-11-20 — Lisensi embed tanpa branding
 
 Dasar untuk menjual lisensi lewat **Lemon Squeezy** dan **Gumroad**; masih tersembunyi sampai produk di toko dibuat dan id-nya diisi di `src/lib/license.ts`.

@@ -5,21 +5,25 @@
 export type Level = 'light' | 'medium' | 'strong'
 /** Target short side in pixels; 0 keeps the original size. Never scales up. */
 export type Resolution = 0 | 1080 | 720 | 480
+/** Output frame rate; 0 keeps the original. Never raises it. */
+export type FrameRate = 0 | 30 | 24 | 15
 
 /** Output size for a target short side, keeping the aspect ratio and even dimensions. */
 export declare function targetSize(width: number, height: number, resolution: Resolution): { width: number; height: number }
 /** The video bitrate compressVideo will ask for, in bits per second (never above 85% of the source's). */
-export declare function targetBitrate(info: MediaInfo, level: Level, resolution: Resolution): number
+export declare function targetBitrate(info: MediaInfo, level: Level, resolution: Resolution, frameRate?: FrameRate): number
 
 /**
  * Re-encodes a video to MP4 (H.264 when the browser can, else HEVC/VP9/AV1).
  * `info` comes from probeMedia and must have a video track. `onProgress`
- * gets 0–1; `onStart` receives a function that cancels the job.
+ * gets 0–1; `onStart` receives a function that cancels the job. Outputs
+ * expected above ~700 MB are streamed to a file in the origin private file
+ * system and returned as a disk-backed File.
  */
 export declare function compressVideo(
   file: File,
   info: MediaInfo,
-  opts: { level: Level; resolution: Resolution; keepAudio: boolean },
+  opts: { level: Level; resolution: Resolution; fps?: FrameRate; keepAudio: boolean },
   onProgress: (p: number) => void,
   onStart: (cancel: () => void) => void,
 ): Promise<Blob>
