@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useRef, useState, type PointerEvent, type ReactNode } from 'react'
-import { Brush, Contrast, Download, Lasso, Loader2, Pipette, RotateCcw, SquareDashed, Undo2, Wand2 } from 'lucide-react'
+import { useCallback, useEffect, useMemo, useRef, useState, type PointerEvent, type ReactNode } from 'react'
+import { Brush, Contrast, Download, Lasso, Loader2, Pipette, RotateCcw, Sparkles, SquareDashed, Undo2, Wand2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { ErrorNote } from '@/components/tool/ErrorNote'
 import { FileDrop } from '@/components/tool/FileDrop'
@@ -8,6 +8,7 @@ import { downloadBlob } from '@/lib/download'
 import { tr, useT } from '@/lib/i18n'
 import { canvasBlob, decodeImage, newCanvas } from '@/lib/image'
 import { cn } from '@/lib/utils'
+import { segment } from './segment'
 import {
   applyCoverage,
   applyRegion,
@@ -105,9 +106,10 @@ const ZOOM_OPTIONS: { value: number; label: Text }[] = [
   { value: 4, label: ['400%', '400%'] },
 ]
 
-type Background = 'transparent' | 'white' | 'red' | 'blue' | 'custom'
+type Background = 'transparent' | 'blur' | 'white' | 'red' | 'blue' | 'custom'
 const BACKGROUNDS: { value: Background; label: Text; color?: string }[] = [
   { value: 'transparent', label: ['Transparan', 'Transparent'] },
+  { value: 'blur', label: ['Blur latar', 'Blurred'] },
   { value: 'white', label: ['Putih', 'White'], color: '#ffffff' },
   { value: 'red', label: ['Merah', 'Red'], color: '#db1514' },
   { value: 'blue', label: ['Biru', 'Blue'], color: '#0f58c9' },
@@ -125,6 +127,30 @@ interface Picture {
 
 type Point = { x: number; y: number }
 type Selection = { kind: 'lasso'; points: Point[] } | { kind: 'rect'; from: Point; to: Point }
+
+/** The photo blurred by shrinking and stretching it back — works in every browser. `strength` 1–10. */
+function blurredCopy(rgba: Uint8ClampedArray, W: number, H: number, strength: number) {
+  const src = newCanvas(W, H)
+  src.getContext('2d')!.putImageData(new ImageData(new Uint8ClampedArray(rgba), W, H), 0, 0)
+  const f = Math.max(2, (Math.max(W, H) * strength) / 160)
+  let cur = src
+  let w = W
+  let h = H
+  while (w / 2 >= W / f && h / 2 >= H / f) {
+    w = Math.max(1, Math.round(w / 2))
+    h = Math.max(1, Math.round(h / 2))
+    const next = newCanvas(w, h)
+    const c = next.getContext('2d')!
+    c.imageSmoothingQuality = 'high'
+    c.drawImage(cur, 0, 0, w, h)
+    cur = next
+  }
+  const out = newCanvas(W, H)
+  const c = out.getContext('2d')!
+  c.imageSmoothingQuality = 'high'
+  c.drawImage(cur, 0, 0, W, H)
+  return out
+}
 
 const CHECKER = '[background:repeating-conic-gradient(#d4d4d8_0_25%,#fff_0_50%)_0_0/16px_16px]'
 
@@ -147,6 +173,8 @@ export default function RemoveBackground() {
   const [background, setBackground] = useState<Background>('transparent')
   const [customColor, setCustomColor] = useState('#16a34a')
   const [jpg, setJpg] = useState(false)
+  const [blur, setBlur] = useState(5)
+  const [ai, setAi] = useState<'idle' | 'loading' | 'working'>('idle')
 
   /** Edited in place; `version` tells React it changed. */
   const mask = useRef<Uint8Array>(new Uint8Array(0))
@@ -184,6 +212,35 @@ export default function RemoveBackground() {
     }
   }
 
+  const blurred = useMemo(
+    () => (picture && background === 'blur' ? blurredCopy(picture.rgba, picture.W, picture.H, blur) : null),
+    [picture, background, blur],
+  )
+
+  /** One tap: the model picks the subject, the mask is replaced (undo brings the old one back). */
+  async function autoRemove() {
+    if (!picture) return
+    setError(null)
+    setAi('loading')
+    try {
+      const { W, H, rgba } = picture
+      const keep = await segment(rgba, W, H)
+      setAi('working')
+      snapshot()
+      mask.current = keep
+      setVersion((v) => v + 1)
+    } catch {
+      setError(
+        t(
+          'Model AI tidak bisa dijalankan di perangkat ini. Pakai tongkat, lasso, atau kuas sebagai gantinya.',
+          "The AI model can't run on this device. Use the wand, lasso, or brush instead.",
+        ),
+      )
+    } finally {
+      setAi('idle')
+    }
+  }
+
   /** Draws the current mask; `raw` skips edge refinement (used while a brush stroke is in progress). */
   const paint = useCallback(
     (raw: boolean) => {
@@ -191,9 +248,17 @@ export default function RemoveBackground() {
       if (!canvas || !picture) return
       const { W, H, rgba } = picture
       const alpha = raw ? mask.current : refine(mask.current, W, H, shrink, feather)
-      canvas.getContext('2d')!.putImageData(new ImageData(compose(rgba, alpha, view), W, H), 0, 0)
+      const ctx = canvas.getContext('2d')!
+      const composed = new ImageData(compose(rgba, alpha, view), W, H)
+      if (background === 'blur' && view === 'result' && blurred) {
+        const cut = newCanvas(W, H)
+        cut.getContext('2d')!.putImageData(composed, 0, 0)
+        ctx.clearRect(0, 0, W, H)
+        ctx.drawImage(blurred, 0, 0)
+        ctx.drawImage(cut, 0, 0)
+      } else ctx.putImageData(composed, 0, 0)
     },
-    [picture, shrink, feather, view],
+    [picture, shrink, feather, view, background, blurred],
   )
 
   useEffect(() => paint(false), [paint, version])
@@ -334,14 +399,19 @@ export default function RemoveBackground() {
       const cut = newCanvas(W, H)
       cut.getContext('2d')!.putImageData(new ImageData(compose(rgba, refine(mask.current, W, H, shrink, feather), 'result'), W, H), 0, 0)
       let out = cut
-      if (fill) {
+      if (background === 'blur') {
+        out = newCanvas(W, H)
+        const ctx = out.getContext('2d')!
+        ctx.drawImage(blurredCopy(rgba, W, H, blur), 0, 0)
+        ctx.drawImage(cut, 0, 0)
+      } else if (fill) {
         out = newCanvas(W, H)
         const ctx = out.getContext('2d')!
         ctx.fillStyle = fill
         ctx.fillRect(0, 0, W, H)
         ctx.drawImage(cut, 0, 0)
       }
-      const asJpg = !!fill && jpg
+      const asJpg = (!!fill || background === 'blur') && jpg
       const blob = await canvasBlob(out, asJpg ? 'image/jpeg' : 'image/png', 0.92)
       downloadBlob(blob, `${name.replace(/\.[^.]+$/, '')}${tr('-tanpa-latar', '-no-background')}.${asJpg ? 'jpg' : 'png'}`)
     } catch {
@@ -362,8 +432,8 @@ export default function RemoveBackground() {
         />
         <p className="text-center text-xs text-muted-foreground">
           {t(
-            'Tanpa AI: kamu yang memilih latarnya — paling cocok untuk latar polos (foto produk, pas foto, logo, scan).',
-            'No AI: you pick the background — works best on plain backgrounds (product photos, ID photos, logos, scans).',
+            'Dua cara: ketuk sekali dan model AI di perangkatmu memilih objeknya (unduhan ±12 MB, hanya bila dipakai), atau pilih latarnya sendiri — paling cocok untuk latar polos.',
+            'Two ways: tap once and an on-device AI model picks the subject (~12 MB download, only when used), or pick the background yourself — best on plain backgrounds.',
           )}
         </p>
         {error && <ErrorNote message={error} />}
@@ -373,7 +443,8 @@ export default function RemoveBackground() {
 
   const { W, H } = picture
   const current = TOOLS.find((item) => item.value === tool)!
-  const checker = view === 'overlay' || !fill
+  const checker = view === 'overlay' || (!fill && background !== 'blur')
+  const hasBg = !!fill || background === 'blur'
   const sizeStyle = zoom ? { width: W * zoom } : { width: `min(100%, calc(70vh * ${W / H}))` }
 
   return (
@@ -392,7 +463,7 @@ export default function RemoveBackground() {
         <div className="flex flex-wrap gap-2">
           <Button onClick={() => void save()} disabled={saving}>
             {saving ? <Loader2 className="animate-spin" /> : <Download />}
-            {t('Unduh', 'Download')} {fill && jpg ? 'JPG' : 'PNG'}
+            {t('Unduh', 'Download')} {hasBg && jpg ? 'JPG' : 'PNG'}
           </Button>
           <Button variant="ghost" disabled={saving} onClick={() => setPicture(null)}>
             <RotateCcw />
@@ -437,6 +508,22 @@ export default function RemoveBackground() {
                 Reset
               </Button>
             </div>
+          </div>
+          <div className="flex flex-wrap items-center gap-3 rounded-xl border bg-card p-3">
+            <Button onClick={() => void autoRemove()} disabled={ai !== 'idle'}>
+              {ai === 'idle' ? <Sparkles /> : <Loader2 className="animate-spin" />}
+              {ai === 'loading'
+                ? t('Memuat model AI…', 'Loading the AI model…')
+                : ai === 'working'
+                  ? t('Menerapkan…', 'Applying…')
+                  : t('Hapus latar otomatis (AI)', 'Remove background automatically (AI)')}
+            </Button>
+            <p className="min-w-0 flex-1 text-xs text-muted-foreground">
+              {t(
+                'Sekali ketuk, lalu rapikan dengan alat di bawah. Pertama kali, model AI + mesinnya (±12 MB) diunduh dari situs ini dan tersimpan di browser; fotomu tetap di perangkat.',
+                'One tap, then tidy up with the tools below. The first time, the AI model + runtime (~12 MB) is downloaded from this site and kept by the browser; your photo stays on your device.',
+              )}
+            </p>
           </div>
           <p className="text-xs text-muted-foreground">{t(...current.hint)}</p>
 
@@ -571,7 +658,12 @@ export default function RemoveBackground() {
                 className="h-9 w-14 cursor-pointer rounded-lg border bg-background p-1"
               />
             )}
-            {fill && (
+            {background === 'blur' && (
+              <div className="w-full max-w-xs">
+                <Slider label={t('Kekuatan blur', 'Blur strength')} value={blur} min={1} max={10} step={1} onChange={setBlur} />
+              </div>
+            )}
+            {hasBg && (
               <Segmented
                 label="Format"
                 value={jpg ? 'jpg' : 'png'}

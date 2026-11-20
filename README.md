@@ -90,7 +90,7 @@ Each reader opens the other three formats too.
 - [ID Document Watermark](https://toowl.my.id/en/watermark-ktp/): tiled "only for verification" text with the date over an ID photo, size/angle/opacity adjustable, re-saved without EXIF
 - [Censor Photo](https://toowl.my.id/en/sensor-foto/): box or brush over ID numbers, faces or plates; black block (default), pixelate or blur, with a warning that light blur on small text can be guessed
 - [Remove Photo Metadata](https://toowl.my.id/en/strip-exif/): shows camera, date and GPS; JPG/PNG are cleaned losslessly
-- [Remove Background](https://toowl.my.id/en/remove-background/): magic wand, color select, lasso and brush, with no AI model to download
+- [Remove Background](https://toowl.my.id/en/remove-background/): one-tap AI cut-out (U²-Net-P on ONNX Runtime Web, downloaded only when used), plus magic wand, color select, lasso and brush to tidy up; transparent, blurred or colored background
 - [Signature to PNG](https://toowl.my.id/en/signature-png/): draw or photograph a signature, remove the paper and specks, recolour the ink, download a transparent PNG
 - [Document Scanner](https://toowl.my.id/en/scan/): photograph paper, drag the four corners (found automatically as a first guess), straighten the perspective on a canvas without OpenCV, pick black-and-white, grayscale or color, and combine pages into one PDF (pdf-lib)
 - [OCR — Photo to Text](https://toowl.my.id/en/ocr/): Indonesian and English text from photos and screenshots with Tesseract (wasm); the worker, core and language data are bundled with the site, never fetched from a CDN, and loaded only when you press Read text
@@ -356,4 +356,4 @@ the MIT licence and stays available under MIT; later changes are AGPL-3.0-only.
 
 Bundled third-party pieces keep their own licences: the DWG/DXF reader used by DWG to PDF is
 [LibreDWG](https://www.gnu.org/software/libredwg/) via `@mlightcad/libredwg-web` (GPL-3.0), and
-Upscale Image runs Real-ESRGAN's `realesr-general-x4v3` model (BSD-3-Clause).
+Upscale Image runs Real-ESRGAN's `realesr-general-x4v3` model (BSD-3-Clause). Remove Background's one-tap mode runs U²-Net-P (`u2netp.onnx`, Apache-2.0, from the rembg release).

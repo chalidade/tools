@@ -3,6 +3,13 @@
 Catatan harian apa yang berubah di [tools](https://toowl.my.id/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-20 — AI di perangkat: latar foto
+
+Hapus Latar Gambar (`#/remove-background`) kini punya mode sekali ketuk; jumlah tool tetap.
+
+- **Hapus latar otomatis (AI)**: tombol baru memakai model segmentasi U²-Net-P (Apache-2.0, 4,6 MB) lewat ONNX Runtime Web — WebGPU bila ada, WebAssembly sebagai cadangan. Model dan mesinnya di-host sendiri dan baru diunduh saat tombol ditekan (ukurannya, ±12 MB, ditulis di halaman). Hasilnya jadi mask yang bisa langsung dirapikan dengan tongkat, lasso, kuas, kikis, dan haluskan; Urungkan mengembalikan mask sebelumnya.
+- **Blur latar**: pilihan latar baru selain transparan/putih/merah/biru/warna lain, dengan penggeser kekuatan blur; berlaku juga di unduhan PNG/JPG.
+
 ## 2026-11-20 — ARW ke JPG dan Gambar ke DNG
 
 Dua tool foto RAW baru; total sekarang **115 tools**.

@@ -911,9 +911,9 @@ const ALL_TOOLS: Tool[] = [
   {
     slug: 'remove-background',
     category: 'media',
-    keywords: ['hapus latar', 'hapus background', 'remove background', 'remove bg', 'transparan', 'png', 'pas foto', 'latar merah', 'latar biru', 'foto produk', 'magic wand', 'lasso'],
+    keywords: ['hapus latar', 'hapus background', 'remove background', 'remove bg', 'transparan', 'png', 'pas foto', 'latar merah', 'latar biru', 'foto produk', 'magic wand', 'lasso', 'hapus latar otomatis', 'ai', 'blur latar', 'potret', 'cutout'],
     title: 'Hapus Latar Gambar',
-    description: 'Hapus latar dengan tongkat ajaib, pilih warna, lasso, atau kuas — lalu jadikan transparan atau ganti warna.',
+    description: 'Hapus latar sekali ketuk dengan AI di perangkatmu, atau pakai tongkat ajaib, lasso, dan kuas — lalu transparan, blur, atau ganti warna.',
     icon: Eraser,
     formats: 'JPG / PNG / WebP → PNG / JPG',
     badge: 'Baru',
