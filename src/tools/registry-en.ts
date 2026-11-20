@@ -14,7 +14,7 @@ export const CATEGORIES_EN: Record<CategoryId, { title: string; description: str
     description: 'Edit and shrink photos, video and audio: trim, speed up, merge, GIF and more.',
   },
   music: { title: 'Music', description: 'Tune a guitar, keep time, look up chords, and find a song’s BPM and key.' },
-  dev: { title: 'Developer & Design', description: 'QR codes, favicons, Base64, colors and tidy data.' },
+  dev: { title: 'Developer & Design', description: 'QR codes, favicons, Base64, colors, regex, hashes, cron and tidy data.' },
   productivity: { title: 'Productivity', description: 'Take notes, calculate and sketch.' },
   emergency: { title: 'Emergency', description: 'SOS, flashlight, emergency numbers and sharing your location. Works offline.' },
 }
@@ -522,6 +522,84 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
     description: 'Turn an image into Base64 / a data URL ready for HTML, CSS or Markdown — and back.',
     formats: 'Image ⇄ Base64',
     keywords: ['encode', 'data url'],
+  },
+  'csv-json': {
+    title: 'CSV ⇄ JSON',
+    description: 'Convert CSV to JSON and back. Comma, semicolon or tab separators are detected automatically, with a table preview.',
+    formats: 'CSV ⇄ JSON',
+    keywords: ['csv to json', 'json to csv', 'convert', 'tsv', 'semicolon', 'spreadsheet'],
+    faq: [
+      {
+        q: 'Why does my Excel CSV use semicolons instead of commas?',
+        a: 'Excel in locales with a decimal comma separates columns with semicolons. This tool detects that automatically.',
+      },
+    ],
+  },
+  'yaml-json': {
+    title: 'YAML ⇄ JSON',
+    description: 'Convert YAML to JSON and back, with errors that point at the line and column. Several documents (---) in one file are supported.',
+    formats: 'YAML ⇄ JSON',
+    keywords: ['yaml to json', 'json to yaml', 'convert', 'validator', 'docker compose', 'kubernetes'],
+  },
+  'sql-formatter': {
+    title: 'SQL Formatter',
+    description: 'Format or compact SQL for MySQL, PostgreSQL, SQLite, SQL Server or BigQuery, with uppercase keywords. The query is never run.',
+    formats: 'SQL → formatted SQL',
+    keywords: ['sql formatter', 'sql beautifier', 'format sql', 'pretty print'],
+  },
+  hash: {
+    title: 'Hash Generator',
+    description: 'Get MD5, SHA-1, SHA-256, SHA-384 and SHA-512 of text or a file of any size, and compare with a pasted checksum.',
+    formats: 'Text / file → MD5, SHA',
+    keywords: ['hash generator', 'checksum', 'file checksum', 'verify download'],
+    faq: [
+      {
+        q: 'How do I verify the checksum of a downloaded file?',
+        a: 'Add the file, then paste the checksum from the download page into the "Compare" box. If it matches, the file is intact and identical to the original.',
+      },
+    ],
+  },
+  regex: {
+    title: 'Regex Tester',
+    description: 'Test regular expressions: matches highlighted live, capture groups listed, a replace mode, a cheat sheet and ready-made examples.',
+    formats: 'Pattern + text → matches',
+    keywords: ['regex tester', 'regular expression', 'regexp', 'pattern', 'replace'],
+  },
+  minify: {
+    title: 'Minify HTML/CSS/JS',
+    description: 'Minify HTML, CSS or JavaScript and see the size before, after and gzipped. A beautify mode does the reverse.',
+    formats: 'HTML / CSS / JS → .min',
+    keywords: ['minifier', 'compress', 'uglify', 'beautify', 'format code'],
+  },
+  timestamp: {
+    title: 'Unix Timestamp',
+    description: 'Turn an epoch (seconds or milliseconds, detected automatically) into a date in several time zones and UTC, or back. With a live "now" clock.',
+    formats: 'Epoch ⇄ date',
+    keywords: ['epoch converter', 'unix time', 'timestamp converter', 'date to timestamp'],
+  },
+  cron: {
+    title: 'Cron Explainer',
+    description: 'Explain a cron expression in plain words, see the next 5 runs, or build an expression from choices. Wrong fields are marked.',
+    formats: 'Cron → sentence + schedule',
+    keywords: ['cron explainer', 'crontab guru', 'cron generator', 'cron schedule', 'cron expression'],
+  },
+  'kontras-warna': {
+    title: 'Color Contrast Checker',
+    description: 'Check text and background contrast against WCAG 2.2 (AA/AAA, normal and large text), preview it, and get the nearest colour that passes.',
+    formats: 'Two colours → WCAG ratio',
+    keywords: ['contrast checker', 'wcag', 'accessibility', 'a11y', 'colour contrast'],
+  },
+  'lorem-ipsum': {
+    title: 'Lorem Ipsum',
+    description: 'Generate placeholder text: paragraphs, sentences or words in any amount, as classic lorem ipsum or Indonesian, optionally wrapped in <p>.',
+    formats: 'Count → placeholder text',
+    keywords: ['lorem ipsum generator', 'dummy text', 'placeholder text'],
+  },
+  mockup: {
+    title: 'Screenshot Mockup',
+    description: 'Put a screenshot in a browser, phone or laptop frame, set the background, shadow and ratio, and download a PNG for slides or promotion.',
+    formats: 'Screenshot → PNG mockup',
+    keywords: ['mockup generator', 'device frame', 'browser frame', 'screenshot frame'],
   },
   'color-picker': {
     title: 'Color Picker',
