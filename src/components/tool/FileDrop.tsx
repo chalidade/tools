@@ -1,7 +1,8 @@
-import { useState, type DragEvent } from 'react'
+import { useEffect, useRef, useState, type DragEvent } from 'react'
 import { Loader2, Plus, Upload } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useT } from '@/lib/i18n'
+import { onIncoming, takeIncoming } from '@/lib/native'
 
 interface FileDropProps {
   /** Passed straight to the input's `accept`. */
@@ -19,6 +20,18 @@ interface FileDropProps {
 export function FileDrop({ accept, label, busyLabel, multiple = false, onFiles }: FileDropProps) {
   const t = useT()
   const [dragging, setDragging] = useState(false)
+
+  // A file opened with the iOS app ("Open in toowl") lands on its tool's drop zone.
+  const latest = useRef(onFiles)
+  latest.current = onFiles
+  useEffect(() => {
+    const take = () => {
+      const file = takeIncoming()
+      if (file) latest.current([file])
+    }
+    take()
+    return onIncoming(take)
+  }, [])
 
   function onDrop(e: DragEvent) {
     e.preventDefault()

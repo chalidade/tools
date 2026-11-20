@@ -105,6 +105,16 @@ import {
   Projector,
   Aperture,
   SlidersHorizontal,
+  Database,
+  Hash,
+  Regex,
+  Shrink,
+  CalendarClock,
+  SunMoon,
+  Pilcrow,
+  MonitorSmartphone,
+  FileJson,
+  Timer,
   type LucideIcon,
 } from 'lucide-react'
 import { isPlayApp } from '@/lib/platform'
@@ -130,8 +140,8 @@ export interface Tool {
   /** Questions people search with, answered under the tool and in its static page (English in registry-en.ts). */
   faq?: { q: string; a: string }[]
   /**
-   * Left out of the Android (Play Store) app. Medical/health features there
-   * need an organization developer account, so they stay web-only.
+   * Left out of the Android (Play Store) and iOS (App Store) apps. Medical/health
+   * features there need an organization developer account, so they stay web-only.
    */
   webOnly?: boolean
 }
@@ -176,7 +186,7 @@ export const CATEGORIES: { id: CategoryId; title: string; description: string }[
   {
     id: 'dev',
     title: 'Developer & Desain',
-    description: 'QR code, favicon, Base64, warna, dan rapikan data.',
+    description: 'QR code, favicon, Base64, warna, regex, hash, cron, dan rapikan data.',
   },
   { id: 'productivity', title: 'Produktivitas', description: 'Catat, hitung, dan corat-coret.' },
   { id: 'emergency', title: 'Darurat', description: 'SOS, senter, nomor darurat, dan bagikan lokasi. Jalan offline.' },
@@ -1386,6 +1396,139 @@ const ALL_TOOLS: Tool[] = [
     package: { name: '@chalidade/color-picker', element: 'color-picker', dir: 'color-picker', published: false },
   },
   {
+    slug: 'csv-json',
+    category: 'dev',
+    keywords: ['csv', 'json', 'konversi', 'convert', 'excel', 'tsv', 'titik koma', 'semicolon', 'tabel', 'spreadsheet', 'csv to json', 'json to csv', 'api', 'data'],
+    title: 'CSV ⇄ JSON',
+    description: 'Ubah CSV jadi JSON dan sebaliknya. Pemisah koma, titik koma (ekspor Excel Indonesia), atau tab dikenali otomatis, lengkap dengan pratinjau tabel.',
+    icon: FileJson,
+    formats: 'CSV ⇄ JSON',
+    badge: 'Baru',
+    component: lazy(() => import('./csv-json/CsvJson')),
+    faq: [
+      {
+        q: 'Kenapa CSV dari Excel memakai titik koma, bukan koma?',
+        a: 'Excel dengan pengaturan bahasa Indonesia memakai koma sebagai tanda desimal, jadi kolomnya dipisah titik koma. Tool ini mengenalinya otomatis.',
+      },
+    ],
+  },
+  {
+    slug: 'yaml-json',
+    category: 'dev',
+    keywords: ['yaml', 'yml', 'json', 'konversi', 'convert', 'docker compose', 'kubernetes', 'k8s', 'github actions', 'config', 'konfigurasi', 'validasi', 'validator'],
+    title: 'YAML ⇄ JSON',
+    description: 'Ubah YAML jadi JSON dan sebaliknya, dengan pesan kesalahan yang menunjuk baris dan kolom. Beberapa dokumen (---) dalam satu file didukung.',
+    icon: FileCode,
+    formats: 'YAML ⇄ JSON',
+    badge: 'Baru',
+    component: lazy(() => import('./yaml-json/YamlJson')),
+  },
+  {
+    slug: 'sql-formatter',
+    category: 'dev',
+    keywords: ['sql', 'query', 'format', 'rapikan', 'beautify', 'formatter', 'mysql', 'postgresql', 'postgres', 'sqlite', 'sql server', 'mssql', 'bigquery', 'database', 'minify'],
+    title: 'SQL Formatter',
+    description: 'Rapikan atau padatkan query SQL untuk MySQL, PostgreSQL, SQLite, SQL Server, atau BigQuery, dengan kata kunci huruf besar. Query tidak pernah dijalankan.',
+    icon: Database,
+    formats: 'SQL → SQL rapi',
+    badge: 'Baru',
+    component: lazy(() => import('./sql-formatter/SqlFormatter')),
+  },
+  {
+    slug: 'hash',
+    category: 'dev',
+    keywords: ['hash', 'checksum', 'md5', 'sha1', 'sha-1', 'sha256', 'sha-256', 'sha512', 'sha-512', 'sha384', 'cek file', 'keaslian file', 'verifikasi', 'verify', 'integrity', 'iso'],
+    title: 'Generator Hash',
+    description: 'Hitung MD5, SHA-1, SHA-256, SHA-384, dan SHA-512 dari teks atau file sebesar apa pun, lalu cocokkan dengan checksum yang ditempel.',
+    icon: Hash,
+    formats: 'Teks / file → MD5, SHA',
+    badge: 'Baru',
+    component: lazy(() => import('./hash/Hash')),
+    faq: [
+      {
+        q: 'Bagaimana cara cek checksum file yang diunduh?',
+        a: 'Masukkan file-nya, lalu tempel checksum dari situs pengunduhan di kotak "Cocokkan". Kalau cocok, file utuh dan sama persis dengan aslinya.',
+      },
+    ],
+  },
+  {
+    slug: 'regex',
+    category: 'dev',
+    keywords: ['regex', 'regexp', 'regular expression', 'ekspresi reguler', 'pola', 'pattern', 'tester', 'cocokkan', 'match', 'replace', 'ganti', 'validasi email', 'nomor hp'],
+    title: 'Regex Tester',
+    description: 'Uji regular expression: kecocokan disorot langsung, grup tangkapan ditampilkan, ada mode ganti, contekan, dan contoh siap pakai (email, nomor HP, tanggal).',
+    icon: Regex,
+    formats: 'Pola + teks → kecocokan',
+    badge: 'Baru',
+    component: lazy(() => import('./regex/Regex')),
+  },
+  {
+    slug: 'minify',
+    category: 'dev',
+    keywords: ['minify', 'minifier', 'kecilkan', 'compress', 'uglify', 'beautify', 'rapikan', 'format', 'html', 'css', 'js', 'javascript', 'terser', 'gzip', 'kode', 'code'],
+    title: 'Minify HTML/CSS/JS',
+    description: 'Kecilkan kode HTML, CSS, atau JavaScript dan lihat ukuran sebelum, sesudah, dan setelah gzip. Ada mode rapikan untuk kebalikannya.',
+    icon: Shrink,
+    formats: 'HTML / CSS / JS → .min',
+    badge: 'Baru',
+    component: lazy(() => import('./minify/Minify')),
+  },
+  {
+    slug: 'timestamp',
+    category: 'dev',
+    keywords: ['unix', 'timestamp', 'epoch', 'waktu', 'tanggal', 'konversi', 'wib', 'wita', 'wit', 'utc', 'iso 8601', 'milidetik', 'milliseconds', 'unix time', 'epoch converter'],
+    title: 'Unix Timestamp',
+    description: 'Ubah epoch (detik atau milidetik, dikenali otomatis) jadi tanggal di WIB, WITA, WIT, dan UTC, atau sebaliknya. Ada jam "sekarang" yang berjalan.',
+    icon: Timer,
+    formats: 'Epoch ⇄ tanggal',
+    badge: 'Baru',
+    component: lazy(() => import('./timestamp/Timestamp')),
+  },
+  {
+    slug: 'cron',
+    category: 'dev',
+    keywords: ['cron', 'crontab', 'jadwal', 'schedule', 'cron expression', 'ekspresi cron', 'penjelas', 'explain', 'generator', 'quartz', 'node-cron', 'scheduler', 'job'],
+    title: 'Penjelas Cron',
+    description: 'Jelaskan ekspresi cron dalam kalimat, lihat 5 jadwal berikutnya, atau buat ekspresinya dari pilihan. Kolom yang salah langsung ditandai.',
+    icon: CalendarClock,
+    formats: 'Cron → kalimat + jadwal',
+    badge: 'Baru',
+    component: lazy(() => import('./cron/Cron')),
+  },
+  {
+    slug: 'kontras-warna',
+    category: 'dev',
+    keywords: ['kontras', 'contrast', 'warna', 'color', 'wcag', 'aksesibilitas', 'accessibility', 'a11y', 'aa', 'aaa', 'teks', 'latar', 'contrast checker', 'keterbacaan'],
+    title: 'Cek Kontras Warna',
+    description: 'Cek rasio kontras teks dan latar menurut WCAG 2.2 (AA/AAA, teks biasa dan besar), lihat pratinjaunya, dan dapat saran warna terdekat yang lolos.',
+    icon: SunMoon,
+    formats: 'Dua warna → rasio WCAG',
+    badge: 'Baru',
+    component: lazy(() => import('./kontras-warna/KontrasWarna')),
+  },
+  {
+    slug: 'lorem-ipsum',
+    category: 'dev',
+    keywords: ['lorem ipsum', 'lorem', 'teks contoh', 'dummy text', 'placeholder', 'teks dummy', 'paragraf', 'desain', 'mockup', 'generator'],
+    title: 'Lorem Ipsum',
+    description: 'Buat teks contoh: paragraf, kalimat, atau kata dengan jumlah yang bisa diatur, dalam lorem ipsum klasik atau bahasa Indonesia, opsional dibungkus <p>.',
+    icon: Pilcrow,
+    formats: 'Jumlah → teks contoh',
+    badge: 'Baru',
+    component: lazy(() => import('./lorem-ipsum/LoremIpsum')),
+  },
+  {
+    slug: 'mockup',
+    category: 'dev',
+    keywords: ['mockup', 'screenshot', 'tangkapan layar', 'bingkai', 'frame', 'hp', 'laptop', 'browser', 'presentasi', 'promosi', 'portfolio', 'device frame', 'app store', 'play store'],
+    title: 'Mockup Screenshot',
+    description: 'Taruh tangkapan layar dalam bingkai browser, HP, atau laptop, atur latar, bayangan, dan rasio, lalu unduh PNG untuk presentasi atau promosi.',
+    icon: MonitorSmartphone,
+    formats: 'Screenshot → PNG mockup',
+    badge: 'Baru',
+    component: lazy(() => import('./mockup/Mockup')),
+  },
+  {
     slug: 'surat',
     category: 'productivity',
     keywords: ['surat', 'surat lamaran', 'lamaran kerja', 'surat izin', 'izin sakit', 'surat kuasa', 'surat pernyataan', 'pengunduran diri', 'resign', 'letter', 'cover letter', 'job application', 'power of attorney', 'resignation', 'word', 'docx', 'pdf'],
@@ -1666,8 +1809,24 @@ const ALL_TOOLS: Tool[] = [
   },
 ]
 
-/** Every tool this visitor can use: the Play app leaves out the web-only ones. */
-export const TOOLS: Tool[] = isPlayApp() ? ALL_TOOLS.filter((t) => !t.webOnly) : ALL_TOOLS
+// The iOS app's web view (WKWebView) has no screen capture, so the tools that
+// need it are left out there instead of failing (App Store guideline 2.1).
+// Read window.Capacitor directly: this module also runs in Node for seo.mjs.
+const IOS_UNSUPPORTED = new Set(['screen-recorder'])
+const inIosApp =
+  typeof window !== 'undefined' &&
+  (window as Window & { Capacitor?: { getPlatform?: () => string } }).Capacitor?.getPlatform?.() === 'ios'
+
+/**
+ * Every tool this visitor can use. Both store apps leave out the web-only
+ * (medical) ones: Play and App Store (guideline 5.1.1(ix)) want health
+ * features from an organization account. iOS also drops what WKWebView can't run.
+ */
+export const TOOLS: Tool[] = inIosApp
+  ? ALL_TOOLS.filter((t) => !t.webOnly && !IOS_UNSUPPORTED.has(t.slug))
+  : isPlayApp()
+    ? ALL_TOOLS.filter((t) => !t.webOnly)
+    : ALL_TOOLS
 
 /** A tool's title, description and formats in the given language (English lives in registry-en.ts). */
 export function toolText(tool: Tool, lang: Lang) {
