@@ -9,6 +9,21 @@ Hapus Latar Gambar (`#/remove-background`) kini punya mode sekali ketuk; jumlah 
 
 - **Hapus latar otomatis (AI)**: tombol baru memakai model segmentasi U²-Net-P (Apache-2.0, 4,6 MB) lewat ONNX Runtime Web — WebGPU bila ada, WebAssembly sebagai cadangan. Model dan mesinnya di-host sendiri dan baru diunduh saat tombol ditekan (ukurannya, ±12 MB, ditulis di halaman). Hasilnya jadi mask yang bisa langsung dirapikan dengan tongkat, lasso, kuas, kikis, dan haluskan; Urungkan mengembalikan mask sebelumnya.
 - **Blur latar**: pilihan latar baru selain transparan/putih/merah/biru/warna lain, dengan penggeser kekuatan blur; berlaku juga di unduhan PNG/JPG.
+## 2026-11-20 — Sebelas tool developer
+
+Seluruh batch developer dari roadmap (Hari 52 sampai 55) dirilis sekaligus; total sekarang **126 tools**.
+
+- **CSV ⇄ JSON** (`/csv-json/`): pemisah koma, titik koma (ekspor Excel berbahasa Indonesia), atau tab dikenali otomatis; sel berkutip dan baris baru di dalam sel ditangani; baris pertama jadi kunci; pratinjau tabel; unduh CSV dengan penanda UTF-8 supaya Excel membaca huruf beraksen dengan benar. `parseCsv` pindah dari Excel ke PDF ke `src/lib/csv.ts` dan dipakai bersama.
+- **YAML ⇄ JSON** (`/yaml-json/`): dua arah dengan pesan galat berisi baris dan kolom, beberapa dokumen (`---`) jadi satu array. Pakai `yaml` (ISC), dimuat saat tool dibuka.
+- **SQL Formatter** (`/sql-formatter/`): rapikan atau padatkan query untuk MySQL, PostgreSQL, SQLite, SQL Server, dan BigQuery, dengan pilihan huruf kata kunci dan indentasi. Pakai `sql-formatter` (MIT). Query tidak pernah dijalankan.
+- **Generator Hash** (`/hash/`): MD5, SHA-1, SHA-256, SHA-384, dan SHA-512 untuk teks atau file, plus kotak pencocok checksum. File dihitung per potongan 4 MB di Web Worker dengan `hash-wasm` (MIT), jadi file berukuran GB tidak dimuat sekaligus.
+- **Regex Tester** (`/regex/`): kecocokan disorot langsung, tabel grup tangkapan (termasuk grup bernama), mode ganti, contekan, dan contoh siap pakai (email, nomor HP Indonesia, tanggal, rupiah, URL). Pencocokan jalan di Web Worker yang dihentikan setelah 1,5 detik, jadi pola yang macet tidak membekukan tab.
+- **Minify HTML/CSS/JS** (`/minify/`): Terser (BSD-2) untuk JavaScript, CSSO (MIT) untuk CSS, dan peringkas HTML sendiri yang juga mengecilkan `<script>` dan `<style>` di dalamnya. Ukuran sebelum, sesudah, dan setelah gzip; mode rapikan memakai js-beautify (MIT). Tiap bahasa punya worker sendiri, jadi hanya library yang dipakai yang diunduh.
+- **Unix Timestamp** (`/timestamp/`): epoch detik, milidetik, mikrodetik, atau nanodetik dikenali dari panjang angkanya, ditampilkan di WIB, WITA, WIT, UTC, dan zona perangkat; tanggal ke epoch; jam "sekarang" yang berjalan dan selisih relatif.
+- **Penjelas Cron** (`/cron/`): parser dan kalimat penjelas ditulis sendiri supaya dwibahasa; 5 dan 6 kolom (dengan detik), nama bulan/hari, dan `@daily` dan sejenisnya; 5 jadwal berikutnya di zona perangkat dan UTC; pembuat ekspresi dari pilihan; kolom yang salah ditandai.
+- **Cek Kontras Warna** (`/kontras-warna/`): rasio WCAG 2.2 dengan status AA/AAA untuk teks biasa dan besar, pratinjau, saran warna teks terdekat yang lolos, dan pipet layar bila browser mendukung. Konversi warna memakai ulang Color Picker.
+- **Lorem Ipsum** (`/lorem-ipsum/`): paragraf, kalimat, atau kata; teks klasik atau bahasa Indonesia; opsi `<p>`.
+- **Mockup Screenshot** (`/mockup/`): bingkai browser, HP, atau laptop yang digambar sendiri di canvas tanpa aset merek, latar warna, gradasi, gambar sendiri, atau transparan, bayangan, jarak tepi, dan rasio; unduh PNG pada ukuran asli tangkapan layar.
 
 ## 2026-11-20 — ARW ke JPG dan Gambar ke DNG
 

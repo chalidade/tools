@@ -5,6 +5,7 @@
 // are dynamic imports so they load only when used.
 
 import type { Cell, Workbook, Worksheet } from 'exceljs'
+import { parseCsv } from '@/lib/csv'
 
 export interface CellStyle {
   bold: boolean
@@ -322,42 +323,6 @@ function fitColumns(rows: SheetCell[][], widths: number[]) {
     }
     return Math.max(width, Math.min(needed, width * 2.5, 400))
   })
-}
-
-/** Minimal RFC 4180 CSV reader (quoted fields, escaped quotes, CRLF). */
-function parseCsv(text: string): string[][] {
-  const rows: string[][] = []
-  let row: string[] = []
-  let field = ''
-  let quoted = false
-  // Excel writes ";" for locales with a decimal comma (e.g. Indonesian).
-  const firstLine = text.slice(0, text.indexOf('\n') >>> 0)
-  const sep = (firstLine.match(/;/g)?.length ?? 0) > (firstLine.match(/,/g)?.length ?? 0) ? ';' : ','
-  for (let i = 0; i < text.length; i++) {
-    const ch = text[i]
-    if (quoted) {
-      if (ch === '"' && text[i + 1] === '"') {
-        field += '"'
-        i++
-      } else if (ch === '"') quoted = false
-      else field += ch
-    } else if (ch === '"') quoted = true
-    else if (ch === sep) {
-      row.push(field)
-      field = ''
-    } else if (ch === '\n' || ch === '\r') {
-      if (ch === '\r' && text[i + 1] === '\n') i++
-      row.push(field)
-      rows.push(row)
-      row = []
-      field = ''
-    } else field += ch
-  }
-  if (field || row.length) {
-    row.push(field)
-    rows.push(row)
-  }
-  return rows.filter((r) => r.some((f) => f.trim()))
 }
 
 function csvSheet(name: string, data: string[][]): Sheet {
