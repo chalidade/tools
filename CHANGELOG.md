@@ -3,6 +3,23 @@
 Catatan harian apa yang berubah di [tools](https://toowl.my.id/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-21 — Kompres Video untuk file besar, pilihan frame rate, dan Kalkulator Waris
+
+- **Video besar tidak gagal lagi.** Hasil kompres sebelumnya ditampung utuh di memori browser; untuk video panjang (mis. MOV 6 GB berdurasi 53 menit, hasil ~2,4 GB) memori tab habis dan muncul "Gagal mengompres video". Sekarang hasil yang diperkirakan di atas ~700 MB ditulis langsung ke disk (origin private file system) sedikit demi sedikit, lalu diunduh dari sana. File lama di penyimpanan itu dihapus setiap kali kompres baru dimulai.
+- Pesan galat lebih jelas: ruang penyimpanan tidak cukup, browser yang tidak bisa menulis ke disk (mis. jendela privat; tombol Kompres dinonaktifkan dengan saran), atau memori habis, masing-masing dengan saran resolusi/frame rate lebih rendah.
+- **Pengaturan frame rate**: Asli, 30, 24, atau 15 fps (hanya yang lebih rendah dari sumber). Bitrate dan perkiraan ukuran ikut turun. Kualitas Kuat tidak lagi diam-diam membatasi ke 30 fps; pilih sendiri lewat pengaturan ini.
+- Paket `@chalidade/compress-video` mendapat opsi `fps` (opsional) dan penulisan ke disk yang sama.
+- **Kalkulator Waris** (`/kalkulator-waris/`) baru, total sekarang **127 tools**: pembagian warisan menurut faraid (pendapat jumhur/Syafi'i). Harta dikurangi biaya jenazah, utang, dan wasiat (dibatasi 1/3), lalu dibagi ke suami/istri, anak dan cucu dari anak laki-laki, orang tua dan kakek-nenek, saudara kandung/seayah/seibu, sampai keponakan, paman, dan sepupu. Menangani hajb (siapa terhalang oleh siapa), ashabah bil ghair dan ma'al ghair, 'aul, radd, Umariyyatain, dan musytarakah, dengan pecahan pasti, asal masalah/tashih, dan rupiah per orang. Kakek dihitung menghalangi saudara; ahli waris pengganti KHI belum dihitung (disebutkan di halaman).
+
+## 2026-11-20 — Lisensi embed tanpa branding
+
+Dasar untuk menjual lisensi lewat **Lemon Squeezy** dan **Gumroad**; masih tersembunyi sampai produk di toko dibuat dan id-nya diisi di `src/lib/license.ts`.
+
+- Embed iframe gratis tetap seperti sekarang, dengan satu baris kecil "toowl" di bawah tool. Dengan kunci lisensi (`#/<tool>?embed&key=…`) baris itu hilang, dan warna aksen bisa diganti (`&accent=7c3aed`); tulisan di atas warna itu otomatis hitam atau putih supaya tetap terbaca.
+- Kartu **Pasang di situsmu** (tab Iframe) mendapat bagian "Tanpa tulisan toowl": tombol **Beli lisensi** dan kolom kunci. Kunci yang valid langsung masuk ke kode iframe, lengkap dengan pemilih warna.
+- Kunci dicek di browser ke endpoint lisensi publik toko (format kunci menentukan tokonya: UUID untuk Lemon Squeezy, empat kelompok 8 karakter untuk Gumroad), tanpa server dan tanpa API key rahasia. Hasilnya disimpan seminggu di perangkat. Kunci yang di-refund, dinonaktifkan, kedaluwarsa, atau dari toko lain ditolak.
+- Kebijakan privasi menjelaskan pengecekan kunci ini.
+
 ## 2026-11-20 — Sebelas tool developer
 
 Seluruh batch developer dari roadmap (Hari 52 sampai 55) dirilis sekaligus; total sekarang **126 tools**.
@@ -29,7 +46,7 @@ Dua tool foto RAW baru; total sekarang **115 tools**.
 
 ## 2026-11-19 — Dokumen
 
-Dua tool baru; total sekarang **129 tools**.
+Dua tool baru; total sekarang **130 tools**.
 
 - **Gabung & Pisah Excel/CSV** (`#/merge-excel`): gabung banyak file `.xlsx`/`.csv` (atau sheet tertentu dari tiap file) jadi satu — kolom dicocokkan dari judulnya tanpa peduli huruf besar/kecil dan spasi ganda, atau dari urutan; kolom yang tidak ada di sebuah file dibiarkan kosong, dan bisa ditambah kolom "Sumber" berisi nama file/sheet asal. Hasilnya satu sheet atau satu sheet per sumber. Mode pisah memecah satu sheet menurut nilai sebuah kolom jadi sheet-sheet dalam satu file, atau ZIP berisi `.xlsx`/`.csv` per nilai. Rumus dibaca hasilnya, nama sheet/file dibersihkan dan dibuat unik. ExcelJS dan JSZip dimuat hanya saat tool dibuka.
 - **Markdown & Teks ke PDF / Word** (`#/markdown-to-pdf`): tulis, tempel, atau buka `.md`/`.txt`, lihat pratinjau halaman (A4/Letter, margin, huruf sans/serif), lalu unduh PDF lewat mesin halaman Word ke PDF (tiap halaman berupa gambar; "Cetak / Simpan PDF" menghasilkan teks yang bisa diseleksi) atau DOCX dengan judul, daftar bersarang/bernomor, checklist, kutipan, kode, tabel, dan tautan asli. HTML disaring DOMPurify dan gambar dari internet tidak pernah dimuat, jadi tidak ada koneksi keluar.

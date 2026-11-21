@@ -297,6 +297,26 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
   },
   patungan: { title: 'Bill Split', description: 'Split a group bill per item or equally, with tax and service shared proportionally, exact rounding and a summary ready for WhatsApp.', formats: 'Bill → Share per person', keywords: ['split bill', 'split', 'dutch', 'restaurant', 'tax', 'service', 'friends', 'group'] },
   undian: { title: 'Random Draw & Arisan', description: 'Draw names with secure randomness; arisan mode never repeats a winner until everyone has had a turn, with history kept on the device.', formats: 'Names → Winner', keywords: ['random picker', 'raffle', 'lottery', 'arisan', 'giveaway', 'winner', 'name picker', 'draw'] },
+  'kalkulator-waris': {
+    title: 'Islamic Inheritance Calculator',
+    description: "Work out an estate's division under Islamic law (faraid): each heir's share, who is excluded, 'aul and radd, and the amount per person.",
+    formats: 'Heirs + estate → Division',
+    keywords: ['inheritance', 'islamic inheritance', 'faraid', 'faraidh', 'estate', 'heirs', 'mirath', 'will', 'shares'],
+    faq: [
+      {
+        q: 'How is an estate divided under Islamic law?',
+        a: 'Funeral costs and debts come off first, then bequests (at most a third). The rest is divided: fixed-share heirs (spouse, mother, daughters and others) get 1/2, 1/4, 1/8, 2/3, 1/3 or 1/6, and what remains goes to the residuaries, such as sons, with a male getting twice a female. Pick the heirs on this page and the division appears at once.',
+      },
+      {
+        q: "What is a wife's share when her husband dies?",
+        a: "A quarter if he left no children or son's children, an eighth if he did. Several wives split that share equally.",
+      },
+      {
+        q: 'Can daughters inherit the whole estate?',
+        a: 'One daughter gets half and two or more get two thirds. With no residuary heir (such as a father, brother or uncle), the remainder returns to the fixed-share heirs other than the spouse (radd), so daughters can end up with all of it.',
+      },
+    ],
+  },
   'gaji-bersih': {
     title: 'Take-Home Pay Calculator',
     description: 'Estimate net salary from gross: PPh 21 income tax, BPJS health, JHT and pension, with every step shown.',
