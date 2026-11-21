@@ -3,7 +3,7 @@
 **English** · [Bahasa Indonesia](README.id.md)
 
 **My everyday file toolbox, built for the file work I do every day and published free for everyone.**
-127 tools for PDF, Office files, CAD drawings, images, video, audio, music and everyday calculations, and every one of them runs entirely in your browser.
+132 tools for PDF, Office files, CAD drawings, images, video, audio, music and everyday calculations, and every one of them runs entirely in your browser.
 Your files are never uploaded.
 
 [![Live demo](https://img.shields.io/badge/live-toowl.my.id-c8f031)](https://toowl.my.id/)
@@ -13,7 +13,7 @@ Your files are never uploaded.
 ![React](https://img.shields.io/badge/React-19-61dafb?logo=react&logoColor=black)
 ![Vite](https://img.shields.io/badge/Vite-8-646cff?logo=vite&logoColor=white)
 
-<a href="https://toowl.my.id/en/"><img src="docs/intro-en.gif" alt="toowl intro: type what you need, open Image to SVG, trace a logo, open an Excel file, browse all 115 tools" width="720"></a>
+<a href="https://toowl.my.id/en/"><img src="docs/intro-en.gif" alt="toowl intro: type what you need, open Image to SVG, trace a logo, open an Excel file, browse all 118 tools" width="720"></a>
 
 ▶ [Watch the 30-second intro (MP4)](docs/intro-en.mp4) · [Bahasa Indonesia version](docs/intro-id.mp4)
 
@@ -40,7 +40,7 @@ browser's own media encoders, and a library is downloaded only when you open the
 
 ## Tools
 
-All 127, grouped the way the site groups them. Each name links to the live tool.
+All 132, grouped the way the site groups them. Each name links to the live tool.
 
 **Open Documents**
 - [PDF Reader](https://toowl.my.id/en/pdf-reader/): pages drawn by pdf.js with its text layer on top (select, copy, Ctrl+F), working links, password-protected PDFs, zoom, page jump, full screen
@@ -55,6 +55,7 @@ Each reader opens the other three formats too.
 - [Images to PDF](https://toowl.my.id/en/image-to-pdf/): reorder, rotate, A4/Letter/fit-to-image; phone EXIF rotation applied
 - [DWG to PDF](https://toowl.my.id/en/dwg-to-pdf/): AutoCAD .dwg/.dxf to a vector PDF (LibreDWG in WebAssembly), A4–A0, fit or 1:N scale, colour or black, layer on/off
 - [PowerPoint to PDF](https://toowl.my.id/en/ppt-to-pdf/): `.pptx` to PDF, one page per slide
+- [Markdown & Text to PDF / Word](https://toowl.my.id/en/markdown-to-pdf/): write or open `.md`/`.txt`, preview the page, download a PDF (image pages, or selectable text via print) or a `.docx` with real headings, lists, tables and code (marked + DOMPurify, reuses the Word to PDF page engine; web images are never loaded)
 - [Excel to PDF](https://toowl.my.id/en/excel-to-pdf/): `.xlsx`/`.csv` to a selectable-text PDF table, with theme colors, borders, merged cells and number formats
 
 **From PDF**
@@ -70,6 +71,8 @@ Each reader opens the other three formats too.
 - [Watermark PDF](https://toowl.my.id/en/watermark-pdf/): text or logo, centred or tiled, correct on rotated pages
 - [Organize PDF Pages](https://toowl.my.id/en/organize-pdf/): thumbnails you drag to reorder, rotate, duplicate or delete
 - [PDF Page Numbers](https://toowl.my.id/en/page-numbers/): position, format (`1`, `1 / 10`, `Page 1`) and the first numbered page
+- [Fill PDF Form](https://toowl.my.id/en/fill-pdf/): fills AcroForm fields (text, checkboxes, dropdowns, radio buttons) beside a page preview; optional flatten to lock the answers; XFA is reported as unsupported
+- [Save Paper: Pages per Sheet](https://toowl.my.id/en/pdf-n-up/): 2, 4 or 8 pages per sheet or a fold-in-half booklet, on A4, F4 or Letter; pages are embedded, so text stays sharp
 - [Sign PDF](https://toowl.my.id/en/sign-pdf/): draw (pressure-sensitive) or upload a signature, then place it anywhere
 - [Ink-Saver PDF](https://toowl.my.id/en/pdf-grayscale/): grayscale or black & white (adjustable threshold, light backgrounds to white) before printing; pages are re-rendered, so text becomes an image
 - [Edit PDF](https://toowl.my.id/en/edit-pdf/): add text (font, size, colour), images, boxes, lines, ticks and scribbles on any page of a non-AcroForm form
@@ -89,7 +92,7 @@ Each reader opens the other three formats too.
 - [ID Document Watermark](https://toowl.my.id/en/watermark-ktp/): tiled "only for verification" text with the date over an ID photo, size/angle/opacity adjustable, re-saved without EXIF
 - [Censor Photo](https://toowl.my.id/en/sensor-foto/): box or brush over ID numbers, faces or plates; black block (default), pixelate or blur, with a warning that light blur on small text can be guessed
 - [Remove Photo Metadata](https://toowl.my.id/en/strip-exif/): shows camera, date and GPS; JPG/PNG are cleaned losslessly
-- [Remove Background](https://toowl.my.id/en/remove-background/): magic wand, color select, lasso and brush, with no AI model to download
+- [Remove Background](https://toowl.my.id/en/remove-background/): one-tap AI cut-out (U²-Net-P on ONNX Runtime Web, downloaded only when used), plus magic wand, color select, lasso and brush to tidy up; transparent, blurred or colored background
 - [Signature to PNG](https://toowl.my.id/en/signature-png/): draw or photograph a signature, remove the paper and specks, recolour the ink, download a transparent PNG
 - [Document Scanner](https://toowl.my.id/en/scan/): photograph paper, drag the four corners (found automatically as a first guess), straighten the perspective on a canvas without OpenCV, pick black-and-white, grayscale or color, and combine pages into one PDF (pdf-lib)
 - [OCR — Photo to Text](https://toowl.my.id/en/ocr/): Indonesian and English text from photos and screenshots with Tesseract (wasm); the worker, core and language data are bundled with the site, never fetched from a CDN, and loaded only when you press Read text
@@ -131,9 +134,11 @@ Each reader opens the other three formats too.
 - [Color Contrast Checker](https://toowl.my.id/en/kontras-warna/) (WCAG 2.2 AA/AAA with the nearest passing colour), [Lorem Ipsum](https://toowl.my.id/en/lorem-ipsum/), [Screenshot Mockup](https://toowl.my.id/en/mockup/) (browser, phone and laptop frames drawn from shapes)
 
 **Productivity**
+- [Merge & Split Excel/CSV](https://toowl.my.id/en/merge-excel/): stack many files or sheets into one (columns matched by title, optional source column) or split a sheet by the values of a column into sheets or a ZIP of `.xlsx`/`.csv`
 - [Notes](https://toowl.my.id/en/notes/): Markdown with live checklists, saved in the browser, JSON backup/restore
 - [Calculator](https://toowl.my.id/en/calculator/): basic and scientific, with its own expression parser (no `eval`)
 - [Encrypt & Decrypt File](https://toowl.my.id/en/encrypt-file/): lock any file with a password (WebCrypto AES-256-GCM, PBKDF2-SHA-256 600k iterations, random salt), original name kept inside; forgotten passwords cannot be recovered
+- [Document Vault](https://toowl.my.id/en/brankas/): keep ID, KK, BPJS and policy photos/PDFs in this browser (IndexedDB), encrypted per file with AES-256-GCM (PBKDF2-SHA-256 600k iterations, fresh IV each), auto-locks when the tab is hidden, encrypted backup/restore as one file; forgotten passwords cannot be recovered
 - [Password Generator](https://toowl.my.id/en/password-generator/): random passwords and Indonesian/English passphrases from `crypto.getRandomValues`, plus a strength check with estimated guessing time
 - [Word Counter](https://toowl.my.id/en/word-counter/): words, characters, sentences, paragraphs, reading/speaking time and per-platform character limits
 - [Unit Converter](https://toowl.my.id/en/unit-converter/): length, weight (ons, quintal), area (hectare, are, tumbak), volume, temperature, speed and data
@@ -364,4 +369,4 @@ the MIT licence and stays available under MIT; later changes are AGPL-3.0-only.
 
 Bundled third-party pieces keep their own licences: the DWG/DXF reader used by DWG to PDF is
 [LibreDWG](https://www.gnu.org/software/libredwg/) via `@mlightcad/libredwg-web` (GPL-3.0), and
-Upscale Image runs Real-ESRGAN's `realesr-general-x4v3` model (BSD-3-Clause).
+Upscale Image runs Real-ESRGAN's `realesr-general-x4v3` model (BSD-3-Clause). Remove Background's one-tap mode runs U²-Net-P (`u2netp.onnx`, Apache-2.0, from the rembg release).

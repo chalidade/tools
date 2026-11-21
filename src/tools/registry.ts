@@ -2,7 +2,10 @@ import { lazy, type ComponentType, type LazyExoticComponent } from 'react'
 import type { Lang } from '@/lib/i18n'
 import { CATEGORIES_EN, TOOLS_EN } from './registry-en'
 import {
+  FileOutput,
+  TableProperties,
   Dices,
+  Vault,
   UsersRound,
   ScanText,
   AppWindow,
@@ -115,6 +118,8 @@ import {
   MonitorSmartphone,
   FileJson,
   Timer,
+  TextCursorInput,
+  Grid2x2,
   type LucideIcon,
 } from 'lucide-react'
 import { isPlayApp } from '@/lib/platform'
@@ -432,6 +437,52 @@ const ALL_TOOLS: Tool[] = [
     formats: 'PDF → PDF + isian',
     badge: 'Baru',
     component: lazy(() => import('./edit-pdf/EditPdf')),
+  },
+  {
+    slug: 'fill-pdf',
+    category: 'pdf',
+    keywords: ['isi formulir', 'formulir pdf', 'kolom isian', 'form pdf', 'acroform', 'fill pdf', 'fillable', 'fill form', 'ratakan', 'flatten', 'centang'],
+    title: 'Isi Formulir PDF',
+    description: 'Isi kolom formulir PDF (teks, centang, pilihan) di samping pratinjau halaman, lalu simpan atau kunci isiannya.',
+    icon: TextCursorInput,
+    formats: 'PDF formulir → PDF terisi',
+    badge: 'Baru',
+    component: lazy(() => import('./fill-pdf/FillPdf')),
+    faq: [
+      {
+        q: 'Bagaimana cara mengisi formulir PDF tanpa Adobe Acrobat?',
+        a: 'Buka file di tool ini: semua kolom isian dikenali otomatis, tinggal diketik atau dicentang, lalu simpan. Semuanya berjalan di browser; file tidak diunggah.',
+      },
+      {
+        q: 'Bagaimana supaya isian tidak bisa diubah lagi?',
+        a: 'Centang “Ratakan” sebelum menyimpan: isian menjadi bagian halaman dan kolomnya hilang.',
+      },
+      {
+        q: 'Formulir saya tidak punya kolom isian.',
+        a: 'Formulir yang hanya berupa gambar atau garis ditulisi langsung dengan tool Edit PDF.',
+      },
+    ],
+  },
+  {
+    slug: 'pdf-n-up',
+    category: 'pdf',
+    keywords: ['cetak hemat', 'hemat kertas', 'beberapa halaman per lembar', '2 halaman per lembar', '4 halaman', 'booklet', 'buku lipat', 'n-up', 'pages per sheet', 'handout', 'a4', 'f4', 'letter'],
+    title: 'Cetak Hemat Kertas',
+    description: '2, 4, atau 8 halaman PDF per lembar, atau susunan buku yang tinggal dilipat — di kertas A4, F4, atau Letter.',
+    icon: Grid2x2,
+    formats: 'PDF → PDF hemat kertas',
+    badge: 'Baru',
+    component: lazy(() => import('./pdf-n-up/PdfNUp')),
+    faq: [
+      {
+        q: 'Bagaimana mencetak 2 atau 4 halaman PDF dalam satu lembar?',
+        a: 'Buka PDF, pilih 2, 4, atau 8 per lembar dan ukuran kertas, lalu unduh PDF barunya dan cetak seperti biasa. Teks tetap tajam.',
+      },
+      {
+        q: 'Bagaimana membuat PDF jadi buku yang dilipat?',
+        a: 'Pilih “Buku (lipat)”, cetak bolak-balik dengan balik di sisi pendek, lalu lipat dua tumpukan kertasnya.',
+      },
+    ],
   },
   {
     slug: 'compress-pdf',
@@ -944,9 +995,9 @@ const ALL_TOOLS: Tool[] = [
   {
     slug: 'remove-background',
     category: 'media',
-    keywords: ['hapus latar', 'hapus background', 'remove background', 'remove bg', 'transparan', 'png', 'pas foto', 'latar merah', 'latar biru', 'foto produk', 'magic wand', 'lasso'],
+    keywords: ['hapus latar', 'hapus background', 'remove background', 'remove bg', 'transparan', 'png', 'pas foto', 'latar merah', 'latar biru', 'foto produk', 'magic wand', 'lasso', 'hapus latar otomatis', 'ai', 'blur latar', 'potret', 'cutout'],
     title: 'Hapus Latar Gambar',
-    description: 'Hapus latar dengan tongkat ajaib, pilih warna, lasso, atau kuas — lalu jadikan transparan atau ganti warna.',
+    description: 'Hapus latar sekali ketuk dengan AI di perangkatmu, atau pakai tongkat ajaib, lasso, dan kuas — lalu transparan, blur, atau ganti warna.',
     icon: Eraser,
     formats: 'JPG / PNG / WebP → PNG / JPG',
     badge: 'Baru',
@@ -1820,6 +1871,39 @@ const ALL_TOOLS: Tool[] = [
     formats: 'File apa saja ↔ file .enc',
     badge: 'Baru',
     component: lazy(() => import('./encrypt-file/EncryptFile')),
+  },
+  {
+    slug: 'brankas',
+    category: 'productivity',
+    keywords: ['brankas', 'dokumen', 'ktp', 'kk', 'bpjs', 'polis', 'simpan', 'darurat', 'terenkripsi', 'password', 'cadangan', 'vault', 'documents', 'id card', 'encrypted', 'backup', 'emergency', 'safe'],
+    title: 'Brankas Dokumen',
+    description: 'Simpan foto/PDF KTP, KK, BPJS, dan polis di browser ini, terenkripsi dengan password. Lupa password = tidak bisa dibuka. Ada cadangan terenkripsi.',
+    icon: Vault,
+    formats: 'Foto/PDF dokumen → brankas terenkripsi (.twlvault)',
+    badge: 'Baru',
+    component: lazy(() => import('./brankas/Brankas')),
+  },
+  {
+    slug: 'merge-excel',
+    category: 'productivity',
+    keywords: ['excel', 'xlsx', 'csv', 'gabung', 'pisah', 'pecah', 'sheet', 'spreadsheet', 'tabel', 'kolom', 'merge', 'split', 'combine', 'join', 'column', 'rows'],
+    title: 'Gabung & Pisah Excel/CSV',
+    description: 'Gabung banyak file Excel/CSV jadi satu (kolom dicocokkan dari judulnya), atau pecah satu sheet per nilai sebuah kolom.',
+    icon: TableProperties,
+    formats: 'XLSX / CSV → XLSX / CSV / ZIP',
+    badge: 'Baru',
+    component: lazy(() => import('./merge-excel/MergeExcel')),
+  },
+  {
+    slug: 'markdown-to-pdf',
+    category: 'to-pdf',
+    keywords: ['markdown', 'md', 'txt', 'teks', 'text', 'docx', 'word', 'pdf', 'catatan', 'readme', 'konversi', 'convert', 'notes'],
+    title: 'Markdown & Teks ke PDF / Word',
+    description: 'Tulis atau buka Markdown/TXT, lihat pratinjau halaman, lalu unduh PDF atau DOCX.',
+    icon: FileOutput,
+    formats: 'MD / TXT → PDF / DOCX',
+    badge: 'Baru',
+    component: lazy(() => import('./markdown-to-pdf/MarkdownToPdf')),
   },
 ]
 

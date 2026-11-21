@@ -63,6 +63,33 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
   'page-numbers': { title: 'PDF Page Numbers', description: 'Add page numbers: pick the position, the format (1, 1 / 10, Page 1) and the first page.', keywords: ['numbering', 'pagination', 'footer', 'header'] },
   'sign-pdf': { title: 'Sign PDF', description: 'Draw or upload your signature, then place it on any page.', formats: 'PDF → PDF + signature', keywords: ['signature', 'sign'] },
   'edit-pdf': { title: 'Edit PDF', description: 'Add text, images, boxes, lines, ticks and scribbles on any page — for ordinary, non-AcroForm forms.', formats: 'PDF → PDF + additions', keywords: ['fill form', 'type on pdf', 'annotate', 'tick', 'checkbox', 'write'] },
+  'fill-pdf': {
+    title: 'Fill PDF Form',
+    description: 'Fill a PDF form’s fields (text, checkboxes, choices) beside a page preview, then save or lock the answers.',
+    formats: 'Form PDF → filled PDF',
+    keywords: ['fillable', 'acroform', 'form fields', 'flatten', 'fill form'],
+    faq: [
+      {
+        q: 'How do I fill in a PDF form without Adobe Acrobat?',
+        a: 'Open the file in this tool: every fillable field is detected, so just type or tick, then save. It all runs in your browser; the file is never uploaded.',
+      },
+      { q: 'How do I stop the answers from being edited?', a: 'Tick “Flatten” before saving: the answers become part of the page and the fields disappear.' },
+      { q: 'My form has no fields.', a: 'A form that is only an image or lines is written on directly with the Edit PDF tool.' },
+    ],
+  },
+  'pdf-n-up': {
+    title: 'Save Paper: Pages per Sheet',
+    description: 'Put 2, 4 or 8 PDF pages on one sheet, or a ready-to-fold booklet — on A4, F4 or Letter paper.',
+    formats: 'PDF → paper-saving PDF',
+    keywords: ['n-up', 'pages per sheet', 'booklet', 'handout', 'save paper', 'print'],
+    faq: [
+      {
+        q: 'How do I print 2 or 4 PDF pages on one sheet?',
+        a: 'Open the PDF, pick 2, 4 or 8 per sheet and a paper size, download the new PDF and print it as usual. Text stays sharp.',
+      },
+      { q: 'How do I make a PDF into a folded booklet?', a: 'Pick “Booklet (fold)”, print double-sided flipping on the short edge, then fold the stack in half.' },
+    ],
+  },
   'compress-pdf': { title: 'Compress PDF', description: 'Shrink a PDF by downsizing the photos inside — text stays sharp.', keywords: ['shrink', 'reduce', 'smaller'] },
   'pdf-to-markdown': { title: 'PDF to Markdown', description: 'Turn a PDF into Markdown: headings, bold/italic, lists and tables.', keywords: ['text', 'notes'] },
   'protect-pdf': { title: 'Protect PDF', description: 'Lock a PDF with a password (AES-256) and restrict printing, copying or editing.', keywords: ['lock', 'encrypt', 'password'] },
@@ -283,6 +310,12 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
     formats: 'Any file ↔ .enc file',
     keywords: ['encrypt', 'decrypt', 'aes', 'password', 'lock', 'secure', 'privacy'],
   },
+  brankas: {
+    title: 'Document Vault',
+    description: 'Keep photos/PDFs of your ID card, family card, health insurance and policies in this browser, encrypted with a password. A forgotten password cannot be recovered. Encrypted backup included.',
+    formats: 'Document photos/PDFs → encrypted vault (.twlvault)',
+    keywords: ['vault', 'documents', 'id card', 'ktp', 'insurance', 'encrypted', 'backup', 'emergency', 'safe', 'password'],
+  },
   tabungan: {
     title: 'Savings & Investment Calculator',
     description: 'Compound interest on a deposit, regular monthly saving, or how much to save to reach a target, with a growth chart and a year-by-year table.',
@@ -400,8 +433,8 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
   'strip-exif': { title: 'Remove Photo Metadata', description: 'See a photo’s EXIF (camera, date, GPS location), then save it again without any metadata.', keywords: ['exif', 'gps', 'privacy', 'metadata'] },
   'remove-background': {
     title: 'Remove Background',
-    description: 'Remove a background with a magic wand, color select, lasso or brush — then make it transparent or recolor it.',
-    keywords: ['background', 'transparent', 'cut out'],
+    description: 'Remove a background in one tap with on-device AI, or use the magic wand, lasso and brush — then make it transparent, blurred or recolored.',
+    keywords: ['background', 'transparent', 'cut out', 'auto', 'ai', 'blur background', 'portrait'],
   },
   'dwg-to-pdf': {
     title: 'DWG to PDF',
@@ -625,5 +658,17 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
     title: 'Color Picker',
     description: 'Pick colors from an image or the screen, convert to HEX/RGB/HSL/OKLCH, check contrast and build shades.',
     keywords: ['color', 'color', 'palette', 'contrast'],
+  },
+  'merge-excel': {
+    title: 'Merge & Split Excel/CSV',
+    description: 'Merge many Excel/CSV files into one (columns matched by their titles), or split a sheet into one sheet per value of a column.',
+    formats: 'XLSX / CSV → XLSX / CSV / ZIP',
+    keywords: ['combine', 'join', 'divide', 'workbook'],
+  },
+  'markdown-to-pdf': {
+    title: 'Markdown & Text to PDF / Word',
+    description: 'Write or open Markdown/TXT, preview the page, then download a PDF or DOCX.',
+    formats: 'MD / TXT → PDF / DOCX',
+    keywords: ['convert', 'document', 'readme'],
   },
 }
