@@ -2,7 +2,7 @@
 
 Video compression for any website: one `<script>` tag, one element. Shrink an
 MP4, MOV, WebM or MKV with the device's own (usually hardware) encoder, pick
-the quality and resolution, keep or drop the sound. The result is an MP4 that
+the quality, resolution and frame rate, keep or drop the sound. The result is an MP4 that
 plays everywhere. **Everything runs in the visitor's browser**: there is no server and nothing is uploaded.
 
 This is the [Compress Video](https://toowl.my.id/#/compress-video) tool from
@@ -68,7 +68,7 @@ targetBitrate(info, 'medium', 0) // 138225 (bits per second it will aim for)
 
 const mp4 = await compressVideo(
   file, info,
-  { level: 'medium', resolution: 0, keepAudio: true }, // level: light | medium | strong; resolution: 0 | 1080 | 720 | 480
+  { level: 'medium', resolution: 0, fps: 0, keepAudio: true }, // level: light | medium | strong; resolution: 0 | 1080 | 720 | 480; fps: 0 | 30 | 24 | 15
   (p) => console.log(Math.round(p * 100) + '%'),
   (cancel) => cancelButton.onclick = cancel,
 )
@@ -78,6 +78,11 @@ const mp4 = await compressVideo(
 - `targetSize(1920, 1080, 720)` → `{ width: 1280, height: 720 }`: the output size
   for a resolution, never upscaled.
 - The bitrate is never set above 85% of the source's, so the file does not grow.
+- `fps` lowers the frame rate (never raises it); the bitrate drops with it.
+- Outputs expected above ~700 MB are streamed to a file in the origin private
+  file system and returned as a disk-backed `File`, so multi-GB videos don't
+  run the tab out of memory. Without that API (e.g. a private window) such a
+  job rejects instead of crashing the tab.
 - `onProgress` gets 0–1; `onStart` receives a function that cancels the job (the
 promise then rejects; `isCanceled(error)` is true).
 

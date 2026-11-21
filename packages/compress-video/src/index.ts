@@ -5,5 +5,5 @@
 //   const info = await probeMedia(file)
 //   const mp4 = await compressVideo(file, info, { level: 'medium', resolution: 720, keepAudio: true }, onProgress, onStart)
 
-export { compressVideo, targetSize, targetBitrate, type Level, type Resolution } from '@/tools/compress-video/compress'
+export { compressVideo, targetSize, targetBitrate, type FrameRate, type Level, type Resolution } from '@/tools/compress-video/compress'
 export { probeMedia, hasWebCodecs, isCanceled, NoEncoderError, UnsupportedMediaError, type MediaInfo } from '@/lib/media'
