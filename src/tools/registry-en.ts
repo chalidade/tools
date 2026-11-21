@@ -283,6 +283,12 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
     formats: 'Any file ↔ .enc file',
     keywords: ['encrypt', 'decrypt', 'aes', 'password', 'lock', 'secure', 'privacy'],
   },
+  brankas: {
+    title: 'Document Vault',
+    description: 'Keep photos/PDFs of your ID card, family card, health insurance and policies in this browser, encrypted with a password. A forgotten password cannot be recovered. Encrypted backup included.',
+    formats: 'Document photos/PDFs → encrypted vault (.twlvault)',
+    keywords: ['vault', 'documents', 'id card', 'ktp', 'insurance', 'encrypted', 'backup', 'emergency', 'safe', 'password'],
+  },
   tabungan: {
     title: 'Savings & Investment Calculator',
     description: 'Compound interest on a deposit, regular monthly saving, or how much to save to reach a target, with a growth chart and a year-by-year table.',
@@ -400,8 +406,8 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
   'strip-exif': { title: 'Remove Photo Metadata', description: 'See a photo’s EXIF (camera, date, GPS location), then save it again without any metadata.', keywords: ['exif', 'gps', 'privacy', 'metadata'] },
   'remove-background': {
     title: 'Remove Background',
-    description: 'Remove a background with a magic wand, color select, lasso or brush — then make it transparent or recolor it.',
-    keywords: ['background', 'transparent', 'cut out'],
+    description: 'Remove a background in one tap with on-device AI, or use the magic wand, lasso and brush — then make it transparent, blurred or recolored.',
+    keywords: ['background', 'transparent', 'cut out', 'auto', 'ai', 'blur background', 'portrait'],
   },
   'dwg-to-pdf': {
     title: 'DWG to PDF',
@@ -625,5 +631,17 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
     title: 'Color Picker',
     description: 'Pick colors from an image or the screen, convert to HEX/RGB/HSL/OKLCH, check contrast and build shades.',
     keywords: ['color', 'color', 'palette', 'contrast'],
+  },
+  'merge-excel': {
+    title: 'Merge & Split Excel/CSV',
+    description: 'Merge many Excel/CSV files into one (columns matched by their titles), or split a sheet into one sheet per value of a column.',
+    formats: 'XLSX / CSV → XLSX / CSV / ZIP',
+    keywords: ['combine', 'join', 'divide', 'workbook'],
+  },
+  'markdown-to-pdf': {
+    title: 'Markdown & Text to PDF / Word',
+    description: 'Write or open Markdown/TXT, preview the page, then download a PDF or DOCX.',
+    formats: 'MD / TXT → PDF / DOCX',
+    keywords: ['convert', 'document', 'readme'],
   },
 }

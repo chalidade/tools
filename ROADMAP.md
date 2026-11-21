@@ -365,7 +365,7 @@ jaringan) dan tombol utamanya besar, bisa ditekan tanpa membaca.
 
 ## Hari 32 — 2026-11-18 · Darurat: dokumen
 
-- [ ] **Brankas Dokumen** (`#/brankas`): simpan foto/PDF KTP, KK, BPJS, polis
+- [x] **Brankas Dokumen** (`#/brankas`): simpan foto/PDF KTP, KK, BPJS, polis
   di perangkat (IndexedDB), terenkripsi dengan password — WebCrypto AES-GCM,
   kunci dari PBKDF2 (≥ 600 ribu iterasi) dengan salt acak, IV baru tiap file.
   Password tidak pernah disimpan; lupa password = data tidak bisa dibuka, dan
@@ -400,7 +400,7 @@ sesudahnya.
 
 ## Hari 34 — 2026-11-20 · AI di perangkat: latar foto
 
-- [ ] **Hapus Latar Otomatis** di `#/remove-background`: mode sekali ketuk
+- [x] **Hapus Latar Otomatis** di `#/remove-background`: mode sekali ketuk
   dengan model segmentasi lewat ONNX Runtime Web (WebGPU bila ada, wasm
   sebagai cadangan), model dan runtime di-host sendiri dan hanya diunduh saat
   mode ini dipilih, dengan ukurannya ditampilkan di awal. Hasilnya tetap bisa
@@ -518,10 +518,10 @@ sesudahnya.
 
 ## Hari 43 — 2026-11-29 · Dokumen
 
-- [ ] **Gabung & Pisah Excel/CSV** (`#/merge-excel`): gabung banyak file atau
+- [x] **Gabung & Pisah Excel/CSV** (`#/merge-excel`): gabung banyak file atau
   sheet jadi satu (kolom dicocokkan dari judulnya), atau pecah satu sheet per
   nilai sebuah kolom jadi beberapa file/sheet.
-- [ ] **Markdown & Teks ke PDF / Word** (`#/markdown-to-pdf`): tulis atau buka
+- [x] **Markdown & Teks ke PDF / Word** (`#/markdown-to-pdf`): tulis atau buka
   Markdown/TXT, pratinjau, lalu unduh PDF atau DOCX. Pakai ulang mesin
   paginasi Word ke PDF. Kebalikan dari PDF ke Markdown.
 
