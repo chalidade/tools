@@ -63,6 +63,33 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
   'page-numbers': { title: 'PDF Page Numbers', description: 'Add page numbers: pick the position, the format (1, 1 / 10, Page 1) and the first page.', keywords: ['numbering', 'pagination', 'footer', 'header'] },
   'sign-pdf': { title: 'Sign PDF', description: 'Draw or upload your signature, then place it on any page.', formats: 'PDF → PDF + signature', keywords: ['signature', 'sign'] },
   'edit-pdf': { title: 'Edit PDF', description: 'Add text, images, boxes, lines, ticks and scribbles on any page — for ordinary, non-AcroForm forms.', formats: 'PDF → PDF + additions', keywords: ['fill form', 'type on pdf', 'annotate', 'tick', 'checkbox', 'write'] },
+  'fill-pdf': {
+    title: 'Fill PDF Form',
+    description: 'Fill a PDF form’s fields (text, checkboxes, choices) beside a page preview, then save or lock the answers.',
+    formats: 'Form PDF → filled PDF',
+    keywords: ['fillable', 'acroform', 'form fields', 'flatten', 'fill form'],
+    faq: [
+      {
+        q: 'How do I fill in a PDF form without Adobe Acrobat?',
+        a: 'Open the file in this tool: every fillable field is detected, so just type or tick, then save. It all runs in your browser; the file is never uploaded.',
+      },
+      { q: 'How do I stop the answers from being edited?', a: 'Tick “Flatten” before saving: the answers become part of the page and the fields disappear.' },
+      { q: 'My form has no fields.', a: 'A form that is only an image or lines is written on directly with the Edit PDF tool.' },
+    ],
+  },
+  'pdf-n-up': {
+    title: 'Save Paper: Pages per Sheet',
+    description: 'Put 2, 4 or 8 PDF pages on one sheet, or a ready-to-fold booklet — on A4, F4 or Letter paper.',
+    formats: 'PDF → paper-saving PDF',
+    keywords: ['n-up', 'pages per sheet', 'booklet', 'handout', 'save paper', 'print'],
+    faq: [
+      {
+        q: 'How do I print 2 or 4 PDF pages on one sheet?',
+        a: 'Open the PDF, pick 2, 4 or 8 per sheet and a paper size, download the new PDF and print it as usual. Text stays sharp.',
+      },
+      { q: 'How do I make a PDF into a folded booklet?', a: 'Pick “Booklet (fold)”, print double-sided flipping on the short edge, then fold the stack in half.' },
+    ],
+  },
   'compress-pdf': { title: 'Compress PDF', description: 'Shrink a PDF by downsizing the photos inside — text stays sharp.', keywords: ['shrink', 'reduce', 'smaller'] },
   'pdf-to-markdown': { title: 'PDF to Markdown', description: 'Turn a PDF into Markdown: headings, bold/italic, lists and tables.', keywords: ['text', 'notes'] },
   'protect-pdf': { title: 'Protect PDF', description: 'Lock a PDF with a password (AES-256) and restrict printing, copying or editing.', keywords: ['lock', 'encrypt', 'password'] },

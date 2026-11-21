@@ -410,12 +410,12 @@ sesudahnya.
 
 ## Hari 35 — 2026-11-21 · PDF: formulir & cetak
 
-- [ ] **Isi Formulir PDF** (`#/fill-pdf`): kenali kolom AcroForm lewat
+- [x] **Isi Formulir PDF** (`#/fill-pdf`): kenali kolom AcroForm lewat
   pdf-lib (`getForm`): teks, centang, pilihan, dan tombol radio, isi di
   samping pratinjau halaman, lalu simpan, dengan opsi "ratakan" supaya isian
   tidak bisa diubah lagi. Formulir XFA tidak didukung dan dikatakan dengan
   jelas; PDF tanpa kolom diarahkan ke Edit PDF. Buka lewat `openPdfDoc`.
-- [ ] **Cetak Hemat Kertas** (`#/pdf-n-up`): 2, 4, atau 8 halaman PDF per
+- [x] **Cetak Hemat Kertas** (`#/pdf-n-up`): 2, 4, atau 8 halaman PDF per
   lembar, susunan buku (booklet) yang tinggal dilipat, dan ubah ukuran
   halaman ke A4, F4 (215 × 330 mm), atau Letter. Halaman disematkan dengan
   `embedPage` pdf-lib, jadi teks tetap tajam dan bisa dipilih. Pakai

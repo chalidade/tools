@@ -3,6 +3,13 @@
 Catatan harian apa yang berubah di [tools](https://toowl.my.id/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-21 — PDF: formulir & cetak
+
+Dua tool baru; total sekarang **131 tools**.
+
+- **Isi Formulir PDF** (`/fill-pdf/`): mengenali kolom AcroForm (teks, centang, pilihan, daftar, tombol radio), menampilkannya sebagai formulir di samping pratinjau halaman, lalu menyimpan PDF yang terisi. Opsi **ratakan** menjadikan isian bagian halaman sehingga tidak bisa diubah lagi. Formulir XFA dikatakan tidak didukung (formulir hibrida diisi lewat AcroForm-nya), dan PDF tanpa kolom diarahkan ke Edit PDF. Huruf yang tidak bisa digambar font Helvetica bawaan dilaporkan per kolom, tidak membuat simpan gagal.
+- **Cetak Hemat Kertas** (`/pdf-n-up/`): 2, 4, atau 8 halaman per lembar, atau susunan **buku** (halaman dibulatkan ke kelipatan 4; cetak bolak-balik, balik di sisi pendek, lalu lipat dua), di kertas A4, F4 (215 × 330 mm), atau Letter. Halaman disematkan dengan `embedPage`, jadi teks tetap tajam; halaman yang diputar atau ber-crop box ikut benar. Pratinjau menunjukkan nomor halaman di tiap kotak.
+
 ## 2026-11-20 — Lisensi embed tanpa branding
 
 Dasar untuk menjual lisensi lewat **Lemon Squeezy** dan **Gumroad**; masih tersembunyi sampai produk di toko dibuat dan id-nya diisi di `src/lib/license.ts`.
