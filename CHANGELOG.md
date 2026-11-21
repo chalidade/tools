@@ -44,9 +44,18 @@ Dua tool foto RAW baru; total sekarang **115 tools**.
 - **Gambar ke DNG** (`/image-to-dng/`): JPG, PNG, atau HEIC jadi DNG, format RAW terbuka Adobe, yang bisa diedit di Lightroom, Photoshop, dan Snapseed. Gambarnya disimpan sebagai data linear 16-bit dengan kompresi lossless, warna sRGB, dan white balance "As Shot", jadi tampilan awalnya sama dengan aslinya. Penulis DNG dan encoder lossless JPEG-nya ditulis sendiri.
 - Orang yang mencari "JPG ke ARW" diarahkan ke tool DNG. Halamannya menjelaskan kenapa ARW tidak bisa dibuat dari JPG, dan tool dengan bagian **Tanya jawab** sekarang ikut menampilkannya di halaman statis dan data terstruktur (FAQPage) untuk mesin pencari.
 
+## 2026-11-19 — Dokumen
+
+Dua tool baru; total sekarang **130 tools**.
+
+- **Gabung & Pisah Excel/CSV** (`#/merge-excel`): gabung banyak file `.xlsx`/`.csv` (atau sheet tertentu dari tiap file) jadi satu — kolom dicocokkan dari judulnya tanpa peduli huruf besar/kecil dan spasi ganda, atau dari urutan; kolom yang tidak ada di sebuah file dibiarkan kosong, dan bisa ditambah kolom "Sumber" berisi nama file/sheet asal. Hasilnya satu sheet atau satu sheet per sumber. Mode pisah memecah satu sheet menurut nilai sebuah kolom jadi sheet-sheet dalam satu file, atau ZIP berisi `.xlsx`/`.csv` per nilai. Rumus dibaca hasilnya, nama sheet/file dibersihkan dan dibuat unik. ExcelJS dan JSZip dimuat hanya saat tool dibuka.
+- **Markdown & Teks ke PDF / Word** (`#/markdown-to-pdf`): tulis, tempel, atau buka `.md`/`.txt`, lihat pratinjau halaman (A4/Letter, margin, huruf sans/serif), lalu unduh PDF lewat mesin halaman Word ke PDF (tiap halaman berupa gambar; "Cetak / Simpan PDF" menghasilkan teks yang bisa diseleksi) atau DOCX dengan judul, daftar bersarang/bernomor, checklist, kutipan, kode, tabel, dan tautan asli. HTML disaring DOMPurify dan gambar dari internet tidak pernah dimuat, jadi tidak ada koneksi keluar.
+
+
 ## 2026-11-19 — Tool medis hanya di web
 
 - Di aplikasi Android, tool CPR, P3K, Kartu Medis, dan HPL Kehamilan disembunyikan (flag `webOnly` di registry, deteksi app lewat `src/lib/platform.ts`). Play Store mewajibkan akun organisasi untuk fitur medis. Di toowl.my.id semuanya tetap ada.
+
 
 ## 2026-11-19 — Statistik kunjungan tanpa cookie
 
@@ -61,6 +70,7 @@ Dua tool foto RAW baru; total sekarang **115 tools**.
 - Kerangka **In-App Purchase** (StoreKit 2, tanpa server dan tanpa SDK pihak ketiga) untuk freemium nanti; belum ada tool yang dikunci.
 - Di dalam app, tombol "Pasang aplikasi" dan link Traktir kopi disembunyikan, dan **Rekam Layar** tidak tampil karena iOS tidak mengizinkannya di app. Situs web tidak berubah.
 
+
 ## 2026-11-19 — Persiapan aplikasi Android (Play Store)
 
 - toowl disiapkan jadi aplikasi Android lewat **Trusted Web Activity**: konfigurasi Bubblewrap di `android/twa-manifest.json` (package `id.my.toowl`) dan panduan build, tanda tangan, dan upload ke Play Console di `android/README.md`.
@@ -68,10 +78,12 @@ Dua tool foto RAW baru; total sekarang **115 tools**.
 - Manifest PWA: ikon **monochrome** baru untuk ikon bertema Android 13+, dan shortcut Piano/Gitar/Drum/Tuner sekarang memakai alamat halaman (`/piano/`), bukan `#/piano`.
 - Halaman **Kebijakan Privasi** baru di `/privacy/` (Indonesia dan English), ditautkan dari footer. Play Store mewajibkannya.
 
+
 ## 2026-11-19 — Nominal Kwitansi rapi di PDF
 
 - **Kwitansi** (`/kwitansi/`): di PDF, nominal sekarang duduk di tengah kotaknya. Sebelumnya teksnya naik menimpa garis atas kotak (laporan pengguna).
 - Kotak nominal ikut melebar untuk nominal panjang, dan ukuran hurufnya baru mengecil kalau kotaknya sudah selebar halaman.
+
 
 ## 2026-11-19 — Lisensi jadi AGPL-3.0
 
@@ -79,11 +91,13 @@ Dua tool foto RAW baru; total sekarang **115 tools**.
 - Kode sampai commit 43c1e4a tetap berlaku MIT.
 - Teks "open source (MIT)" di halaman tool dan kartu **Pasang di situsmu** ikut diganti.
 
+
 ## 2026-11-19 — README dan video pengenalan baru
 
 - README (English dan Indonesia) diperbarui ke kondisi sekarang: 113 tools, alamat `/<tool>/` dan `/en/<tool>/` di toowl.my.id, beranda satu kotak pencarian, dan desain baru. Tiga tool yang belum tercatat ditambahkan: **Gambar ke SVG**, **Peredam Noise**, dan **Tambah Musik ke Video**.
 - Video pengenalan 30 detik (ID dan EN, GIF dan MP4) direkam dari situsnya sendiri dan menggantikan animasi launch lama; screenshot laptop dan HP ikut diperbarui.
 - `docs/ARCHITECTURE.md` tidak lagi menyebut sub-path `/tools/` dan menjelaskan beranda yang baru.
+
 
 ## 2026-11-19 — Gambar Word yang hilang
 
@@ -95,6 +109,7 @@ Dua tool foto RAW baru; total sekarang **115 tools**.
   - di dokumen panjang tanpa jeda halaman, header dan footer (beserta gambarnya) diulang di setiap halaman PDF.
 
 Semuanya tetap diproses di browser; file tidak dikirim ke mana pun.
+
 
 ## 2026-11-19 — Gambar ke SVG
 
@@ -114,11 +129,13 @@ Kategori baru **Buka Dokumen** dengan empat tool; total sekarang **112 tools**. 
 
 Format lama (.doc, .xls, .ppt) belum bisa dibuka. Semuanya diproses di browser; file tidak dikirim ke mana pun.
 
+
 ## 2026-11-19 — PDF ke Word yang sama persis
 
 - **PDF ke Word** (`/pdf-to-word/`) sekarang punya pilihan hasil **"Sama persis seperti PDF"** (bawaan). Sebelumnya hanya teks yang diambil lalu disusun ulang jadi paragraf, jadi gambar, garis tabel, warna, kolom, dan posisi hilang dan hasil Word terlihat beda dari PDF-nya. Sekarang tiap halaman Word dibuat seukuran halaman PDF: gambar, logo, garis dan warna tabel, serta latar digambar di belakang persis seperti aslinya, lalu teksnya ditaruh di atas pada posisi aslinya dengan font, ukuran, tebal/miring, warna, dan rata kanan-kiri yang sama, dan tetap bisa diedit. Teks miring/diputar dan lapisan OCR tak terlihat tetap jadi bagian gambar supaya tidak muncul dua kali. Ada pratinjau halaman sebelum diunduh. Cara lama masih ada sebagai **"Teks mengalir (mudah diedit)"** untuk yang ingin menulis ulang banyak teks.
 
 Semuanya tetap diproses di browser; tidak ada file yang dikirim.
+
 
 ## 2026-11-19 — CAD & upscale
 
@@ -127,6 +144,12 @@ Tiga tool baru; total sekarang **108 tools**.
 - **DWG ke PDF** (`/dwg-to-pdf/`): buka gambar AutoCAD (.dwg R14–2018 atau .dxf) dan simpan sebagai PDF vektor, jadi garis dan teks tetap tajam saat diperbesar. File dibaca dengan LibreDWG versi WebAssembly (±8 MB, dimuat saat tool dipakai) lalu digambar ulang: blok, dimensi, hatch berpola, tipe garis putus-putus, ketebalan garis, dan warna ByLayer/ByBlock. Pilih kertas A4–A0, arah, pas kertas atau skala 1:20–1:1000, warna asli atau hitam semua, dan matikan layer yang tidak perlu. Objek nyasar yang jauh dari gambar utama tidak lagi membuat gambar mengecil jadi titik.
 - **PDF ke DWG** (`/pdf-to-dwg/`): ambil garis, kurva, lingkaran, dan teks vektor dari PDF (mis. denah hasil ekspor CAD) jadi file .dxf yang dibuka AutoCAD, BricsCAD, atau LibreCAD, lalu Save As .dwg. Skala gambar di PDF (1:1–1:1000) dan satuan hasil (mm/cm/m) bisa diatur supaya ukurannya kembali ke ukuran sebenarnya; beberapa halaman diletakkan berjajar. Hasilnya DXF, bukan DWG langsung, karena belum ada penulis DWG yang andal di browser dan file tidak boleh dikirim ke server.
 - **Upscale Gambar** (`/upscale-image/`): perbesar foto 2× atau 4× dengan model Real-ESRGAN di perangkat sendiri (WebGPU bila ada, WebAssembly bila tidak). Gambar diproses per petak tanpa sambungan terlihat, transparansi PNG ikut, ada progres, tombol batal, dan penggeser sebelum/sesudah. Model (4,8 MB) dan mesinnya diunduh sekali dari situs ini.
+
+## 2026-11-18 — Darurat: dokumen
+
+Satu tool baru; total sekarang **106 tools**.
+
+- **Brankas Dokumen** (`#/brankas`): simpan foto/PDF KTP, KK, BPJS, polis di IndexedDB browser ini, dienkripsi per file dengan AES-256-GCM (kunci dari PBKDF2-SHA-256 600.000 iterasi, salt acak, IV baru tiap file; nama file ikut terenkripsi). Password tidak pernah disimpan, dan sebelum brankas dibuat pengguna harus mencentang bahwa password yang lupa berarti data tidak bisa dibuka. Terkunci otomatis saat tab disembunyikan. Bisa melihat gambar/PDF di tempat, mengunduh, menghapus, serta mengekspor/memulihkan brankas terenkripsi sebagai satu file `.twlvault` untuk cadangan di perangkat lain.
 
 Semuanya diproses di browser; tidak ada data yang dikirim.
 

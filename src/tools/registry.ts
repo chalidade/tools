@@ -2,7 +2,10 @@ import { lazy, type ComponentType, type LazyExoticComponent } from 'react'
 import type { Lang } from '@/lib/i18n'
 import { CATEGORIES_EN, TOOLS_EN } from './registry-en'
 import {
+  FileOutput,
+  TableProperties,
   Dices,
+  Vault,
   UsersRound,
   ScanText,
   AppWindow,
@@ -1820,6 +1823,39 @@ const ALL_TOOLS: Tool[] = [
     formats: 'File apa saja ↔ file .enc',
     badge: 'Baru',
     component: lazy(() => import('./encrypt-file/EncryptFile')),
+  },
+  {
+    slug: 'brankas',
+    category: 'productivity',
+    keywords: ['brankas', 'dokumen', 'ktp', 'kk', 'bpjs', 'polis', 'simpan', 'darurat', 'terenkripsi', 'password', 'cadangan', 'vault', 'documents', 'id card', 'encrypted', 'backup', 'emergency', 'safe'],
+    title: 'Brankas Dokumen',
+    description: 'Simpan foto/PDF KTP, KK, BPJS, dan polis di browser ini, terenkripsi dengan password. Lupa password = tidak bisa dibuka. Ada cadangan terenkripsi.',
+    icon: Vault,
+    formats: 'Foto/PDF dokumen → brankas terenkripsi (.twlvault)',
+    badge: 'Baru',
+    component: lazy(() => import('./brankas/Brankas')),
+  },
+  {
+    slug: 'merge-excel',
+    category: 'productivity',
+    keywords: ['excel', 'xlsx', 'csv', 'gabung', 'pisah', 'pecah', 'sheet', 'spreadsheet', 'tabel', 'kolom', 'merge', 'split', 'combine', 'join', 'column', 'rows'],
+    title: 'Gabung & Pisah Excel/CSV',
+    description: 'Gabung banyak file Excel/CSV jadi satu (kolom dicocokkan dari judulnya), atau pecah satu sheet per nilai sebuah kolom.',
+    icon: TableProperties,
+    formats: 'XLSX / CSV → XLSX / CSV / ZIP',
+    badge: 'Baru',
+    component: lazy(() => import('./merge-excel/MergeExcel')),
+  },
+  {
+    slug: 'markdown-to-pdf',
+    category: 'to-pdf',
+    keywords: ['markdown', 'md', 'txt', 'teks', 'text', 'docx', 'word', 'pdf', 'catatan', 'readme', 'konversi', 'convert', 'notes'],
+    title: 'Markdown & Teks ke PDF / Word',
+    description: 'Tulis atau buka Markdown/TXT, lihat pratinjau halaman, lalu unduh PDF atau DOCX.',
+    icon: FileOutput,
+    formats: 'MD / TXT → PDF / DOCX',
+    badge: 'Baru',
+    component: lazy(() => import('./markdown-to-pdf/MarkdownToPdf')),
   },
 ]
 

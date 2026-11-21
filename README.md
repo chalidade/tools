@@ -3,7 +3,7 @@
 **English** · [Bahasa Indonesia](README.id.md)
 
 **My everyday file toolbox, built for the file work I do every day and published free for everyone.**
-127 tools for PDF, Office files, CAD drawings, images, video, audio, music and everyday calculations, and every one of them runs entirely in your browser.
+130 tools for PDF, Office files, CAD drawings, images, video, audio, music and everyday calculations, and every one of them runs entirely in your browser.
 Your files are never uploaded.
 
 [![Live demo](https://img.shields.io/badge/live-toowl.my.id-c8f031)](https://toowl.my.id/)
@@ -13,7 +13,7 @@ Your files are never uploaded.
 ![React](https://img.shields.io/badge/React-19-61dafb?logo=react&logoColor=black)
 ![Vite](https://img.shields.io/badge/Vite-8-646cff?logo=vite&logoColor=white)
 
-<a href="https://toowl.my.id/en/"><img src="docs/intro-en.gif" alt="toowl intro: type what you need, open Image to SVG, trace a logo, open an Excel file, browse all 115 tools" width="720"></a>
+<a href="https://toowl.my.id/en/"><img src="docs/intro-en.gif" alt="toowl intro: type what you need, open Image to SVG, trace a logo, open an Excel file, browse all 118 tools" width="720"></a>
 
 ▶ [Watch the 30-second intro (MP4)](docs/intro-en.mp4) · [Bahasa Indonesia version](docs/intro-id.mp4)
 
@@ -40,7 +40,7 @@ browser's own media encoders, and a library is downloaded only when you open the
 
 ## Tools
 
-All 127, grouped the way the site groups them. Each name links to the live tool.
+All 130, grouped the way the site groups them. Each name links to the live tool.
 
 **Open Documents**
 - [PDF Reader](https://toowl.my.id/en/pdf-reader/): pages drawn by pdf.js with its text layer on top (select, copy, Ctrl+F), working links, password-protected PDFs, zoom, page jump, full screen
@@ -55,6 +55,7 @@ Each reader opens the other three formats too.
 - [Images to PDF](https://toowl.my.id/en/image-to-pdf/): reorder, rotate, A4/Letter/fit-to-image; phone EXIF rotation applied
 - [DWG to PDF](https://toowl.my.id/en/dwg-to-pdf/): AutoCAD .dwg/.dxf to a vector PDF (LibreDWG in WebAssembly), A4–A0, fit or 1:N scale, colour or black, layer on/off
 - [PowerPoint to PDF](https://toowl.my.id/en/ppt-to-pdf/): `.pptx` to PDF, one page per slide
+- [Markdown & Text to PDF / Word](https://toowl.my.id/en/markdown-to-pdf/): write or open `.md`/`.txt`, preview the page, download a PDF (image pages, or selectable text via print) or a `.docx` with real headings, lists, tables and code (marked + DOMPurify, reuses the Word to PDF page engine; web images are never loaded)
 - [Excel to PDF](https://toowl.my.id/en/excel-to-pdf/): `.xlsx`/`.csv` to a selectable-text PDF table, with theme colors, borders, merged cells and number formats
 
 **From PDF**
@@ -131,9 +132,11 @@ Each reader opens the other three formats too.
 - [Color Contrast Checker](https://toowl.my.id/en/kontras-warna/) (WCAG 2.2 AA/AAA with the nearest passing colour), [Lorem Ipsum](https://toowl.my.id/en/lorem-ipsum/), [Screenshot Mockup](https://toowl.my.id/en/mockup/) (browser, phone and laptop frames drawn from shapes)
 
 **Productivity**
+- [Merge & Split Excel/CSV](https://toowl.my.id/en/merge-excel/): stack many files or sheets into one (columns matched by title, optional source column) or split a sheet by the values of a column into sheets or a ZIP of `.xlsx`/`.csv`
 - [Notes](https://toowl.my.id/en/notes/): Markdown with live checklists, saved in the browser, JSON backup/restore
 - [Calculator](https://toowl.my.id/en/calculator/): basic and scientific, with its own expression parser (no `eval`)
 - [Encrypt & Decrypt File](https://toowl.my.id/en/encrypt-file/): lock any file with a password (WebCrypto AES-256-GCM, PBKDF2-SHA-256 600k iterations, random salt), original name kept inside; forgotten passwords cannot be recovered
+- [Document Vault](https://toowl.my.id/en/brankas/): keep ID, KK, BPJS and policy photos/PDFs in this browser (IndexedDB), encrypted per file with AES-256-GCM (PBKDF2-SHA-256 600k iterations, fresh IV each), auto-locks when the tab is hidden, encrypted backup/restore as one file; forgotten passwords cannot be recovered
 - [Password Generator](https://toowl.my.id/en/password-generator/): random passwords and Indonesian/English passphrases from `crypto.getRandomValues`, plus a strength check with estimated guessing time
 - [Word Counter](https://toowl.my.id/en/word-counter/): words, characters, sentences, paragraphs, reading/speaking time and per-platform character limits
 - [Unit Converter](https://toowl.my.id/en/unit-converter/): length, weight (ons, quintal), area (hectare, are, tumbak), volume, temperature, speed and data
