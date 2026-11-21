@@ -9,6 +9,7 @@ const assert = <T extends true>() => undefined as unknown as T
 
 assert<Same<Public.Level, Source.Level>>()
 assert<Same<Public.Resolution, Source.Resolution>>()
+assert<Same<Public.FrameRate, Source.FrameRate>>()
 assert<Same<typeof Public.targetSize, typeof Source.targetSize>>()
 assert<Same<typeof Public.targetBitrate, typeof Source.targetBitrate>>()
 assert<Same<typeof Public.compressVideo, typeof Source.compressVideo>>()
