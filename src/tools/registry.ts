@@ -3,6 +3,7 @@ import type { Lang } from '@/lib/i18n'
 import { CATEGORIES_EN, TOOLS_EN } from './registry-en'
 import {
   Dices,
+  Vault,
   UsersRound,
   ScanText,
   AppWindow,
@@ -1820,6 +1821,17 @@ const ALL_TOOLS: Tool[] = [
     formats: 'File apa saja ↔ file .enc',
     badge: 'Baru',
     component: lazy(() => import('./encrypt-file/EncryptFile')),
+  },
+  {
+    slug: 'brankas',
+    category: 'productivity',
+    keywords: ['brankas', 'dokumen', 'ktp', 'kk', 'bpjs', 'polis', 'simpan', 'darurat', 'terenkripsi', 'password', 'cadangan', 'vault', 'documents', 'id card', 'encrypted', 'backup', 'emergency', 'safe'],
+    title: 'Brankas Dokumen',
+    description: 'Simpan foto/PDF KTP, KK, BPJS, dan polis di browser ini, terenkripsi dengan password. Lupa password = tidak bisa dibuka. Ada cadangan terenkripsi.',
+    icon: Vault,
+    formats: 'Foto/PDF dokumen → brankas terenkripsi (.twlvault)',
+    badge: 'Baru',
+    component: lazy(() => import('./brankas/Brankas')),
   },
 ]
 

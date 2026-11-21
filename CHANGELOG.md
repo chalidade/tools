@@ -128,6 +128,12 @@ Tiga tool baru; total sekarang **108 tools**.
 - **PDF ke DWG** (`/pdf-to-dwg/`): ambil garis, kurva, lingkaran, dan teks vektor dari PDF (mis. denah hasil ekspor CAD) jadi file .dxf yang dibuka AutoCAD, BricsCAD, atau LibreCAD, lalu Save As .dwg. Skala gambar di PDF (1:1–1:1000) dan satuan hasil (mm/cm/m) bisa diatur supaya ukurannya kembali ke ukuran sebenarnya; beberapa halaman diletakkan berjajar. Hasilnya DXF, bukan DWG langsung, karena belum ada penulis DWG yang andal di browser dan file tidak boleh dikirim ke server.
 - **Upscale Gambar** (`/upscale-image/`): perbesar foto 2× atau 4× dengan model Real-ESRGAN di perangkat sendiri (WebGPU bila ada, WebAssembly bila tidak). Gambar diproses per petak tanpa sambungan terlihat, transparansi PNG ikut, ada progres, tombol batal, dan penggeser sebelum/sesudah. Model (4,8 MB) dan mesinnya diunduh sekali dari situs ini.
 
+## 2026-11-18 — Darurat: dokumen
+
+Satu tool baru; total sekarang **127 tools**.
+
+- **Brankas Dokumen** (`#/brankas`): simpan foto/PDF KTP, KK, BPJS, polis di IndexedDB browser ini, dienkripsi per file dengan AES-256-GCM (kunci dari PBKDF2-SHA-256 600.000 iterasi, salt acak, IV baru tiap file; nama file ikut terenkripsi). Password tidak pernah disimpan, dan sebelum brankas dibuat pengguna harus mencentang bahwa password yang lupa berarti data tidak bisa dibuka. Terkunci otomatis saat tab disembunyikan. Bisa melihat gambar/PDF di tempat, mengunduh, menghapus, serta mengekspor/memulihkan brankas terenkripsi sebagai satu file `.twlvault` untuk cadangan di perangkat lain.
+
 Semuanya diproses di browser; tidak ada data yang dikirim.
 
 ## 2026-11-17 — Tampilan baru
