@@ -7,8 +7,27 @@ import { Segmented } from '@/components/tool/Segmented'
 import { ProgressCard, SizeResult } from '@/components/tool/SizeResult'
 import { downloadBlob } from '@/lib/download'
 import { tr, useT } from '@/lib/i18n'
-import { formatDuration, formatSize, hasWebCodecs, NoEncoderError, probeMedia, type MediaInfo } from '@/lib/media'
-import { compressVideo, targetBitrate, targetSize, type Level, type Resolution } from './compress'
+import {
+  formatDuration,
+  formatSize,
+  hasWebCodecs,
+  isOutOfMemory,
+  NoEncoderError,
+  probeMedia,
+  type MediaInfo,
+} from '@/lib/media'
+import {
+  compressVideo,
+  estimateSize,
+  lowersFps,
+  sizeProblem,
+  targetFps,
+  targetSize,
+  TooBigError,
+  type FrameRate,
+  type Level,
+  type Resolution,
+} from './compress'
 
 type Status =
   { kind: 'idle' } | { kind: 'reading' } | { kind: 'ready'; info: MediaInfo } | { kind: 'error'; message: string }
@@ -29,6 +48,7 @@ export default function CompressVideo() {
   const [file, setFile] = useState<File | null>(null)
   const [level, setLevel] = useState<Level>('medium')
   const [resolution, setResolution] = useState<Resolution>(720)
+  const [fps, setFps] = useState<FrameRate>(0)
   const [keepAudio, setKeepAudio] = useState(true)
   const [job, setJob] = useState<{ progress: number; startedAt: number } | null>(null)
   const [result, setResult] = useState<Blob | null>(null)
@@ -73,6 +93,7 @@ export default function CompressVideo() {
       if (!info.video) throw new Error('no video')
       // Default to 720p when the video is larger than that, otherwise keep its size.
       setResolution(Math.min(info.video.width, info.video.height) > 720 ? 720 : 0)
+      setFps(0)
       setStatus({ kind: 'ready', info })
     } catch {
       setStatus({
@@ -95,7 +116,7 @@ export default function CompressVideo() {
       const blob = await compressVideo(
         file,
         info,
-        { level, resolution, keepAudio },
+        { level, resolution, fps, keepAudio },
         (progress) => setJob((j) => (j ? { ...j, progress } : j)),
         (cancel) => (cancelRef.current = cancel),
       )
@@ -108,7 +129,14 @@ export default function CompressVideo() {
               'Browser ini tidak bisa meng-encode video di perangkat ini. Coba Chrome atau Edge versi terbaru.',
               "This browser can't encode video on this device. Try the latest Chrome or Edge.",
             )
-          : t(
+          : e instanceof TooBigError
+            ? tooBigMessage(e.reason)
+            : isOutOfMemory(e)
+              ? t(
+                  'Memori browser habis karena hasilnya terlalu besar. Coba resolusi atau frame rate lebih rendah, kualitas Kuat, atau potong videonya dulu.',
+                  'The browser ran out of memory because the result is too large. Try a lower resolution or frame rate, Strong quality, or trim the video first.',
+                )
+              : t(
               'Gagal mengompres video. File mungkin rusak atau memakai format yang tidak didukung.',
               "Couldn't compress the video. The file may be damaged or use an unsupported format.",
             ),
@@ -117,6 +145,18 @@ export default function CompressVideo() {
       setJob(null)
       cancelRef.current = null
     }
+  }
+
+  function tooBigMessage(reason: TooBigError['reason']) {
+    return reason === 'no-space'
+      ? t(
+          'Ruang penyimpanan untuk situs ini tidak cukup untuk hasil sebesar ini. Kosongkan ruang disk, atau pilih resolusi/frame rate lebih rendah atau kualitas Kuat supaya hasilnya lebih kecil.',
+          "There isn't enough storage for this site to hold a result this large. Free up disk space, or pick a lower resolution/frame rate or Strong quality for a smaller result.",
+        )
+      : t(
+          'Hasilnya terlalu besar untuk diproses di memori browser ini. Pakai Chrome, Edge, Firefox, atau Safari 26+ (bisa menulis hasil langsung ke disk), atau pilih resolusi/frame rate lebih rendah atau kualitas Kuat.',
+          'The result is too large to process in this browser\'s memory. Use Chrome, Edge, Firefox or Safari 26+ (they can write the result straight to disk), or pick a lower resolution/frame rate or Strong quality.',
+        )
   }
 
   if (status.kind === 'ready' && file) {
@@ -128,11 +168,15 @@ export default function CompressVideo() {
       { value: 0, label: `${t('Asli', 'Original')} (${short}p)` },
       ...([1080, 720, 480] as const).filter((r) => r < short).map((r) => ({ value: r, label: `${r}p` })),
     ]
+    const sourceFps = Math.round(v.fps || 30)
+    const fpsOptions: { value: FrameRate; label: string }[] = [
+      { value: 0, label: `${t('Asli', 'Original')} (${sourceFps})` },
+      ...([30, 24, 15] as const).filter((f) => lowersFps(v.fps || 30, f)).map((f) => ({ value: f, label: String(f) })),
+    ]
     const out = targetSize(v.width, v.height, resolution)
     // Rough size estimate: video bitrate + audio, over the duration.
-    const audioBits =
-      keepAudio && info.audio ? (level === 'strong' ? 96_000 : Math.min(info.audio.bitrate || 128_000, 192_000)) : 0
-    const estimate = ((targetBitrate(info, level, resolution) + audioBits) * info.duration) / 8
+    const estimate = estimateSize(info, { level, resolution, fps, keepAudio })
+    const problem = sizeProblem(Math.min(estimate, file.size))
 
     return (
       <div className="space-y-6">
@@ -181,6 +225,15 @@ export default function CompressVideo() {
             disabled={busy}
             onChange={setResolution}
           />
+          {fpsOptions.length > 1 && (
+            <Segmented
+              label={t('Frame rate (fps)', 'Frame rate (fps)')}
+              value={fps}
+              options={fpsOptions}
+              disabled={busy}
+              onChange={setFps}
+            />
+          )}
           {info.audio && (
             <Segmented
               label="Audio"
@@ -192,16 +245,18 @@ export default function CompressVideo() {
           )}
           <div className="ml-auto flex items-center gap-4">
             <p className="text-right text-xs text-muted-foreground">
-              {t('Hasil', 'Output')} {out.width}×{out.height}
+              {t('Hasil', 'Output')} {out.width}×{out.height} · {Math.round(targetFps(info, fps))} fps
               <br />
               {t('perkiraan', 'estimated')} <span className="font-mono text-foreground">~{formatSize(Math.min(estimate, file.size))}</span>
             </p>
-            <Button onClick={() => void run(info)} disabled={busy}>
+            <Button onClick={() => void run(info)} disabled={busy || problem !== null}>
               <Sparkles />
               {t('Kompres', 'Compress')}
             </Button>
           </div>
         </div>
+
+        {problem && !error && <ErrorNote message={tooBigMessage(problem)} />}
 
         {job && (
           <ProgressCard
@@ -221,7 +276,7 @@ export default function CompressVideo() {
           <SizeResult before={file.size} after={result.size}>
             <p className="text-xs text-muted-foreground">
               {result.size < file.size
-                ? `MP4 ${out.width}×${out.height}${keepAudio && info.audio ? '' : t(', tanpa suara', ', no sound')} — ${t('bisa diputar di hampir semua perangkat.', 'plays on almost any device.')}`
+                ? `MP4 ${out.width}×${out.height} · ${Math.round(targetFps(info, fps))} fps${keepAudio && info.audio ? '' : t(', tanpa suara', ', no sound')} — ${t('bisa diputar di hampir semua perangkat.', 'plays on almost any device.')}`
                 : t(
                     'Video ini sudah sangat ringkas; hasilnya tidak lebih kecil. Coba kualitas Kuat atau resolusi lebih rendah.',
                     "This video is already very compact; the result isn't any smaller. Try Strong quality or a lower resolution.",

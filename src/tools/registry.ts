@@ -30,6 +30,7 @@ import {
   MessageCircle,
   Percent,
   Scale,
+  Scroll,
   Wallet,
   KeyRound,
   CaseSensitive,
@@ -705,6 +706,31 @@ const ALL_TOOLS: Tool[] = [
     badge: 'Baru',
     component: lazy(() => import('./cicilan/Cicilan')),
     package: { name: '@chalidade/cicilan', element: 'loan-calculator', dir: 'cicilan', published: false },
+  },
+  {
+    slug: 'kalkulator-waris',
+    category: 'productivity',
+    keywords: ['waris', 'warisan', 'kalkulator waris', 'faraid', 'faraidh', 'hukum waris islam', 'pembagian warisan', 'ahli waris', 'harta warisan', 'ashabah', 'aul', 'radd', 'inheritance', 'islamic inheritance', 'estate'],
+    title: 'Kalkulator Waris',
+    description: 'Hitung pembagian warisan menurut hukum Islam (faraid): bagian tiap ahli waris, yang terhalang, aul dan radd, plus jumlah rupiah per orang.',
+    icon: Scroll,
+    formats: 'Ahli waris + harta → Pembagian',
+    badge: 'Baru',
+    component: lazy(() => import('./kalkulator-waris/KalkulatorWaris')),
+    faq: [
+      {
+        q: 'Bagaimana cara menghitung pembagian warisan menurut Islam?',
+        a: 'Harta dikurangi dulu biaya pengurusan jenazah, utang, lalu wasiat (paling banyak 1/3). Sisanya dibagi: ahli waris bagian tetap (suami/istri, ibu, anak perempuan, dan lainnya) mendapat 1/2, 1/4, 1/8, 2/3, 1/3, atau 1/6, lalu sisa harta jatuh ke ashabah, misalnya anak laki-laki dengan perbandingan laki-laki dua kali perempuan. Pilih ahli waris di halaman ini dan pembagiannya langsung tampil.',
+      },
+      {
+        q: 'Berapa bagian istri jika suami meninggal?',
+        a: 'Istri mendapat 1/4 bila almarhum tidak punya anak atau cucu dari anak laki-laki, dan 1/8 bila punya. Bila istrinya lebih dari satu, bagian itu dibagi rata di antara mereka.',
+      },
+      {
+        q: 'Apakah anak perempuan bisa menghabiskan warisan?',
+        a: 'Satu anak perempuan mendapat 1/2 dan dua atau lebih mendapat 2/3. Bila tidak ada ashabah (misalnya ayah, saudara laki-laki, atau paman), sisa harta dikembalikan kepada ahli waris bagian tetap selain suami/istri (radd), sehingga anak perempuan bisa mendapat seluruh sisa.',
+      },
+    ],
   },
   {
     slug: 'ipk',

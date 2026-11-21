@@ -78,9 +78,77 @@ export async function ensureAudioEncoder(codec: AudioCodec) {
   return mb.canEncodeAudio(codec)
 }
 
+/**
+ * Output that goes to a file in the origin private file system (OPFS) instead
+ * of one ArrayBuffer. A buffer cannot hold a multi-GB video (browsers cap
+ * ArrayBuffers around 2–4 GB and the tab runs out of memory well before), so
+ * long or big outputs are streamed to disk and handed back as a disk-backed
+ * File. Only one such file is kept: starting a new one deletes the last.
+ */
+export interface DiskOutput {
+  writable: WritableStream
+  /** Closes the file and returns it, readable like any Blob. */
+  finish: () => Promise<File>
+  /** Drops a half-written file after an error or a cancel. */
+  discard: () => Promise<void>
+}
+
+const DISK_DIR = 'toowl-media'
+
+/** Whether this browser can stream an output to disk (Chrome/Edge 86+, Firefox 111+, Safari 26+). */
+export function canWriteToDisk() {
+  return (
+    typeof navigator !== 'undefined' &&
+    typeof navigator.storage?.getDirectory === 'function' &&
+    typeof FileSystemFileHandle !== 'undefined' &&
+    'createWritable' in FileSystemFileHandle.prototype
+  )
+}
+
+/** Bytes this site may still store, or null when the browser does not say. */
+export async function freeStorage(): Promise<number | null> {
+  try {
+    const { quota, usage } = await navigator.storage.estimate()
+    return quota === undefined ? null : quota - (usage ?? 0)
+  } catch {
+    return null
+  }
+}
+
+/** Opens a fresh file on disk for an output, or null when that is not possible here (e.g. a private window). */
+export async function openDiskOutput(name: string): Promise<DiskOutput | null> {
+  if (!canWriteToDisk()) return null
+  try {
+    const root = await navigator.storage.getDirectory()
+    // Leftovers from an earlier job (or tab) would only eat the quota.
+    await root.removeEntry(DISK_DIR, { recursive: true }).catch(() => {})
+    const dir = await root.getDirectoryHandle(DISK_DIR, { create: true })
+    const handle = await dir.getFileHandle(name, { create: true })
+    const writable = await handle.createWritable()
+    return {
+      writable,
+      finish: async () => {
+        await writable.close().catch(() => {})
+        return handle.getFile()
+      },
+      discard: async () => {
+        await writable.abort().catch(() => {})
+        await dir.removeEntry(name).catch(() => {})
+      },
+    }
+  } catch {
+    return null
+  }
+}
+
+/** True for the errors a browser throws when a tab runs out of memory. */
+export const isOutOfMemory = (e: unknown) =>
+  e instanceof RangeError || /out of memory|allocation failed|array ?buffer|memory/i.test(String((e as Error)?.message ?? e))
+
 export interface ConvertJob {
   file: File
-  format: (mb: typeof import('mediabunny')) => OutputFormat
+  /** `toDisk` is true when the output streams to disk: MP4/MOV must then leave Fast Start off. */
+  format: (mb: typeof import('mediabunny'), toDisk: boolean) => OutputFormat
   mimeType: string
   video?:
     | ConversionVideoOptions
@@ -92,13 +160,19 @@ export interface ConvertJob {
   onProgress: (progress: number) => void
   /** Set by the caller to cancel. */
   onStart?: (cancel: () => void) => void
+  /** Stream the output to this file instead of memory; see `openDiskOutput`. */
+  disk?: DiskOutput | null
 }
 
 export async function convertMedia(job: ConvertJob): Promise<Blob> {
   const { mb, input } = await openMedia(job.file)
   let conversion: Conversion | undefined
+  const disk = job.disk ?? null
   try {
-    const output = new mb.Output({ format: job.format(mb), target: new mb.BufferTarget() })
+    const target = disk
+      ? new mb.StreamTarget(disk.writable as WritableStream<import('mediabunny').StreamTargetChunk>, { chunked: true })
+      : new mb.BufferTarget()
+    const output = new mb.Output({ format: job.format(mb, !!disk), target })
     const videoTrack = await input.getPrimaryVideoTrack()
     const video =
       typeof job.video === 'function'
@@ -119,9 +193,16 @@ export async function convertMedia(job: ConvertJob): Promise<Blob> {
     conversion.onProgress = (p) => job.onProgress(p)
     await conversion.execute()
 
+    if (disk) {
+      const file = await disk.finish()
+      return file.type === job.mimeType ? file : new File([file], file.name, { type: job.mimeType })
+    }
     const buffer = (output.target as InstanceType<typeof mb.BufferTarget>).buffer
     if (!buffer) throw new Error('empty output')
     return new Blob([buffer], { type: job.mimeType })
+  } catch (e) {
+    await disk?.discard()
+    throw e
   } finally {
     input.dispose()
   }
