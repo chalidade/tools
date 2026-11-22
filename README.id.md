@@ -2,7 +2,7 @@
 
 [English](README.md) · **Bahasa Indonesia**
 
-Kotak perkakas file sehari-hari: **132 tools gratis** untuk PDF, Office, gambar
+Kotak perkakas file sehari-hari: **134 tools gratis** untuk PDF, Office, gambar
 CAD, foto, video, audio, musik, dan hitungan sehari-hari yang jalan **sepenuhnya
 di browser**. File diproses di perangkat pengguna: tidak di-upload ke server dan
 tidak disimpan di mana pun.
@@ -86,6 +86,8 @@ dan mengirim event berisi file rekaman. Ada juga API tanpa UI untuk developer.
 | Nomor Halaman PDF | [`/page-numbers/`](https://toowl.my.id/page-numbers/) | Nomor di enam posisi (atas/bawah × kiri/tengah/kanan), format `1`, `1 / 10`, `Halaman 1`, atau `- 1 -`, halaman awal dan nomor pertama bisa diatur (sampul dilewati). Halaman yang diputar ikut benar (pdf-lib). |
 | Isi Formulir PDF | [`/fill-pdf/`](https://toowl.my.id/fill-pdf/) | Kenali kolom AcroForm (teks, centang, pilihan, tombol radio), isi di samping pratinjau halaman, lalu simpan; opsi “ratakan” mengunci isiannya. Formulir XFA tidak didukung dan dikatakan jelas (pdf-lib). |
 | Cetak Hemat Kertas | [`/pdf-n-up/`](https://toowl.my.id/pdf-n-up/) | 2, 4, atau 8 halaman per lembar, atau susunan buku yang tinggal dilipat, di kertas A4, F4, atau Letter. Halaman disematkan (`embedPage`), jadi teks tetap tajam; halaman yang diputar ikut benar. |
+| ZIP: Buat & Buka | [`/zip/`](https://toowl.my.id/zip/) | Gabungkan file atau folder jadi ZIP (tanpa/biasa/maksimal), atau buka ZIP dan ambil isinya satu per satu. Memakai JSZip, semua di browser. |
+| Ekstrak Gambar dari PDF | [`/pdf-extract-images/`](https://toowl.my.id/pdf-extract-images/) | Ambil semua gambar tertanam; JPEG disimpan apa adanya, sisanya PNG (dengan transparansi); unduh satuan atau ZIP. JPEG 2000/JBIG2 dilewati. |
 | Tanda Tangan PDF | [`/sign-pdf/`](https://toowl.my.id/sign-pdf/) | Gambar tanda tangan (mouse, jari, atau pena dengan tekanan) atau unggah fotonya — latar kertas dijadikan transparan — lalu tempel, geser, dan ubah ukurannya di halaman mana pun (pdf-lib). Tanda tangan berupa gambar, bukan TTE bersertifikat. |
 | PDF Hemat Tinta | [`/pdf-grayscale/`](https://toowl.my.id/pdf-grayscale/) | Ubah PDF jadi abu-abu atau hitam-putih (ambang bisa diatur, latar terang jadi putih) sebelum dicetak. Halaman dirender ulang jadi gambar, jadi teksnya tidak bisa dipilih lagi. |
 | Edit PDF | [`/edit-pdf/`](https://toowl.my.id/edit-pdf/) | Tambah teks (font, ukuran, warna), gambar, kotak, garis, centang, dan coretan di halaman mana pun untuk formulir yang bukan AcroForm; pratinjau dan penempatan memakai ruang halaman yang sama dengan hasilnya, halaman yang diputar ikut benar (pdf-lib). Kotak isi penuh hanya menutup tampilan, bukan menyensor. |
