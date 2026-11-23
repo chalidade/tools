@@ -455,6 +455,22 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
   },
   'compress-image': { title: 'Compress Images', description: 'Shrink many photos at once — JPG or WebP, with GPS metadata stripped.', keywords: ['shrink', 'photo', 'reduce'] },
   'trim-media': { title: 'Trim Video & Audio', description: 'Cut out part of a video or song by dragging the start/end markers — same format and quality.', keywords: ['cut', 'trim', 'clip'] },
+  'subtitle': {
+    title: 'Subtitle SRT ⇄ VTT',
+    description: 'Shift late or early subtitles, stretch for a different frame rate, merge two files and convert SRT ⇄ VTT, with a preview over your own video.',
+    formats: 'SRT ⇄ VTT',
+    keywords: ['subtitle', 'srt', 'vtt', 'caption', 'sync', 'delay', 'merge', 'webvtt', 'frame rate'],
+    faq: [
+      {
+        q: 'How do I fix subtitles that are late or early?',
+        a: 'Open the SRT/VTT file, enter the shift in seconds (negative to show earlier), check it over your video and download. If it drifts further over time, use the frame rate stretch.',
+      },
+      {
+        q: 'How do I convert SRT to VTT, or back?',
+        a: 'Open the file, pick SRT or VTT under "Save as" and download. Everything runs in your browser.',
+      },
+    ],
+  },
   'gif-mp4': { title: 'GIF ⇄ MP4', description: 'Turn a GIF into a much smaller MP4 video, or a video clip into a GIF.', keywords: ['animation', 'gif'] },
   'status-wa': { title: 'Split Video for WhatsApp Status', description: 'Split a long video into 15, 30 or 60 second parts compressed under 16 MB, then download them all at once.', keywords: ['whatsapp', 'status', 'story', 'split', 'cut'] },
   'kolase': { title: 'Photo Collage', description: 'Combine 2–9 photos into one image: grid, strips or one big photo, with spacing, rounded corners and 1:1, 4:5, 9:16 ratios.', keywords: ['collage', 'grid', 'photos', 'instagram'] },

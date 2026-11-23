@@ -2,7 +2,7 @@
 
 [English](README.md) · **Bahasa Indonesia**
 
-Kotak perkakas file sehari-hari: **134 tools gratis** untuk PDF, Office, gambar
+Kotak perkakas file sehari-hari: **135 tools gratis** untuk PDF, Office, gambar
 CAD, foto, video, audio, musik, dan hitungan sehari-hari yang jalan **sepenuhnya
 di browser**. File diproses di perangkat pengguna: tidak di-upload ke server dan
 tidak disimpan di mana pun.
@@ -124,6 +124,7 @@ dan mengirim event berisi file rekaman. Ada juga API tanpa UI untuk developer.
 | Gitar Online | [`/guitar/`](https://toowl.my.id/guitar/) | Senar Karplus–Strong dengan penundaan pecahan (nada tepat ±2 cent) dan eksitasi sesuai posisi petikan; suara akustik (resonansi badan), listrik, atau distorsi (amp + kabinet). Mode genjreng: usap jari melintasi senar atau pakai tombol/keyboard, daftar sampai 8 chord (bentuk dari generator Kamus Chord, bisa ganti bentuk), capo 0–7. Mode petik bebas di fretboard 12 fret, satu nada per senar. Iringan otomatis: 6 pola genjrengan (pop, folk, balada, rock, reggae, waltz) yang berpindah chord tiap birama. |
 | Drum Online | [`/drums/`](https://toowl.my.id/drums/) | 9 pad (kick, snare, hi-hat tutup/buka, 3 tom, crash, ride) yang disintesis tanpa file sampel; hi-hat dan cymbal memakai resep "metal" ala drum machine 808, dan hi-hat buka dipotong oleh hi-hat tutup seperti pedal sungguhan. Dipukul dengan jari (multi-jari, makin ke tengah makin keras), mouse, keyboard (Q W E R / A S D F / Spasi), atau drum elektrik lewat Web MIDI (peta General MIDI). Sequencer 16 langkah dengan aksen, BPM, swing, dan 9 pola siap pakai (rock, pop, disco, funk, hip-hop, shuffle, bossa nova, reggae, dangdut di drum set); polanya tersimpan di browser. |
 | Kompres Audio | [`/compress-audio/`](https://toowl.my.id/compress-audio/) | Audio (atau suara dari video) → MP3 / AAC (M4A) / Opus (OGG), 64–192 kbps, stereo/mono. MP3 dan AAC memakai encoder wasm Mediabunny bila browser tidak punya encoder bawaan. |
+| Subtitle SRT ⇄ VTT | [`/subtitle/`](https://toowl.my.id/subtitle/) | Geser waktu subtitle (maju/mundur), regangkan untuk beda frame rate, gabung dua file, ubah SRT ⇄ VTT; pratinjau di atas video milik pengguna lewat `<track>`. Tanpa dependensi. |
 | Potong Video & Audio | [`/trim-media/`](https://toowl.my.id/trim-media/) | Timeline dengan dua penanda (filmstrip untuk video, gelombang suara untuk audio), waktu bisa diketik, "putar bagian ini", ambil posisi putar sebagai awal/akhir. Hasil memakai format yang sama (MP4/MOV/WebM/MKV/MP3/M4A/WAV/OGG/FLAC/AAC); bagian yang tidak tersentuh disalin tanpa encode ulang, hanya tepi potongan yang di-encode ulang agar presisi (Mediabunny). |
 | GIF ⇄ MP4 | [`/gif-mp4/`](https://toowl.my.id/gif-mp4/) | GIF → MP4 (gifuct-js + Mediabunny): frame disusun persis seperti di browser (disposal), latar putih/hitam untuk bagian transparan, animasi bisa diulang 1–5× karena banyak aplikasi menolak video di bawah ~3 detik. Video → GIF (gifenc): pilih bagian, 8–24 fps, lebar 240–800 px, palet 256 warna per frame, delay disusun agar durasinya tepat. |
 | Ekstrak Frame Video | [`/extract-frames/`](https://toowl.my.id/extract-frames/) | Ambil frame di posisi putar (maju/mundur per frame), atau otomatis tiap N detik / N frame merata (maks. 300). Resolusi asli, PNG/JPG/WebP, unduh satuan atau ZIP. |

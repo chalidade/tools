@@ -36,6 +36,7 @@ import {
   CaseSensitive,
   Camera,
   Clapperboard,
+  Captions,
   Combine,
   Crop,
   Eraser,
@@ -1051,6 +1052,27 @@ const ALL_TOOLS: Tool[] = [
     badge: 'Baru',
     component: lazy(() => import('./trim-media/TrimMedia')),
     package: { name: '@chalidade/trim-media', element: 'trim-media', dir: 'trim-media', published: false },
+  },
+  {
+    slug: 'subtitle',
+    category: 'media',
+    keywords: ['subtitle', 'srt', 'vtt', 'teks film', 'terjemahan', 'geser subtitle', 'subtitle telat', 'subtitle cepat', 'sinkron', 'gabung subtitle', 'frame rate', 'caption', 'closed caption', 'webvtt'],
+    title: 'Subtitle SRT ⇄ VTT',
+    description: 'Geser waktu subtitle yang telat atau kecepatan, regangkan untuk beda frame rate, gabung dua file, dan ubah SRT ⇄ VTT dengan pratinjau di videomu.',
+    icon: Captions,
+    formats: 'SRT ⇄ VTT',
+    badge: 'Baru',
+    component: lazy(() => import('./subtitle/Subtitle')),
+    faq: [
+      {
+        q: 'Bagaimana memperbaiki subtitle yang telat atau terlalu cepat?',
+        a: 'Buka file SRT/VTT, isi geseran dalam detik (negatif untuk memajukan), lihat hasilnya di atas videomu, lalu unduh. Kalau makin lama makin meleset, pakai regangkan frame rate.',
+      },
+      {
+        q: 'Bagaimana mengubah SRT jadi VTT, atau sebaliknya?',
+        a: 'Buka filenya, pilih “Simpan sebagai” SRT atau VTT, lalu unduh. Semua diproses di browser.',
+      },
+    ],
   },
   {
     slug: 'gif-mp4',
