@@ -474,6 +474,24 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
   'gif-mp4': { title: 'GIF ⇄ MP4', description: 'Turn a GIF into a much smaller MP4 video, or a video clip into a GIF.', keywords: ['animation', 'gif'] },
   'status-wa': { title: 'Split Video for WhatsApp Status', description: 'Split a long video into 15, 30 or 60 second parts compressed under 16 MB, then download them all at once.', keywords: ['whatsapp', 'status', 'story', 'split', 'cut'] },
   'kolase': { title: 'Photo Collage', description: 'Combine 2–9 photos into one image: grid, strips or one big photo, with spacing, rounded corners and 1:1, 4:5, 9:16 ratios.', keywords: ['collage', 'grid', 'photos', 'instagram'] },
+  'foto-ke-video': {
+    title: 'Photos to Video',
+    description: 'Turn photos plus music into an MP4 for WhatsApp Status, Reels or TikTok: reorder, set the time per photo, fade between them and a slow zoom.',
+    formats: 'Photos + music → MP4',
+    keywords: ['slideshow', 'photo to video', 'reels', 'tiktok', 'status', 'music'],
+    faq: [
+      { q: 'How do I make a video from photos for WhatsApp Status?', a: 'Drop your photos, put them in order, pick 9:16, add a song if you like, then make the MP4. Everything is processed on your device.' },
+    ],
+  },
+  'grid-instagram': {
+    title: 'Split Photo for Grid & Carousel',
+    description: 'Cut one photo into 3, 6 or 9 tiles for an Instagram feed, or into seamless carousel slides, with the upload order shown.',
+    formats: 'Photo → JPG / PNG / ZIP',
+    keywords: ['instagram grid', 'split photo', 'carousel', 'panorama', 'feed', 'puzzle'],
+    faq: [
+      { q: 'How do I split one photo into an Instagram 3x3 grid?', a: 'Open the photo, choose Profile grid and 9 tiles, move the crop, then download the ZIP. Post starting from number 1 so your profile ends up in order.' },
+    ],
+  },
   'watermark-ktp': { title: 'ID Document Watermark', description: 'Tile a diagonal "Only for verification of …" text with today\'s date over a photo of an ID card, licence or passport, and re-save it without EXIF.', keywords: ['watermark', 'id card', 'ktp', 'passport', 'privacy'] },
   'sensor-foto': { title: 'Censor Photo', description: 'Cover ID numbers, faces, licence plates or addresses with a box or brush — black block, pixelate or blur.', keywords: ['censor', 'blur', 'redact', 'hide', 'pixelate', 'face', 'privacy'] },
   'extract-frames': { title: 'Extract Video Frames', description: 'Grab video frames as full-resolution images — one by one or every N seconds.', keywords: ['screenshot', 'frame', 'still'] },

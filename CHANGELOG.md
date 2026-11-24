@@ -3,6 +3,13 @@
 Catatan harian apa yang berubah di [tools](https://toowl.my.id/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-24 — Konten sosial media
+
+Dua tool baru; total sekarang **137 tools**.
+
+- **Foto ke Video** (`/foto-ke-video/`): beberapa foto (maks 30) plus musik opsional jadi MP4 untuk status WA, Reels, atau TikTok. Urutkan dengan seret, atur lama tiap foto, transisi pudar, zoom pelan, dan rasio 9:16/1:1/16:9, dengan pratinjau yang bisa diputar. Frame digambar di canvas lalu di-encode lewat Mediabunny; lagu dipotong pas dengan panjang video (atau diulang), dipudarkan di awal dan akhir, dan memakai encoder AAC bawaan bila browser tidak punya. Tanpa dependensi baru.
+- **Potong Foto untuk Grid & Carousel** (`/grid-instagram/`): satu foto jadi 3, 6, atau 9 kotak untuk feed Instagram, atau 2–10 slide carousel yang nyambung, dengan rasio 1:1, 4:5, atau 3:4 dan geser area potong. Pratinjau memberi nomor urutan unggah (grid diunggah dari kotak terakhir, carousel dari kiri). Unduh satu per satu atau ZIP (JSZip yang sudah ada, dimuat saat dibutuhkan).
+
 ## 2026-11-23 — AI di perangkat: suara & subtitle
 
 Satu tool baru; total sekarang **135 tools**.

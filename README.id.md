@@ -2,7 +2,7 @@
 
 [English](README.md) · **Bahasa Indonesia**
 
-Kotak perkakas file sehari-hari: **135 tools gratis** untuk PDF, Office, gambar
+Kotak perkakas file sehari-hari: **137 tools gratis** untuk PDF, Office, gambar
 CAD, foto, video, audio, musik, dan hitungan sehari-hari yang jalan **sepenuhnya
 di browser**. File diproses di perangkat pengguna: tidak di-upload ke server dan
 tidak disimpan di mana pun.
@@ -130,6 +130,8 @@ dan mengirim event berisi file rekaman. Ada juga API tanpa UI untuk developer.
 | Ekstrak Frame Video | [`/extract-frames/`](https://toowl.my.id/extract-frames/) | Ambil frame di posisi putar (maju/mundur per frame), atau otomatis tiap N detik / N frame merata (maks. 300). Resolusi asli, PNG/JPG/WebP, unduh satuan atau ZIP. |
 | Potong Video untuk Status WhatsApp | [`/status-wa/`](https://toowl.my.id/status-wa/) | Pecah video panjang jadi bagian sama panjang (maks. 15/30/60 detik, pilih sesuai batas aplikasimu), tiap bagian di-encode ulang di bawah 16 MB (maks. 720p) lewat `convertMedia` dengan `trim`. Unduh satuan atau ZIP. |
 | Kolase Foto | [`/kolase/`](https://toowl.my.id/kolase/) | 2–9 foto dalam tata letak grid, strip tegak/datar, atau satu besar; atur urutan, jarak, sudut membulat, latar, rasio 1:1/4:5/9:16 (1080 px), unduh JPG/PNG. |
+| Foto ke Video | [`/foto-ke-video/`](https://toowl.my.id/foto-ke-video/) | Foto plus musik (opsional) jadi MP4 untuk status WA, Reels, atau TikTok; seret untuk urutan, durasi per foto, transisi pudar, zoom pelan, rasio 9:16/1:1/16:9. |
+| Potong Foto untuk Grid & Carousel | [`/grid-instagram/`](https://toowl.my.id/grid-instagram/) | Satu foto jadi 3, 6, atau 9 kotak feed Instagram, atau slide carousel yang nyambung; urutan unggah ditampilkan, unduh satuan atau ZIP. |
 | Ubah Kecepatan | [`/change-speed/`](https://toowl.my.id/change-speed/) | 0,25×–4× untuk video dan audio. Nada suara tetap normal (time-stretch WSOLA sendiri, streaming per potongan) atau ikut berubah. Video jadi MP4 dengan frame rate tetap saat dipercepat; audio jadi MP3/M4A/WAV. Pratinjau langsung memakai kecepatan yang dipilih. |
 | Peredam Noise | [`/denoise/`](https://toowl.my.id/denoise/) | Hilangkan bising, desis, dan dengung dari suara di video atau audio dengan DeepFilterNet 3 (bawaan) atau RNNoise yang lebih ringan, keduanya wasm yang di-host situs ini. Jeda model dikompensasi, jadi suara tetap pas dengan gerak bibir. |
 | Tambah Musik ke Video | [`/add-music/`](https://toowl.my.id/add-music/) | Musik latar di bawah video: atur volume, ulangi, fade masuk/keluar, dan kecilkan otomatis saat ada yang bicara (ducking). Hasil MP4. |
