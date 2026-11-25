@@ -7,7 +7,7 @@
  * - `persist`: "false" = keep nothing in localStorage (default: the last document is kept)
  */
 export declare class KwitansiElement extends HTMLElement {
-  readonly theme: 'light' | 'dark' | 'auto'
+  theme: 'light' | 'dark' | 'auto'
 }
 
 declare global {

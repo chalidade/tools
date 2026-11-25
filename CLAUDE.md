@@ -195,6 +195,9 @@ picture; the rules that matter when editing:
   snippets once `published: true`, and always offers the iframe embed —
   `#/<tool>?embed[&theme=light|dark]` renders the tool alone (any tool).
   `npm run build:packages` builds them; publishing is done by the owner.
+  **Developer kits** (`packages/_kits/`, sold on Gumroad with a commercial
+  license, see packages/README.md): `node packages/_kits/build.mjs <kit|all>`
+  bundles the packages into ZIPs (elements + headless API + types + examples).
 - **Analytics:** `src/lib/analytics.ts` loads the Cloudflare Web Analytics
   beacon (cookieless, `spa: true`) from `main.tsx`, only in production, only on
   host toowl.my.id (so never in the iOS bundle) and never in an embed. It is the

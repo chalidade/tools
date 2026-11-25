@@ -1,6 +1,6 @@
 import { ArrowUpRight, BadgeCheck, Check, Code2, KeyRound, Palette, RefreshCw, ShieldCheck, Sparkles, Store, Wallet, X } from 'lucide-react'
 import { useLang, useT } from '@/lib/i18n'
-import { CUSTOM_TOOL_URL, licenseProducts, productCount, SINGLE_TOOLS, type Product } from '@/lib/license'
+import { CUSTOM_TOOL_URL, DEV_KITS, licenseProducts, productCount, SINGLE_TOOLS, type Product } from '@/lib/license'
 import { pageUrl } from '@/lib/route'
 import { embedFaq } from '@/lib/seo'
 import { useTheme } from '@/lib/use-theme'
@@ -219,6 +219,40 @@ export function EmbedPage() {
             {t('Pesan custom tool', 'Order a custom tool')}
           </a>
         </p>
+      </section>
+
+      {/* Developer kits */}
+      <section id="developers" className="mt-16 scroll-mt-20 border-t pt-10">
+        <h2 className="text-2xl font-semibold tracking-tight">{t('Untuk developer: pasang di aplikasimu', 'For developers: ship it in your app')}</h2>
+        <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
+          {t(
+            'Bukan iframe: file ZIP berisi web component + API headless + tipe TypeScript, di-host di servermu sendiri. Jalan di React, Vue, Svelte atau HTML biasa, tetap 100% di browser. Lisensi komersial, boleh untuk aplikasi closed-source.',
+            'Not an iframe: a ZIP of web components + headless API + TypeScript types that you host yourself. Works in React, Vue, Svelte or plain HTML, still 100% in the browser. Commercial license, fine for closed-source apps.',
+          )}
+        </p>
+        <ul className="mt-6 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+          {DEV_KITS.map((k) => (
+            <li key={k.url}>
+              <a
+                href={k.url}
+                target="_blank"
+                rel="noreferrer"
+                className="group flex items-center justify-between gap-3 rounded-xl border px-4 py-3 transition-colors hover:border-brand-2"
+              >
+                <span>
+                  <span className="font-medium tracking-tight">{t(k.name[0], k.name[1])}</span>
+                  <span className="block font-mono text-[11px] text-muted-foreground">
+                    {k.count === 1 ? t('pilih 1 dari 20', 'pick 1 of 20') : `${k.count} ${t('komponen', 'components')}`}
+                  </span>
+                </span>
+                <span className="flex items-center gap-2">
+                  <span className="font-mono text-sm font-semibold">{k.price}</span>
+                  <ArrowUpRight className="size-4 text-muted-foreground transition-colors group-hover:text-brand-2" />
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
       </section>
 
       {/* How */}

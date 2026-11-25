@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{{TITLE}}: every element</title>
+  <!-- One script registers every element in the kit. To load a single tool,
+       use ../../dist/elements/<tool>.js instead. -->
+  <script type="module" src="../../dist/all.js"></script>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 0; background: #f4f4f5; color: #18181b; }
+    header, nav, main { max-width: 980px; margin: auto; padding: 0 24px; }
+    header { padding-top: 24px; }
+    nav { display: flex; flex-wrap: wrap; gap: 8px; }
+    nav button { border: 1px solid #d4d4d8; background: white; border-radius: 999px; padding: 6px 14px; cursor: pointer; font: inherit; }
+    nav button[aria-pressed="true"] { background: #18181b; color: white; border-color: #18181b; }
+    main { margin-top: 16px; margin-bottom: 48px; }
+    /* Your brand: every element reads these CSS variables. */
+    main > * { display: block; border-radius: 16px; overflow: hidden; --sr-brand-1: #2563eb; --sr-brand-2: #4f46e5; }
+    label { font-size: 14px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>{{TITLE}}</h1>
+    <p>Everything runs in this browser tab. Files are never uploaded.
+      <label><input type="checkbox" id="dark" /> dark theme</label></p>
+  </header>
+  <nav id="tabs"></nav>
+  <main id="stage"></main>
+  <script type="module">
+    const tools = {{TOOLS_JSON}}
+    const tabs = document.getElementById('tabs')
+    const stage = document.getElementById('stage')
+    const dark = document.getElementById('dark')
+    let current = Object.keys(tools)[0]
+    function show(tag) {
+      current = tag
+      stage.innerHTML = `<${tag} theme="${dark.checked ? 'dark' : 'light'}" lang="en"></${tag}>`
+      for (const b of tabs.children) b.setAttribute('aria-pressed', String(b.dataset.tag === tag))
+    }
+    for (const tag of Object.keys(tools)) {
+      const b = document.createElement('button')
+      b.textContent = `<${tag}>`
+      b.dataset.tag = tag
+      b.onclick = () => show(tag)
+      tabs.append(b)
+    }
+    dark.onchange = () => show(current)
+    show(current)
+  </script>
+</body>
+</html>
