@@ -125,6 +125,14 @@ export function productsFor(tool: Licensable): Product[] {
   return gumroadProducts().filter((p) => (p.scope === 'one' ? SINGLE_TOOLS.includes(tool.slug) : inScope(p.scope, tool)))
 }
 
+/** How many of these tools a product covers (a single-tool product: one). */
+export function productCount(p: Product, tools: Licensable[]): number {
+  return p.scope === 'one' ? 1 : tools.filter((t) => inScope(p.scope, t)).length
+}
+
+/** All products on sale, in the order of LICENSE.gumroad. */
+export const licenseProducts = () => gumroadProducts()
+
 /** Where a plain "Buy a license" link goes: Lemon Squeezy first, else the widest Gumroad product. */
 export const buyUrl = () => (lemonOn() ? LICENSE.lemonSqueezy.checkoutUrl : (gumroadProducts().find((p) => p.scope === 'all')?.url ?? ''))
 

@@ -4,6 +4,7 @@
 //
 //   dist/index.html, dist/en/index.html               home (id, en)
 //   dist/all/index.html, dist/en/all/index.html       all tools (id, en)
+//   dist/embed/index.html, dist/en/embed/index.html   for website owners (id, en)
 //   dist/<slug>/index.html, dist/en/<slug>/index.html each tool (id, en)
 //   dist/404.html                                     unknown paths load the app
 //   dist/sitemap.xml                                  every page, with hreflang
@@ -31,6 +32,7 @@ const vite = await createServer({
 })
 const seo = await vite.ssrLoadModule('/src/lib/seo.ts')
 const { TOOLS, CATEGORIES, toolText, categoryText } = await vite.ssrLoadModule('/src/tools/registry.ts')
+const license = await vite.ssrLoadModule('/src/lib/license.ts')
 await vite.close()
 
 const template = readFileSync(join(DIST, 'index.html'), 'utf8')
@@ -112,16 +114,41 @@ ${related ? `<h2 class="mt-8 text-lg font-semibold">${esc(seo.relatedHeading(too
 </main>`
 }
 
+function embedBody(lang) {
+  const meta = seo.embedMeta(lang)
+  const en = lang === 'en'
+  const offers = license
+    .licenseProducts()
+    .map((p) => {
+      const n = license.productCount(p, TOOLS)
+      const what = p.scope === 'one' ? (en ? 'one tool of your choice' : 'satu tool pilihanmu') : `${n} ${en ? 'tools' : 'tool'}`
+      return `<li><a class="${LINK}" href="${esc(p.url)}">${esc(p.name[en ? 1 : 0])}</a> — ${esc(p.price)}, ${what}</li>`
+    })
+    .join('')
+  const faq = seo
+    .embedFaq(lang)
+    .map((f) => `<dt class="font-medium">${esc(f.q)}</dt><dd class="mt-1 mb-4 text-muted-foreground">${esc(f.a)}</dd>`)
+    .join('')
+  return `<main class="${MAIN}">
+<h1 class="text-3xl font-semibold tracking-tight sm:text-4xl">${esc(meta.title)}</h1>
+<p class="mt-3 text-muted-foreground">${esc(meta.description)}</p>
+<h2 class="mt-10 text-lg font-semibold">${en ? 'License prices' : 'Harga lisensi'}</h2>
+<ul class="mt-3 space-y-1.5 text-sm">${offers}</ul>
+<h2 class="mt-8 text-lg font-semibold">${en ? 'Questions' : 'Pertanyaan umum'}</h2><dl class="mt-3 text-sm">${faq}</dl>
+</main>`
+}
+
 const urls = []
 for (const lang of ['id', 'en']) {
   write(lang === 'en' ? 'en/index.html' : 'index.html', page(seo.homeMeta(lang), homeBody(lang)))
   // /all/ is the full catalogue in the app; for crawlers it is the home page (canonical points there).
   write(`${lang === 'en' ? 'en/' : ''}all/index.html`, page(seo.homeMeta(lang), homeBody(lang)))
+  write(`${lang === 'en' ? 'en/' : ''}${seo.EMBED_SLUG}/index.html`, page(seo.embedMeta(lang), embedBody(lang)))
   for (const tool of TOOLS) write(`${lang === 'en' ? 'en/' : ''}${tool.slug}/index.html`, page(seo.toolMeta(tool, lang), toolBody(tool, lang)))
 }
 write('404.html', page(seo.homeMeta('id'), homeBody('id'), { noindex: true }))
 
-for (const slug of ['', ...TOOLS.map((t) => t.slug)]) {
+for (const slug of ['', seo.EMBED_SLUG, ...TOOLS.map((t) => t.slug)]) {
   const alt = ['id', 'en']
     .map((l) => `<xhtml:link rel="alternate" hreflang="${l}" href="${seo.absoluteUrl(slug, l)}"/>`)
     .concat(`<xhtml:link rel="alternate" hreflang="x-default" href="${seo.absoluteUrl(slug, 'id')}"/>`)
@@ -132,4 +159,4 @@ write(
   'sitemap.xml',
   `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${urls.join('\n')}\n</urlset>\n`,
 )
-console.log(`seo: ${urls.length} pages (${TOOLS.length} tools × 2 languages + 2 homes), sitemap.xml, 404.html — base ${base}`)
+console.log(`seo: ${urls.length} pages (${TOOLS.length} tools × 2 languages + homes + embed), sitemap.xml, 404.html — base ${base}`)

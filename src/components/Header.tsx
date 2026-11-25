@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ChevronLeft, Ellipsis, Github, LayoutGrid, Moon, Sun } from 'lucide-react'
+import { ChevronLeft, Code2, Ellipsis, Github, LayoutGrid, Moon, Sun } from 'lucide-react'
 import { InstallButton } from '@/components/InstallButton'
 import { Logo } from '@/components/Logo'
 import { useTheme } from '@/lib/use-theme'
@@ -7,6 +7,8 @@ import { setLang, useLang, useT, type Lang } from '@/lib/i18n'
 import { getRoute, navigate, pageUrl } from '@/lib/route'
 import { toolText, type Tool } from '@/tools/registry'
 import { cn } from '@/lib/utils'
+import { isNativeApp } from '@/lib/native'
+import { isPlayApp } from '@/lib/platform'
 
 const REPO = 'https://github.com/chalidade/tools'
 
@@ -48,6 +50,8 @@ export function Header({ tool }: { tool?: Tool }) {
   const t = useT()
   const lang = useLang()
   const [menu, setMenu] = useState(false)
+  // The licenses page sells outside the stores: not linked inside the apps.
+  const forSites = !isNativeApp() && !isPlayApp()
   const ThemeIcon = theme === 'dark' ? Sun : Moon
   const themeLabel = theme === 'dark' ? t('Tema terang', 'Light theme') : t('Tema gelap', 'Dark theme')
 
@@ -71,6 +75,12 @@ export function Header({ tool }: { tool?: Tool }) {
                     <LayoutGrid className="size-4 text-muted-foreground" />
                     {t('Semua tools', 'All tools')}
                   </a>
+                  {forSites && (
+                    <a href={pageUrl('embed', lang)} className="flex h-11 items-center gap-3 rounded-xl px-3 active:bg-accent">
+                      <Code2 className="size-4 text-muted-foreground" />
+                      {t('Untuk website', 'For websites')}
+                    </a>
+                  )}
                   <button type="button" onClick={() => switchLang(lang)} className="flex h-11 w-full items-center gap-3 rounded-xl px-3 active:bg-accent">
                     <span className="w-4 text-center font-mono text-[10px] text-muted-foreground">{lang === 'en' ? 'ID' : 'EN'}</span>
                     {lang === 'en' ? 'Bahasa Indonesia' : 'English'}
@@ -93,6 +103,12 @@ export function Header({ tool }: { tool?: Tool }) {
 
         <nav className="flex items-center gap-0.5 sm:gap-1">
           <InstallButton />
+          {forSites && (
+            <a href={pageUrl('embed', lang)} aria-label={t('Untuk website', 'For websites')} className={cn(item, 'gap-2 px-2.5 text-sm sm:px-3')}>
+              <Code2 className="size-[18px] sm:size-4" />
+              <span className="hidden sm:inline">{t('Untuk website', 'For websites')}</span>
+            </a>
+          )}
           <a href={pageUrl('all', lang)} aria-label={t('Semua tools', 'All tools')} className={cn(item, 'gap-2 px-2.5 text-sm sm:px-3')}>
             <LayoutGrid className="size-[18px] sm:size-4" />
             <span className="hidden sm:inline">{t('Semua tools', 'All tools')}</span>

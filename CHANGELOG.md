@@ -3,6 +3,10 @@
 Catatan harian apa yang berubah di [tools](https://toowl.my.id/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-25 — Halaman untuk pemilik website
+
+- Halaman baru **Untuk website** (`/embed/`, `/en/embed/`), ditaut dari header, menu ⋯ di HP, footer, dan kartu "Pasang di situsmu": contoh embed langsung (Kalkulator Cicilan), perbandingan embed gratis vs berlisensi, alasan memakai lisensi, semua harga paket Gumroad, cara pasang, dan FAQ (juga sebagai FAQPage JSON-LD). Halaman statisnya ikut ditulis `seo.mjs` dan masuk sitemap. Tidak tampil di aplikasi iOS dan Play.
+
 ## 2026-11-25 — Lisensi per tool, paket, dan agensi
 
 - Lisensi embed sekarang ada beberapa pilihan di Gumroad, dan kartu "Pasang di situsmu" (tab Iframe) menampilkan pilihan yang mencakup tool yang sedang dibuka beserta harganya: **Tool ini saja** ($19, 20 tool unggulan, dipilih saat checkout), paket per tema (**Islami** $29, **Musik** $29, **Developer** $39, **PDF** $49, **Bisnis & Keuangan** $49, **Kreator & Media** $49), **Semua tool** ($99), dan **Agensi** ($29/bulan, situs tanpa batas). Ada juga tautan untuk memesan **custom tool**.
