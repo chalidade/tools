@@ -365,7 +365,7 @@ jaringan) dan tombol utamanya besar, bisa ditekan tanpa membaca.
 
 ## Hari 32 — 2026-11-18 · Darurat: dokumen
 
-- [ ] **Brankas Dokumen** (`#/brankas`): simpan foto/PDF KTP, KK, BPJS, polis
+- [x] **Brankas Dokumen** (`#/brankas`): simpan foto/PDF KTP, KK, BPJS, polis
   di perangkat (IndexedDB), terenkripsi dengan password — WebCrypto AES-GCM,
   kunci dari PBKDF2 (≥ 600 ribu iterasi) dengan salt acak, IV baru tiap file.
   Password tidak pernah disimpan; lupa password = data tidak bisa dibuka, dan

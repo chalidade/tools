@@ -13,7 +13,7 @@ Your files are never uploaded.
 ![React](https://img.shields.io/badge/React-19-61dafb?logo=react&logoColor=black)
 ![Vite](https://img.shields.io/badge/Vite-8-646cff?logo=vite&logoColor=white)
 
-<a href="https://toowl.my.id/en/"><img src="docs/intro-en.gif" alt="toowl intro: type what you need, open Image to SVG, trace a logo, open an Excel file, browse all 115 tools" width="720"></a>
+<a href="https://toowl.my.id/en/"><img src="docs/intro-en.gif" alt="toowl intro: type what you need, open Image to SVG, trace a logo, open an Excel file, browse all 116 tools" width="720"></a>
 
 ▶ [Watch the 30-second intro (MP4)](docs/intro-en.mp4) · [Bahasa Indonesia version](docs/intro-id.mp4)
 
@@ -134,6 +134,7 @@ Each reader opens the other three formats too.
 - [Notes](https://toowl.my.id/en/notes/): Markdown with live checklists, saved in the browser, JSON backup/restore
 - [Calculator](https://toowl.my.id/en/calculator/): basic and scientific, with its own expression parser (no `eval`)
 - [Encrypt & Decrypt File](https://toowl.my.id/en/encrypt-file/): lock any file with a password (WebCrypto AES-256-GCM, PBKDF2-SHA-256 600k iterations, random salt), original name kept inside; forgotten passwords cannot be recovered
+- [Document Vault](https://toowl.my.id/en/brankas/): keep ID, KK, BPJS and policy photos/PDFs in this browser (IndexedDB), encrypted per file with AES-256-GCM (PBKDF2-SHA-256 600k iterations, fresh IV each), auto-locks when the tab is hidden, encrypted backup/restore as one file; forgotten passwords cannot be recovered
 - [Password Generator](https://toowl.my.id/en/password-generator/): random passwords and Indonesian/English passphrases from `crypto.getRandomValues`, plus a strength check with estimated guessing time
 - [Word Counter](https://toowl.my.id/en/word-counter/): words, characters, sentences, paragraphs, reading/speaking time and per-platform character limits
 - [Unit Converter](https://toowl.my.id/en/unit-converter/): length, weight (ons, quintal), area (hectare, are, tumbak), volume, temperature, speed and data
