@@ -3,6 +3,13 @@
 Catatan harian apa yang berubah di [tools](https://toowl.my.id/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-25 — Jualan online
+
+Dua tool baru; total sekarang **139 tools**.
+
+- **Kalkulator Harga Jual & HPP** (`/harga-jual/`): biaya bahan, kemasan, tenaga, dan lain-lain untuk satu kali produksi dibagi jumlah unit jadi HPP per unit. Harga jual dihitung dari target **markup** (laba ÷ HPP) atau **margin** (laba ÷ harga jual), dengan penjelasan beda keduanya, atau dari harga yang kamu pasang sendiri. Potongan admin marketplace, biaya layanan, pajak, dan diskon pembeli diisi sendiri sebagai persen atau rupiah (tarif tidak ditanam di kode karena sering berubah). Hasil: harga pasang, harga yang dibayar pembeli, laba per unit, margin, markup, dan titik impas (biaya tetap ÷ laba per unit). Pembulatan harga ke atas (100/500/1.000) dan peringatan bila potongan memakan seluruh harga. Isian terakhir tersimpan di perangkat.
+- **Label Pengiriman** (`/label-pengiriman/`): data pengirim diisi sekali (tersimpan di perangkat), penerima diketik atau ditempel dari Excel/CSV (nama, telepon, alamat, no. resi, isi paket; baris judul dilewati) atau dibuka dari file. Tata letak: satu label per halaman A6, stiker resi 100 × 150 mm, atau A4 dengan 6, 8, 10, atau 24 label per lembar. PDF dibuat dengan pdf-lib; ukuran huruf mengecil otomatis bila alamat panjang. Data penerima tidak disimpan.
+
 ## 2026-11-24 — Konten sosial media
 
 Dua tool baru; total sekarang **137 tools**.

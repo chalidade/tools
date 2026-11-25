@@ -463,14 +463,14 @@ sesudahnya.
 
 ## Hari 39 — 2026-11-25 · Jualan online
 
-- [ ] **Kalkulator Harga Jual & HPP** (`#/harga-jual`): HPP per unit dari
+- [x] **Kalkulator Harga Jual & HPP** (`#/harga-jual`): HPP per unit dari
   bahan, kemasan, tenaga, dan biaya lain dibagi jumlah produksi; lalu harga
   jual dari margin atau markup yang diinginkan (bedakan keduanya dengan
   jelas). Potongan admin marketplace, biaya layanan, diskon, dan pajak diisi
   pengguna sebagai persen atau rupiah. Jangan menanam tarif marketplace di
   kode karena sering berubah. Hasil: harga jual, laba per unit, dan titik
   impas (unit). Isian terakhir tersimpan di perangkat.
-- [ ] **Label Pengiriman** (`#/label-pengiriman`): isi pengirim sekali,
+- [x] **Label Pengiriman** (`#/label-pengiriman`): isi pengirim sekali,
   lalu banyak penerima (ketik atau tempel dari Excel/CSV), susun banyak label
   per lembar (A4, atau ukuran stiker label yang umum) atau satu label A6 per
   halaman, lalu unduh PDF. Kolom no. resi dan isi paket opsional. Data

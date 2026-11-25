@@ -159,6 +159,8 @@ Each reader opens the other three formats too.
 - [Letter Generator](https://toowl.my.id/en/surat/): job application, absence, power of attorney, statement and resignation letters as PDF (pdf-lib) or Word (docx), last entry kept on the device
 - [CV Builder](https://toowl.my.id/en/cv/): one-column, ATS-friendly CV with real text and standard headings, reorderable sections, three layouts, Indonesian and English samples, PDF (pdf-lib) or Word (docx), data in localStorage and JSON export/import
 - [Case Converter](https://toowl.my.id/en/ubah-huruf/): UPPERCASE, lowercase, Title Case, Sentence case, collapse extra spaces, remove blank lines, join lines; one tap, then copy
+- [Selling Price & Cost Calculator](https://toowl.my.id/en/harga-jual/): unit cost from a production run, then the price from a target margin or markup after fees, discount and tax you enter; profit per unit and break-even, last entry kept on the device
+- [Shipping Labels](https://toowl.my.id/en/label-pengiriman/): sender saved once, recipients pasted from Excel/CSV, labels several per A4 sheet, one per A6 page or 100 × 150 mm stickers as PDF (pdf-lib)
 - [Receipt & Invoice](https://toowl.my.id/en/kwitansi/): PDF receipt or invoice with items, discount and tax, amount in words from Terbilang, last entry kept on the device (pdf-lib)
 - [Loan Instalment Calculator](https://toowl.my.id/en/cicilan/): flat or annuity interest, month-by-month schedule, total interest, CSV export
 - [GPA Calculator](https://toowl.my.id/en/ipk/): semester GPA and cumulative GPA from credits × letter grades (A/AB/B or A/A-/B+ scale), "what average do I need for GPA X" simulation, weighted report-card average, saved on the device
