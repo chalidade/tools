@@ -210,6 +210,14 @@ picture; the rules that matter when editing:
   store is filled in, `licenseEnabled()` is false, the Install card's
   license panel stays hidden and `?key=` is ignored. It is a convenience gate,
   not DRM. Keep the privacy page's "Lisensi embed" section in step.
+  Gumroad sells several products (`LICENSE.gumroad`): a Single Tool license
+  (`scope: 'one'`, the tool is the checkout variant named `… [slug]`, offered for
+  `SINGLE_TOOLS`), theme packs (`scope` = categories and/or slugs), All-Access
+  and Agency (`'all'`). A key is verified against every product at once;
+  `checkLicense(key, tool)` also checks the key covers that tool, and the
+  Install card lists `productsFor(tool)`. Adding a tool to a pack's theme =
+  its category is in the scope, or add its slug. Product images for Gumroad
+  live on the `assets/gumroad` branch, not in the site.
 - **Support link (Trakteer):** `SUPPORT_URL` in `src/components/SupportToast.tsx`
   is used by the footer and by a once-per-session toast shown after the first
   save (`downloadBlob` fires `tools:downloaded`). Plain links only — never

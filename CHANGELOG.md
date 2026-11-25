@@ -3,6 +3,11 @@
 Catatan harian apa yang berubah di [tools](https://toowl.my.id/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-25 — Lisensi per tool, paket, dan agensi
+
+- Lisensi embed sekarang ada beberapa pilihan di Gumroad, dan kartu "Pasang di situsmu" (tab Iframe) menampilkan pilihan yang mencakup tool yang sedang dibuka beserta harganya: **Tool ini saja** ($19, 20 tool unggulan, dipilih saat checkout), paket per tema (**Islami** $29, **Musik** $29, **Developer** $39, **PDF** $49, **Bisnis & Keuangan** $49, **Kreator & Media** $49), **Semua tool** ($99), dan **Agensi** ($29/bulan, situs tanpa batas). Ada juga tautan untuk memesan **custom tool**.
+- Kunci dicek ke semua produk sekaligus; kunci paket atau satu tool hanya berlaku di tool yang tercakup, dan pesan errornya menyebut paket kuncinya.
+
 ## 2026-11-25 — Lisensi embed dijual di Gumroad
 
 - Tombol **Beli lisensi** dan kolom kunci di kartu "Pasang di situsmu" (tab Iframe) kini aktif: lisensi "toowl Embed License (no branding)" dijual di Gumroad (`chalidade.gumroad.com/l/toowl-embed`). Kunci Gumroad yang valid menghilangkan tulisan toowl di embed dan membuka warna aksen sendiri. Lemon Squeezy belum diisi.
