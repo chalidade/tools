@@ -79,6 +79,11 @@ export function defineToolElement({ tag, css, attributes = [], render }: ToolEle
       return t === 'light' || t === 'dark' ? t : 'auto'
     }
 
+    // React 19 sets a prop as a property when the element has one, so `theme` needs a setter.
+    set theme(value: Theme) {
+      this.setAttribute('theme', value)
+    }
+
     #paint() {
       const dark = this.theme === 'dark' || (this.theme === 'auto' && this.#media.matches)
       this.#frame?.classList.toggle('dark', dark)

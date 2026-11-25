@@ -11,7 +11,7 @@
  *   ({ id, name, createdAt, duration, mimeType, blob })
  */
 export declare class AudioRecorderElement extends HTMLElement {
-  readonly theme: 'light' | 'dark' | 'auto'
+  theme: 'light' | 'dark' | 'auto'
 }
 
 declare global {

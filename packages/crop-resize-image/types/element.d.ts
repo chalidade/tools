@@ -6,7 +6,7 @@
  * - `lang`: "en" or "id" for the UI language (default: the visitor's browser language)
  */
 export declare class CropResizeImageElement extends HTMLElement {
-  readonly theme: 'light' | 'dark' | 'auto'
+  theme: 'light' | 'dark' | 'auto'
 }
 
 declare global {

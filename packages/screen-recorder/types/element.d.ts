@@ -15,7 +15,7 @@ export type { RecordingResult } from './index'
  * - `recording`: a take finished; `event.detail` is the RecordingResult
  */
 export declare class ScreenRecorderElement extends HTMLElement {
-  readonly theme: 'light' | 'dark' | 'auto'
+  theme: 'light' | 'dark' | 'auto'
 }
 
 declare global {
