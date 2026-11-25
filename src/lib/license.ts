@@ -24,9 +24,9 @@ export const LICENSE = {
   },
   gumroad: {
     /** Product page link, e.g. https://<you>.gumroad.com/l/toowl. */
-    checkoutUrl: '',
+    checkoutUrl: 'https://chalidade.gumroad.com/l/toowl-embed',
     /** Product id from the product's settings ("License key" section) — required by the verify endpoint. */
-    productId: '',
+    productId: 'ELk0YRYwJ-7ZGaKhrUqIlQ==',
   },
 }
 
