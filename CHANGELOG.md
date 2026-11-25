@@ -3,6 +3,10 @@
 Catatan harian apa yang berubah di [tools](https://toowl.my.id/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-25 — Lisensi embed dijual di Gumroad
+
+- Tombol **Beli lisensi** dan kolom kunci di kartu "Pasang di situsmu" (tab Iframe) kini aktif: lisensi "toowl Embed License (no branding)" dijual di Gumroad (`chalidade.gumroad.com/l/toowl-embed`). Kunci Gumroad yang valid menghilangkan tulisan toowl di embed dan membuka warna aksen sendiri. Lemon Squeezy belum diisi.
+
 ## 2026-11-25 — Jualan online
 
 Dua tool baru; total sekarang **139 tools**.
