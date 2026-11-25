@@ -1,9 +1,10 @@
 # @chalidade/remove-background
 
-Background removal for any website: one `<script>` tag, one element. Pick the
-background by hand with a magic wand, colour select, lasso, box or brush,
-clean the edge, then save a transparent PNG or put it on a new colour. There is
-**no AI model**, so nothing is downloaded beyond this package.
+Background removal for any website: one `<script>` tag, one element. Remove
+the background in one tap with an on-device AI model (U²-Net-P on ONNX Runtime
+Web, WebGPU or WebAssembly), or pick it by hand with a magic wand, colour
+select, lasso, box or brush, clean the edge, then save a transparent PNG or put
+it on a new colour. The model and runtime load only when the one-tap mode runs.
 **Everything runs in the visitor's browser**: there is no server and nothing is uploaded.
 
 This is the [Remove Background](https://toowl.my.id/#/remove-background) tool from

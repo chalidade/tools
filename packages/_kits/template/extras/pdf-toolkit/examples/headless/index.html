@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PDF Toolkit: headless API</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 640px; margin: 40px auto; padding: 0 20px; }
+    pre { background: #f4f4f5; padding: 12px; border-radius: 8px; white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+  <h1>Headless API</h1>
+  <p>Your own UI, toolkit functions underneath. Pick one or more PDFs: they are merged, compressed, then numbered.</p>
+  <input id="files" type="file" accept="application/pdf" multiple />
+  <pre id="log">Waiting for files…</pre>
+  <script type="module">
+    import { mergePdfs, compressPdf, numberPdf } from '../../dist/index.js'
+
+    const log = document.getElementById('log')
+    const say = (line) => (log.textContent += '\n' + line)
+
+    document.getElementById('files').addEventListener('change', async (e) => {
+      const files = [...e.target.files]
+      log.textContent = `${files.length} file(s)`
+      try {
+        // mergePdfs and numberPdf return a Blob; compressPdf takes and returns bytes.
+        const merged = await mergePdfs(files.map((file) => ({ file })), (done, total) => say(`  merging ${done}/${total}`))
+        say(`merged: ${merged.size} bytes`)
+        const bytes = new Uint8Array(await merged.arrayBuffer())
+        const { output, before, after } = await compressPdf(bytes, 'medium', (stage) => say('  ' + stage))
+        say(`compressed: ${before} → ${after} bytes`)
+        const numbered = await numberPdf(
+          new File([output], 'compressed.pdf', { type: 'application/pdf' }),
+          { format: 'of-total', v: 'bottom', h: 'center', fromPage: 1, startAt: 1, size: 10 },
+          () => {},
+        )
+        say(`numbered: ${numbered.size} bytes`)
+        const a = document.createElement('a')
+        a.href = URL.createObjectURL(numbered)
+        a.download = 'result.pdf'
+        a.textContent = 'Download result.pdf'
+        a.id = 'download'
+        document.body.append(a)
+      } catch (err) {
+        say('error: ' + err.message)
+      }
+    })
+  </script>
+</body>
+</html>

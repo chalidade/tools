@@ -11,5 +11,7 @@ The files in `dist/` bundle the following open-source software, unmodified.
 | clsx | MIT | https://github.com/lukeed/clsx |
 | tailwind-merge | MIT | https://github.com/dcastil/tailwind-merge |
 | class-variance-authority | Apache-2.0 | https://github.com/joe-bell/cva |
+| ONNX Runtime Web (onnxruntime-web, with its WebAssembly) | MIT | https://github.com/microsoft/onnxruntime |
+| U²-Net-P model (u2netp.onnx) | Apache-2.0 | https://github.com/xuebinqin/U-2-Net |
 
 The full license texts are in each project's repository.

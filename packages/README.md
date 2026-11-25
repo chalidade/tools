@@ -206,3 +206,22 @@ di vite.config.ts paketnya, kalau tidak link itu mengarah ke situs pemasang.
   dalam elemen.
 - **Kamera / mikrofon**: lepas track saat elemen dicopot, termasuk ketika
   prompt izin masih terbuka (stream yang datang terlambat harus di-`stop()`).
+
+## Developer kits (dijual di Gumroad)
+
+`packages/_kits/` membundel paket-paket di sini menjadi ZIP berlisensi komersial
+untuk developer: `node packages/_kits/build.mjs <kit|all>` menulis
+`packages/_kits/out/toowl-<kit>-<versi>.zip`. Daftar kit (bundle tema,
+`complete`, dan `single-<tool>` untuk `SINGLES`) ada di `_kits/kits.mjs`; README,
+lisensi, contoh dan teks lisensi pihak ketiga di `_kits/template/`.
+
+- Build-nya app build Vite (bukan lib mode) dengan `base: './'`, jadi WebAssembly
+  dan model jadi file di `dist/assets/` yang dimuat lewat `import.meta.url`,
+  bukan base64 di dalam JS. `dist/` harus disalin utuh.
+- Tiap tool: `dist/elements/<tool>.js` (elemen), `dist/<tool>.js` (API headless),
+  plus `all.js` dan `index.js` gabungan; tipe disalin dari `types/` tiap paket.
+- Build memperingatkan paket npm yang ter-bundle tapi tidak disebut di
+  THIRD-PARTY-NOTICES (`not in notices`); tambahkan barisnya di paket atau di
+  `EXTRA_ROWS`.
+- Naikkan `VERSION` di `kits.mjs` untuk rilis baru, build ulang, lalu ganti file
+  di Gumroad.

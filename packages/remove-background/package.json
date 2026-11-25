@@ -1,7 +1,7 @@
 {
   "name": "@chalidade/remove-background",
   "version": "0.1.0",
-  "description": "Remove image backgrounds by hand (magic wand, color select, lasso, brush) on any website: a <remove-background> element plus headless mask functions. No AI model, nothing is uploaded.",
+  "description": "Remove image backgrounds on any website, in one tap with on-device AI (U\u00b2-Net-P) or by hand (magic wand, color select, lasso, brush): a <remove-background> element plus headless mask functions. Nothing is uploaded.",
   "keywords": [
     "web component",
     "custom element"

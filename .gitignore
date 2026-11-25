@@ -19,3 +19,6 @@ android/*
 *.keystore
 *.jks
 *.apk
+# Developer kits: built ZIPs and their scratch folder
+packages/_kits/out/
+packages/_kits/.work/
