@@ -65,6 +65,7 @@ Each reader opens the other three formats too.
 - [PDF to Images](https://toowl.my.id/en/pdf-to-image/): PNG/JPG at 72, 150 or 300 dpi, zipped when there are several
 - [PDF to DWG](https://toowl.my.id/en/pdf-to-dwg/): vector lines, circles and text of a PDF into an R12 DXF that AutoCAD opens and saves as .dwg, at a chosen 1:N scale
 - [PDF to Markdown](https://toowl.my.id/en/pdf-to-markdown/): headings, emphasis, lists and tables, with tables joined across pages
+- [Extract Images from PDF](https://toowl.my.id/en/pdf-extract-images/): every embedded image; JPEGs kept byte for byte, others as PNG (with transparency from soft masks); one by one or as a ZIP; JPEG 2000/JBIG2 are skipped
 
 **Edit & Secure PDF**
 - [Merge PDF](https://toowl.my.id/en/merge-pdf/), [Split PDF](https://toowl.my.id/en/split-pdf/) (pages, ranges like `1-3, 5, 8-`, or every N pages)
@@ -77,6 +78,7 @@ Each reader opens the other three formats too.
 - [Ink-Saver PDF](https://toowl.my.id/en/pdf-grayscale/): grayscale or black & white (adjustable threshold, light backgrounds to white) before printing; pages are re-rendered, so text becomes an image
 - [Edit PDF](https://toowl.my.id/en/edit-pdf/): add text (font, size, colour), images, boxes, lines, ticks and scribbles on any page of a non-AcroForm form
 - [Compress PDF](https://toowl.my.id/en/compress-pdf/): re-encodes embedded JPEGs and optimises the structure with qpdf; never returns a larger file
+- [ZIP: Make & Open](https://toowl.my.id/en/zip/): bundle files or a folder into a ZIP (JSZip, none/normal/max compression), or open a ZIP and take files one by one
 - [Redact PDF](https://toowl.my.id/en/redact-pdf/): drag to mark areas; those pages are re-rendered with the areas blacked out, so the original text is really removed
 - [Protect PDF](https://toowl.my.id/en/protect-pdf/) (AES-256 password and permissions) and [Unlock PDF](https://toowl.my.id/en/unlock-pdf/)
 

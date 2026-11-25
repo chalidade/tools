@@ -3,6 +3,13 @@
 Catatan harian apa yang berubah di [tools](https://toowl.my.id/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-22 — Arsip & PDF
+
+Dua tool baru; total sekarang **134 tools**.
+
+- **ZIP: Buat & Buka** (`/zip/`): buat ZIP dari banyak file atau satu folder (nama, pemampatan tanpa/biasa/maksimal, nama ganda diberi " (2)"), atau buka ZIP dan ambil isinya satu per satu. Jalur entri dibersihkan dari `..` dan garis miring depan. Memakai JSZip yang sudah ada, dimuat hanya saat tool dibuka. RAR/7z belum ada.
+- **Ekstrak Gambar dari PDF** (`/pdf-extract-images/`): mengambil semua gambar tertanam, termasuk yang ada di dalam Form XObject, dengan nomor halamannya. JPEG (DCT) disalin apa adanya tanpa kompres ulang; gambar lain (Flate/LZW, gray/RGB/CMYK/ICC/Indexed, 1-16 bit, prediktor PNG, soft mask jadi transparansi) dibaca sendiri lewat pdf-lib dan disimpan sebagai PNG. JPEG 2000, JBIG2, CCITT, topeng stensil, dan ruang warna khusus dilewati dan dihitung. Unduh satuan atau semuanya sebagai ZIP.
+
 ## 2026-11-21 — PDF: formulir & cetak
 
 Dua tool baru; total sekarang **132 tools**.

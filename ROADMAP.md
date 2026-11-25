@@ -423,11 +423,11 @@ sesudahnya.
 
 ## Hari 36 — 2026-11-22 · Arsip & PDF
 
-- [ ] **ZIP** (`#/zip`): buat ZIP dari banyak file (atau satu folder), dan
+- [x] **ZIP** (`#/zip`): buat ZIP dari banyak file (atau satu folder), dan
   buka ZIP untuk melihat dan mengambil isinya satu per satu. Pakai library
   kecil yang di-bundel; RAR/7z menyusul lewat wasm yang di-host sendiri bila
   ukurannya masuk akal.
-- [ ] **Ekstrak Gambar dari PDF** (`#/pdf-extract-images`): ambil semua
+- [x] **Ekstrak Gambar dari PDF** (`#/pdf-extract-images`): ambil semua
   gambar yang tertanam di PDF. Gambar JPEG disimpan apa adanya (tanpa kompres
   ulang), yang lain diekspor sebagai PNG; unduh satu per satu atau ZIP.
 

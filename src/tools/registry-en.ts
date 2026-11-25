@@ -671,4 +671,23 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
     formats: 'MD / TXT → PDF / DOCX',
     keywords: ['convert', 'document', 'readme'],
   },
+  zip: {
+    title: 'ZIP: Make & Open',
+    description: 'Bundle many files or a folder into a ZIP, or open a ZIP and take its files one by one — all on your device.',
+    formats: 'Files / folder ⇄ ZIP',
+    keywords: ['zip', 'unzip', 'extract', 'archive', 'compress', 'folder'],
+    faq: [
+      { q: 'How do I make a ZIP from many files or a folder?', a: 'Pick “Make a ZIP”, drop files or choose a folder, set a name and compression, then download. Nothing is uploaded.' },
+      { q: 'How do I open a ZIP without an app?', a: 'Pick “Open a ZIP”, open the file, then take its contents one by one.' },
+    ],
+  },
+  'pdf-extract-images': {
+    title: 'Extract Images from PDF',
+    description: 'Pull every embedded image out of a PDF. JPEGs are kept byte for byte, the rest become PNG; download one by one or as a ZIP.',
+    formats: 'PDF → JPG / PNG / ZIP',
+    keywords: ['extract images', 'save pictures', 'photos from pdf', 'pdf images'],
+    faq: [
+      { q: 'How do I get the photos out of a PDF?', a: 'Open the PDF; every embedded image is listed. Download them one by one or all as a ZIP, at original quality.' },
+    ],
+  },
 }

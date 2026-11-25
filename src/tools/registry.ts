@@ -1905,6 +1905,35 @@ const ALL_TOOLS: Tool[] = [
     badge: 'Baru',
     component: lazy(() => import('./markdown-to-pdf/MarkdownToPdf')),
   },
+  {
+    slug: 'zip',
+    category: 'productivity',
+    keywords: ['zip', 'unzip', 'ekstrak', 'extract', 'arsip', 'archive', 'kompres', 'compress', 'folder', 'buka zip', 'buat zip', 'rar', '7z', 'zipper'],
+    title: 'ZIP: Buat & Buka',
+    description: 'Gabungkan banyak file atau satu folder jadi ZIP, atau buka ZIP dan ambil isinya satu per satu — semua di perangkatmu.',
+    icon: FileArchive,
+    formats: 'File / folder ⇄ ZIP',
+    badge: 'Baru',
+    component: lazy(() => import('./zip/Zip')),
+    faq: [
+      { q: 'Bagaimana membuat file ZIP dari banyak file atau folder?', a: 'Pilih “Buat ZIP”, tarik file atau pilih folder, atur nama dan tingkat pemampatan, lalu unduh. Tidak ada yang diunggah.' },
+      { q: 'Bagaimana membuka file ZIP tanpa aplikasi?', a: 'Pilih “Buka ZIP”, buka filenya, lalu ambil isinya satu per satu.' },
+    ],
+  },
+  {
+    slug: 'pdf-extract-images',
+    category: 'from-pdf',
+    keywords: ['ekstrak gambar', 'ambil gambar', 'foto dari pdf', 'gambar dalam pdf', 'extract images', 'pdf images', 'save images', 'jpg', 'png', 'zip'],
+    title: 'Ekstrak Gambar dari PDF',
+    description: 'Ambil semua gambar yang tertanam di PDF. JPEG disimpan apa adanya tanpa kompres ulang, sisanya jadi PNG; unduh satuan atau ZIP.',
+    icon: ImageDown,
+    formats: 'PDF → JPG / PNG / ZIP',
+    badge: 'Baru',
+    component: lazy(() => import('./pdf-extract-images/PdfExtractImages')),
+    faq: [
+      { q: 'Bagaimana mengambil foto dari file PDF?', a: 'Buka PDF-nya; semua gambar tertanam muncul sebagai daftar. Unduh satu per satu atau semuanya sebagai ZIP, dengan kualitas aslinya.' },
+    ],
+  },
 ]
 
 // The iOS app's web view (WKWebView) has no screen capture, so the tools that
