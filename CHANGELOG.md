@@ -20,6 +20,13 @@ Dasar untuk menjual lisensi lewat **Lemon Squeezy** dan **Gumroad**; masih terse
 - Kunci dicek di browser ke endpoint lisensi publik toko (format kunci menentukan tokonya: UUID untuk Lemon Squeezy, empat kelompok 8 karakter untuk Gumroad), tanpa server dan tanpa API key rahasia. Hasilnya disimpan seminggu di perangkat. Kunci yang di-refund, dinonaktifkan, kedaluwarsa, atau dari toko lain ditolak.
 - Kebijakan privasi menjelaskan pengecekan kunci ini.
 
+
+## 2026-11-20 — AI di perangkat: latar foto
+
+Hapus Latar Gambar (`#/remove-background`) kini punya mode sekali ketuk; jumlah tool tetap.
+
+- **Hapus latar otomatis (AI)**: tombol baru memakai model segmentasi U²-Net-P (Apache-2.0, 4,6 MB) lewat ONNX Runtime Web — WebGPU bila ada, WebAssembly sebagai cadangan. Model dan mesinnya di-host sendiri dan baru diunduh saat tombol ditekan (ukurannya, ±12 MB, ditulis di halaman). Hasilnya jadi mask yang bisa langsung dirapikan dengan tongkat, lasso, kuas, kikis, dan haluskan; Urungkan mengembalikan mask sebelumnya.
+- **Blur latar**: pilihan latar baru selain transparan/putih/merah/biru/warna lain, dengan penggeser kekuatan blur; berlaku juga di unduhan PNG/JPG.
 ## 2026-11-20 — Sebelas tool developer
 
 Seluruh batch developer dari roadmap (Hari 52 sampai 55) dirilis sekaligus; total sekarang **126 tools**.

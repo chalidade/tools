@@ -400,7 +400,7 @@ sesudahnya.
 
 ## Hari 34 — 2026-11-20 · AI di perangkat: latar foto
 
-- [ ] **Hapus Latar Otomatis** di `#/remove-background`: mode sekali ketuk
+- [x] **Hapus Latar Otomatis** di `#/remove-background`: mode sekali ketuk
   dengan model segmentasi lewat ONNX Runtime Web (WebGPU bila ada, wasm
   sebagai cadangan), model dan runtime di-host sendiri dan hanya diunduh saat
   mode ini dipilih, dengan ukurannya ditampilkan di awal. Hasilnya tetap bisa

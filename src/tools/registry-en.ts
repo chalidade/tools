@@ -406,8 +406,8 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
   'strip-exif': { title: 'Remove Photo Metadata', description: 'See a photo’s EXIF (camera, date, GPS location), then save it again without any metadata.', keywords: ['exif', 'gps', 'privacy', 'metadata'] },
   'remove-background': {
     title: 'Remove Background',
-    description: 'Remove a background with a magic wand, color select, lasso or brush — then make it transparent or recolor it.',
-    keywords: ['background', 'transparent', 'cut out'],
+    description: 'Remove a background in one tap with on-device AI, or use the magic wand, lasso and brush — then make it transparent, blurred or recolored.',
+    keywords: ['background', 'transparent', 'cut out', 'auto', 'ai', 'blur background', 'portrait'],
   },
   'dwg-to-pdf': {
     title: 'DWG to PDF',
