@@ -40,7 +40,7 @@ browser's own media encoders, and a library is downloaded only when you open the
 
 ## Tools
 
-All 127, grouped the way the site groups them. Each name links to the live tool.
+All 130, grouped the way the site groups them. Each name links to the live tool.
 
 **Open Documents**
 - [PDF Reader](https://toowl.my.id/en/pdf-reader/): pages drawn by pdf.js with its text layer on top (select, copy, Ctrl+F), working links, password-protected PDFs, zoom, page jump, full screen
@@ -55,6 +55,7 @@ Each reader opens the other three formats too.
 - [Images to PDF](https://toowl.my.id/en/image-to-pdf/): reorder, rotate, A4/Letter/fit-to-image; phone EXIF rotation applied
 - [DWG to PDF](https://toowl.my.id/en/dwg-to-pdf/): AutoCAD .dwg/.dxf to a vector PDF (LibreDWG in WebAssembly), A4–A0, fit or 1:N scale, colour or black, layer on/off
 - [PowerPoint to PDF](https://toowl.my.id/en/ppt-to-pdf/): `.pptx` to PDF, one page per slide
+- [Markdown & Text to PDF / Word](https://toowl.my.id/en/markdown-to-pdf/): write or open `.md`/`.txt`, preview the page, download a PDF (image pages, or selectable text via print) or a `.docx` with real headings, lists, tables and code (marked + DOMPurify, reuses the Word to PDF page engine; web images are never loaded)
 - [Excel to PDF](https://toowl.my.id/en/excel-to-pdf/): `.xlsx`/`.csv` to a selectable-text PDF table, with theme colors, borders, merged cells and number formats
 
 **From PDF**
@@ -131,6 +132,7 @@ Each reader opens the other three formats too.
 - [Color Contrast Checker](https://toowl.my.id/en/kontras-warna/) (WCAG 2.2 AA/AAA with the nearest passing colour), [Lorem Ipsum](https://toowl.my.id/en/lorem-ipsum/), [Screenshot Mockup](https://toowl.my.id/en/mockup/) (browser, phone and laptop frames drawn from shapes)
 
 **Productivity**
+- [Merge & Split Excel/CSV](https://toowl.my.id/en/merge-excel/): stack many files or sheets into one (columns matched by title, optional source column) or split a sheet by the values of a column into sheets or a ZIP of `.xlsx`/`.csv`
 - [Notes](https://toowl.my.id/en/notes/): Markdown with live checklists, saved in the browser, JSON backup/restore
 - [Calculator](https://toowl.my.id/en/calculator/): basic and scientific, with its own expression parser (no `eval`)
 - [Encrypt & Decrypt File](https://toowl.my.id/en/encrypt-file/): lock any file with a password (WebCrypto AES-256-GCM, PBKDF2-SHA-256 600k iterations, random salt), original name kept inside; forgotten passwords cannot be recovered

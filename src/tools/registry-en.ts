@@ -632,4 +632,16 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
     description: 'Pick colors from an image or the screen, convert to HEX/RGB/HSL/OKLCH, check contrast and build shades.',
     keywords: ['color', 'color', 'palette', 'contrast'],
   },
+  'merge-excel': {
+    title: 'Merge & Split Excel/CSV',
+    description: 'Merge many Excel/CSV files into one (columns matched by their titles), or split a sheet into one sheet per value of a column.',
+    formats: 'XLSX / CSV → XLSX / CSV / ZIP',
+    keywords: ['combine', 'join', 'divide', 'workbook'],
+  },
+  'markdown-to-pdf': {
+    title: 'Markdown & Text to PDF / Word',
+    description: 'Write or open Markdown/TXT, preview the page, then download a PDF or DOCX.',
+    formats: 'MD / TXT → PDF / DOCX',
+    keywords: ['convert', 'document', 'readme'],
+  },
 }

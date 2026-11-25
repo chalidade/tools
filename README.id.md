@@ -2,14 +2,14 @@
 
 [English](README.md) · **Bahasa Indonesia**
 
-Kotak perkakas file sehari-hari: **127 tools gratis** untuk PDF, Office, gambar
+Kotak perkakas file sehari-hari: **130 tools gratis** untuk PDF, Office, gambar
 CAD, foto, video, audio, musik, dan hitungan sehari-hari yang jalan **sepenuhnya
 di browser**. File diproses di perangkat pengguna: tidak di-upload ke server dan
 tidak disimpan di mana pun.
 
 **Live:** https://toowl.my.id/
 
-<a href="https://toowl.my.id/"><img src="docs/intro-id.gif" alt="Pengenalan toowl: ketik yang dibutuhkan, buka Gambar ke SVG, jiplak logo, buka file Excel, lihat semua 115 tools" width="720"></a>
+<a href="https://toowl.my.id/"><img src="docs/intro-id.gif" alt="Pengenalan toowl: ketik yang dibutuhkan, buka Gambar ke SVG, jiplak logo, buka file Excel, lihat semua 118 tools" width="720"></a>
 
 ▶ [Tonton video pengenalan 30 detik (MP4)](docs/intro-id.mp4) · [Versi English](docs/intro-en.mp4)
 
@@ -73,6 +73,7 @@ dan mengirim event berisi file rekaman. Ada juga API tanpa UI untuk developer.
 | DWG ke PDF | [`/dwg-to-pdf/`](https://toowl.my.id/dwg-to-pdf/) | DWG (R14–2018) atau DXF → PDF vektor. Dibaca dengan LibreDWG versi WebAssembly (`@mlightcad/libredwg-web`, GPL-3.0, ±8 MB, dimuat saat tool dipakai), digambar sendiri: blok, dimensi, hatch berpola, tipe garis, ketebalan garis, ByLayer/ByBlock. Kertas A4–A0, pas kertas atau skala 1:N, warna asli atau hitam, layer bisa dimatikan. Model space saja. |
 | Gambar ke PDF | [`/image-to-pdf/`](https://toowl.my.id/image-to-pdf/) | JPG/PNG/WebP/GIF/BMP → satu PDF (jsPDF). Banyak gambar sekaligus, urutan bisa diatur, putar 90°, ukuran A4/Letter/sesuai gambar, orientasi, margin. Rotasi EXIF foto ponsel ikut. HEIC hanya terbaca di Safari. |
 | PowerPoint ke PDF | [`/ppt-to-pdf/`](https://toowl.my.id/ppt-to-pdf/) | `.pptx` → PDF, satu halaman per slide (@jvmr/pptx-to-html + jsPDF, HTML slide disanitasi dengan DOMPurify). Teks, bentuk, tabel, grafik, dan gambar ikut; animasi, transisi, dan video tidak. `.ppt` lama belum didukung. |
+| Markdown & Teks ke PDF / Word | [`/markdown-to-pdf/`](https://toowl.my.id/markdown-to-pdf/) | Tulis atau buka `.md`/`.txt`, lihat pratinjau halaman (A4/Letter, margin, huruf), lalu unduh PDF (halaman berupa gambar, atau teks bisa diseleksi lewat Cetak) atau DOCX dengan judul, daftar, tabel, dan kode asli (marked + DOMPurify, memakai ulang mesin halaman Word ke PDF). Gambar dari internet tidak pernah dimuat. |
 | Excel ke PDF | [`/excel-to-pdf/`](https://toowl.my.id/excel-to-pdf/) | `.xlsx`/`.csv` → PDF tabel dengan teks yang bisa diseleksi (ExcelJS + numfmt + jsPDF autotable). Warna (termasuk warna tema), tebal/miring, border, sel gabungan, format angka/tanggal/persen, teks terbungkus; baris/kolom/sheet tersembunyi dilewati. Pilihan kertas, orientasi, muat-ke-lebar atau ukuran asli, garis bantu, dan sheet mana yang dicetak. `.xls`/`.ods` belum didukung; huruf di luar Latin (mis. aksara CJK) belum tampil benar karena PDF memakai font Helvetica bawaan. |
 | PDF ke Excel | [`/pdf-to-excel/`](https://toowl.my.id/pdf-to-excel/) | Tabel di PDF → `.xlsx` (pdf.js + ExcelJS). Baris dari garis dasar teks, kolom dari celah vertikal yang kosong; sel yang terbungkus digabung kembali; header yang berulang tiap halaman diambil sekali. Angka (Rp, ribuan, desimal koma/titik, persen, negatif dalam kurung) jadi angka sungguhan dengan format Excel; nomor berawalan 0 tetap teks. Satu sheet gabungan atau satu per halaman. PDF hasil scan belum didukung. |
 | PDF ke PowerPoint | [`/pdf-to-ppt/`](https://toowl.my.id/pdf-to-ppt/) | Tiap halaman PDF → satu slide `.pptx` seukuran halaman (pdf.js + pptxgenjs). Mode **teks bisa diedit**: latar slide = halaman tanpa teks (bentuk, warna, gambar), teks jadi kotak teks di posisi aslinya dengan ukuran, tebal/miring, font, dan warna (warna dibaca dari selisih piksel render dengan/tanpa teks). Mode **persis seperti PDF**: tiap slide berupa gambar halaman. |
@@ -135,6 +136,7 @@ dan mengirim event berisi file rekaman. Ada juga API tanpa UI untuk developer.
 | Generator Favicon | [`/favicon-generator/`](https://toowl.my.id/favicon-generator/) | Dari gambar/logo (termasuk SVG) atau huruf/emoji: bentuk persegi/membulat/lingkaran, latar warna atau transparan, jarak tepi. ZIP berisi `favicon.ico` (16/32/48), PNG 16 & 32, `apple-touch-icon` 180, `android-chrome` 192 & 512, `site.webmanifest`, dan potongan HTML untuk `<head>`. |
 | Gambar ⇄ Base64 | [`/image-to-base64/`](https://toowl.my.id/image-to-base64/) | Gambar (atau tempel dari clipboard) → data URL, Base64 saja, `<img>`, CSS, atau Markdown, tanpa encode ulang. Arah sebaliknya menerima data URL atau Base64 biasa/URL-safe, mengenali jenis gambar dari byte-nya, lalu bisa diunduh. |
 | Color Picker | [`/color-picker/`](https://toowl.my.id/color-picker/) | Ketik warna (HEX/rgb/hsl/oklch), pakai pemilih warna, ambil dari layar (EyeDropper, Chrome/Edge), atau klik piksel gambar dengan kaca pembesar; warna utama gambar otomatis. Nilai HEX/RGB/HSL/OKLCH/HSV/CMYK siap salin, kontras WCAG terhadap teks putih/hitam, dan gradasi 50–950 (OKLCH). |
+| Gabung & Pisah Excel/CSV | [`/merge-excel/`](https://toowl.my.id/merge-excel/) | Gabung banyak file/sheet jadi satu (kolom dicocokkan dari judulnya, bisa tambah kolom Sumber) atau pecah satu sheet menurut nilai sebuah kolom jadi sheet-sheet atau ZIP `.xlsx`/`.csv` (ExcelJS + JSZip). |
 | CSV ⇄ JSON | [`/csv-json/`](https://toowl.my.id/csv-json/) | Pemisah koma, titik koma (ekspor Excel berbahasa Indonesia), atau tab dikenali otomatis; sel berkutip dan baris baru di dalam sel; baris pertama jadi kunci; angka dan true/false bisa jadi tipe aslinya (nomor berawalan 0 tetap teks); pratinjau tabel. JSON ke CSV menerima array objek, array of array, atau objek berisi array; CSV unduhan diberi BOM UTF-8 untuk Excel. |
 | YAML ⇄ JSON | [`/yaml-json/`](https://toowl.my.id/yaml-json/) | Dua arah dengan `yaml` (ISC): pesan galat berisi baris dan kolom, beberapa dokumen `---` jadi satu array, anchor dan alias diuraikan, pilihan indentasi. |
 | SQL Formatter | [`/sql-formatter/`](https://toowl.my.id/sql-formatter/) | Rapikan atau padatkan query (`sql-formatter`, MIT) untuk SQL umum, MySQL, PostgreSQL, SQLite, SQL Server, dan BigQuery; kata kunci huruf besar/kecil/biarkan; indentasi 2/4. Query tidak pernah dijalankan. |
