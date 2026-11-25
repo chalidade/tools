@@ -76,6 +76,7 @@ Match your brand with CSS variables on the element:
 }
 ```
 
+{{SOURCE_NOTE}}
 ## Use in a bundler (Vite, webpack, Next.js…)
 
 Copy `dist/` into your project (e.g. `vendor/toowl/`) and import it:

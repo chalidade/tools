@@ -151,6 +151,8 @@ async function buildKit(id) {
       outDir: join(stage, 'dist'),
       emptyOutDir: true,
       reportCompressedSize: false,
+      // Marketplaces ask for readable, editable code: no minifying there.
+      minify: !ENVATO,
       copyPublicDir: false,
       modulePreload: false,
       rollupOptions: {
@@ -202,6 +204,9 @@ async function buildKit(id) {
     LIVE: ENVATO
       ? `${PREVIEW_URL}?kit=${id}`
       : rows.map((r) => `- \`<${r.tag}>\`: https://toowl.my.id/en/${r.tool}/`).join('\n'),
+    SOURCE_NOTE: ENVATO
+      ? '\n## Source code\n\n`dist/` is built without minifying, so it stays readable and editable. The\noriginal TypeScript/React source of each tool is in `source/tools/<tool>/`\n(its UI and logic) and `source/packages/<tool>/` (the custom element and the\nheadless API entry). Shared UI parts (buttons, file drop, theme) are bundled\nin `dist/chunks/`.\n'
+      : '',
     LICENSE_SHORT: ENVATO ? STORE.license : 'commercial license',
     LICENSE_SUMMARY: ENVATO
       ? `Sold on ${STORE.name} under the ${STORE.license}: see \`LICENSE.md\`. In short,\n${STORE.small}. Don't redistribute or resell the kit itself. The bundled\nopen-source libraries keep their own licenses (\`THIRD-PARTY-NOTICES.md\`, \`licenses/\`).`
@@ -229,6 +234,13 @@ async function buildKit(id) {
   // Kit-specific extras (e.g. a headless example) on top of the common files.
   if (existsSync(join(TEMPLATE, 'extras', id))) cpSync(join(TEMPLATE, 'extras', id), stage, { recursive: true })
 
+  // Marketplaces: the tools' original TypeScript/React source next to the build.
+  if (ENVATO) for (const tool of kit.tools) {
+    const ui = join(ROOT, 'src/tools', tool)
+    const code = (f) => !/\.(onnx|wasm|bin)$/.test(f) // models and wasm are in dist/ already
+    if (existsSync(ui)) cpSync(ui, join(stage, 'source', 'tools', tool), { recursive: true, filter: code })
+    cpSync(join(PACKAGES, tool, 'src'), join(stage, 'source', 'packages', tool), { recursive: true })
+  }
   if (ENVATO) writeDocs(join(stage, 'documentation'), title, read(join(stage, 'README.md')), notice)
 
   const zip = join(OUT, `${name}.zip`)
