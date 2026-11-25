@@ -1,9 +1,18 @@
-// Builds a developer kit ZIP for Gumroad.
+// Builds a developer kit ZIP for Gumroad or CodeCanyon (Envato Market).
 //
-//   node packages/_kits/build.mjs pdf-toolkit       one kit
-//   node packages/_kits/build.mjs all               every kit and every single
+//   node packages/_kits/build.mjs pdf-toolkit                  one kit (Gumroad)
+//   node packages/_kits/build.mjs all                          every kit and every single
+//   node packages/_kits/build.mjs all --market=envato          the CodeCanyon kits
+//   node packages/_kits/build.mjs --preview=dist/kit-preview   the CodeCanyon live preview (implies envato)
 //
-// Output: packages/_kits/out/toowl-<kit>-<version>.zip, holding
+// --market=envato swaps in template/envato/ (LICENSE.md under the Envato
+// Market licenses, CodeCanyon support text), adds documentation/index.html,
+// never links a Gumroad page, and writes to out/envato/. Singles are Gumroad
+// only. --preview builds the complete kit once and writes a static demo page
+// for every kit (no store links: Envato's live preview rules), which CI puts
+// at https://toowl.my.id/kit-preview/.
+//
+// Output: packages/_kits/out/[envato/]toowl-<kit>-<version>.zip, holding
 //   dist/                  index.js (headless API, all tools), all.js (every
 //                          element), elements/<tool>.js, <tool>.js (that tool's
 //                          headless API), chunks/, .d.ts for all of them
@@ -21,14 +30,22 @@ import { fileURLToPath } from 'node:url'
 import { build } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
-import { ALL_KITS, VERSION, kit as getKit } from './kits.mjs'
+import { marked } from 'marked'
+import { ALL_KITS, ENVATO_KITS, KITS, PREVIEW_URL, VERSION, kit as getKit } from './kits.mjs'
 
 const HERE = dirname(fileURLToPath(import.meta.url))
 const PACKAGES = join(HERE, '..')
 const ROOT = join(PACKAGES, '..')
 const TEMPLATE = join(HERE, 'template')
-const OUT = join(HERE, 'out')
+const ARGS = process.argv.slice(2)
+const flag = (name) => ARGS.find((a) => a.startsWith(`--${name}=`))?.split('=')[1]
+const MARKET = flag('market') ?? (flag('preview') ? 'envato' : 'gumroad')
+if (!['gumroad', 'envato'].includes(MARKET)) throw new Error(`unknown market ${MARKET}`)
+const ENVATO = MARKET === 'envato'
+const OUT = ENVATO ? join(HERE, 'out', 'envato') : join(HERE, 'out')
 const WORK = join(HERE, '.work')
+/** A template file, from template/envato/ when that market overrides it. */
+const templateFile = (file) => (ENVATO && existsSync(join(TEMPLATE, 'envato', file)) ? join(TEMPLATE, 'envato', file) : join(TEMPLATE, file))
 
 const read = (p) => readFileSync(p, 'utf8')
 const pkg = (tool) => JSON.parse(read(join(PACKAGES, tool, 'package.json')))
@@ -75,6 +92,7 @@ function collectPackages(found) {
 }
 
 async function buildKit(id) {
+  if (ENVATO && !ENVATO_KITS.includes(id)) throw new Error(`${id} is not sold on CodeCanyon`)
   const kit = await getKit(id)
   const name = `toowl-${id}-${VERSION}`
   const work = join(WORK, id)
@@ -174,7 +192,16 @@ async function buildKit(id) {
       .map((r) => `| \`<${r.tag}>\` | ${r.desc.replace(/\|/g, '\\|')} | \`dist/elements/${r.tool}.js\` | ${r.api ? `\`dist/${r.tool}.js\`` : '(element only)'} |`)
       .join('\n'),
     TOOLS_JSON: JSON.stringify(Object.fromEntries(rows.map((r) => [r.tag, r.tool]))),
-    LIVE: rows.map((r) => `- \`<${r.tag}>\`: https://toowl.my.id/en/${r.tool}/`).join('\n'),
+    LIVE: ENVATO
+      ? `${PREVIEW_URL}?kit=${id}`
+      : rows.map((r) => `- \`<${r.tag}>\`: https://toowl.my.id/en/${r.tool}/`).join('\n'),
+    LICENSE_SHORT: ENVATO ? 'Envato Market license' : 'commercial license',
+    LICENSE_SUMMARY: ENVATO
+      ? "Sold on CodeCanyon under the Envato Market licenses: see `LICENSE.md`. In short,\nthe **Regular License** covers one end product whose users are not charged, the\n**Extended License** one end product that users pay for; buy one license per end\nproduct. Don't redistribute or resell the kit itself. The bundled open-source\nlibraries keep their own licenses (`THIRD-PARTY-NOTICES.md`, `licenses/`)."
+      : "Commercial license: see `LICENSE.md`. In short, use it in unlimited projects\nof your own or your clients', closed source, with no AGPL obligations; don't\nresell the kit itself. The bundled open-source libraries keep their own\nlicenses (`THIRD-PARTY-NOTICES.md`, `licenses/`).",
+    SUPPORT: ENVATO
+      ? 'Updates are free: download the latest version from your CodeCanyon\nDownloads page any time. Questions or bugs: use the Support tab or the\nComments on the item page.'
+      : 'Updates are free: download the latest ZIP from your Gumroad library any time.\nQuestions or bugs: reply to your Gumroad receipt email.',
   }
   const fill = (text) => text.replace(/\{\{(\w+)\}\}/g, (_, k) => {
     if (!(k in vars)) throw new Error(`template: no value for {{${k}}}`)
@@ -182,7 +209,7 @@ async function buildKit(id) {
   })
   for (const file of ['README.md', 'LICENSE.md', 'CHANGELOG.md', 'examples/html/index.html', 'examples/react/package.json', 'examples/react/index.html', 'examples/react/src/main.tsx', 'examples/react/src/App.tsx', 'examples/react/vite.config.ts', 'examples/react/README.md']) {
     mkdirSync(dirname(join(stage, file)), { recursive: true })
-    writeFileSync(join(stage, file), fill(read(join(TEMPLATE, file))))
+    writeFileSync(join(stage, file), fill(read(templateFile(file))))
   }
   const notice = notices(kit.tools, bundled)
   writeFileSync(join(stage, 'THIRD-PARTY-NOTICES.md'), notice)
@@ -194,6 +221,8 @@ async function buildKit(id) {
   cpSync(join(TEMPLATE, 'licenses'), join(stage, 'licenses'), { recursive: true })
   // Kit-specific extras (e.g. a headless example) on top of the common files.
   if (existsSync(join(TEMPLATE, 'extras', id))) cpSync(join(TEMPLATE, 'extras', id), stage, { recursive: true })
+
+  if (ENVATO) writeDocs(join(stage, 'documentation'), title, read(join(stage, 'README.md')), notice)
 
   const zip = join(OUT, `${name}.zip`)
   rmSync(zip, { force: true })
@@ -237,10 +266,69 @@ function notices(tools, bundled = new Set()) {
   ].join('\n')
 }
 
-const arg = process.argv[2]
-if (!arg) {
-  console.error('usage: node packages/_kits/build.mjs <kit|all>')
+/** documentation/index.html: the README as one offline HTML page (Envato asks for HTML or PDF help files). */
+function writeDocs(dir, title, readme, notice) {
+  mkdirSync(dir, { recursive: true })
+  const body = marked.parse(readme)
+  const toc = [...readme.matchAll(/^## (.+)$/gm)].map(([, h]) => `<li><a href="#${slug(h)}">${esc(h)}</a></li>`).join('')
+  const withIds = body.replace(/<h2>(.+?)<\/h2>/g, (_, h) => `<h2 id="${slug(h.replace(/<[^>]+>/g, ''))}">${h}</h2>`)
+  writeFileSync(join(dir, 'index.html'), DOCS_PAGE(title, toc, withIds + marked.parse(notice.replace(/^# /m, '## '))))
+}
+const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+const slug = (s) => s.toLowerCase().replace(/&[a-z]+;/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
+const DOCS_PAGE = (title, toc, body) => `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>${esc(title)}: documentation</title>
+<style>
+  body { font: 16px/1.6 system-ui, sans-serif; margin: 0; color: #18181b; background: #fafafa; }
+  .wrap { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 40px; max-width: 1180px; margin: auto; padding: 32px 24px 64px; }
+  nav { position: sticky; top: 24px; align-self: start; font-size: 14px; }
+  nav ol { padding-left: 18px; } nav a { color: #3f3f46; text-decoration: none; } nav a:hover { color: #15803d; }
+  main { background: white; border: 1px solid #e4e4e7; border-radius: 14px; padding: 8px 40px 40px; }
+  h1 { font-size: 30px; } h2 { margin-top: 40px; padding-top: 16px; border-top: 1px solid #f4f4f5; }
+  code { font: 13px/1.5 ui-monospace, monospace; background: #f4f4f5; padding: 1px 5px; border-radius: 4px; }
+  pre { background: #18181b; color: #f4f4f5; padding: 16px; border-radius: 10px; overflow: auto; }
+  pre code { background: none; color: inherit; padding: 0; }
+  table { border-collapse: collapse; width: 100%; font-size: 14px; display: block; overflow-x: auto; }
+  th, td { border: 1px solid #e4e4e7; padding: 6px 10px; text-align: left; vertical-align: top; }
+  th { background: #f4f4f5; }
+  @media (max-width: 800px) { .wrap { grid-template-columns: 1fr; } nav { position: static; } main { padding: 8px 18px 24px; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav><strong>${esc(title)}</strong><ol>${toc}<li><a href="#third-party-notices">Third-party notices</a></li></ol></nav>
+  <main>${body.replace('<h2>Third-party notices</h2>', '<h2 id="third-party-notices">Third-party notices</h2>')}</main>
+</div>
+</body>
+</html>
+`
+
+/** The CodeCanyon live preview: the complete kit's dist/ once, one demo page that shows any kit (?kit=). */
+async function buildPreview(target) {
+  await buildKit('complete')
+  const stage = join(OUT, 'stage', `toowl-complete-${VERSION}`)
+  rmSync(target, { recursive: true, force: true })
+  mkdirSync(target, { recursive: true })
+  cpSync(join(stage, 'dist'), join(target, 'dist'), { recursive: true })
+  const all = await getKit('complete')
+  const kits = { complete: { title: 'Complete Kit', tagline: all.tagline, items: all.tools.map((t) => [tagOf(t), t, pkg(t).description]) } }
+  for (const [id, k] of Object.entries(KITS)) kits[id] = { title: k.title, tagline: k.tagline, items: k.tools.map((t) => [tagOf(t), t, pkg(t).description]) }
+  writeFileSync(join(target, 'index.html'), read(join(TEMPLATE, 'envato', 'preview.html')).replace('{{KITS_JSON}}', JSON.stringify(kits)))
+  console.log(`preview → ${target}`)
+}
+
+const preview = flag('preview')
+const arg = ARGS.find((a) => !a.startsWith('--'))
+if (!arg && !preview) {
+  console.error('usage: node packages/_kits/build.mjs <kit|all> [--market=envato] | --preview=<dir>')
   process.exit(1)
 }
-for (const id of arg === 'all' ? ALL_KITS() : arg.split(',')) await buildKit(id)
+if (preview) {
+  if (!ENVATO) throw new Error('--preview is for --market=envato')
+  await buildPreview(join(ROOT, preview))
+} else for (const id of arg === 'all' ? (ENVATO ? ENVATO_KITS : ALL_KITS()) : arg.split(',')) await buildKit(id)
 rmSync(WORK, { recursive: true, force: true })
