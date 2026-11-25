@@ -50,25 +50,25 @@ export const LICENSE = {
   },
   /** Gumroad products, cheapest first; each license key belongs to exactly one of them. */
   gumroad: [
-    { id: '', url: 'https://chalidade.gumroad.com/l/toowl-single', price: '$19', name: ['Tool ini saja', 'This tool only'], scope: 'one' },
+    { id: 'rbH8IZkWX_Ro7MtdNnIzRA==', url: 'https://chalidade.gumroad.com/l/toowl-single', price: '$19', name: ['Tool ini saja', 'This tool only'], scope: 'one' },
     {
-      id: '',
+      id: '-CiieqTlpXI9yTYPunbC1A==',
       url: 'https://chalidade.gumroad.com/l/toowl-islami',
       price: '$29',
       name: ['Paket Islami', 'Islamic Pack'],
       scope: { tools: ['jadwal-sholat', 'arah-kiblat', 'hijriah', 'zakat', 'tasbih', 'kalkulator-waris'] },
     },
-    { id: '', url: 'https://chalidade.gumroad.com/l/toowl-music', price: '$29', name: ['Paket Musik', 'Music Pack'], scope: { categories: ['music'] } },
-    { id: '', url: 'https://chalidade.gumroad.com/l/toowl-dev', price: '$39', name: ['Paket Developer', 'Developer Pack'], scope: { categories: ['dev'] } },
+    { id: 'sW9OUhmYGXcclgtgmko-Kw==', url: 'https://chalidade.gumroad.com/l/toowl-music', price: '$29', name: ['Paket Musik', 'Music Pack'], scope: { categories: ['music'] } },
+    { id: 'VsB0J5DPS1HvmW5fitd1eg==', url: 'https://chalidade.gumroad.com/l/toowl-dev', price: '$39', name: ['Paket Developer', 'Developer Pack'], scope: { categories: ['dev'] } },
     {
-      id: '',
+      id: 'IElQNcRN0CFu3zXIct1mBQ==',
       url: 'https://chalidade.gumroad.com/l/toowl-pdf',
       price: '$49',
       name: ['Paket PDF', 'PDF Suite'],
       scope: { categories: ['reader', 'to-pdf', 'from-pdf', 'pdf'], tools: ['merge-excel', 'scan', 'ocr'] },
     },
     {
-      id: '',
+      id: 'cJRQ7LK2lZoYCblC_GxQqw==',
       url: 'https://chalidade.gumroad.com/l/toowl-bisnis',
       price: '$49',
       name: ['Paket Bisnis & Keuangan', 'Business & Finance Pack'],
@@ -80,11 +80,14 @@ export const LICENSE = {
         ],
       },
     },
-    { id: '', url: 'https://chalidade.gumroad.com/l/toowl-creator', price: '$49', name: ['Paket Kreator & Media', 'Creator & Media Pack'], scope: { categories: ['media'] } },
+    { id: 'rbGQNVtPX9nnmrS_iRoNWg==', url: 'https://chalidade.gumroad.com/l/toowl-creator', price: '$49', name: ['Paket Kreator & Media', 'Creator & Media Pack'], scope: { categories: ['media'] } },
     { id: 'ELk0YRYwJ-7ZGaKhrUqIlQ==', url: 'https://chalidade.gumroad.com/l/toowl-embed', price: '$99', name: ['Semua tool', 'All-Access'], scope: 'all' },
-    { id: '', url: 'https://chalidade.gumroad.com/l/toowl-agency', price: '$29/mo', name: ['Agensi: situs tanpa batas', 'Agency: unlimited sites'], scope: 'all' },
+    { id: 'rdj0-UcEkOTIU9qvnjJHxg==', url: 'https://chalidade.gumroad.com/l/toowl-agency', price: '$29/mo', name: ['Agensi: situs tanpa batas', 'Agency: unlimited sites'], scope: 'all' },
   ] satisfies Product[] as Product[],
 }
+
+/** A tool made to order (no license key); linked under the license options. */
+export const CUSTOM_TOOL_URL = 'https://chalidade.gumroad.com/l/toowl-custom'
 
 export type Provider = 'lemonsqueezy' | 'gumroad'
 

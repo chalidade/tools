@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils'
 import { CopyButton } from '@/components/tool/CopyButton'
 import { TOOLS, toolText, type Tool } from '@/tools/registry'
 import { useLang, useT } from '@/lib/i18n'
-import { buyUrl, checkLicense, licenseEnabled, productsFor, savedLicenseKey, type Product } from '@/lib/license'
+import { buyUrl, checkLicense, licenseEnabled, productsFor, savedLicenseKey, CUSTOM_TOOL_URL, type Product } from '@/lib/license'
 
 const SITE = 'https://toowl.my.id/'
 const DEFAULT_ACCENT = '#c6ff3a'
@@ -261,6 +261,12 @@ function LicensePanel({
         </form>
       </div>
       {error && <p className="mt-2 text-sm text-destructive">{error}</p>}
+      <p className="mt-3 text-xs text-muted-foreground">
+        {t('Butuh tool khusus untuk bisnismu?', 'Need a tool made for your business?')}{' '}
+        <a href={CUSTOM_TOOL_URL} target="_blank" rel="noreferrer" className="underline underline-offset-2 hover:text-foreground">
+          {t('Pesan custom tool', 'Order a custom tool')}
+        </a>
+      </p>
     </div>
   )
 }
