@@ -336,7 +336,10 @@ async function buildPreview(target) {
   const all = await getKit('complete')
   const kits = { complete: { title: 'Complete Kit', tagline: all.tagline, items: all.tools.map((t) => [tagOf(t), t, pkg(t).description]) } }
   for (const [id, k] of Object.entries(KITS)) kits[id] = { title: k.title, tagline: k.tagline, items: k.tools.map((t) => [tagOf(t), t, pkg(t).description]) }
-  writeFileSync(join(target, 'index.html'), read(join(TEMPLATE, 'envato', 'preview.html')).replace('{{KITS_JSON}}', JSON.stringify(kits)))
+  const logo = read(join(ROOT, 'src', 'components', 'Logo.tsx')).match(/const MARK =\s*'([^']+)'/)[1]
+  mkdirSync(join(target, 'fonts'))
+  for (const font of ['geist-latin.woff2', 'geist-mono-latin.woff2']) cpSync(join(ROOT, 'src', 'assets', 'fonts', font), join(target, 'fonts', font))
+  writeFileSync(join(target, 'index.html'), read(join(TEMPLATE, 'envato', 'preview.html')).replace('{{KITS_JSON}}', () => JSON.stringify(kits)).replace('{{LOGO_PATH}}', logo))
   console.log(`preview → ${target}`)
 }
 
