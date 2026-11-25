@@ -28,13 +28,13 @@ function NoUploadBadge({ className }: { className?: string }) {
  * its own accent color (?accent=7c3aed). 'checking' hides the credit while the
  * store answers, so a licensed embed never flashes it.
  */
-function useEmbedLicense(embed: boolean) {
+function useEmbedLicense(embed: boolean, tool: Tool) {
   const [key] = useState(() => (embed && licenseEnabled() ? (routeQuery().get('key') ?? '') : ''))
   const [state, setState] = useState<'none' | 'checking' | 'valid'>(key ? 'checking' : 'none')
   useEffect(() => {
     if (!key) return
     let live = true
-    checkLicense(key).then((r) => {
+    checkLicense(key, tool).then((r) => {
       if (!live) return
       setState(r.valid ? 'valid' : 'none')
       const accent = parseAccent(routeQuery().get('accent'))
@@ -43,7 +43,7 @@ function useEmbedLicense(embed: boolean) {
     return () => {
       live = false
     }
-  }, [key])
+  }, [key, tool])
   return state
 }
 
@@ -52,7 +52,7 @@ export function ToolView({ tool, embed = false }: { tool: Tool; embed?: boolean 
   const t = useT()
   const lang = useLang()
   const text = toolText(tool, lang)
-  const license = useEmbedLicense(embed)
+  const license = useEmbedLicense(embed, tool)
 
   useEffect(() => {
     if (embed) {

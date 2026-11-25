@@ -2,9 +2,9 @@ import { useState } from 'react'
 import { BadgeCheck, ChevronDown, Code2, ExternalLink, Loader2, Lock } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { CopyButton } from '@/components/tool/CopyButton'
-import { toolText, type Tool } from '@/tools/registry'
+import { TOOLS, toolText, type Tool } from '@/tools/registry'
 import { useLang, useT } from '@/lib/i18n'
-import { buyUrl, checkLicense, licenseEnabled, savedLicenseKey } from '@/lib/license'
+import { buyUrl, checkLicense, licenseEnabled, productsFor, savedLicenseKey, type Product } from '@/lib/license'
 
 const SITE = 'https://toowl.my.id/'
 const DEFAULT_ACCENT = '#c6ff3a'
@@ -120,7 +120,7 @@ export function InstallCard({ tool }: { tool: Tool }) {
           </div>
         </div>
         <p className="mt-3 text-sm text-muted-foreground">{current.note}</p>
-        {tab === 'iframe' && licenseEnabled() && <LicensePanel license={license} onChange={setLicense} />}
+        {tab === 'iframe' && licenseEnabled() && <LicensePanel tool={tool} license={license} onChange={setLicense} />}
         {tool.package && !tool.package.published && (
           <p className="mt-2 text-sm text-muted-foreground">
             {t('Versi paket npm', 'An npm package version')} (<code className="font-mono text-xs">{tool.package.name}</code>){' '}
@@ -138,9 +138,11 @@ export function InstallCard({ tool }: { tool: Tool }) {
  * only once a store is configured in src/lib/license.ts.
  */
 function LicensePanel({
+  tool,
   license,
   onChange,
 }: {
+  tool: Tool
   license: { key: string; accent: string } | null
   onChange: (l: { key: string; accent: string } | null) => void
 }) {
@@ -148,11 +150,22 @@ function LicensePanel({
   const [key, setKey] = useState(savedLicenseKey)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
+  const offers = productsFor(tool)
+  // Mark the pack that covers this tool (the middle choice) as the suggested one.
+  const best = offers.findIndex((p) => typeof p.scope === 'object')
+  const count = (p: Product) =>
+    p.scope === 'one' ? 1 : p.scope === 'all' ? TOOLS.length : TOOLS.filter((x) => p.scope !== 'one' && p.scope !== 'all' && (p.scope.categories?.includes(x.category) || p.scope.tools?.includes(x.slug))).length
+  const offerNote = (p: Product) =>
+    p.scope === 'one'
+      ? t('Satu tool, satu situs, sekali bayar', 'One tool, one site, one-time')
+      : p.url.endsWith('agency')
+        ? t(`${count(p)} tool, situs tanpa batas, bulanan`, `${count(p)} tools, unlimited sites, monthly`)
+        : t(`${count(p)} tool, satu situs, sekali bayar`, `${count(p)} tools, one site, one-time`)
 
   const check = async () => {
     setBusy(true)
     setError('')
-    const r = await checkLicense(key)
+    const r = await checkLicense(key, tool)
     setBusy(false)
     if (r.valid) onChange({ key: key.trim(), accent: license?.accent ?? DEFAULT_ACCENT })
     else {
@@ -192,15 +205,40 @@ function LicensePanel({
           'The free version shows one small "toowl" line under the tool. With a license that line is gone and you can set the color.',
         )}
       </p>
+      {offers.length > 0 ? (
+        <ul className="mt-3 grid gap-2 sm:grid-cols-2">
+          {offers.map((p, i) => (
+            <li key={p.url}>
+              <a
+                href={p.scope === 'one' ? `${p.url}?wanted=true` : p.url}
+                target="_blank"
+                rel="noreferrer"
+                className={cn(
+                  'flex h-full items-center justify-between gap-3 rounded-lg border px-3 py-2 text-sm transition-colors hover:border-brand-2',
+                  i === best && 'border-brand-2',
+                )}
+              >
+                <span className="min-w-0">
+                  <span className="block font-medium">{t(p.name[0], p.name[1])}</span>
+                  <span className="block text-xs text-muted-foreground">{offerNote(p)}</span>
+                </span>
+                <span className="shrink-0 font-mono text-sm">{p.price}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      ) : null}
       <div className="mt-3 flex flex-wrap gap-2">
-        <a
-          href={buyUrl()}
-          target="_blank"
-          rel="noreferrer"
-          className="inline-flex h-9 items-center rounded-lg bg-brand-fill px-3 text-sm font-medium text-brand-ink"
-        >
-          {t('Beli lisensi', 'Buy a license')}
-        </a>
+        {offers.length === 0 && (
+          <a
+            href={buyUrl()}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex h-9 items-center rounded-lg bg-brand-fill px-3 text-sm font-medium text-brand-ink"
+          >
+            {t('Beli lisensi', 'Buy a license')}
+          </a>
+        )}
         <form
           className="flex min-w-0 flex-1 gap-2"
           onSubmit={(e) => {

@@ -1,4 +1,5 @@
 import { tr } from '@/lib/i18n'
+import type { CategoryId } from '@/tools/registry'
 
 // License keys for the paid embed: a key bought on Lemon Squeezy or Gumroad
 // removes the "toowl" credit under an embedded tool and lets the site owner
@@ -13,6 +14,31 @@ import { tr } from '@/lib/i18n'
 // Fill in LICENSE after creating the products. While every field is empty the
 // paid section in "Pasang di situsmu" stays hidden and ?key= is ignored.
 
+/**
+ * What a key unlocks. `all`: every tool. `one`: the single tool the buyer
+ * picked at checkout — a Gumroad variant whose name ends in "[slug]".
+ * Otherwise the tools in the listed categories plus the listed slugs.
+ */
+export type Scope = 'all' | 'one' | { categories?: CategoryId[]; tools?: string[] }
+
+export interface Product {
+  /** Gumroad product id (Content tab → "Use your product ID to verify licenses"). Empty = not on sale yet. */
+  id: string
+  /** Product page, e.g. https://chalidade.gumroad.com/l/toowl-embed. */
+  url: string
+  name: [id: string, en: string]
+  /** Shown on the buy button, already formatted, e.g. "$49". */
+  price: string
+  scope: Scope
+}
+
+/** Tools offered one by one ("Single Tool" product, one variant each). */
+export const SINGLE_TOOLS = [
+  'denoise', 'remove-background', 'upscale-image', 'image-to-svg', 'pdf-to-word', 'compress-video', 'compress-pdf',
+  'merge-pdf', 'sign-pdf', 'doc-to-pdf', 'kwitansi', 'cicilan', 'gaji-bersih', 'jadwal-sholat', 'zakat',
+  'kalkulator-waris', 'qr-generator', 'screen-recorder', 'ocr', 'harga-jual',
+]
+
 export const LICENSE = {
   lemonSqueezy: {
     /** Checkout link of the product (Share → Checkout URL). */
@@ -22,12 +48,42 @@ export const LICENSE = {
     /** Product ids whose keys count (e.g. Single tool, Complete, Agency). Empty = any product in the store. */
     productIds: [] as number[],
   },
-  gumroad: {
-    /** Product page link, e.g. https://<you>.gumroad.com/l/toowl. */
-    checkoutUrl: 'https://chalidade.gumroad.com/l/toowl-embed',
-    /** Product id from the product's settings ("License key" section) — required by the verify endpoint. */
-    productId: 'ELk0YRYwJ-7ZGaKhrUqIlQ==',
-  },
+  /** Gumroad products, cheapest first; each license key belongs to exactly one of them. */
+  gumroad: [
+    { id: '', url: 'https://chalidade.gumroad.com/l/toowl-single', price: '$19', name: ['Tool ini saja', 'This tool only'], scope: 'one' },
+    {
+      id: '',
+      url: 'https://chalidade.gumroad.com/l/toowl-islami',
+      price: '$29',
+      name: ['Paket Islami', 'Islamic Pack'],
+      scope: { tools: ['jadwal-sholat', 'arah-kiblat', 'hijriah', 'zakat', 'tasbih', 'kalkulator-waris'] },
+    },
+    { id: '', url: 'https://chalidade.gumroad.com/l/toowl-music', price: '$29', name: ['Paket Musik', 'Music Pack'], scope: { categories: ['music'] } },
+    { id: '', url: 'https://chalidade.gumroad.com/l/toowl-dev', price: '$39', name: ['Paket Developer', 'Developer Pack'], scope: { categories: ['dev'] } },
+    {
+      id: '',
+      url: 'https://chalidade.gumroad.com/l/toowl-pdf',
+      price: '$49',
+      name: ['Paket PDF', 'PDF Suite'],
+      scope: { categories: ['reader', 'to-pdf', 'from-pdf', 'pdf'], tools: ['merge-excel', 'scan', 'ocr'] },
+    },
+    {
+      id: '',
+      url: 'https://chalidade.gumroad.com/l/toowl-bisnis',
+      price: '$49',
+      name: ['Paket Bisnis & Keuangan', 'Business & Finance Pack'],
+      scope: {
+        tools: [
+          'cicilan', 'gaji-bersih', 'thr-lembur', 'kwitansi', 'harga-jual', 'label-pengiriman', 'terbilang', 'persen',
+          'mana-lebih-murah', 'qris', 'link-wa', 'tabungan', 'patungan', 'token-listrik', 'surat', 'cv', 'merge-excel',
+          'undian', 'calculator', 'date-calculator', 'zakat',
+        ],
+      },
+    },
+    { id: '', url: 'https://chalidade.gumroad.com/l/toowl-creator', price: '$49', name: ['Paket Kreator & Media', 'Creator & Media Pack'], scope: { categories: ['media'] } },
+    { id: 'ELk0YRYwJ-7ZGaKhrUqIlQ==', url: 'https://chalidade.gumroad.com/l/toowl-embed', price: '$99', name: ['Semua tool', 'All-Access'], scope: 'all' },
+    { id: '', url: 'https://chalidade.gumroad.com/l/toowl-agency', price: '$29/mo', name: ['Agensi: situs tanpa batas', 'Agency: unlimited sites'], scope: 'all' },
+  ] satisfies Product[] as Product[],
 }
 
 export type Provider = 'lemonsqueezy' | 'gumroad'
@@ -37,16 +93,45 @@ export interface LicenseResult {
   provider?: Provider
   /** Why a key was refused, already in the visitor's language. */
   reason?: string
+  /** Gumroad: the product the key belongs to, and for a single-tool key the tool picked. */
+  productId?: string
+  tool?: string
+}
+
+/** The part of a tool a license looks at. */
+export interface Licensable {
+  slug: string
+  category: CategoryId
 }
 
 const lemonOn = () => !!LICENSE.lemonSqueezy.checkoutUrl && LICENSE.lemonSqueezy.storeId > 0
-const gumroadOn = () => !!LICENSE.gumroad.checkoutUrl && !!LICENSE.gumroad.productId
+const gumroadProducts = () => LICENSE.gumroad.filter((p) => p.id && p.url)
+const gumroadOn = () => gumroadProducts().length > 0
 
 /** True once at least one store is configured; the paid UI shows only then. */
 export const licenseEnabled = () => lemonOn() || gumroadOn()
 
-/** Where the "Buy a license" button goes: Lemon Squeezy first, Gumroad as the fallback. */
-export const buyUrl = () => (lemonOn() ? LICENSE.lemonSqueezy.checkoutUrl : gumroadOn() ? LICENSE.gumroad.checkoutUrl : '')
+function inScope(scope: Scope, tool: Licensable, picked?: string) {
+  if (scope === 'all') return true
+  if (scope === 'one') return picked === tool.slug
+  return !!(scope.categories?.includes(tool.category) || scope.tools?.includes(tool.slug))
+}
+
+/** The products on sale that cover this tool, cheapest first (single-tool only where it is offered). */
+export function productsFor(tool: Licensable): Product[] {
+  return gumroadProducts().filter((p) => (p.scope === 'one' ? SINGLE_TOOLS.includes(tool.slug) : inScope(p.scope, tool)))
+}
+
+/** Where a plain "Buy a license" link goes: Lemon Squeezy first, else the widest Gumroad product. */
+export const buyUrl = () => (lemonOn() ? LICENSE.lemonSqueezy.checkoutUrl : (gumroadProducts().find((p) => p.scope === 'all')?.url ?? ''))
+
+/** Does a valid key cover this tool? */
+export function covers(r: LicenseResult, tool: Licensable): boolean {
+  if (!r.valid) return false
+  if (r.provider !== 'gumroad' || !r.productId) return true
+  const p = LICENSE.gumroad.find((x) => x.id === r.productId)
+  return !!p && inScope(p.scope, tool, r.tool)
+}
 
 // Lemon Squeezy keys are UUIDs; Gumroad's are four groups of eight hex digits.
 const LEMON_KEY = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
@@ -83,21 +168,42 @@ async function checkLemon(key: string): Promise<LicenseResult> {
   return { valid: true, provider: 'lemonsqueezy' }
 }
 
-async function checkGumroad(key: string): Promise<LicenseResult> {
+interface GumroadAnswer {
+  success?: boolean
+  purchase?: {
+    refunded?: boolean
+    disputed?: boolean
+    chargebacked?: boolean
+    subscription_ended_at?: string | null
+    subscription_cancelled_at?: string | null
+    subscription_failed_at?: string | null
+    /** The chosen variant, e.g. "(Noise Remover [denoise])". */
+    variants?: string
+  }
+}
+
+async function verifyGumroad(productId: string, key: string): Promise<GumroadAnswer> {
   const res = await fetch('https://api.gumroad.com/v2/licenses/verify', {
     method: 'POST',
     headers: { Accept: 'application/json', 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: new URLSearchParams({ product_id: LICENSE.gumroad.productId, license_key: key, increment_uses_count: 'false' }),
+    body: new URLSearchParams({ product_id: productId, license_key: key, increment_uses_count: 'false' }),
   })
-  const data = (await res.json().catch(() => ({}))) as {
-    success?: boolean
-    purchase?: { refunded?: boolean; disputed?: boolean; chargebacked?: boolean; subscription_ended_at?: string | null; subscription_cancelled_at?: string | null }
-  }
-  if (!data.success) return { valid: false, reason: tr('Kunci lisensi tidak dikenal.', 'Unknown license key.') }
-  const p = data.purchase ?? {}
+  return (await res.json().catch(() => ({}))) as GumroadAnswer
+}
+
+// A Gumroad key belongs to one product and the verify endpoint needs the
+// product id, so ask each product on sale (all at once) and keep the one that knows it.
+async function checkGumroad(key: string): Promise<LicenseResult> {
+  const products = gumroadProducts()
+  const answers = await Promise.all(products.map((p) => verifyGumroad(p.id, key)))
+  const i = answers.findIndex((a) => a.success)
+  if (i < 0) return { valid: false, reason: tr('Kunci lisensi tidak dikenal.', 'Unknown license key.') }
+  const p = answers[i].purchase ?? {}
   if (p.refunded || p.chargebacked || p.disputed) return { valid: false, reason: tr('Pembelian ini sudah dikembalikan.', 'This purchase was refunded.') }
-  if (p.subscription_ended_at || p.subscription_cancelled_at) return { valid: false, reason: tr('Langganan ini sudah berakhir.', 'This subscription has ended.') }
-  return { valid: true, provider: 'gumroad' }
+  if (p.subscription_ended_at || p.subscription_cancelled_at || p.subscription_failed_at)
+    return { valid: false, reason: tr('Langganan ini sudah berakhir.', 'This subscription has ended.') }
+  const tool = p.variants?.match(/\[([a-z0-9-]+)\]/)?.[1]
+  return { valid: true, provider: 'gumroad', productId: products[i].id, tool }
 }
 
 const CACHE = 'toowl:license'
@@ -107,13 +213,15 @@ interface Cached {
   key: string
   valid: boolean
   provider?: Provider
+  productId?: string
+  tool?: string
   at: number
 }
 
 function readCache(key: string): LicenseResult | undefined {
   try {
     const c = JSON.parse(localStorage.getItem(CACHE) ?? 'null') as Cached | null
-    if (c && c.key === key && Date.now() - c.at < WEEK) return { valid: c.valid, provider: c.provider }
+    if (c && c.key === key && Date.now() - c.at < WEEK) return { valid: c.valid, provider: c.provider, productId: c.productId, tool: c.tool }
   } catch {
     // storage blocked (private mode, partitioned iframe): just ask the store
   }
@@ -122,7 +230,7 @@ function readCache(key: string): LicenseResult | undefined {
 
 function writeCache(key: string, r: LicenseResult) {
   try {
-    localStorage.setItem(CACHE, JSON.stringify({ key, valid: r.valid, provider: r.provider, at: Date.now() } satisfies Cached))
+    localStorage.setItem(CACHE, JSON.stringify({ key, valid: r.valid, provider: r.provider, productId: r.productId, tool: r.tool, at: Date.now() } satisfies Cached))
   } catch {
     // ignore
   }
@@ -143,7 +251,22 @@ export function savedLicenseKey(): string {
  * `{ valid: false, reason }` and are not cached, so a flaky connection only
  * shows the credit for that one view.
  */
-export async function checkLicense(rawKey: string): Promise<LicenseResult> {
+export async function checkLicense(rawKey: string, tool: Licensable): Promise<LicenseResult> {
+  const r = await checkKey(rawKey)
+  if (!r.valid || covers(r, tool)) return r
+  const p = LICENSE.gumroad.find((x) => x.id === r.productId)
+  const name = p ? tr(p.name[0], p.name[1]) : ''
+  return {
+    ...r,
+    valid: false,
+    reason:
+      p?.scope === 'one'
+        ? tr('Kunci ini untuk tool lain. Satu kunci "Tool ini saja" berlaku untuk satu tool.', 'This key is for another tool. A "This tool only" key covers one tool.')
+        : tr(`Kunci ini untuk ${name}, yang tidak mencakup tool ini.`, `This key is for the ${name}, which doesn't include this tool.`),
+  }
+}
+
+async function checkKey(rawKey: string): Promise<LicenseResult> {
   const key = rawKey.trim()
   if (!licenseEnabled()) return { valid: false }
   const provider = guessProvider(key)
