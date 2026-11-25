@@ -3,11 +3,12 @@
 //   node packages/_kits/build.mjs pdf-toolkit                  one kit (Gumroad)
 //   node packages/_kits/build.mjs all                          every kit and every single
 //   node packages/_kits/build.mjs all --market=envato          the CodeCanyon kits
+//   node packages/_kits/build.mjs all --market=codester        the Codester kits
 //   node packages/_kits/build.mjs --preview=dist/kit-preview   the CodeCanyon live preview (implies envato)
 //
-// --market=envato swaps in template/envato/ (LICENSE.md under the Envato
+// --market=envato|codester swaps in template/<market>/ (LICENSE.md under the Envato
 // Market licenses, CodeCanyon support text), adds documentation/index.html,
-// never links a Gumroad page, and writes to out/envato/. Singles are Gumroad
+// never links a Gumroad page, and writes to out/<market>/. Singles are Gumroad
 // only. --preview builds the complete kit once and writes a static demo page
 // for every kit (no store links: Envato's live preview rules), which CI puts
 // at https://toowl.my.id/kit-preview/.
@@ -40,12 +41,18 @@ const TEMPLATE = join(HERE, 'template')
 const ARGS = process.argv.slice(2)
 const flag = (name) => ARGS.find((a) => a.startsWith(`--${name}=`))?.split('=')[1]
 const MARKET = flag('market') ?? (flag('preview') ? 'envato' : 'gumroad')
-if (!['gumroad', 'envato'].includes(MARKET)) throw new Error(`unknown market ${MARKET}`)
-const ENVATO = MARKET === 'envato'
-const OUT = ENVATO ? join(HERE, 'out', 'envato') : join(HERE, 'out')
+/** Marketplaces: their own license (template/<market>/LICENSE.md), no links to other stores. */
+const STORES = {
+  envato: { name: 'CodeCanyon', license: 'Envato Market license', licenseUrl: 'https://codecanyon.net/licenses/standard', small: 'the **Regular License** covers one end product whose users are not charged, the\n**Extended License** one end product that users pay for; buy one license per end\nproduct', downloads: 'CodeCanyon\nDownloads page', support: 'the Support tab or the\nComments on the item page' },
+  codester: { name: 'Codester', license: 'Codester license', licenseUrl: 'https://www.codester.com/info/licenses', small: 'the **Regular License** covers one project, the **Extended License** any number of\nprojects', downloads: 'Codester\nDownloads page', support: 'the item\'s comments on\nCodester or a message to the author there' },
+}
+if (MARKET !== 'gumroad' && !STORES[MARKET]) throw new Error(`unknown market ${MARKET}`)
+const STORE = STORES[MARKET]
+const ENVATO = Boolean(STORE) // a marketplace build (Envato or Codester)
+const OUT = ENVATO ? join(HERE, 'out', MARKET) : join(HERE, 'out')
 const WORK = join(HERE, '.work')
 /** A template file, from template/envato/ when that market overrides it. */
-const templateFile = (file) => (ENVATO && existsSync(join(TEMPLATE, 'envato', file)) ? join(TEMPLATE, 'envato', file) : join(TEMPLATE, file))
+const templateFile = (file) => (ENVATO && existsSync(join(TEMPLATE, MARKET, file)) ? join(TEMPLATE, MARKET, file) : join(TEMPLATE, file))
 
 const read = (p) => readFileSync(p, 'utf8')
 const pkg = (tool) => JSON.parse(read(join(PACKAGES, tool, 'package.json')))
@@ -92,7 +99,7 @@ function collectPackages(found) {
 }
 
 async function buildKit(id) {
-  if (ENVATO && !ENVATO_KITS.includes(id)) throw new Error(`${id} is not sold on CodeCanyon`)
+  if (ENVATO && !ENVATO_KITS.includes(id)) throw new Error(`${id} is not sold on ${STORE.name}`)
   const kit = await getKit(id)
   const name = `toowl-${id}-${VERSION}`
   const work = join(WORK, id)
@@ -195,12 +202,12 @@ async function buildKit(id) {
     LIVE: ENVATO
       ? `${PREVIEW_URL}?kit=${id}`
       : rows.map((r) => `- \`<${r.tag}>\`: https://toowl.my.id/en/${r.tool}/`).join('\n'),
-    LICENSE_SHORT: ENVATO ? 'Envato Market license' : 'commercial license',
+    LICENSE_SHORT: ENVATO ? STORE.license : 'commercial license',
     LICENSE_SUMMARY: ENVATO
-      ? "Sold on CodeCanyon under the Envato Market licenses: see `LICENSE.md`. In short,\nthe **Regular License** covers one end product whose users are not charged, the\n**Extended License** one end product that users pay for; buy one license per end\nproduct. Don't redistribute or resell the kit itself. The bundled open-source\nlibraries keep their own licenses (`THIRD-PARTY-NOTICES.md`, `licenses/`)."
+      ? `Sold on ${STORE.name} under the ${STORE.license}: see \`LICENSE.md\`. In short,\n${STORE.small}. Don't redistribute or resell the kit itself. The bundled\nopen-source libraries keep their own licenses (\`THIRD-PARTY-NOTICES.md\`, \`licenses/\`).`
       : "Commercial license: see `LICENSE.md`. In short, use it in unlimited projects\nof your own or your clients', closed source, with no AGPL obligations; don't\nresell the kit itself. The bundled open-source libraries keep their own\nlicenses (`THIRD-PARTY-NOTICES.md`, `licenses/`).",
     SUPPORT: ENVATO
-      ? 'Updates are free: download the latest version from your CodeCanyon\nDownloads page any time. Questions or bugs: use the Support tab or the\nComments on the item page.'
+      ? `Updates are free: download the latest version from your ${STORE.downloads} any time. Questions or bugs: use ${STORE.support}.`
       : 'Updates are free: download the latest ZIP from your Gumroad library any time.\nQuestions or bugs: reply to your Gumroad receipt email.',
   }
   const fill = (text) => text.replace(/\{\{(\w+)\}\}/g, (_, k) => {
@@ -266,7 +273,7 @@ function notices(tools, bundled = new Set()) {
   ].join('\n')
 }
 
-/** documentation/index.html: the README as one offline HTML page (Envato asks for HTML or PDF help files). */
+/** documentation/index.html: the README as one offline HTML page (marketplaces ask for HTML or PDF help files). */
 function writeDocs(dir, title, readme, notice) {
   mkdirSync(dir, { recursive: true })
   const body = marked.parse(readme)
@@ -328,7 +335,7 @@ if (!arg && !preview) {
   process.exit(1)
 }
 if (preview) {
-  if (!ENVATO) throw new Error('--preview is for --market=envato')
+  if (!ENVATO) throw new Error('--preview is for a marketplace build')
   await buildPreview(join(ROOT, preview))
 } else for (const id of arg === 'all' ? (ENVATO ? ENVATO_KITS : ALL_KITS()) : arg.split(',')) await buildKit(id)
 rmSync(WORK, { recursive: true, force: true })

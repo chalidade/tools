@@ -90,10 +90,10 @@ export async function kit(id) {
   return KITS[id]
 }
 
-/** Kits listed on CodeCanyon (no singles: one item per bundle keeps the portfolio tidy for review). */
+/** Kits listed on marketplaces (CodeCanyon, Codester); no singles: one item per bundle keeps the portfolio tidy for review. */
 export const ENVATO_KITS = ['complete', ...Object.keys(KITS)]
 
-/** The CodeCanyon live preview, built by `--preview` and deployed with the site. */
+/** The marketplaces' live preview (no store links), built by `--preview` and deployed with the site. */
 export const PREVIEW_URL = 'https://toowl.my.id/kit-preview/'
 
 export const ALL_KITS = () => ['complete', ...Object.keys(KITS), ...SINGLES.map((t) => `single-${t}`)]

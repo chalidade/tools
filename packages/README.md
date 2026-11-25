@@ -226,7 +226,7 @@ lisensi, contoh dan teks lisensi pihak ketiga di `_kits/template/`.
 - Naikkan `VERSION` di `kits.mjs` untuk rilis baru, build ulang, lalu ganti file
   di Gumroad.
 
-### CodeCanyon (Envato Market)
+### Marketplace: CodeCanyon (Envato) dan Codester
 
 `node packages/_kits/build.mjs all --market=envato` menulis ZIP CodeCanyon ke
 `packages/_kits/out/envato/` (Complete + 7 bundle tema, tanpa single). Bedanya
@@ -235,6 +235,11 @@ Extended Envato, bukan lisensi Indie/Team kita), README tanpa link Gumroad dan
 tanpa link ke halaman tool di toowl.my.id, plus `documentation/index.html`
 (Envato minta dokumentasi HTML/PDF). Aturan Envato melarang link ke toko lain,
 jadi jangan tambahkan link Gumroad atau /embed/ ke file kit versi ini.
+
+`--market=codester` sama persis, tapi `LICENSE.md` dari `template/codester/`
+(lisensi Regular = 1 proyek, Extended = banyak proyek) dan ditulis ke
+`out/codester/`. Pendaftaran author Envato sedang ditutup (Nov 2026), jadi
+yang dipakai sekarang Codester.
 
 Live preview-nya `https://toowl.my.id/kit-preview/?kit=<kit>` (template
 `template/envato/preview.html`), dibangun CI lewat
