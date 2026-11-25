@@ -103,6 +103,8 @@ Each reader opens the other three formats too.
 - [Trim Video & Audio](https://toowl.my.id/en/trim-media/): filmstrip/waveform timeline; untouched parts are copied without re-encoding
 - [Split Video for WhatsApp Status](https://toowl.my.id/en/status-wa/): cuts a long video into equal 15/30/60 s parts, each re-encoded under 16 MB, with a ZIP of all parts
 - [Photo Collage](https://toowl.my.id/en/kolase/): 2–9 photos in grid, strip or one-big layouts, spacing, rounded corners, 1:1 / 4:5 / 9:16, JPG or PNG
+- [Photos to Video](https://toowl.my.id/en/foto-ke-video/): photos plus optional music to an MP4 for Status, Reels or TikTok, with order, time per photo, fade, slow zoom and 9:16 / 1:1 / 16:9
+- [Split Photo for Grid & Carousel](https://toowl.my.id/en/grid-instagram/): one photo into 3, 6 or 9 Instagram tiles or seamless carousel slides, with upload order, JPG/PNG or ZIP
 - [GIF ⇄ MP4](https://toowl.my.id/en/gif-mp4/), [Extract Video Frames](https://toowl.my.id/en/extract-frames/)
 - [Change Speed](https://toowl.my.id/en/change-speed/): 0.25× to 4× with the pitch kept natural (a hand-written WSOLA time-stretch)
 - [Noise Remover](https://toowl.my.id/en/denoise/): removes background noise, hiss and hum from voices in video or audio with DeepFilterNet 3 or RNNoise (self-hosted wasm), latency compensated so lips stay in sync

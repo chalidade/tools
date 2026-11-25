@@ -451,12 +451,12 @@ sesudahnya.
 
 ## Hari 38 — 2026-11-24 · Konten sosial media
 
-- [ ] **Foto ke Video** (`#/foto-ke-video`): beberapa foto plus musik jadi
+- [x] **Foto ke Video** (`#/foto-ke-video`): beberapa foto plus musik jadi
   MP4 untuk status WA, Reels, atau TikTok. Urutkan dengan seret, durasi per
   foto, transisi pudar, efek zoom pelan, rasio 9:16/1:1/16:9, dan musik
   dipotong pas atau diulang. Frame digambar di canvas lalu di-encode lewat
   Mediabunny (`src/lib/media.ts`); panggil `ensureAudioEncoder` untuk AAC.
-- [ ] **Potong Foto untuk Grid & Carousel** (`#/grid-instagram`): satu foto
+- [x] **Potong Foto untuk Grid & Carousel** (`#/grid-instagram`): satu foto
   dipecah jadi 3, 6, atau 9 kotak untuk feed Instagram, atau jadi beberapa
   slide 4:5/1:1 yang nyambung untuk carousel panorama. Pratinjau urutan
   unggahnya (dari kanan bawah), unduh satu per satu atau ZIP.
