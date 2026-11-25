@@ -89,6 +89,29 @@ export const LICENSE = {
 /** A tool made to order (no license key); linked under the license options. */
 export const CUSTOM_TOOL_URL = 'https://chalidade.gumroad.com/l/toowl-custom'
 
+/** Developer kits (packages/_kits): source-free ZIPs of web components +
+ *  headless API under a commercial license, sold on Gumroad. Not license keys:
+ *  nothing here is checked by `checkLicense`. */
+export interface DevKit {
+  url: string
+  name: [string, string]
+  count: number
+  price: string
+}
+
+const GUM = 'https://chalidade.gumroad.com/l/'
+export const DEV_KITS: DevKit[] = [
+  { url: GUM + 'toowl-dev-complete', name: ['Complete Kit', 'Complete Kit'], count: 72, price: '$199' },
+  { url: GUM + 'toowl-dev-pdf', name: ['PDF Toolkit', 'PDF Toolkit'], count: 11, price: '$79' },
+  { url: GUM + 'toowl-dev-office', name: ['Konverter Office', 'Office Converter Kit'], count: 7, price: '$69' },
+  { url: GUM + 'toowl-dev-image', name: ['Kit Gambar + AI', 'Image Kit + AI'], count: 8, price: '$59' },
+  { url: GUM + 'toowl-dev-media', name: ['Kit Video & Audio', 'Video & Audio Kit'], count: 9, price: '$69' },
+  { url: GUM + 'toowl-dev-music', name: ['Kit Musik', 'Music Kit'], count: 9, price: '$49' },
+  { url: GUM + 'toowl-dev-utils', name: ['Utilitas Developer', 'Dev Utilities Kit'], count: 11, price: '$29' },
+  { url: GUM + 'toowl-dev-islamic', name: ['Kit Islami', 'Islamic Kit'], count: 5, price: '$29' },
+  { url: GUM + 'toowl-dev-single', name: ['Satu komponen', 'Single component'], count: 1, price: '$29' },
+]
+
 export type Provider = 'lemonsqueezy' | 'gumroad'
 
 export interface LicenseResult {

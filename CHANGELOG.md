@@ -3,6 +3,12 @@
 Catatan harian apa yang berubah di [tools](https://toowl.my.id/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-25 — Developer kit untuk pembeli luar negeri
+
+- **Developer kit** (`packages/_kits/`): `node packages/_kits/build.mjs <kit|all>` membangun ZIP siap jual berisi web component (build aplikasi Vite, wasm dan model AI sebagai file terpisah), API headless, tipe TypeScript, contoh HTML/React, README berbahasa Inggris, lisensi komersial dan semua notice pihak ketiga. Ada 7 kit tema (PDF, Office, Gambar, Video & Audio, Musik, Utilitas Developer, Islami), kit lengkap 72 tool, dan 20 komponen satuan.
+- Dijual di Gumroad dengan dua lisensi: Indie (1 developer) dan Team (sampai 10 developer). Halaman **Untuk website** punya bagian baru "Untuk developer" yang menautkan semua kit.
+- Paket npm: atribut `theme` sekarang bisa di-set sebagai properti (React 19 memberi prop ke custom element sebagai properti). `remove-background` sekarang menjelaskan AI on-device (U²-Net-P, ONNX Runtime) dengan benar.
+
 ## 2026-11-25 — Halaman untuk pemilik website
 
 - Halaman baru **Untuk website** (`/embed/`, `/en/embed/`), ditaut dari header, menu ⋯ di HP, footer, dan kartu "Pasang di situsmu": contoh embed langsung (Kalkulator Cicilan), perbandingan embed gratis vs berlisensi, alasan memakai lisensi, semua harga paket Gumroad, cara pasang, dan FAQ (juga sebagai FAQPage JSON-LD). Halaman statisnya ikut ditulis `seo.mjs` dan masuk sitemap. Tidak tampil di aplikasi iOS dan Play.
