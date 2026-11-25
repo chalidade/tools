@@ -118,6 +118,8 @@ import {
   MonitorSmartphone,
   FileJson,
   Timer,
+  TextCursorInput,
+  Grid2x2,
   type LucideIcon,
 } from 'lucide-react'
 import { isPlayApp } from '@/lib/platform'
@@ -435,6 +437,52 @@ const ALL_TOOLS: Tool[] = [
     formats: 'PDF → PDF + isian',
     badge: 'Baru',
     component: lazy(() => import('./edit-pdf/EditPdf')),
+  },
+  {
+    slug: 'fill-pdf',
+    category: 'pdf',
+    keywords: ['isi formulir', 'formulir pdf', 'kolom isian', 'form pdf', 'acroform', 'fill pdf', 'fillable', 'fill form', 'ratakan', 'flatten', 'centang'],
+    title: 'Isi Formulir PDF',
+    description: 'Isi kolom formulir PDF (teks, centang, pilihan) di samping pratinjau halaman, lalu simpan atau kunci isiannya.',
+    icon: TextCursorInput,
+    formats: 'PDF formulir → PDF terisi',
+    badge: 'Baru',
+    component: lazy(() => import('./fill-pdf/FillPdf')),
+    faq: [
+      {
+        q: 'Bagaimana cara mengisi formulir PDF tanpa Adobe Acrobat?',
+        a: 'Buka file di tool ini: semua kolom isian dikenali otomatis, tinggal diketik atau dicentang, lalu simpan. Semuanya berjalan di browser; file tidak diunggah.',
+      },
+      {
+        q: 'Bagaimana supaya isian tidak bisa diubah lagi?',
+        a: 'Centang “Ratakan” sebelum menyimpan: isian menjadi bagian halaman dan kolomnya hilang.',
+      },
+      {
+        q: 'Formulir saya tidak punya kolom isian.',
+        a: 'Formulir yang hanya berupa gambar atau garis ditulisi langsung dengan tool Edit PDF.',
+      },
+    ],
+  },
+  {
+    slug: 'pdf-n-up',
+    category: 'pdf',
+    keywords: ['cetak hemat', 'hemat kertas', 'beberapa halaman per lembar', '2 halaman per lembar', '4 halaman', 'booklet', 'buku lipat', 'n-up', 'pages per sheet', 'handout', 'a4', 'f4', 'letter'],
+    title: 'Cetak Hemat Kertas',
+    description: '2, 4, atau 8 halaman PDF per lembar, atau susunan buku yang tinggal dilipat — di kertas A4, F4, atau Letter.',
+    icon: Grid2x2,
+    formats: 'PDF → PDF hemat kertas',
+    badge: 'Baru',
+    component: lazy(() => import('./pdf-n-up/PdfNUp')),
+    faq: [
+      {
+        q: 'Bagaimana mencetak 2 atau 4 halaman PDF dalam satu lembar?',
+        a: 'Buka PDF, pilih 2, 4, atau 8 per lembar dan ukuran kertas, lalu unduh PDF barunya dan cetak seperti biasa. Teks tetap tajam.',
+      },
+      {
+        q: 'Bagaimana membuat PDF jadi buku yang dilipat?',
+        a: 'Pilih “Buku (lipat)”, cetak bolak-balik dengan balik di sisi pendek, lalu lipat dua tumpukan kertasnya.',
+      },
+    ],
   },
   {
     slug: 'compress-pdf',

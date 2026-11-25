@@ -71,6 +71,8 @@ Each reader opens the other three formats too.
 - [Watermark PDF](https://toowl.my.id/en/watermark-pdf/): text or logo, centred or tiled, correct on rotated pages
 - [Organize PDF Pages](https://toowl.my.id/en/organize-pdf/): thumbnails you drag to reorder, rotate, duplicate or delete
 - [PDF Page Numbers](https://toowl.my.id/en/page-numbers/): position, format (`1`, `1 / 10`, `Page 1`) and the first numbered page
+- [Fill PDF Form](https://toowl.my.id/en/fill-pdf/): fills AcroForm fields (text, checkboxes, dropdowns, radio buttons) beside a page preview; optional flatten to lock the answers; XFA is reported as unsupported
+- [Save Paper: Pages per Sheet](https://toowl.my.id/en/pdf-n-up/): 2, 4 or 8 pages per sheet or a fold-in-half booklet, on A4, F4 or Letter; pages are embedded, so text stays sharp
 - [Sign PDF](https://toowl.my.id/en/sign-pdf/): draw (pressure-sensitive) or upload a signature, then place it anywhere
 - [Ink-Saver PDF](https://toowl.my.id/en/pdf-grayscale/): grayscale or black & white (adjustable threshold, light backgrounds to white) before printing; pages are re-rendered, so text becomes an image
 - [Edit PDF](https://toowl.my.id/en/edit-pdf/): add text (font, size, colour), images, boxes, lines, ticks and scribbles on any page of a non-AcroForm form
