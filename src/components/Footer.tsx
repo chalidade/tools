@@ -1,7 +1,9 @@
-import { Coffee, Github, Shield } from 'lucide-react'
+import { Code2, Coffee, Github, Shield } from 'lucide-react'
 import { Logo } from '@/components/Logo'
 import { SUPPORT_URL } from '@/components/SupportToast'
-import { useT } from '@/lib/i18n'
+import { useLang, useT } from '@/lib/i18n'
+import { isPlayApp } from '@/lib/platform'
+import { pageUrl } from '@/lib/route'
 import { isNativeApp } from '@/lib/native'
 
 const link = 'inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground'
@@ -9,6 +11,7 @@ const link = 'inline-flex items-center gap-1.5 text-sm text-muted-foreground tra
 /** `quiet` drops the privacy line: a tool page already says it right under the tool. */
 export function Footer({ className, quiet = false }: { className?: string; quiet?: boolean }) {
   const t = useT()
+  const lang = useLang()
   return (
     <footer className={className}>
       <div className="mx-auto flex max-w-6xl flex-col gap-4 border-t px-4 py-6 pb-[max(1.5rem,env(safe-area-inset-bottom))] sm:flex-row sm:items-center sm:justify-between sm:px-6">
@@ -21,6 +24,12 @@ export function Footer({ className, quiet = false }: { className?: string; quiet
           )}
         </div>
         <div className="flex flex-wrap items-center gap-5">
+          {!isNativeApp() && !isPlayApp() && (
+            <a href={pageUrl('embed', lang)} className={link}>
+              <Code2 className="size-4" />
+              {t('Untuk website', 'For websites')}
+            </a>
+          )}
           <a href={`${import.meta.env.BASE_URL}privacy/`} rel="external" className={link}>
             <Shield className="size-4" />
             {t('Privasi', 'Privacy')}

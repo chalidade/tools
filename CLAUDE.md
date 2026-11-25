@@ -218,6 +218,9 @@ picture; the rules that matter when editing:
   Install card lists `productsFor(tool)`. Adding a tool to a pack's theme =
   its category is in the scope, or add its slug. Product images for Gumroad
   live on the `assets/gumroad` branch, not in the site.
+  `/embed/` (`EmbedPage.tsx`; text and FAQ in `seo.ts` as `embedMeta`/`embedFaq`)
+  is the page for site owners: live embed demo, free vs licensed, every product
+  from `licenseProducts()`; hidden in the store apps, linked from Header/Footer.
 - **Support link (Trakteer):** `SUPPORT_URL` in `src/components/SupportToast.tsx`
   is used by the footer and by a once-per-session toast shown after the first
   save (`downloadBlob` fires `tools:downloaded`). Plain links only — never

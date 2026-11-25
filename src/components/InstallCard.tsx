@@ -4,7 +4,8 @@ import { cn } from '@/lib/utils'
 import { CopyButton } from '@/components/tool/CopyButton'
 import { TOOLS, toolText, type Tool } from '@/tools/registry'
 import { useLang, useT } from '@/lib/i18n'
-import { buyUrl, checkLicense, licenseEnabled, productsFor, savedLicenseKey, CUSTOM_TOOL_URL, type Product } from '@/lib/license'
+import { pageUrl } from '@/lib/route'
+import { buyUrl, checkLicense, licenseEnabled, productCount, productsFor, savedLicenseKey, CUSTOM_TOOL_URL, type Product } from '@/lib/license'
 
 const SITE = 'https://toowl.my.id/'
 const DEFAULT_ACCENT = '#c6ff3a'
@@ -147,14 +148,14 @@ function LicensePanel({
   onChange: (l: { key: string; accent: string } | null) => void
 }) {
   const t = useT()
+  const lang = useLang()
   const [key, setKey] = useState(savedLicenseKey)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
   const offers = productsFor(tool)
   // Mark the pack that covers this tool (the middle choice) as the suggested one.
   const best = offers.findIndex((p) => typeof p.scope === 'object')
-  const count = (p: Product) =>
-    p.scope === 'one' ? 1 : p.scope === 'all' ? TOOLS.length : TOOLS.filter((x) => p.scope !== 'one' && p.scope !== 'all' && (p.scope.categories?.includes(x.category) || p.scope.tools?.includes(x.slug))).length
+  const count = (p: Product) => productCount(p, TOOLS)
   const offerNote = (p: Product) =>
     p.scope === 'one'
       ? t('Satu tool, satu situs, sekali bayar', 'One tool, one site, one-time')
@@ -265,6 +266,10 @@ function LicensePanel({
         {t('Butuh tool khusus untuk bisnismu?', 'Need a tool made for your business?')}{' '}
         <a href={CUSTOM_TOOL_URL} target="_blank" rel="noreferrer" className="underline underline-offset-2 hover:text-foreground">
           {t('Pesan custom tool', 'Order a custom tool')}
+        </a>
+        {' · '}
+        <a href={pageUrl('embed', lang)} className="underline underline-offset-2 hover:text-foreground">
+          {t('Bandingkan semua paket', 'Compare all plans')}
         </a>
       </p>
     </div>

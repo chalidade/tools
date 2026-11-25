@@ -40,6 +40,50 @@ export function homeMeta(lang: Lang): PageMeta {
       }
 }
 
+/** The page for site owners: embed any tool, and what a license adds. */
+export const EMBED_SLUG = 'embed'
+
+export function embedMeta(lang: Lang): PageMeta {
+  return lang === 'en'
+    ? {
+        title: 'Embed free tools on your website — toowl for websites',
+        description: `Put any of ${TOOLS.length} browser tools (PDF, image, video, finance calculators, prayer times…) on your own site with one line of code. Free with a small credit, or licensed: no credit, your colors.`,
+        slug: EMBED_SLUG,
+        lang,
+      }
+    : {
+        title: 'Pasang tools gratis di website-mu — toowl untuk situs',
+        description: `Pasang ${TOOLS.length} tools browser (PDF, gambar, video, kalkulator keuangan, jadwal sholat…) di situsmu sendiri dengan satu baris kode. Gratis dengan tulisan kecil toowl, atau berlisensi: tanpa tulisan, warna situsmu.`,
+        slug: EMBED_SLUG,
+        lang,
+      }
+}
+
+/** Questions a site owner asks before buying; shown on /embed/ and as FAQPage JSON-LD. */
+export function embedFaq(lang: Lang): { q: string; a: string }[] {
+  const en = lang === 'en'
+  return [
+    en
+      ? { q: 'Is the free embed really free?', a: 'Yes, for any site, personal or commercial. It shows one small "toowl" line under the tool. A license removes that line and lets you set your own accent color.' }
+      : { q: 'Apakah embed gratis benar-benar gratis?', a: 'Ya, untuk situs apa pun, pribadi maupun komersial. Di bawah tool tampil satu baris kecil "toowl". Lisensi menghilangkan baris itu dan warnanya bisa kamu atur.' },
+    en
+      ? { q: 'Do my visitors\' files go to your server?', a: 'No. Every tool runs in the visitor\'s browser. toowl has no backend, so there is nothing to upload to and nothing for you to host or scale.' }
+      : { q: 'Apakah file pengunjungku dikirim ke server kalian?', a: 'Tidak. Semua tool berjalan di browser pengunjung. toowl tidak punya backend, jadi tidak ada yang di-upload dan tidak ada server yang perlu kamu urus.' },
+    en
+      ? { q: 'What counts as one site?', a: 'One domain and its subdomains. For client work across many domains, take the Agency license.' }
+      : { q: 'Satu situs itu maksudnya apa?', a: 'Satu domain beserta subdomainnya. Untuk banyak situs klien, ambil lisensi Agensi.' },
+    en
+      ? { q: 'Do I get new tools?', a: 'Yes. New tools ship almost every day. A pack covers every new tool in its theme, and All-Access and Agency cover every new tool, at no extra cost.' }
+      : { q: 'Apakah saya dapat tool baru?', a: 'Ya. Tool baru rilis hampir setiap hari. Paket mencakup tool baru di temanya, sedangkan All-Access dan Agensi mencakup semua tool baru, tanpa biaya tambahan.' },
+    en
+      ? { q: 'How do I use the license key?', a: 'Open the tool on toowl.my.id, expand "Add it to your site", paste the key from your Gumroad receipt and pick a color. The embed code updates; paste it into your page.' }
+      : { q: 'Bagaimana cara memakai kunci lisensi?', a: 'Buka tool di toowl.my.id, buka "Pasang di situsmu", tempel kunci dari email Gumroad, lalu pilih warna. Kode embed langsung berubah; tempel ke halamanmu.' },
+    en
+      ? { q: 'What if it does not work on my site?', a: 'Email within 14 days of buying for a full refund.' }
+      : { q: 'Bagaimana kalau tidak jalan di situsku?', a: 'Kirim email dalam 14 hari setelah membeli untuk refund penuh.' },
+  ]
+}
+
 export function toolMeta(tool: Tool, lang: Lang): PageMeta {
   const text = toolText(tool, lang)
   const files = takesFiles(tool)
@@ -102,6 +146,16 @@ export function structuredData(meta: PageMeta) {
   const url = absoluteUrl(meta.slug, meta.lang)
   if (!meta.slug)
     return { '@context': 'https://schema.org', '@type': 'WebSite', name: 'toowl', url, inLanguage: meta.lang, description: meta.description }
+  if (meta.slug === EMBED_SLUG)
+    return [
+      { '@context': 'https://schema.org', '@type': 'WebPage', name: meta.title, url, inLanguage: meta.lang, description: meta.description, isPartOf: { '@type': 'WebSite', name: 'toowl', url: SITE } },
+      {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        inLanguage: meta.lang,
+        mainEntity: embedFaq(meta.lang).map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+      },
+    ]
   const tool = TOOLS.find((t) => t.slug === meta.slug)!
   const app = {
     '@context': 'https://schema.org',
