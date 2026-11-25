@@ -483,6 +483,25 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
       { q: 'How do I make a video from photos for WhatsApp Status?', a: 'Drop your photos, put them in order, pick 9:16, add a song if you like, then make the MP4. Everything is processed on your device.' },
     ],
   },
+  'harga-jual': {
+    title: 'Selling Price & Cost Calculator',
+    description: 'Work out the cost per unit, then the selling price from the margin or markup you want, after marketplace fees, service charges, discounts and tax. Shows profit per unit and break-even.',
+    formats: 'Costs → Selling price',
+    keywords: ['selling price', 'cost price', 'cogs', 'margin', 'markup', 'profit', 'break-even', 'marketplace fee', 'pricing', 'small business', 'online shop'],
+    faq: [
+      { q: 'What is the difference between margin and markup?', a: 'Markup is profit divided by cost; margin is profit divided by the selling price. A 100% markup equals a 50% margin. This calculator works out both and you pick one as the target.' },
+      { q: 'How do I price a product for an online marketplace?', a: 'Enter the production cost and quantity to get the unit cost, then enter the admin fee, service charge and discount at your shop’s current rates. Rates are not built in because they change often.' },
+    ],
+  },
+  'label-pengiriman': {
+    title: 'Shipping Labels',
+    description: 'Enter the sender once, paste many recipients from Excel or CSV, then print address labels: several per A4 sheet, one per A6 page, or a 100 × 150 mm shipping sticker.',
+    formats: 'Recipient list → PDF',
+    keywords: ['shipping label', 'address label', 'mailing label', 'sticker', 'parcel', 'courier', 'dropship', 'a6', 'thermal', 'csv', 'excel'],
+    faq: [
+      { q: 'How do I print many address labels at once?', a: 'Fill in the sender, paste the recipient list from Excel (name, phone, address), pick a label size, then download the PDF and print at 100% scale.' },
+    ],
+  },
   'grid-instagram': {
     title: 'Split Photo for Grid & Carousel',
     description: 'Cut one photo into 3, 6 or 9 tiles for an Instagram feed, or into seamless carousel slides, with the upload order shown.',
