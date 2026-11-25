@@ -433,7 +433,7 @@ sesudahnya.
 
 ## Hari 37 — 2026-11-23 · AI di perangkat: suara & subtitle
 
-- [ ] **Transkrip Suara ke Teks** (`#/transkrip`): audio atau video jadi
+- [ ] **Transkrip Suara ke Teks** _(ditunda 2026-11-23: model Whisper tidak bisa diunduh dan diuji di lingkungan otomatis ini — huggingface.co diblokir, jadi ukuran dan akurasi bahasa Indonesia tiny vs base belum bisa dibandingkan; dikerjakan lagi saat model bisa diuji)_ (`#/transkrip`): audio atau video jadi
   teks dengan model pengenal suara yang jalan di perangkat (Whisper lewat
   wasm/WebGPU, di-host sendiri), bahasa Indonesia dan Inggris. Hasil bisa
   diedit, disalin, atau diunduh sebagai TXT, SRT, dan VTT dengan cap waktu,
@@ -445,7 +445,7 @@ sesudahnya.
   diunduh saat tool dibuka dengan ukuran ditampilkan di awal, dan tidak
   ikut di-precache. Bila akurasinya tidak layak pada ukuran yang masuk
   akal, batalkan dan catat alasannya di sini.
-- [ ] **Subtitle** (`#/subtitle`): buka SRT/VTT, geser semua waktu
+- [x] **Subtitle** (`#/subtitle`): buka SRT/VTT, geser semua waktu
   (maju/mundur), regangkan untuk beda frame rate, gabung dua file, dan ubah
   SRT ⇄ VTT, dengan pratinjau di atas video milik pengguna.
 

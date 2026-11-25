@@ -99,6 +99,7 @@ Each reader opens the other three formats too.
 - [Document Scanner](https://toowl.my.id/en/scan/): photograph paper, drag the four corners (found automatically as a first guess), straighten the perspective on a canvas without OpenCV, pick black-and-white, grayscale or color, and combine pages into one PDF (pdf-lib)
 - [OCR — Photo to Text](https://toowl.my.id/en/ocr/): Indonesian and English text from photos and screenshots with Tesseract (wasm); the worker, core and language data are bundled with the site, never fetched from a CDN, and loaded only when you press Read text
 - [Compress Video](https://toowl.my.id/en/compress-video/): MP4 output using the device's own encoder, with a size estimate up front
+- [Subtitle SRT ⇄ VTT](https://toowl.my.id/en/subtitle/): shift late/early subtitles, stretch for another frame rate, merge two files, convert SRT ⇄ VTT, preview over your own video
 - [Trim Video & Audio](https://toowl.my.id/en/trim-media/): filmstrip/waveform timeline; untouched parts are copied without re-encoding
 - [Split Video for WhatsApp Status](https://toowl.my.id/en/status-wa/): cuts a long video into equal 15/30/60 s parts, each re-encoded under 16 MB, with a ZIP of all parts
 - [Photo Collage](https://toowl.my.id/en/kolase/): 2–9 photos in grid, strip or one-big layouts, spacing, rounded corners, 1:1 / 4:5 / 9:16, JPG or PNG

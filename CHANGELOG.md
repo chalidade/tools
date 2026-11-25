@@ -3,6 +3,13 @@
 Catatan harian apa yang berubah di [tools](https://toowl.my.id/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-23 — AI di perangkat: suara & subtitle
+
+Satu tool baru; total sekarang **135 tools**.
+
+- **Subtitle SRT ⇄ VTT** (`/subtitle/`): buka SRT atau VTT, geser semua waktu maju/mundur (detik, atau `0:01:30`; baris yang berakhir sebelum 0 dibuang), regangkan untuk beda frame rate (23,976/24/25/29,97/30), gabung dua file (file kedua mulai tepat setelah yang pertama, bisa diubah), lalu simpan sebagai SRT atau VTT. Pratinjau memutar video milik pengguna dengan subtitle hasil edit lewat `<track>`; video tidak diunggah. Tanpa dependensi baru.
+- **Transkrip Suara ke Teks** ditunda: model Whisper tidak bisa diunduh dan diuji di lingkungan otomatis (huggingface.co diblokir), jadi perbandingan ukuran dan akurasi bahasa Indonesia (tiny vs base) belum bisa dilakukan. Catatannya ada di ROADMAP.md.
+
 ## 2026-11-22 — Arsip & PDF
 
 Dua tool baru; total sekarang **134 tools**.
