@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex" />
+  <title>toowl developer kits: live preview</title>
+  <style>
+    :root { --ink: #18181b; --muted: #71717a; --line: #e4e4e7; --bg: #f4f4f5; --lime: #c6f432; --deep: #3f6212; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font: 15px/1.5 system-ui, -apple-system, Segoe UI, sans-serif; color: var(--ink); background: var(--bg); }
+    body.dark { --ink: #f4f4f5; --muted: #a1a1aa; --line: #27272a; --bg: #0a0a0a; --deep: #c6f432; }
+    header { max-width: 1080px; margin: auto; padding: 28px 24px 8px; display: flex; flex-wrap: wrap; gap: 16px; align-items: end; justify-content: space-between; }
+    h1 { margin: 0; font-size: 26px; letter-spacing: -0.02em; }
+    .tag { font: 12px ui-monospace, monospace; color: var(--deep); text-transform: uppercase; letter-spacing: .08em; }
+    header p { margin: 4px 0 0; color: var(--muted); max-width: 640px; }
+    .controls { display: flex; gap: 8px; align-items: center; }
+    select, .toggle { font: inherit; font-size: 14px; color: var(--ink); background: transparent; border: 1px solid var(--line); border-radius: 999px; padding: 7px 14px; cursor: pointer; }
+    nav { max-width: 1080px; margin: 12px auto 0; padding: 0 24px; display: flex; flex-wrap: wrap; gap: 6px; }
+    nav button { font: 13px ui-monospace, monospace; color: var(--ink); background: transparent; border: 1px solid var(--line); border-radius: 999px; padding: 6px 12px; cursor: pointer; }
+    nav button[aria-pressed="true"] { background: var(--lime); color: #18181b; border-color: var(--lime); }
+    .about { max-width: 1080px; margin: 14px auto 0; padding: 0 24px; color: var(--muted); font-size: 14px; min-height: 21px; }
+    main { max-width: 1080px; margin: 10px auto 56px; padding: 0 24px; }
+    main > * { display: block; border-radius: 18px; overflow: hidden; border: 1px solid var(--line); --sr-brand-1: #a3e635; --sr-brand-2: #65a30d; }
+    .note { max-width: 1080px; margin: -36px auto 40px; padding: 0 24px; color: var(--muted); font-size: 13px; }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <div class="tag">Live preview · runs 100% in this browser tab</div>
+      <h1 id="title"></h1>
+      <p id="tagline"></p>
+    </div>
+    <div class="controls">
+      <select id="kit" aria-label="Kit"></select>
+      <button class="toggle" id="theme" type="button">Dark</button>
+    </div>
+  </header>
+  <nav id="tabs"></nav>
+  <p class="about" id="about"></p>
+  <main id="stage"></main>
+  <p class="note">Files you pick here are processed on your device and never uploaded. Accent colors on this page are set with CSS variables, as in the documentation.</p>
+  <script type="module">
+    const KITS = {{KITS_JSON}}
+    const $ = (id) => document.getElementById(id)
+    const params = new URLSearchParams(location.search)
+    let kit = KITS[params.get('kit')] ? params.get('kit') : 'complete'
+    let dark = params.get('theme') === 'dark'
+    let current = null
+    for (const [id, k] of Object.entries(KITS)) $('kit').add(new Option(`${k.title} (${k.items.length})`, id, false, id === kit))
+    async function show(tag) {
+      const item = KITS[kit].items.find((i) => i[0] === tag)
+      current = tag
+      for (const b of $('tabs').children) b.setAttribute('aria-pressed', String(b.dataset.tag === tag))
+      $('about').textContent = item[2]
+      await import(`./dist/elements/${item[1]}.js`)
+      $('stage').innerHTML = `<${tag} theme="${dark ? 'dark' : 'light'}" lang="en"></${tag}>`
+    }
+    function pickKit(id) {
+      kit = id
+      const k = KITS[id]
+      $('title').textContent = k.title
+      $('tagline').textContent = k.tagline
+      $('tabs').replaceChildren(...k.items.map(([tag]) => {
+        const b = document.createElement('button')
+        b.type = 'button'
+        b.textContent = `<${tag}>`
+        b.dataset.tag = tag
+        b.onclick = () => show(tag)
+        return b
+      }))
+      const wanted = params.get('tool')
+      show(k.items.some((i) => i[0] === wanted) ? wanted : k.items[0][0])
+      params.set('kit', id)
+      history.replaceState(null, '', `?${params}`)
+    }
+    function paint() {
+      document.body.classList.toggle('dark', dark)
+      $('theme').textContent = dark ? 'Light' : 'Dark'
+    }
+    $('kit').onchange = (e) => { params.delete('tool'); pickKit(e.target.value) }
+    $('theme').onclick = () => { dark = !dark; paint(); if (current) show(current) }
+    paint()
+    pickKit(kit)
+  </script>
+</body>
+</html>

@@ -37,6 +37,9 @@ jobs:
       # seo.mjs writes a real page per tool and language, plus sitemap.xml.
       - run: npx tsc -b && npx vite build --base=/ && node scripts/seo.mjs --base=/
 
+      # The CodeCanyon live preview of the developer kits (no store links), at /kit-preview/.
+      - run: node packages/_kits/build.mjs --preview=dist/kit-preview
+
       # include-hidden-files: ships public/.well-known/assetlinks.json, which the
       # Play Store app (TWA) needs to open without a browser address bar.
       - uses: actions/upload-pages-artifact@v5

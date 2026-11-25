@@ -198,6 +198,9 @@ picture; the rules that matter when editing:
   **Developer kits** (`packages/_kits/`, sold on Gumroad with a commercial
   license, see packages/README.md): `node packages/_kits/build.mjs <kit|all>`
   bundles the packages into ZIPs (elements + headless API + types + examples).
+  `--market=codester` (or `envato`) builds marketplace ZIPs (that store's
+  license, HTML docs, no links to Gumroad or other stores); CI builds their live preview at
+  `/kit-preview/` (`--preview`).
 - **Analytics:** `src/lib/analytics.ts` loads the Cloudflare Web Analytics
   beacon (cookieless, `spa: true`) from `main.tsx`, only in production, only on
   host toowl.my.id (so never in the iOS bundle) and never in an embed. It is the

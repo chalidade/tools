@@ -2,7 +2,7 @@
 
 {{TAGLINE}}
 
-Version {{VERSION}} · {{COUNT}} component(s) · commercial license (see `LICENSE.md`)
+Version {{VERSION}} · {{COUNT}} component(s) · {{LICENSE_SHORT}} (see `LICENSE.md`)
 
 Everything runs in your user's browser: files are never uploaded, and there
 is no server or API key for you to run. Each component ships two ways:
@@ -76,6 +76,7 @@ Match your brand with CSS variables on the element:
 }
 ```
 
+{{SOURCE_NOTE}}
 ## Use in a bundler (Vite, webpack, Next.js…)
 
 Copy `dist/` into your project (e.g. `vendor/toowl/`) and import it:
@@ -119,14 +120,10 @@ tools need WebCodecs (Chrome/Edge 94+, Safari 16.4+, Firefox 130+).
 
 ## License
 
-Commercial license: see `LICENSE.md`. In short, use it in unlimited projects
-of your own or your clients', closed source, with no AGPL obligations; don't
-resell the kit itself. The bundled open-source libraries keep their own
-licenses (`THIRD-PARTY-NOTICES.md`, `licenses/`).
+{{LICENSE_SUMMARY}}
 
 ## Updates and support
 
-Updates are free: download the latest ZIP from your Gumroad library any time.
-Questions or bugs: reply to your Gumroad receipt email.
+{{SUPPORT}}
 
 Made by toowl · https://toowl.my.id
