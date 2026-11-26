@@ -17,10 +17,10 @@ export const VERSION = '1.0.0'
 
 /** WordPress versions for readme.txt; bump "tested" after trying a new WordPress release. */
 export const REQUIRES_WP = '6.5'
-export const TESTED_UP_TO = '6.8'
+export const TESTED_UP_TO = '7.1'
 
 /** The WordPress.org username(s) for readme.txt "Contributors". */
-export const CONTRIBUTORS = 'chalidade'
+export const CONTRIBUTORS = 'salingjaga'
 
 /** Every tool that has a package (packages/<tool>/package.json). */
 export const TOOLS = readdirSync(new URL('..', import.meta.url))
