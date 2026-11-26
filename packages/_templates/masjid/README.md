@@ -43,13 +43,14 @@ Every page reads `config.js`. The file is commented; the main settings are:
 | `asr` | `1` for Shafi'i, Maliki and Hanbali, `2` for Hanafi. |
 | `adjust` | Minutes added to a time to match your local timetable exactly, e.g. `{ subuh: 2, isya: -1 }`. |
 | `hijriOffset` | Shifts the Hijri date by whole days when your local moon sighting differs. |
+| `arabic` | `true` shows each prayer's name in Arabic beside it, `false` hides it. |
 | `iqamah` | Minutes from adhan to iqamah for each prayer. |
 | `jumuah` | `time` fixes the Friday prayer time (empty = Dhuhr), `schedule` lists dates with khatib and imam. Past dates are hidden automatically. |
 | `announcements` | Short notices: on the home page and in the TV ticker. |
 | `events`, `programs` | Classes and activities. Program icons: `quran`, `kids`, `food`, `heart`, `mic`, `users`, `home`, `book`. |
 | `donation` | Text, bank accounts and a QR image path. Replace `assets/img/qr-placeholder.svg` with your QR code image. |
 | `contact` | Phone, WhatsApp (digits with country code), email, Instagram, YouTube. Empty values are hidden. |
-| `theme` | `primary` and `accent` colors. |
+| `theme` | `primary` (the arch, the donate band, the TV display) and `accent` (small highlights). |
 | `display` | TV settings: how long the adhan and "prayer in progress" screens stay up, slide timing, and the slides. |
 
 Daylight saving time: `tz` is a fixed offset. If your city changes its clocks,
@@ -63,7 +64,8 @@ itself, and the screen is kept awake where the browser allows it.
 
 The screen changes by itself:
 
-1. **Normal**: clock, dates, slides, the next prayer and its countdown.
+1. **Normal**: clock, dates, the countdown to the next prayer, today's times
+   and a rotating line of text. After Isha the list shows tomorrow.
 2. **Adhan**: when a prayer time arrives, for `display.adhan` minutes.
 3. **Iqamah countdown**: until the iqamah time from `iqamah`.
 4. **Prayer in progress**: a dimmed screen for `display.prayer` minutes.
@@ -77,11 +79,16 @@ you change `config.js`.
 - **Colors**: `theme` in `config.js`, or the variables at the top of
   `assets/css/style.css` and `assets/css/display.css`.
 - **Logo**: replace `assets/img/logo.svg` (any square image works; update the
-  `<img>` tags if you use PNG).
+  `<img>` tags if you use PNG). On the TV display it sits on a light tab, so a
+  dark logo stays readable.
+- **Arabic prayer names**: shown beside each prayer; set `arabic: false` in
+  `config.js` to hide them.
 - **Text**: section titles are in the HTML as `data-t="English|Indonesia"`.
 - **Sections**: delete a `<section>` from `index.html` to remove it; empty lists
   in `config.js` hide their sections too.
-- **Fonts**: Geist is included in `assets/fonts` (SIL Open Font License).
+- **Fonts**: Newsreader (headings), Geist (text and numbers) and Amiri (Arabic)
+  are included in `assets/fonts`, all under the SIL Open Font License. Nothing
+  is loaded from a font service.
 
 ## How prayer times are calculated
 
@@ -101,8 +108,8 @@ index.html, timetable.html, display.html
 config.js                 your settings
 assets/css/               styles
 assets/js/                page scripts (plain JavaScript modules, no build step)
-assets/img/               logo, pattern, QR placeholder
-assets/fonts/             Geist (OFL)
+assets/img/               logo, QR placeholder
+assets/fonts/             Newsreader, Geist, Amiri (OFL) and their licenses
 assets/toowl/             prayer-time engine and tool components (toowl Islamic Kit)
 ```
 

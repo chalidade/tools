@@ -1,4 +1,4 @@
-import { config, t, clock, prayerName, mosqueNow, timesFor, hijriText, applyTheme, translate, locale } from './common.js'
+import { config, t, clock, prayerName, prayerArabic, mosqueNow, timesFor, hijriText, applyTheme, translate, locale } from './common.js'
 
 const $ = (id) => document.getElementById(id)
 applyTheme()
@@ -11,7 +11,7 @@ const now = mosqueNow()
 let y = now.y
 let m = now.m
 
-$('cols').innerHTML = `<th>${t('Date', 'Tanggal')}</th>` + COLS.map((k) => `<th>${prayerName(k)}</th>`).join('')
+$('cols').innerHTML = `<th>${t('Date', 'Tanggal')}</th>` + COLS.map((k) => `<th>${prayerName(k)}${prayerArabic(k) ? `<span lang="ar" dir="rtl" aria-hidden="true">${prayerArabic(k)}</span>` : ''}</th>`).join('')
 $('method-note').textContent = t(
   `Times for ${config.name}, ${config.location.lat.toFixed(4)}, ${config.location.lng.toFixed(4)}. Fridays are highlighted.`,
   `Jadwal untuk ${config.name}, ${config.location.lat.toFixed(4)}, ${config.location.lng.toFixed(4)}. Hari Jumat ditandai.`,

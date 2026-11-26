@@ -29,6 +29,9 @@ export default {
   /** Shift the Hijri date by whole days if your local moon sighting differs (−2 … 2). */
   hijriOffset: 0,
 
+  /** Show each prayer's name in Arabic beside it (false to hide). */
+  arabic: true,
+
   /** Minutes from adhan to iqamah. Used on the home page and the TV display. */
   iqamah: { subuh: 15, zuhur: 10, asar: 10, maghrib: 7, isya: 10 },
 
@@ -84,8 +87,8 @@ export default {
     youtube: '',
   },
 
-  /** Colors. primary = buttons and headings, accent = highlights. */
-  theme: { primary: '#0f5f4a', accent: '#c9a227' },
+  /** Colors. primary = the arch, the donate band and the TV display; accent = small highlights. */
+  theme: { primary: '#12382d', accent: '#b5893c' },
 
   /** TV / screen display (display.html). */
   display: {

@@ -1,11 +1,10 @@
-import { config, t, clock, PRAYERS, FARD, prayerName, mosqueNow, timesFor, nextPrayer, until, hijriText, gregText, applyTheme, translate, esc } from './common.js'
+import { config, t, clock, PRAYERS, FARD, prayerName, prayerArabic, mosqueNow, timesFor, nextPrayer, until, hijriText, gregText, applyTheme, translate, esc } from './common.js'
 
 const $ = (id) => document.getElementById(id)
 applyTheme()
 translate()
 document.title = `${config.name} · ${t('Display', 'Layar')}`
 $('name').textContent = config.name
-$('address').textContent = config.address
 
 const D = { adhan: 3, prayer: 10, slideSeconds: 12, slides: [], ...config.display }
 
@@ -64,27 +63,35 @@ function tick() {
   const s = Math.floor(((n.min % 1) * 60))
   const h = Math.floor(n.min / 60) % 24
   const mm = Math.floor(n.min % 60)
-  $('clock').innerHTML = `${String(h).padStart(2, '0')}:${String(mm).padStart(2, '0')}<small>${String(s).padStart(2, '0')}</small>`
+  const hm = `${String(h).padStart(2, '0')}:${String(mm).padStart(2, '0')}`
+  $('clock').innerHTML = `${hm}<small>${String(s).padStart(2, '0')}</small>`
+  $('mini').textContent = hm
   $('greg').textContent = gregText(n.day)
   $('hijri').textContent = hijriText(n.y, n.m, n.d)
 
   const next = nextPrayer(n)
-  const nextDay = next.tomorrow ? new Date(n.day.getTime() + 86400000) : n.day
+  const nextDay = next.tomorrow ? new Date(n.y, n.m - 1, n.d + 1) : n.day
   $('next-name').textContent = prayerName(next.key, nextDay)
-  $('next-time').textContent = clock(next.at)
-  $('next-in').textContent = until(next.at, n.min)
+  $('next-in').textContent = t(`in ${until(next.at, n.min)}`, `${until(next.at, n.min)} lagi`)
 
   const p = phase(n, today)
   // During adhan, iqamah and prayer the current prayer is marked, otherwise the next one.
-  const on = p.kind === 'normal' ? (next.tomorrow ? '' : next.key) : p.k
-  const key = `${n.y}-${n.m}-${n.d}-${on}`
+  // After Isha the list moves on to tomorrow.
+  const ahead = p.kind === 'normal' && next.tomorrow
+  const list = ahead ? timesFor(nextDay.getFullYear(), nextDay.getMonth() + 1, nextDay.getDate()) : today
+  const listDay = ahead ? nextDay : n.day
+  const on = p.kind === 'normal' ? next.key : p.k
+  const past = ahead ? 0 : PRAYERS.filter((k) => today[k] <= n.min).length
+  const key = `${n.y}-${n.m}-${n.d}-${on}-${past}-${ahead}`
   if (key !== lastKey) {
     lastKey = key
     $('times').innerHTML = PRAYERS.map((k) => {
       const iq = config.iqamah?.[k]
-      return `<div class="t${k === 'terbit' ? ' sun' : ''}${on === k ? ' on' : ''}">
-        <p class="n">${esc(prayerName(k, n.day))}</p><p class="c">${clock(today[k])}</p>
-        <p class="i">${k !== 'terbit' && iq ? `${t('Iqamah', 'Iqamah')} ${clock(today[k] + iq)}` : '&nbsp;'}</p></div>`
+      const ar = prayerArabic(k, listDay)
+      return `<div class="t${on === k ? ' on' : !ahead && list[k] <= n.min ? ' past' : ''}">
+        <p class="n">${esc(prayerName(k, listDay))}${ar ? `<span class="a" lang="ar" dir="rtl" aria-hidden="true">${ar}</span>` : ''}</p>
+        <p class="i">${k !== 'terbit' && iq ? `${t('Iqamah', 'Iqamah')} ${clock(list[k] + iq)}` : ''}</p>
+        <p class="c">${clock(list[k])}</p></div>`
     }).join('')
   }
 
@@ -92,8 +99,9 @@ function tick() {
   $('adhan').hidden = p.kind !== 'adhan'
   $('iqamah').hidden = p.kind !== 'iqamah'
   $('praying').hidden = p.kind !== 'praying'
-  document.body.classList.toggle('praying', p.kind === 'praying')
-  if (p.kind === 'adhan') $('adhan-name').textContent = prayerName(p.k, n.day)
+  document.body.classList.toggle('is-praying', p.kind === 'praying')
+  document.body.classList.toggle('is-normal', p.kind === 'normal')
+  if (p.kind === 'adhan') { $('adhan-name').textContent = prayerName(p.k, n.day); $('adhan-ar').textContent = prayerArabic(p.k, n.day) }
   if (p.kind === 'iqamah') {
     $('iqamah-label').textContent = t(`Iqamah for ${prayerName(p.k, n.day)} in`, `Iqamah ${prayerName(p.k, n.day)} dalam`)
     const left = Math.max(0, Math.round((p.end - n.min) * 60))

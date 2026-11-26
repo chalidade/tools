@@ -23,6 +23,9 @@ const NAMES = {
   isya: ['Isha', 'Isya'],
   jumuah: ['Jumuah', 'Jumat'],
 }
+const ARABIC = { imsak: 'الإمساك', subuh: 'الفجر', terbit: 'الشروق', zuhur: 'الظهر', asar: 'العصر', maghrib: 'المغرب', isya: 'العشاء', jumuah: 'الجمعة' }
+/** The prayer's name in Arabic, or '' when config.arabic is false. */
+export const prayerArabic = (k, date) => (config.arabic === false ? '' : ARABIC[k === 'zuhur' && date && date.getDay() === 5 ? 'jumuah' : k] ?? '')
 export const prayerName = (k, date) => (k === 'zuhur' && date && date.getDay() === 5 ? NAMES.jumuah : NAMES[k])[L]
 
 /** Now, as seen at the mosque (its time zone, not the visitor's). */

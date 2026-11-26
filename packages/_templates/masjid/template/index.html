@@ -7,25 +7,25 @@
   <meta name="description" content="Prayer times, classes, Friday sermons and donations." />
   <link rel="icon" href="assets/img/logo.svg" type="image/svg+xml" />
   <link rel="preload" href="assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="assets/fonts/newsreader-latin.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="stylesheet" href="assets/css/style.css" />
   <script>
     // ES modules don't load from file://. Explain instead of showing a blank page.
     if (location.protocol === 'file:') addEventListener('DOMContentLoaded', () => {
-      document.body.insertAdjacentHTML('afterbegin', '<div style="position:fixed;inset:0;z-index:99;display:grid;place-items:center;padding:24px;background:#f8f6f0;color:#17211d;font:16px/1.6 system-ui,sans-serif;text-align:center"><div style="max-width:560px"><h2 style="margin:0 0 12px">Open this page from a web server</h2><p>Browsers block the scripts of a page opened straight from a folder. Upload the files to your hosting, or run a local server in this folder (see documentation/index.html → Quick start).</p></div></div>')
+      document.body.insertAdjacentHTML('afterbegin', '<div style="position:fixed;inset:0;z-index:99;display:grid;place-items:center;padding:24px;background:#f5f3ee;color:#141815;font:16px/1.6 system-ui,sans-serif;text-align:center"><div style="max-width:560px"><h2 style="margin:0 0 12px">Open this page from a web server</h2><p>Browsers block the scripts of a page opened straight from a folder. Upload the files to your hosting, or run a local server in this folder (see documentation/index.html → Quick start).</p></div></div>')
     })
   </script>
 </head>
 <body>
   <header class="nav">
     <div class="wrap nav-in">
-      <a class="brand" href="#top"><img src="assets/img/logo.svg" alt="" width="34" height="34" /><span id="brand-name"></span></a>
+      <a class="brand" href="#top"><img src="assets/img/logo.svg" alt="" width="26" height="26" /><span id="brand-name"></span></a>
       <nav class="links" id="links">
         <a href="#times" data-t="Prayer times|Jadwal sholat"></a>
         <a href="#events" data-t="Classes|Kajian"></a>
         <a href="#jumuah" data-t="Friday|Jumat"></a>
         <a href="#tools" data-t="Tools|Fitur"></a>
-        <a href="#donate" data-t="Donate|Infaq"></a>
-        <a href="#contact" data-t="Contact|Kontak"></a>
+        <a href="#contact" data-t="Visit|Lokasi"></a>
       </nav>
       <a class="btn btn-small" href="#donate" data-t="Donate|Infaq"></a>
       <button class="menu" id="menu" aria-label="Menu" aria-expanded="false"><span></span><span></span></button>
@@ -33,122 +33,107 @@
   </header>
 
   <main id="top">
-    <section class="hero">
-      <div class="pattern" aria-hidden="true"></div>
-      <div class="wrap hero-in">
-        <div class="hero-text">
-          <p class="eyebrow"><span id="greg"></span> · <span id="hijri"></span></p>
-          <h1 id="name"></h1>
-          <p class="lead" id="tagline"></p>
-          <div class="hero-cta">
-            <a class="btn" href="#times" data-t="Today's prayer times|Jadwal sholat hari ini"></a>
-            <a class="btn btn-ghost" href="timetable.html" data-t="Monthly timetable|Jadwal sebulan"></a>
-          </div>
-        </div>
-        <aside class="next card" aria-live="polite">
-          <p class="next-label" data-t="Next prayer|Sholat berikutnya"></p>
-          <p class="next-name" id="next-name"></p>
-          <p class="next-time" id="next-time"></p>
-          <p class="next-in" id="next-in"></p>
-          <p class="next-iqamah" id="next-iqamah"></p>
-        </aside>
-      </div>
-    </section>
-
-    <section class="section" id="times">
-      <div class="wrap">
-        <div class="head">
-          <div>
-            <p class="kicker" data-t="Prayer times|Jadwal sholat"></p>
-            <h2 id="times-title"></h2>
-          </div>
-          <a class="more" href="timetable.html" data-t="Full month →|Sebulan penuh →"></a>
-        </div>
-        <div class="times" id="times-grid"></div>
-        <p class="note" id="method-note"></p>
-      </div>
-    </section>
-
-    <section class="section alt" id="announce-wrap">
-      <div class="wrap">
-        <div class="head"><div><p class="kicker" data-t="Notices|Pengumuman"></p><h2 data-t="From the mosque|Dari pengurus masjid"></h2></div></div>
-        <ul class="notices" id="notices"></ul>
-      </div>
-    </section>
-
-    <section class="section" id="events">
-      <div class="wrap">
-        <div class="head"><div><p class="kicker" data-t="Classes & events|Kajian & kegiatan"></p><h2 data-t="Learn with us|Belajar bersama"></h2></div></div>
-        <div class="events" id="events-list"></div>
-      </div>
-    </section>
-
-    <section class="section alt" id="jumuah">
-      <div class="wrap two">
-        <div>
-          <p class="kicker" data-t="Friday prayer|Sholat Jumat"></p>
-          <h2 id="jumuah-title"></h2>
-          <p class="lead small" id="jumuah-text"></p>
-        </div>
-        <div class="card table-card">
-          <table class="sched">
-            <thead><tr><th data-t="Date|Tanggal"></th><th data-t="Khatib|Khatib"></th><th data-t="Imam|Imam"></th></tr></thead>
-            <tbody id="jumuah-list"></tbody>
-          </table>
+    <section class="wrap hero">
+      <div class="hero-text">
+        <p class="dates"><span id="greg"></span><span id="hijri"></span></p>
+        <h1 id="name"></h1>
+        <p class="tagline" id="tagline"></p>
+        <div class="hero-cta">
+          <a class="btn" href="timetable.html"><span data-t="Monthly timetable|Jadwal sebulan"></span><i aria-hidden="true">→</i></a>
+          <a class="link" href="#contact" data-t="How to find us|Lokasi masjid"></a>
         </div>
       </div>
+      <aside class="arch next" aria-live="polite">
+        <p class="next-ar" id="next-ar" lang="ar" dir="rtl" aria-hidden="true"></p>
+        <p class="next-label" data-t="Next prayer|Sholat berikutnya"></p>
+        <p class="next-name" id="next-name"></p>
+        <p class="next-time" id="next-time"></p>
+        <p class="next-in" id="next-in"></p>
+        <p class="next-iqamah" id="next-iqamah"></p>
+      </aside>
     </section>
 
-    <section class="section" id="programs-wrap">
-      <div class="wrap">
-        <div class="head"><div><p class="kicker" data-t="What we do|Program kami"></p><h2 data-t="Serving the community|Melayani jamaah"></h2></div></div>
-        <div class="programs" id="programs"></div>
+    <section class="wrap" id="times">
+      <div class="times-head">
+        <h2 id="times-title"></h2>
+        <a class="link" href="timetable.html" data-t="Full month|Sebulan penuh"></a>
+      </div>
+      <div class="times" id="times-grid"></div>
+      <p class="note" id="method-note"></p>
+    </section>
+
+    <section class="wrap row" id="announce-wrap">
+      <header><h2 data-t="Notices|Pengumuman"></h2></header>
+      <ol class="notices" id="notices"></ol>
+    </section>
+
+    <section class="wrap row" id="events">
+      <header>
+        <h2 data-t="Classes & events|Kajian & kegiatan"></h2>
+        <p data-t="Open to everyone, no registration needed unless noted.|Terbuka untuk umum, tanpa pendaftaran kecuali disebutkan."></p>
+      </header>
+      <div class="events" id="events-list"></div>
+    </section>
+
+    <section class="wrap row" id="jumuah">
+      <header><h2 data-t="Friday prayer|Sholat Jumat"></h2></header>
+      <div>
+        <p class="statement" id="jumuah-title"></p>
+        <p class="lead" id="jumuah-text"></p>
+        <table class="sched">
+          <thead><tr><th data-t="Date|Tanggal"></th><th data-t="Khatib|Khatib"></th><th data-t="Imam|Imam"></th></tr></thead>
+          <tbody id="jumuah-list"></tbody>
+        </table>
       </div>
     </section>
 
-    <section class="section alt" id="tools">
-      <div class="wrap">
-        <div class="head"><div><p class="kicker" data-t="Tools|Fitur"></p><h2 data-t="For every day|Untuk sehari-hari"></h2></div></div>
+    <section class="wrap row" id="programs-wrap">
+      <header><h2 data-t="What we do|Program kami"></h2></header>
+      <div class="programs" id="programs"></div>
+    </section>
+
+    <section class="wrap row" id="tools">
+      <header>
+        <h2 data-t="Everyday tools|Fitur harian"></h2>
         <div class="tabs" role="tablist" id="tool-tabs">
-          <button role="tab" data-tool="qibla-direction" data-t="Qibla|Arah kiblat"></button>
+          <button role="tab" data-tool="qibla-direction" data-t="Qibla direction|Arah kiblat"></button>
           <button role="tab" data-tool="hijri-calendar" data-t="Hijri calendar|Kalender Hijriah"></button>
-          <button role="tab" data-tool="zakat-calculator" data-t="Zakat|Zakat"></button>
+          <button role="tab" data-tool="zakat-calculator" data-t="Zakat calculator|Kalkulator zakat"></button>
           <button role="tab" data-tool="tasbih-counter" data-t="Tasbih|Tasbih"></button>
         </div>
-        <div class="tool card" id="tool-stage"></div>
+      </header>
+      <div class="tool" id="tool-stage"></div>
+    </section>
+
+    <section class="donate" id="donate">
+      <div class="wrap row">
+        <header><h2 data-t="Donate|Infaq & sedekah"></h2></header>
+        <div class="donate-in">
+          <div>
+            <p class="statement" id="donate-text"></p>
+            <div class="accounts" id="accounts"></div>
+          </div>
+          <figure class="arch qr" id="qr-wrap"><figcaption data-t="Scan to donate|Scan untuk berinfaq"></figcaption><img id="qr" alt="" /></figure>
+        </div>
       </div>
     </section>
 
-    <section class="section donate" id="donate">
-      <div class="pattern" aria-hidden="true"></div>
-      <div class="wrap two">
+    <section class="wrap row" id="contact">
+      <header><h2 data-t="Visit|Lokasi & kontak"></h2></header>
+      <div class="visit">
         <div>
-          <p class="kicker" data-t="Donate|Infaq & sedekah"></p>
-          <h2 data-t="Support your mosque|Dukung masjid kita"></h2>
-          <p class="lead small" id="donate-text"></p>
-          <div class="accounts" id="accounts"></div>
+          <p class="statement" id="address"></p>
+          <a class="link" id="map" target="_blank" rel="noopener" data-t="Open in maps|Buka di peta"></a>
         </div>
-        <figure class="qr card" id="qr-wrap"><img id="qr" alt="" /><figcaption data-t="Scan to donate|Scan untuk berinfaq"></figcaption></figure>
-      </div>
-    </section>
-
-    <section class="section" id="contact">
-      <div class="wrap two">
-        <div>
-          <p class="kicker" data-t="Visit us|Kunjungi kami"></p>
-          <h2 id="contact-name"></h2>
-          <p class="lead small" id="address"></p>
-          <a class="btn btn-ghost" id="map" target="_blank" rel="noopener" data-t="Open in maps|Buka di peta"></a>
-        </div>
-        <ul class="contact card" id="contact-list"></ul>
+        <ul class="contact" id="contact-list"></ul>
       </div>
     </section>
   </main>
 
   <footer class="foot">
     <div class="wrap foot-in">
-      <p>© <span id="year"></span> <span id="foot-name"></span></p>
-      <p><a href="timetable.html" data-t="Timetable|Jadwal"></a> · <a href="display.html" data-t="TV display|Layar TV"></a></p>
+      <p><span id="foot-name"></span> · © <span id="year"></span></p>
+      <p><a href="timetable.html" data-t="Timetable|Jadwal sholat"></a><a href="display.html" data-t="TV display|Layar TV"></a></p>
     </div>
   </footer>
 

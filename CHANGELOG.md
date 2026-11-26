@@ -6,6 +6,7 @@ terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 ## 2026-11-26 — Template website masjid
 
 - **Template website masjid** (`packages/_templates/masjid/`, dijual di Codester): beranda dengan sholat berikutnya dan hitung mundur, jadwal hari ini plus iqamah, pengumuman, kajian, jadwal khatib Jumat, program, rekening infaq dengan tombol salin dan QR, kontak, serta arah kiblat, kalender Hijriah, zakat dan tasbih. Ada **jadwal sebulan** siap cetak A4 dan **layar TV masjid** (jam besar, slide, teks berjalan, layar adzan, hitung mundur iqamah, dan layar "sholat sedang berlangsung"). Semua diatur dari satu file `config.js`, bahasa Inggris atau Indonesia, tanpa server. Demo: `/templates/masjid/`.
+- Desain template masjid bergaya editorial: judul serif besar (Newsreader), angka tipis, garis pemisah halus tanpa kartu dan bayangan, dan satu motif lengkung mihrab untuk sholat berikutnya dan QR infaq. Nama sholat tampil juga dalam huruf Arab (Amiri, bisa dimatikan). Setelah Isya, jadwal otomatis pindah ke hari besok.
 - **Jadwal Sholat** sekarang punya pilihan metode hitung di API-nya (`METHODS`): Kemenag RI (default, hasil tidak berubah), JAKIM, MUIS, Muslim World League, ISNA, Mesir, Karachi dan Umm al-Qura, plus Asar Hanafi.
 
 ## 2026-11-26 — Plugin WordPress siap rilis (1.0.0)

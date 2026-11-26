@@ -205,7 +205,7 @@ picture; the rules that matter when editing:
   each README): plain HTML/CSS/JS in `template/` with one `config.js`, no
   build step for the buyer. `node packages/_templates/build.mjs <name>` copies
   the matching kit's marketplace `dist/` (readable code) into
-  `assets/toowl/`, adds Geist, docs, the Codester license and notices, and
+  `assets/toowl/`, adds Geist plus the template's own `<name>/fonts/`, docs, the Codester license and notices, and
   zips it; `--demo=<dir>` writes only the site (CI: `/templates/<name>/`).
   The service worker leaves `/templates/` and `/kit-preview/` alone. `masjid`
   is a mosque site plus a TV display (`display.html`, `?at=HH:MM` previews

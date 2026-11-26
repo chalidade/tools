@@ -1,4 +1,4 @@
-import { config, t, clock, PRAYERS, FARD, prayerName, mosqueNow, timesFor, nextPrayer, until, hijriText, gregText, applyTheme, translate, esc, locale } from './common.js'
+import { config, t, clock, PRAYERS, prayerName, prayerArabic, mosqueNow, timesFor, nextPrayer, until, hijriText, gregText, applyTheme, translate, esc, locale } from './common.js'
 
 const $ = (id) => document.getElementById(id)
 applyTheme()
@@ -6,7 +6,7 @@ translate()
 document.title = config.name
 
 // Identity
-for (const id of ['brand-name', 'name', 'contact-name', 'foot-name']) $(id).textContent = config.name
+for (const id of ['brand-name', 'name', 'foot-name']) $(id).textContent = config.name
 $('tagline').textContent = config.tagline
 $('address').textContent = config.address
 $('map').href = config.mapUrl || '#'
@@ -26,18 +26,20 @@ const METHOD_NAMES = {
 }
 function renderTimes() {
   const now = mosqueNow()
-  const today = timesFor(now.y, now.m, now.d)
   const next = nextPrayer(now)
+  // After Isha the strip moves on to tomorrow, so it never sits there fully greyed out.
+  const day = next.tomorrow ? new Date(now.y, now.m - 1, now.d + 1) : now.day
+  const list = timesFor(day.getFullYear(), day.getMonth() + 1, day.getDate())
   $('greg').textContent = gregText(now.day)
   $('hijri').textContent = hijriText(now.y, now.m, now.d)
-  $('times-title').textContent = gregText(now.day, { weekday: 'long', day: 'numeric', month: 'long' })
+  $('times-title').textContent = (next.tomorrow ? t('Tomorrow, ', 'Besok, ') : '') + gregText(day, { weekday: 'long', day: 'numeric', month: 'long' })
   $('times-grid').innerHTML = PRAYERS.map((k) => {
     const iq = config.iqamah?.[k]
-    const isNext = !next.tomorrow && next.key === k
-    return `<div class="time${isNext ? ' is-next' : ''}${k === 'terbit' ? ' is-sun' : ''}">
-      <span class="t-name">${esc(prayerName(k, now.day))}</span>
-      <span class="t-clock">${clock(today[k])}</span>
-      <span class="t-iq">${k === 'terbit' ? '&nbsp;' : iq ? `${t('Iqamah', 'Iqamah')} ${clock(today[k] + iq)}` : '&nbsp;'}</span>
+    const ar = prayerArabic(k, day)
+    return `<div class="time${next.key === k ? ' is-next' : ''}${!next.tomorrow && list[k] <= now.min ? ' is-past' : ''}">
+      <span class="t-name">${esc(prayerName(k, day))}${ar ? `<span class="t-ar" lang="ar" dir="rtl" aria-hidden="true">${ar}</span>` : ''}</span>
+      <span class="t-clock">${clock(list[k])}</span>
+      <span class="t-iq">${k === 'terbit' ? '&nbsp;' : iq ? `${t('Iqamah', 'Iqamah')} ${clock(list[k] + iq)}` : '&nbsp;'}</span>
     </div>`
   }).join('')
   $('method-note').textContent = t(
@@ -49,14 +51,16 @@ function renderTimes() {
 function tick() {
   const now = mosqueNow()
   const next = nextPrayer(now)
-  const day = next.tomorrow ? new Date(now.day.getTime() + 86400000) : now.day
+  const day = next.tomorrow ? new Date(now.y, now.m - 1, now.d + 1) : now.day
   $('next-name').textContent = prayerName(next.key, day)
+  $('next-ar').textContent = prayerArabic(next.key, day)
   $('next-time').textContent = clock(next.at)
   $('next-in').textContent = t(`in ${until(next.at, now.min)}`, `${until(next.at, now.min)} lagi`)
   const iq = config.iqamah?.[next.key]
   $('next-iqamah').textContent = iq ? `${t('Iqamah', 'Iqamah')} ${clock(next.at + iq)}` : ''
-  // A new prayer or a new day: redraw the table.
-  if (tick.last !== next.key + next.tomorrow + now.d) { tick.last = next.key + next.tomorrow + now.d; renderTimes() }
+  // A new prayer, sunrise passing or a new day: redraw the table.
+  const key = `${next.key}${next.tomorrow}${now.d}${now.min >= timesFor(now.y, now.m, now.d).terbit}`
+  if (tick.last !== key) { tick.last = key; renderTimes() }
 }
 tick()
 setInterval(tick, 1000)
@@ -67,12 +71,13 @@ $('announce-wrap').hidden = !notices.length
 $('notices').innerHTML = notices.map((n) => `<li>${esc(n)}</li>`).join('')
 
 // Events
-$('events-list').innerHTML = (config.events ?? []).map((e) => `<article class="event card">
-  ${e.tag ? `<span class="tag">${esc(e.tag)}</span>` : ''}
-  <h3>${esc(e.title)}</h3>
-  <p class="who">${esc(e.speaker)}</p>
-  <p class="when"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>${esc(e.when)} · ${esc(e.time)}</p>
+$('events-list').innerHTML = (config.events ?? []).map((e) => `<article class="event">
+  <div><h3>${esc(e.title)}</h3><p class="who">${esc(e.speaker)}</p></div>
+  <p class="e-when">${esc(e.when)}</p>
+  <p class="e-time">${esc(e.time)}</p>
+  <p class="e-tag">${esc(e.tag ?? '')}</p>
 </article>`).join('')
+$('events').hidden = !(config.events ?? []).length
 
 // Friday
 {
@@ -80,17 +85,18 @@ $('events-list').innerHTML = (config.events ?? []).map((e) => `<article class="e
   const ahead = (5 - now.day.getDay() + 7) % 7
   const fri = new Date(now.day.getTime() + ahead * 86400000)
   const ft = timesFor(fri.getFullYear(), fri.getMonth() + 1, fri.getDate())
-  $('jumuah-title').textContent = gregText(fri, { weekday: 'long', day: 'numeric', month: 'long' })
+  const friday = gregText(fri, { weekday: 'long', day: 'numeric', month: 'long' })
+  $('jumuah-title').textContent = t(`${friday}, khutbah at ${clock(ft.zuhur)}`, `${friday}, khutbah pukul ${clock(ft.zuhur)}`)
   $('jumuah-text').textContent = t(
-    `Khutbah begins at ${clock(ft.zuhur)}. Please arrive early and keep the rows straight and close.`,
-    `Khutbah dimulai pukul ${clock(ft.zuhur)}. Mohon datang lebih awal, rapatkan dan luruskan shaf.`,
+    'Please arrive early, and keep the rows straight and close.',
+    'Mohon datang lebih awal, rapatkan dan luruskan shaf.',
   )
   const iso = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
   const rows = (config.jumuah?.schedule ?? []).filter((r) => r.date >= iso(now.day))
   $('jumuah-list').innerHTML = rows.length
     ? rows.map((r) => {
         const [y, m, d] = r.date.split('-').map(Number)
-        return `<tr><td>${esc(new Date(y, m - 1, d).toLocaleDateString(locale, { day: 'numeric', month: 'short' }))}</td><td>${esc(r.khatib)}</td><td>${esc(r.imam)}</td></tr>`
+        return `<tr${r.date === iso(fri) ? ' class="is-next"' : ''}><td>${esc(new Date(y, m - 1, d).toLocaleDateString(locale, { day: 'numeric', month: 'long' }))}</td><td>${esc(r.khatib)}</td><td>${esc(r.imam)}</td></tr>`
       }).join('')
     : `<tr><td colspan="3" class="muted">${t('The schedule will be announced soon.', 'Jadwal segera diumumkan.')}</td></tr>`
 }
@@ -109,8 +115,8 @@ const ICONS = {
 const programs = config.programs ?? []
 $('programs-wrap').hidden = !programs.length
 $('programs').innerHTML = programs.map((p) => `<article class="program">
-  <span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true">${ICONS[p.icon] ?? ICONS.home}</svg></span>
-  <h3>${esc(p.title)}</h3><p>${esc(p.text)}</p>
+  <svg viewBox="0 0 24 24" aria-hidden="true">${ICONS[p.icon] ?? ICONS.home}</svg>
+  <div><h3>${esc(p.title)}</h3><p>${esc(p.text)}</p></div>
 </article>`).join('')
 
 // Tools: each one is a toowl web component, loaded only when its tab opens.
@@ -129,7 +135,7 @@ new IntersectionObserver((entries, io) => {
 // Donations
 $('donate-text').textContent = config.donation?.text ?? ''
 $('accounts').innerHTML = (config.donation?.accounts ?? []).map((a) => `<div class="account">
-  <div><p class="bank">${esc(a.bank)}</p><p class="num">${esc(a.number)}</p><p class="holder">${esc(a.holder)}</p></div>
+  <div><p class="bank">${esc(a.bank)} · ${esc(a.holder)}</p><p class="num">${esc(a.number)}</p></div>
   <button class="copy" data-copy="${esc(a.number.replace(/\s+/g, ''))}">${t('Copy', 'Salin')}</button>
 </div>`).join('')
 $('accounts').onclick = async (e) => {

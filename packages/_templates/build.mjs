@@ -6,7 +6,7 @@
 // A template is plain HTML/CSS/JS in <name>/template/ (no build step for the
 // buyer). Its assets/toowl/ is the dist/ of the kit it uses, built here with
 // the kit builder in marketplace mode (readable code), and assets/fonts/ is
-// Geist from the site.
+// Geist from the site plus the template's own <name>/fonts/.
 
 import { cpSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { execFileSync } from 'node:child_process'
@@ -48,6 +48,8 @@ function site(target) {
   })
   mkdirSync(join(target, 'assets/fonts'), { recursive: true })
   for (const f of ['geist-latin.woff2', 'OFL.txt']) cpSync(join(ROOT, 'src/assets/fonts', f), join(target, 'assets/fonts', f))
+  // The template's own typefaces (and their licenses), kept beside it.
+  if (existsSync(join(HERE, name, 'fonts'))) cpSync(join(HERE, name, 'fonts'), join(target, 'assets/fonts'), { recursive: true })
 }
 
 if (demo) {
@@ -89,10 +91,10 @@ function writeDocs(dir, title, md, notice) {
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>${esc(title)}: documentation</title>
 <style>
-  body { font: 16px/1.6 system-ui, sans-serif; margin: 0; color: #17211d; background: #f8f6f0; }
+  body { font: 16px/1.6 system-ui, sans-serif; margin: 0; color: #141815; background: #f5f3ee; }
   .wrap { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 40px; max-width: 1180px; margin: auto; padding: 32px 24px 64px; }
   nav { position: sticky; top: 24px; align-self: start; font-size: 14px; }
-  nav ol { padding-left: 18px; } nav a { color: #3f4a45; text-decoration: none; } nav a:hover { color: #0f5f4a; }
+  nav ol { padding-left: 18px; } nav a { color: #3f4a45; text-decoration: none; } nav a:hover { color: #12382d; }
   main { background: white; border: 1px solid #e4e0d5; border-radius: 14px; padding: 8px 40px 40px; }
   h1 { font-size: 30px; } h2 { margin-top: 40px; padding-top: 16px; border-top: 1px solid #f1eee6; }
   code { font: 13px/1.5 ui-monospace, monospace; background: #f3f1ea; padding: 1px 5px; border-radius: 4px; }
