@@ -16,7 +16,7 @@
 //                                        assets/ (wasm), loaded from the plugin folder
 //   assets/tools.json                    tag, titles, descriptions, free or not
 //   assets/products.json (Pro)           Gumroad products and the tools each opens
-//   readme.txt, LICENSE.txt (GPL-2.0-or-later), THIRD-PARTY-NOTICES.md
+//   readme.txt, LICENSE.txt (GPL-2.0-or-later), THIRD-PARTY-NOTICES.txt
 //
 // Which tools go in, and which are free: config.mjs. Product scopes come from
 // LICENSE.gumroad in src/lib/license.ts, resolved against the registry, so a
@@ -329,7 +329,7 @@ async function buildEdition(id, site) {
   }
 
   await buildElements(ed.tools, join(stage, 'assets', 'dist'))
-  writeFileSync(join(stage, 'THIRD-PARTY-NOTICES.md'), notices([...ed.tools, 'compress-image', 'convert-image']))
+  writeFileSync(join(stage, 'THIRD-PARTY-NOTICES.txt'), notices([...ed.tools, 'compress-image', 'convert-image']))
 
   mkdirSync(OUT, { recursive: true })
   const zip = join(OUT, `${ed.slug}-${VERSION}.zip`)
