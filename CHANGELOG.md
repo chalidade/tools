@@ -3,6 +3,12 @@
 Catatan harian apa yang berubah di [tools](https://toowl.my.id/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-26 — Plugin WordPress (prototipe)
+
+- **Plugin WordPress** (`packages/_wordpress/`): tool toowl sebagai block Gutenberg (tiap tool punya block sendiri di inserter, kategori "toowl") dan shortcode `[toowl tool="compress-pdf"]`, dengan pilihan tema dan bahasa. Semua JS dan WebAssembly ikut di dalam plugin, tanpa CDN. Prototipe berisi 5 tool: Compress PDF, Merge PDF, Compress Images (Pro), QR Generator dan Jadwal Sholat (gratis).
+- Dua ZIP dari satu sumber: `toowl` untuk WordPress.org (hanya tool gratis, tanpa kode lisensi, karena WordPress.org melarang fitur terkunci) dan `toowl-pro` yang dibuka dengan kunci Gumroad yang sama dengan lisensi embed (satu tool, paket tema, atau semua tool). Kunci dicek dari server WordPress, lalu seminggu sekali.
+- Kode plugin berlisensi GPL-2.0-or-later (syarat WordPress.org). Link "Made with toowl" hanya muncul kalau pemilik situs menyalakannya.
+
 ## 2026-11-25 — Developer kit untuk pembeli luar negeri
 
 - **Developer kit** (`packages/_kits/`): `node packages/_kits/build.mjs <kit|all>` membangun ZIP siap jual berisi web component (build aplikasi Vite, wasm dan model AI sebagai file terpisah), API headless, tipe TypeScript, contoh HTML/React, README berbahasa Inggris, lisensi komersial dan semua notice pihak ketiga. Ada 7 kit tema (PDF, Office, Gambar, Video & Audio, Musik, Utilitas Developer, Islami), kit lengkap 72 tool, dan 20 komponen satuan.

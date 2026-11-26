@@ -1,0 +1,6 @@
+.toowl-block__card { display: flex; gap: 14px; align-items: flex-start; padding: 18px 20px; border: 1px solid #d4d4d8; border-radius: 12px; background: #0b0b0c; color: #f4f4f5; }
+.toowl-block__mark { flex: none; width: 36px; height: 36px; border-radius: 9px; display: grid; place-items: center; background: #c6f432; color: #0b0b0c; font-size: 16px; }
+.toowl-block__title { display: block; font-size: 16px; }
+.toowl-block__desc { margin: 4px 0 0; font-size: 13px; opacity: .8; }
+.toowl-block__hint { margin: 8px 0 0; font: 11px/1.4 ui-monospace, monospace; opacity: .55; text-transform: uppercase; letter-spacing: .04em; }
+.toowl-block .components-notice { margin: 10px 0 0; }
