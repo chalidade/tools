@@ -1,7 +1,7 @@
-import { config, t, clock, PRAYERS, FARD, prayerName, prayerArabic, mosqueNow, timesFor, nextPrayer, until, hijriText, gregText, applyTheme, translate, esc } from './common.js'
+import { config, t, clock, PRAYERS, FARD, IQAMAH, prayerName, prayerArabic, mosqueNow, timesFor, nextPrayer, until, hijriText, gregText, applyTheme, translate, esc } from './common.js'
 
 const $ = (id) => document.getElementById(id)
-applyTheme()
+applyTheme('display')
 translate()
 document.title = `${config.name} · ${t('Display', 'Layar')}`
 $('name').textContent = config.name
@@ -47,7 +47,7 @@ function phase(n, today) {
   for (const k of FARD) {
     const T = today[k]
     if (T == null) continue
-    const iq = Number(config.iqamah?.[k]) || 0
+    const iq = Number(IQAMAH[k]) || 0
     const end = T + iq
     if (n.min >= T && n.min < T + Math.min(D.adhan, iq || D.adhan)) return { kind: 'adhan', k, T }
     if (iq && n.min >= T + D.adhan && n.min < end) return { kind: 'iqamah', k, T, end }
@@ -86,7 +86,7 @@ function tick() {
   if (key !== lastKey) {
     lastKey = key
     $('times').innerHTML = PRAYERS.map((k) => {
-      const iq = config.iqamah?.[k]
+      const iq = IQAMAH[k]
       const ar = prayerArabic(k, listDay)
       return `<div class="t${on === k ? ' on' : !ahead && list[k] <= n.min ? ' past' : ''}">
         <p class="n">${esc(prayerName(k, listDay))}${ar ? `<span class="a" lang="ar" dir="rtl" aria-hidden="true">${ar}</span>` : ''}</p>

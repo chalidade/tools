@@ -7,25 +7,35 @@ export default {
   /** Interface language: 'en' (English) or 'id' (Bahasa Indonesia). */
   lang: 'en',
 
-  name: 'Masjid Al-Ikhlas',
+  /** The look of the site: 'bold' (dark, large type, a row of arches) or 'calm' (light, editorial). */
+  design: 'bold',
+  /** Shows a small Calm / Bold switch in the corner, for trying both. Keep it false on a live site. */
+  designSwitcher: false,
+
+  name: 'Al-Noor Mosque',
   tagline: 'A home for prayer, learning and community.',
   /** Shown in the footer and the contact section. */
-  address: 'Jl. Contoh Raya No. 1, Jakarta 12345',
+  address: '24 Example Road, London E1 0AA',
   /** A link to your mosque on a map (opens in a new tab; nothing is embedded). */
-  mapUrl: 'https://www.openstreetmap.org/?mlat=-6.2088&mlon=106.8456#map=17/-6.2088/106.8456',
-
-  /** The mosque's position. Find it on any map: right-click → copy coordinates. */
-  location: { lat: -6.2088, lng: 106.8456, tz: 7 /* hours ahead of UTC */ },
+  mapUrl: 'https://www.openstreetmap.org/?mlat=51.5194&mlon=-0.0590#map=17/51.5194/-0.0590',
 
   /**
-   * Calculation method: 'kemenag' (Indonesia), 'jakim' (Malaysia), 'muis' (Singapore),
-   * 'mwl' (Muslim World League), 'isna' (North America), 'egypt', 'karachi', 'makkah' (Umm al-Qura).
+   * The mosque's position. Find it on any map: right-click → copy coordinates.
+   * tz is the time zone by name (it follows daylight saving), e.g. 'Europe/London',
+   * 'America/New_York', 'Asia/Jakarta', 'Asia/Kuala_Lumpur'. A fixed number of hours
+   * ahead of UTC also works, e.g. 7.
    */
-  method: 'kemenag',
+  location: { lat: 51.5194, lng: -0.059, tz: 'Europe/London' },
+
+  /**
+   * Calculation method: 'mwl' (Muslim World League), 'isna' (North America), 'egypt',
+   * 'karachi', 'makkah' (Umm al-Qura), 'kemenag' (Indonesia), 'jakim' (Malaysia), 'muis' (Singapore).
+   */
+  method: 'mwl',
   /** Asr: 1 = Shafi'i, Maliki, Hanbali; 2 = Hanafi. */
   asr: 1,
-  /** Fine-tune each time by whole minutes to match your local timetable, e.g. { subuh: 2 }. */
-  adjust: { subuh: 0, zuhur: 0, asar: 0, maghrib: 0, isya: 0 },
+  /** Fine-tune each time by whole minutes to match your local timetable, e.g. { fajr: 2 }. */
+  adjust: { fajr: 0, dhuhr: 0, asr: 0, maghrib: 0, isha: 0 },
   /** Shift the Hijri date by whole days if your local moon sighting differs (−2 … 2). */
   hijriOffset: 0,
 
@@ -33,31 +43,31 @@ export default {
   arabic: true,
 
   /** Minutes from adhan to iqamah. Used on the home page and the TV display. */
-  iqamah: { subuh: 15, zuhur: 10, asar: 10, maghrib: 7, isya: 10 },
+  iqamah: { fajr: 20, dhuhr: 15, asr: 10, maghrib: 5, isha: 10 },
 
-  /** Friday prayer. The time follows Dhuhr unless you set a fixed one, e.g. '12:15'. */
+  /** Friday prayer. The time follows Dhuhr unless you set a fixed one, e.g. '13:00'. */
   jumuah: {
-    time: '',
+    time: '12:30',
     schedule: [
-      { date: '2026-11-27', khatib: 'Ust. Ahmad Fauzi', imam: 'Ust. Hasan' },
-      { date: '2026-12-04', khatib: 'Dr. Abdullah Rahman', imam: 'Ust. Hasan' },
-      { date: '2026-12-11', khatib: 'Ust. Muhammad Iqbal', imam: 'Ust. Yusuf' },
+      { date: '2026-11-27', khatib: 'Sheikh Ahmad Farid', imam: 'Imam Yusuf Rahman' },
+      { date: '2026-12-04', khatib: 'Dr. Abdullah Karim', imam: 'Imam Yusuf Rahman' },
+      { date: '2026-12-11', khatib: 'Ustadh Bilal Hassan', imam: 'Imam Idris Malik' },
     ],
   },
 
   /** Short notices: on the home page and scrolling along the bottom of the TV display. */
   announcements: [
-    'Ramadan programme registration is open at the secretariat.',
-    'Please keep the parking area clear for the ambulance on Fridays.',
-    'Community clean-up every first Sunday of the month after Subuh.',
+    'Ramadan programme registration is open at the office.',
+    'Please keep the car park entrance clear on Fridays.',
+    'Community clean-up on the first Sunday of every month, after Fajr.',
   ],
 
   /** Regular classes and events. */
   events: [
-    { title: 'Tafsir Al-Quran', speaker: 'Ust. Ahmad Fauzi', when: 'Every Tuesday', time: 'After Maghrib', tag: 'Weekly' },
-    { title: 'Fiqh of Daily Life', speaker: 'Dr. Abdullah Rahman', when: 'Every Thursday', time: 'After Isya', tag: 'Weekly' },
-    { title: 'Youth Halaqah', speaker: 'Remaja Masjid', when: 'Saturday', time: '16:00', tag: 'Youth' },
-    { title: 'Quran Class for Kids (TPQ)', speaker: 'TPQ Teachers', when: 'Mon – Fri', time: '15:30', tag: 'Kids' },
+    { title: 'Tafsir of the Quran', speaker: 'Sheikh Ahmad Farid', when: 'Every Tuesday', time: 'After Maghrib', tag: 'Weekly' },
+    { title: 'Fiqh of Daily Life', speaker: 'Dr. Abdullah Karim', when: 'Every Thursday', time: 'After Isha', tag: 'Weekly' },
+    { title: 'Youth Circle', speaker: 'Al-Noor Youth', when: 'Saturday', time: '16:00', tag: 'Youth' },
+    { title: 'Quran Class for Children', speaker: 'Our teachers', when: 'Mon – Fri', time: '17:00', tag: 'Children' },
   ],
 
   /** What the mosque offers. Icons: quran, kids, food, heart, mic, users, home, book. */
@@ -72,23 +82,29 @@ export default {
   donation: {
     text: 'Support the running costs of the mosque, the Quran school and our charity work.',
     accounts: [
-      { bank: 'Bank Name', number: '000 000 0000', holder: 'Masjid Al-Ikhlas' },
-      { bank: 'Another Bank', number: '111 111 1111', holder: 'Masjid Al-Ikhlas Zakat' },
+      { bank: 'Bank name', number: '00-00-00 0000 0000', holder: 'Al-Noor Mosque' },
+      { bank: 'Another bank', number: '11-11-11 1111 1111', holder: 'Al-Noor Mosque Zakat Fund' },
     ],
     /** An image of your QR payment code, or '' to hide it. */
     qr: 'assets/img/qr-placeholder.svg',
   },
 
+  /** Zakat calculator: your currency (ISO code) and a starting gold price per gram, which visitors can change. */
+  zakat: { currency: 'GBP', goldPricePerGram: '' },
+
   contact: {
-    phone: '+62 21 0000 0000',
-    whatsapp: '6281200000000', // country code + number, digits only
+    phone: '+44 20 0000 0000',
+    whatsapp: '447000000000', // country code + number, digits only
     email: 'info@example.org',
     instagram: '',
     youtube: '',
   },
 
-  /** Colors. primary = the arch, the donate band and the TV display; accent = small highlights. */
-  theme: { primary: '#12382d', accent: '#b5893c' },
+  /**
+   * Colors. Leave them empty to use each design's own palette, or set your own:
+   * primary = the main color (arches, dark bands, the TV display), accent = highlights.
+   */
+  theme: { primary: '', accent: '' },
 
   /** TV / screen display (display.html). */
   display: {

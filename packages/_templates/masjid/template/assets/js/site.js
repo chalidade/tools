@@ -1,4 +1,4 @@
-import { config, t, clock, PRAYERS, prayerName, prayerArabic, mosqueNow, timesFor, nextPrayer, until, hijriText, gregText, applyTheme, translate, esc, locale } from './common.js'
+import { config, t, clock, PRAYERS, IQAMAH, prayerName, prayerArabic, mosqueNow, timesFor, nextPrayer, until, hijriText, gregText, applyTheme, translate, esc, locale } from './common.js'
 
 const $ = (id) => document.getElementById(id)
 applyTheme()
@@ -6,7 +6,7 @@ translate()
 document.title = config.name
 
 // Identity
-for (const id of ['brand-name', 'name', 'foot-name']) $(id).textContent = config.name
+for (const id of ['brand-name', 'name', 'foot-name', 'foot-mark']) $(id).textContent = config.name
 $('tagline').textContent = config.tagline
 $('address').textContent = config.address
 $('map').href = config.mapUrl || '#'
@@ -34,7 +34,7 @@ function renderTimes() {
   $('hijri').textContent = hijriText(now.y, now.m, now.d)
   $('times-title').textContent = (next.tomorrow ? t('Tomorrow, ', 'Besok, ') : '') + gregText(day, { weekday: 'long', day: 'numeric', month: 'long' })
   $('times-grid').innerHTML = PRAYERS.map((k) => {
-    const iq = config.iqamah?.[k]
+    const iq = IQAMAH[k]
     const ar = prayerArabic(k, day)
     return `<div class="time${next.key === k ? ' is-next' : ''}${!next.tomorrow && list[k] <= now.min ? ' is-past' : ''}">
       <span class="t-name">${esc(prayerName(k, day))}${ar ? `<span class="t-ar" lang="ar" dir="rtl" aria-hidden="true">${ar}</span>` : ''}</span>
@@ -56,7 +56,9 @@ function tick() {
   $('next-ar').textContent = prayerArabic(next.key, day)
   $('next-time').textContent = clock(next.at)
   $('next-in').textContent = t(`in ${until(next.at, now.min)}`, `${until(next.at, now.min)} lagi`)
-  const iq = config.iqamah?.[next.key]
+  const left = Math.max(0, Math.round((next.at - now.min) * 60))
+  $('next-count').textContent = [Math.floor(left / 3600), Math.floor((left % 3600) / 60), left % 60].map((n) => String(n).padStart(2, '0')).join(':')
+  const iq = IQAMAH[next.key]
   $('next-iqamah').textContent = iq ? `${t('Iqamah', 'Iqamah')} ${clock(next.at + iq)}` : ''
   // A new prayer, sunrise passing or a new day: redraw the table.
   const key = `${next.key}${next.tomorrow}${now.d}${now.min >= timesFor(now.y, now.m, now.d).terbit}`
@@ -69,6 +71,10 @@ setInterval(tick, 1000)
 const notices = config.announcements ?? []
 $('announce-wrap').hidden = !notices.length
 $('notices').innerHTML = notices.map((n) => `<li>${esc(n)}</li>`).join('')
+// The same notices as a moving band; the list is repeated so the loop has no gap.
+$('marquee').hidden = !notices.length
+$('marquee-track').innerHTML = `<div>${notices.map((n) => `<span>${esc(n)}</span>`).join('')}</div>`.repeat(2)
+$('marquee-track').style.setProperty('--dur', `${Math.max(30, notices.join(' ').length * 0.22)}s`)
 
 // Events
 $('events-list').innerHTML = (config.events ?? []).map((e) => `<article class="event">
@@ -119,17 +125,25 @@ $('programs').innerHTML = programs.map((p) => `<article class="program">
   <div><h3>${esc(p.title)}</h3><p>${esc(p.text)}</p></div>
 </article>`).join('')
 
-// Tools: each one is a toowl web component, loaded only when its tab opens.
-const FILES = { 'qibla-direction': 'arah-kiblat', 'hijri-calendar': 'hijriah', 'zakat-calculator': 'zakat', 'tasbih-counter': 'tasbih' }
+// Tools. The Qibla compass and the zakat calculator are the template's own (tools.js);
+// the Hijri calendar and the tasbih are toowl web components. Each loads when its tab opens.
+const ELEMENTS = { 'hijri-calendar': 'hijriah', 'tasbih-counter': 'tasbih' }
 async function openTool(tag) {
   for (const b of $('tool-tabs').children) b.setAttribute('aria-selected', String(b.dataset.tool === tag))
-  await import(`../toowl/elements/${FILES[tag]}.js`)
-  $('tool-stage').innerHTML = `<${tag} theme="light" lang="${config.lang === 'id' ? 'id' : 'en'}"></${tag}>`
+  const stage = $('tool-stage')
+  stage.dataset.tool = tag
+  if (ELEMENTS[tag]) {
+    await import(`../toowl/elements/${ELEMENTS[tag]}.js`)
+    stage.innerHTML = `<${tag} theme="light" lang="${config.lang === 'id' ? 'id' : 'en'}"></${tag}>`
+  } else {
+    const tools = await import('./tools.js')
+    ;(tag === 'zakat' ? tools.zakatTool : tools.qiblaTool)(stage)
+  }
 }
 $('tool-tabs').onclick = (e) => { const b = e.target.closest('button'); if (b) openTool(b.dataset.tool) }
 // Load the first tool when the section comes into view.
 new IntersectionObserver((entries, io) => {
-  if (entries.some((e) => e.isIntersecting)) { io.disconnect(); openTool('qibla-direction') }
+  if (entries.some((e) => e.isIntersecting)) { io.disconnect(); openTool('qibla') }
 }, { rootMargin: '200px' }).observe($('tools'))
 
 // Donations

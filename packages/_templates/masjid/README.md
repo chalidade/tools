@@ -16,7 +16,13 @@ hosting and edit one file.
   with a countdown, rotating slides, a scrolling notice bar, and automatic
   adhan, iqamah-countdown and "prayer in progress" screens.
 
-Everything is in English or Bahasa Indonesia (one setting).
+Two designs are included, switched with one setting (`design` in `config.js`):
+
+- **bold**: dark emerald with a saffron accent, large condensed capitals, and
+  a row of arches for the day's prayers.
+- **calm**: light and editorial, with serif headings and fine rules.
+
+The text is in English or Bahasa Indonesia (one setting).
 
 ## Quick start
 
@@ -37,11 +43,13 @@ Every page reads `config.js`. The file is commented; the main settings are:
 | Setting | What it does |
 | --- | --- |
 | `lang` | `'en'` or `'id'` |
+| `design` | `'bold'` or `'calm'`. Add `?design=calm` (or `bold`) to any page address to preview the other one without editing the file; the choice is kept for that browser tab. |
+| `designSwitcher` | `true` shows a small Calm / Bold switch in the corner. Meant for trying the designs; keep it `false` on a live site. |
 | `name`, `tagline`, `address`, `mapUrl` | The mosque's identity. `mapUrl` is a plain link: no map is embedded, so no third-party scripts load. |
-| `location` | `lat`, `lng` (decimal degrees) and `tz` (hours ahead of UTC, e.g. 7 for Jakarta, 0 for London, -5 for New York in winter). |
-| `method` | `kemenag` (Indonesia), `jakim` (Malaysia), `muis` (Singapore), `mwl` (Muslim World League), `isna` (North America), `egypt`, `karachi`, `makkah` (Umm al-Qura). |
+| `location` | `lat`, `lng` (decimal degrees) and `tz`, the time zone by name, e.g. `'Europe/London'`, `'America/New_York'`, `'Asia/Jakarta'` (daylight saving is followed automatically). A fixed number of hours ahead of UTC also works. |
+| `method` | `mwl` (Muslim World League), `isna` (North America), `egypt`, `karachi`, `makkah` (Umm al-Qura), `kemenag` (Indonesia), `jakim` (Malaysia), `muis` (Singapore). |
 | `asr` | `1` for Shafi'i, Maliki and Hanbali, `2` for Hanafi. |
-| `adjust` | Minutes added to a time to match your local timetable exactly, e.g. `{ subuh: 2, isya: -1 }`. |
+| `adjust` | Minutes added to a time to match your local timetable exactly, e.g. `{ fajr: 2, isha: -1 }`. Prayers are named `fajr`, `dhuhr`, `asr`, `maghrib`, `isha`. |
 | `hijriOffset` | Shifts the Hijri date by whole days when your local moon sighting differs. |
 | `arabic` | `true` shows each prayer's name in Arabic beside it, `false` hides it. |
 | `iqamah` | Minutes from adhan to iqamah for each prayer. |
@@ -49,8 +57,9 @@ Every page reads `config.js`. The file is commented; the main settings are:
 | `announcements` | Short notices: on the home page and in the TV ticker. |
 | `events`, `programs` | Classes and activities. Program icons: `quran`, `kids`, `food`, `heart`, `mic`, `users`, `home`, `book`. |
 | `donation` | Text, bank accounts and a QR image path. Replace `assets/img/qr-placeholder.svg` with your QR code image. |
+| `zakat` | The zakat calculator's `currency` (ISO code such as `GBP`, `USD`, `EUR`, `IDR`) and an optional starting `goldPricePerGram`. |
 | `contact` | Phone, WhatsApp (digits with country code), email, Instagram, YouTube. Empty values are hidden. |
-| `theme` | `primary` (the arch, the donate band, the TV display) and `accent` (small highlights). |
+| `theme` | `primary` and `accent` colors. Leave them empty to use each design's own palette. |
 | `display` | TV settings: how long the adhan and "prayer in progress" screens stay up, slide timing, and the slides. |
 
 Daylight saving time: `tz` is a fixed offset. If your city changes its clocks,
@@ -76,8 +85,11 @@ you change `config.js`.
 
 ## Customizing
 
-- **Colors**: `theme` in `config.js`, or the variables at the top of
-  `assets/css/style.css` and `assets/css/display.css`.
+- **Design**: `design` in `config.js`. Each design is its own stylesheet:
+  `assets/css/bold.css` and `calm.css` for the website, `bold-display.css` and
+  `calm-display.css` for the TV display. You can delete the pair you don't use.
+- **Colors**: `theme` in `config.js`, or the variables at the top of the
+  design's stylesheet.
 - **Logo**: replace `assets/img/logo.svg` (any square image works; update the
   `<img>` tags if you use PNG). On the TV display it sits on a light tab, so a
   dark logo stays readable.
@@ -86,9 +98,9 @@ you change `config.js`.
 - **Text**: section titles are in the HTML as `data-t="English|Indonesia"`.
 - **Sections**: delete a `<section>` from `index.html` to remove it; empty lists
   in `config.js` hide their sections too.
-- **Fonts**: Newsreader (headings), Geist (text and numbers) and Amiri (Arabic)
-  are included in `assets/fonts`, all under the SIL Open Font License. Nothing
-  is loaded from a font service.
+- **Fonts**: Archivo (bold design), Newsreader (calm design), Geist (text) and
+  Amiri (Arabic) are included in `assets/fonts`, all under the SIL Open Font
+  License. Nothing is loaded from a font service.
 
 ## How prayer times are calculated
 
@@ -98,18 +110,21 @@ of the chosen method. Results usually match official timetables within a minute
 or two; use `adjust` to match yours exactly. Hijri dates use the Umm al-Qura
 calendar built into the browser, adjustable with `hijriOffset`.
 
-The qibla compass uses the phone's orientation sensor, which needs HTTPS. The
-zakat calculator and the other tools run entirely in the visitor's browser.
+The Qibla tool shows the direction from the mosque, or from the visitor's own
+position; its live compass uses the phone's orientation sensor, which needs
+HTTPS. The zakat calculator works out 2.5% of net wealth once it reaches the
+nisab (85 g of gold at the price entered). Every tool runs entirely in the
+visitor's browser.
 
 ## Files
 
 ```
 index.html, timetable.html, display.html
 config.js                 your settings
-assets/css/               styles
+assets/css/               bold.css, calm.css (website), bold-display.css, calm-display.css (TV)
 assets/js/                page scripts (plain JavaScript modules, no build step)
 assets/img/               logo, QR placeholder
-assets/fonts/             Newsreader, Geist, Amiri (OFL) and their licenses
+assets/fonts/             Archivo, Newsreader, Geist, Amiri (OFL) and their licenses
 assets/toowl/             prayer-time engine and tool components (toowl Islamic Kit)
 ```
 

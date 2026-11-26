@@ -28,9 +28,32 @@ const ARABIC = { imsak: 'الإمساك', subuh: 'الفجر', terbit: 'الشر
 export const prayerArabic = (k, date) => (config.arabic === false ? '' : ARABIC[k === 'zuhur' && date && date.getDay() === 5 ? 'jumuah' : k] ?? '')
 export const prayerName = (k, date) => (k === 'zuhur' && date && date.getDay() === 5 ? NAMES.jumuah : NAMES[k])[L]
 
+/** config.js may name prayers in English (fajr, sunrise, dhuhr, asr, maghrib, isha); the engine's own keys are Indonesian. */
+const ALIAS = { fajr: 'subuh', sunrise: 'terbit', dhuhr: 'zuhur', zuhr: 'zuhur', asr: 'asar', isha: 'isya' }
+const keys = (o) => Object.fromEntries(Object.entries(o ?? {}).map(([k, v]) => [ALIAS[k] ?? k, v]))
+/** Minutes from adhan to iqamah, by prayer. */
+export const IQAMAH = keys(config.iqamah)
+const ADJUST = keys(config.adjust)
+
+/**
+ * Hours ahead of UTC at the mosque on `date`. location.tz is either a number
+ * or a zone name such as 'Europe/London', which follows daylight saving.
+ */
+function tzHours(date = new Date()) {
+  const tz = config.location.tz
+  if (typeof tz !== 'string') return Number(tz) || 0
+  try {
+    const f = new Intl.DateTimeFormat('en-US', { timeZone: tz, hourCycle: 'h23', year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })
+    const p = Object.fromEntries(f.formatToParts(date).map((x) => [x.type, Number(x.value)]))
+    return (Date.UTC(p.year, p.month - 1, p.day, p.hour, p.minute, p.second) - Math.floor(date.getTime() / 1000) * 1000) / 3600000
+  } catch {
+    return 0
+  }
+}
+
 /** Now, as seen at the mosque (its time zone, not the visitor's). */
 export function mosqueNow() {
-  const tz = config.location.tz
+  const tz = tzHours()
   const d = new Date(Date.now() + tz * 3600000)
   return {
     y: d.getUTCFullYear(),
@@ -48,9 +71,9 @@ const method = () => ({ ...(METHODS[config.method] ?? METHODS.kemenag), asr: con
 
 /** Times for a day, minutes after midnight, with the config's adjustments. */
 export function timesFor(y, m, d) {
-  const raw = prayerTimes(y, m, d, config.location, method())
-  const out = { ...raw }
-  for (const [k, v] of Object.entries(config.adjust ?? {})) if (out[k] != null) out[k] += Number(v) || 0
+  const place = { ...config.location, tz: tzHours(new Date(Date.UTC(y, m - 1, d, 12))) }
+  const out = { ...prayerTimes(y, m, d, place, method()) }
+  for (const [k, v] of Object.entries(ADJUST)) if (out[k] != null) out[k] += Number(v) || 0
   const day = new Date(y, m - 1, d)
   if (day.getDay() === 5 && /^\d{1,2}:\d{2}$/.test(config.jumuah?.time ?? '')) {
     const [h, mm] = config.jumuah.time.split(':').map(Number)
@@ -90,12 +113,42 @@ export function hijriText(y, m, d) {
 export const gregText = (day, opts = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) =>
   day.toLocaleDateString(locale, opts)
 
-/** Apply the theme colors and the page language. */
-export function applyTheme() {
+const DESIGNS = ['calm', 'bold']
+/** The design in use: config.design, or ?design=bold to preview one (remembered for the browser tab). */
+export const design = (() => {
+  try {
+    const q = new URLSearchParams(location.search).get('design')
+    if (DESIGNS.includes(q)) sessionStorage.setItem('masjid-design', q)
+    const kept = sessionStorage.getItem('masjid-design')
+    if (DESIGNS.includes(kept)) return kept
+  } catch {}
+  return DESIGNS.includes(config.design) ? config.design : 'calm'
+})()
+
+/** Load the design's stylesheet, then apply the config's colors and the page language. */
+export function applyTheme(kind = 'site') {
   const root = document.documentElement
   root.lang = L ? 'id' : 'en'
   if (config.theme?.primary) root.style.setProperty('--primary', config.theme.primary)
   if (config.theme?.accent) root.style.setProperty('--accent', config.theme.accent)
+  // The page stays hidden until its stylesheet is in (see the <style> in each page's head).
+  const link = document.createElement('link')
+  link.rel = 'stylesheet'
+  link.href = `assets/css/${design}${kind === 'display' ? '-display' : ''}.css`
+  link.onload = link.onerror = () => (root.dataset.design = design)
+  document.head.append(link)
+  if (config.designSwitcher) switcher()
+}
+
+/** A small Calm / Bold switch for trying the designs (config.designSwitcher). */
+function switcher() {
+  const el = document.createElement('div')
+  el.className = 'design-switch'
+  const url = (d) => { const u = new URL(location.href); u.searchParams.set('design', d); return u.search + u.hash }
+  el.innerHTML =
+    '<style>.design-switch{position:fixed;left:16px;bottom:16px;z-index:50;display:flex;gap:2px;padding:3px;border-radius:999px;background:#141815;font:500 12px/1 system-ui,sans-serif;box-shadow:0 8px 24px -8px rgb(0 0 0/.5);transition:opacity .3s}.design-switch a{padding:8px 13px;border-radius:999px;color:#f5f3ee;text-decoration:none;opacity:.65}.design-switch a[aria-current]{background:#f5f3ee;color:#141815;opacity:1}body.idle .design-switch{opacity:0}@media print{.design-switch{display:none}}</style>' +
+    DESIGNS.map((d) => `<a href="${esc(url(d))}"${d === design ? ' aria-current="true"' : ''}>${d[0].toUpperCase() + d.slice(1)}</a>`).join('')
+  document.body.append(el)
 }
 
 /** Fill every [data-t] element with its translation: data-t="English|Indonesia". */

@@ -53,7 +53,11 @@ function site(target) {
 }
 
 if (demo) {
-  site(resolve(ROOT, demo))
+  const target = resolve(ROOT, demo)
+  site(target)
+  // The live demo lets visitors try both designs.
+  const config = join(target, 'config.js')
+  writeFileSync(config, readFileSync(config, 'utf8').replace('designSwitcher: false', 'designSwitcher: true'))
   console.log(`${name} demo → ${demo}`)
   process.exit(0)
 }

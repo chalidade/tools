@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Timetable</title>
   <link rel="icon" href="assets/img/logo.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="assets/css/style.css" />
-  <link rel="stylesheet" href="assets/css/timetable.css" />
+  <style>html:not([data-design]) body { visibility: hidden }</style>
   <script>
     // ES modules don't load from file://. Explain instead of showing a blank page.
     if (location.protocol === 'file:') addEventListener('DOMContentLoaded', () => {
+      document.documentElement.dataset.design = 'calm'
       document.body.insertAdjacentHTML('afterbegin', '<div style="position:fixed;inset:0;z-index:99;display:grid;place-items:center;padding:24px;background:#f5f3ee;color:#141815;font:16px/1.6 system-ui,sans-serif;text-align:center"><div style="max-width:560px"><h2 style="margin:0 0 12px">Open this page from a web server</h2><p>Browsers block the scripts of a page opened straight from a folder. Upload the files to your hosting, or run a local server in this folder (see documentation/index.html → Quick start).</p></div></div>')
     })
   </script>
