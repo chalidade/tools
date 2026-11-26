@@ -16,7 +16,7 @@
 //                                        assets/ (wasm), loaded from the plugin folder
 //   assets/tools.json                    tag, titles, descriptions, free or not
 //   assets/products.json (Pro)           Gumroad products and the tools each opens
-//   readme.txt, LICENSE.txt (GPL-2.0-or-later), THIRD-PARTY-NOTICES.md
+//   readme.txt, LICENSE.txt (GPL-2.0-or-later), THIRD-PARTY-NOTICES.txt
 //
 // Which tools go in, and which are free: config.mjs. Product scopes come from
 // LICENSE.gumroad in src/lib/license.ts, resolved against the registry, so a
@@ -41,6 +41,7 @@ const read = (p) => readFileSync(p, 'utf8')
 const EDITIONS = {
   optimizer: {
     slug: 'toowl-image-optimizer',
+    uri: 'https://toowl.my.id/compress-image/',
     name: 'toowl Image Optimizer',
     tools: [],
     readme: 'readme-optimizer.txt',
@@ -50,6 +51,7 @@ const EDITIONS = {
   },
   free: {
     slug: 'toowl',
+    uri: 'https://toowl.my.id/embed/',
     name: 'toowl – Browser Tools',
     tools: FREE,
     description: 'Browser-only tools as blocks and shortcodes: files never leave the visitor\'s device.',
@@ -60,6 +62,7 @@ const EDITIONS = {
   },
   pro: {
     slug: 'toowl-pro',
+    uri: 'https://toowl.my.id/embed/',
     name: 'toowl Pro – Browser Tools',
     tools: TOOLS,
     description: 'Browser-only tools as blocks and shortcodes: files never leave the visitor\'s device. A license key opens the paid tools.',
@@ -277,6 +280,7 @@ async function buildEdition(id, site) {
   })
   const vars = {
     PLUGIN_NAME: ed.name,
+    PLUGIN_URI: ed.uri,
     PLUGIN_DESCRIPTION: ed.description,
     SHORT_DESCRIPTION: ed.description,
     VERSION,
@@ -325,7 +329,7 @@ async function buildEdition(id, site) {
   }
 
   await buildElements(ed.tools, join(stage, 'assets', 'dist'))
-  writeFileSync(join(stage, 'THIRD-PARTY-NOTICES.md'), notices([...ed.tools, 'compress-image', 'convert-image']))
+  writeFileSync(join(stage, 'THIRD-PARTY-NOTICES.txt'), notices([...ed.tools, 'compress-image', 'convert-image']))
 
   mkdirSync(OUT, { recursive: true })
   const zip = join(OUT, `${ed.slug}-${VERSION}.zip`)

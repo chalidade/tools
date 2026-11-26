@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name:       {{PLUGIN_NAME}}
- * Plugin URI:        https://toowl.my.id/
+ * Plugin URI:        {{PLUGIN_URI}}
  * Description:       {{PLUGIN_DESCRIPTION}}
  * Version:           {{VERSION}}
  * Requires at least: {{REQUIRES_WP}}

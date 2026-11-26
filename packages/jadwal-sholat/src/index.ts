@@ -15,6 +15,8 @@ export {
   ISHA_ANGLE,
   DHUHA_ANGLE,
   IHTIYAT,
+  METHODS,
+  type Method,
   type Place,
   type PrayerKey,
   type PrayerTimes,

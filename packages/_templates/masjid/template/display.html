@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Display</title>
+  <link rel="icon" href="assets/img/logo.svg" type="image/svg+xml" />
+  <link rel="preload" href="assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <style>html:not([data-design]) body { visibility: hidden }</style>
+  <script>
+    // ES modules don't load from file://. Explain instead of showing a blank page.
+    if (location.protocol === 'file:') addEventListener('DOMContentLoaded', () => {
+      document.documentElement.dataset.design = 'calm'
+      document.body.insertAdjacentHTML('afterbegin', '<div style="position:fixed;inset:0;z-index:99;display:grid;place-items:center;padding:24px;background:#f5f3ee;color:#141815;font:16px/1.6 system-ui,sans-serif;text-align:center"><div style="max-width:560px"><h2 style="margin:0 0 12px">Open this page from a web server</h2><p>Browsers block the scripts of a page opened straight from a folder. Upload the files to your hosting, or run a local server in this folder (see documentation/index.html → Quick start).</p></div></div>')
+    })
+  </script>
+</head>
+<body>
+  <div class="screen" id="screen">
+    <header class="top">
+      <div class="id">
+        <img src="assets/img/logo.svg" alt="" />
+        <h1 id="name"></h1>
+      </div>
+      <p class="dates"><span id="greg"></span><span id="hijri"></span><span class="mini" id="mini"></span></p>
+    </header>
+
+    <div class="body">
+      <div class="stage">
+        <section class="normal" id="normal">
+          <p class="hm" id="clock"></p>
+          <p class="upnext"><span id="next-name"></span> <span class="in" id="next-in"></span></p>
+          <article class="slide" id="slide"><p class="quote" id="quote"></p><p class="source" id="source"></p></article>
+        </section>
+
+        <section class="full" id="adhan" hidden>
+          <p class="label" data-t="It is time for|Telah masuk waktu"></p>
+          <p class="big"><span id="adhan-name"></span><span class="ar" id="adhan-ar" lang="ar" dir="rtl" aria-hidden="true"></span></p>
+          <p class="sub" data-t="Listen to the adhan and answer it|Dengarkan dan jawablah adzan"></p>
+        </section>
+
+        <section class="full" id="iqamah" hidden>
+          <p class="label" id="iqamah-label"></p>
+          <p class="count" id="iqamah-count"></p>
+          <p class="sub" data-t="Straighten and close the rows · Silence your phone|Luruskan dan rapatkan shaf · Matikan nada HP"></p>
+        </section>
+
+        <section class="full" id="praying" hidden>
+          <p class="quiet" data-t="Prayer in progress|Sholat sedang berlangsung"></p>
+        </section>
+      </div>
+
+      <section class="times" id="times"></section>
+    </div>
+
+    <footer class="ticker"><div class="track" id="ticker"></div></footer>
+  </div>
+  <button class="fs" id="fs" data-t="Full screen|Layar penuh"></button>
+  <script type="module" src="assets/js/display.js"></script>
+</body>
+</html>

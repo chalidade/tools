@@ -10,6 +10,8 @@ const assert = <T extends true>() => undefined as unknown as T
 assert<Same<Public.Place, Source.Place>>()
 assert<Same<Public.PrayerKey, Source.PrayerKey>>()
 assert<Same<Public.PrayerTimes, Source.PrayerTimes>>()
+assert<Same<Public.Method, Source.Method>>()
+assert<Same<typeof Public.METHODS, typeof Source.METHODS>>()
 assert<Same<typeof Public.prayerTimes, typeof Source.prayerTimes>>()
 assert<Same<typeof Public.clock, typeof Source.clock>>()
 assert<Same<typeof Public.daysInMonth, typeof Source.daysInMonth>>()

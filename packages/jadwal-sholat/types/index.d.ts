@@ -27,8 +27,34 @@ export declare const DHUHA_ANGLE = 4.5
 /** Safety margin (ihtiyat) in minutes added to each time. */
 export declare const IHTIYAT = 2
 
-/** Prayer times for a calendar day (month 1–12) at a place. */
-export declare function prayerTimes(y: number, m: number, d: number, p: Place): PrayerTimes
+/** A calculation method: twilight angles, Asr shadow length and safety margin. */
+export interface Method {
+  /** Sun depression for Fajr, degrees below the horizon. */
+  fajr: number
+  /** Sun depression for Isha, degrees below the horizon (ignored when ishaMinutes is set). */
+  isha: number
+  /** Isha a fixed number of minutes after Maghrib (Umm al-Qura). */
+  ishaMinutes?: number
+  /** Asr shadow length: 1 (Shafi'i, Maliki, Hanbali) or 2 (Hanafi). Default 1. */
+  asr?: 1 | 2
+  /** Safety margin in minutes added to each time. Default 0. */
+  ihtiyat?: number
+}
+
+/** Common methods: Kemenag RI (default), JAKIM, MUIS, Muslim World League, ISNA, Egypt, Karachi, Umm al-Qura. */
+export declare const METHODS: {
+  kemenag: { fajr: number; isha: number; ihtiyat: number }
+  jakim: { fajr: number; isha: number; ihtiyat: number }
+  muis: { fajr: number; isha: number; ihtiyat: number }
+  mwl: { fajr: number; isha: number }
+  isna: { fajr: number; isha: number }
+  egypt: { fajr: number; isha: number }
+  karachi: { fajr: number; isha: number }
+  makkah: { fajr: number; isha: number; ishaMinutes: number }
+}
+
+/** Prayer times for a calendar day (month 1–12) at a place; the method defaults to Kemenag RI. */
+export declare function prayerTimes(y: number, m: number, d: number, p: Place, method?: Method): PrayerTimes
 /** "04:07" for minutes after midnight, rounded to the minute; "–" for null. */
 export declare function clock(min: number | null): string
 /** Days in a month (1–12). */

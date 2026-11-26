@@ -39,6 +39,8 @@ jobs:
 
       # The CodeCanyon live preview of the developer kits (no store links), at /kit-preview/.
       - run: node packages/_kits/build.mjs --preview=dist/kit-preview
+      # Live demos of the site templates sold on Codester, at /templates/<name>/.
+      - run: node packages/_templates/build.mjs masjid --demo=dist/templates/masjid
 
       # include-hidden-files: ships public/.well-known/assetlinks.json, which the
       # Play Store app (TWA) needs to open without a browser address bar.

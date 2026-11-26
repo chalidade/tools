@@ -121,6 +121,12 @@ Media Library yang asli perlu dicoba sekali di WordPress sungguhan.
 
 ## Rilis ke WordPress.org
 
+**Status (2026-11-26): ditunda.** `toowl-image-optimizer` ditolak (guideline 18,
+kategori image optimization sudah penuh) dan tidak boleh disubmit ulang. Pemilik
+memilih tidak lewat WordPress.org dulu: Pro dijual di Gumroad, ZIP gratis bisa
+dibagikan langsung. Akun WordPress.org: `salingjaga`, kepemilikan toowl.my.id
+sudah diverifikasi lewat TXT `wordpressorg-salingjaga-verification`.
+
 ```bash
 node packages/_wordpress/build.mjs          # ZIP ke out/
 node packages/_wordpress/wporg/render.mjs   # banner, ikon, screenshot ke out/wporg/<slug>/
