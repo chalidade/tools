@@ -28,6 +28,8 @@ import {
   Calculator,
   Tags,
   Truck,
+  Barcode as BarcodeIcon,
+  Copyright,
   Landmark,
   MessageCircle,
   Percent,
@@ -1828,6 +1830,34 @@ const ALL_TOOLS: Tool[] = [
     component: lazy(() => import('./label-pengiriman/LabelPengiriman')),
     faq: [
       { q: 'Bagaimana mencetak banyak label alamat sekaligus?', a: 'Isi data pengirim, tempel daftar penerima dari Excel (nama, telepon, alamat), pilih ukuran label, lalu unduh PDF dan cetak dengan skala 100%.' },
+    ],
+  },
+  {
+    slug: 'watermark-foto',
+    category: 'media',
+    keywords: ['watermark', 'watermark foto', 'tanda air', 'logo', 'foto produk', 'olshop', 'toko online', 'massal', 'banyak foto', 'batch', 'hak cipta', 'copyright', 'bulk', 'product photos', 'zip'],
+    title: 'Watermark Foto Massal',
+    description: 'Pasang logo atau teks toko di banyak foto produk sekaligus: pilih posisi atau pola berulang, ukuran, dan opasitas, lihat pratinjau, lalu unduh semuanya sebagai ZIP tanpa metadata.',
+    icon: Copyright,
+    formats: 'Banyak foto → JPG / PNG / ZIP',
+    badge: 'Baru',
+    component: lazy(() => import('./watermark-foto/WatermarkFoto')),
+    faq: [
+      { q: 'Bagaimana memberi watermark pada banyak foto sekaligus?', a: 'Tarik semua foto produk, ketik teks toko atau pilih logo, atur posisi, ukuran, dan opasitas, lalu klik proses. Hasilnya diunduh sebagai satu ZIP. Semua berjalan di browser, tanpa upload.' },
+    ],
+  },
+  {
+    slug: 'barcode',
+    category: 'productivity',
+    keywords: ['barcode', 'generator barcode', 'kode batang', 'ean13', 'ean-13', 'ean8', 'upc', 'upc-a', 'code128', 'code 128', 'code39', 'code 39', 'label produk', 'sku', 'stiker', 'cetak barcode', 'toko', 'barcode generator', 'label sheet'],
+    title: 'Generator Barcode',
+    description: 'Buat barcode EAN-13, EAN-8, UPC-A, Code 128, dan Code 39 dengan cek digit otomatis, unduh PNG atau SVG, atau cetak banyak label sekaligus dalam lembar A4.',
+    icon: BarcodeIcon,
+    formats: 'Nomor → PNG / SVG / PDF',
+    badge: 'Baru',
+    component: lazy(() => import('./barcode/Barcode')),
+    faq: [
+      { q: 'Bagaimana membuat barcode EAN-13 untuk produk?', a: 'Pilih EAN-13, ketik 12 atau 13 angka (digit cek dihitung otomatis), lalu unduh PNG atau SVG. Untuk banyak produk, tulis satu nomor per baris dan unduh lembar label PDF.' },
     ],
   },
   {

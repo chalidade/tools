@@ -502,6 +502,24 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
       { q: 'How do I print many address labels at once?', a: 'Fill in the sender, paste the recipient list from Excel (name, phone, address), pick a label size, then download the PDF and print at 100% scale.' },
     ],
   },
+  'watermark-foto': {
+    title: 'Bulk Photo Watermark',
+    description: 'Put a logo or shop name on many product photos at once: pick a position or a repeating pattern, size and opacity, preview it, then download everything as a metadata-free ZIP.',
+    formats: 'Many photos → JPG / PNG / ZIP',
+    keywords: ['watermark', 'photo watermark', 'logo', 'product photos', 'bulk', 'batch', 'copyright', 'ecommerce', 'zip'],
+    faq: [
+      { q: 'How do I watermark many photos at once?', a: 'Drop all the product photos, type your shop name or pick a logo, set position, size and opacity, then run it. The result downloads as one ZIP. Everything runs in your browser, nothing is uploaded.' },
+    ],
+  },
+  barcode: {
+    title: 'Barcode Generator',
+    description: 'Make EAN-13, EAN-8, UPC-A, Code 128 and Code 39 barcodes with an automatic check digit, download PNG or SVG, or print many labels at once on an A4 sheet.',
+    formats: 'Number → PNG / SVG / PDF',
+    keywords: ['barcode', 'barcode generator', 'ean13', 'ean-13', 'ean8', 'upc', 'upc-a', 'code128', 'code 128', 'code39', 'code 39', 'product label', 'sku', 'sticker', 'label sheet'],
+    faq: [
+      { q: 'How do I make an EAN-13 barcode for a product?', a: 'Pick EAN-13, type 12 or 13 digits (the check digit is calculated for you), then download PNG or SVG. For many products, write one number per line and download the PDF label sheet.' },
+    ],
+  },
   'grid-instagram': {
     title: 'Split Photo for Grid & Carousel',
     description: 'Cut one photo into 3, 6 or 9 tiles for an Instagram feed, or into seamless carousel slides, with the upload order shown.',
