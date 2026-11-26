@@ -22,3 +22,6 @@ android/*
 # Developer kits: built ZIPs and their scratch folder
 packages/_kits/out/
 packages/_kits/.work/
+# WordPress plugin: built ZIPs and their scratch folder
+packages/_wordpress/out/
+packages/_wordpress/.work/
