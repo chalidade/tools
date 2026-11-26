@@ -1,0 +1,69 @@
+<!doctype html>
+<!-- WordPress.org listing art (banner, icon) for the toowl plugins, rendered by
+     render.mjs with headless Chrome: art.html?plugin=<slug>&kind=banner|icon.
+     Fonts and the logo come from this repo; no network. -->
+<html><head><meta charset="utf-8">
+<style>
+@font-face{font-family:Geist;src:url(../../../src/assets/fonts/geist-latin.woff2) format("woff2");font-weight:100 900}
+@font-face{font-family:"Geist Mono";src:url(../../../src/assets/fonts/geist-mono-latin.woff2) format("woff2");font-weight:100 900}
+*{margin:0;box-sizing:border-box}
+html,body{overflow:hidden;background:#09090a;color:#ededee;font-family:Geist,sans-serif}
+.dots{position:absolute;inset:0;background-image:radial-gradient(#ffffff1c 1.5px,transparent 1.5px);background-size:28px 28px;mask-image:radial-gradient(900px 420px at 80% 50%,#000,transparent 75%)}
+/* banner: 1544×500, everything in px of that size; the 772 one is the same page scaled */
+.banner{position:relative;width:1544px;height:500px}
+.banner .c{position:absolute;left:96px;top:0;bottom:0;display:flex;flex-direction:column;justify-content:center;width:760px}
+.banner .logo{width:92px;fill:#ededee}
+.banner h1{font-size:62px;font-weight:600;letter-spacing:-.04em;line-height:1.05;margin-top:36px}
+.banner h1 span{color:#c6ff3a}
+.banner p{margin-top:18px;font-size:25px;line-height:1.4;color:#8e8e93}
+.card{position:absolute;right:96px;top:50%;transform:translateY(-50%);width:470px;border:1px solid #ffffff1f;background:#171718;border-radius:26px;padding:26px;box-shadow:0 40px 90px #000a}
+.lbl{font:500 14px "Geist Mono",monospace;letter-spacing:.08em;text-transform:uppercase;color:#8e8e93}
+.row{display:flex;align-items:center;gap:16px;padding:14px 0;font-size:22px;font-weight:500;border-bottom:1px solid #ffffff12}
+.row:last-child{border:0}
+.row b{width:40px;height:40px;border-radius:11px;border:1px solid #ffffff17;background:#09090a;flex:none}
+.row.on b{background:#c6ff3a;border-color:#c6ff3a}
+.row small{margin-left:auto;font:15px "Geist Mono",monospace;color:#8e8e93}
+.size{display:flex;align-items:baseline;gap:16px;margin-top:18px;font-weight:600;letter-spacing:-.03em}
+.size span{white-space:nowrap}
+.size .a{font-size:44px;color:#8e8e93;text-decoration:line-through;text-decoration-thickness:3px}
+.size .b{font-size:64px}
+.size i{font-style:normal;font-size:34px;color:#8e8e93}
+.bar{height:10px;border-radius:5px;background:#ffffff14;margin-top:20px;overflow:hidden}
+.bar u{display:block;height:100%;width:5%;background:#c6ff3a}
+.pct{margin-top:16px;font:500 18px "Geist Mono",monospace;color:#c6ff3a}
+/* icon: 256×256 (128 is scaled) */
+.icon{position:relative;width:256px;height:256px;display:grid;place-items:center;background:#09090a}
+.icon .logo{width:150px;fill:#c6ff3a}
+.icon .badge{position:absolute;right:26px;bottom:26px;width:64px;height:64px;border-radius:18px;background:#c6ff3a;display:grid;place-items:center}
+.icon .badge svg{width:36px;height:36px;stroke:#09090a;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.icon.opt .logo{width:132px;margin:-26px 0 0 -26px}
+</style></head><body>
+<script>
+const q = new URLSearchParams(location.search)
+const plugin = q.get('plugin') || 'toowl'
+const kind = q.get('kind') || 'banner'
+const logo = (cls) => `<svg class="${cls}" viewBox="0 0 1026 912"><path fill-rule="evenodd" d="${q.get('logo') || ''}"/></svg>`
+const TEXT = {
+  toowl: {
+    h: 'Tools for your visitors,<br><span>right in their browser.</span>',
+    p: 'QR codes, prayer times, calculators and more, as blocks and shortcodes. Files never leave the visitor’s device.',
+    card: `<div class="lbl">toowl blocks</div>
+      <div class="row on"><b></b>QR Generator<small>free</small></div>
+      <div class="row"><b></b>Prayer Times<small>free</small></div>
+      <div class="row"><b></b>Hijri Converter<small>free</small></div>
+      <div class="row"><b></b>Password Generator<small>free</small></div>`,
+  },
+  'toowl-image-optimizer': {
+    h: 'Smaller images,<br><span>before they upload.</span>',
+    p: 'Resized, compressed and stripped of GPS data in your browser.<br>No API, no quota, no third-party server.',
+    card: `<div class="lbl">photo.jpg · 4000 × 3000</div>
+      <div class="size"><span class="a">5.9 MB</span><i>→</i><span class="b">301 KB</span></div>
+      <div class="bar"><u></u></div>
+      <div class="pct">−95% · 1920 × 1440 · EXIF removed</div>`,
+  },
+}[plugin]
+document.body.innerHTML = kind === 'icon'
+  ? `<div class="icon ${plugin === 'toowl' ? '' : 'opt'}">${logo('logo')}${plugin === 'toowl' ? '' : '<div class="badge"><svg viewBox="0 0 24 24"><path d="M4 16l4.5-4.5 3 3L16 10l4 4"/><rect x="3" y="4" width="18" height="16" rx="2"/></svg></div>'}</div>`
+  : `<div class="banner"><div class="dots"></div><div class="c">${logo('logo')}<h1>${TEXT.h}</h1><p>${TEXT.p}</p></div><div class="card">${TEXT.card}</div></div>`
+</script>
+</body></html>

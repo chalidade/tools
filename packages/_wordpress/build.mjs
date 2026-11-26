@@ -29,7 +29,7 @@ import { fileURLToPath } from 'node:url'
 import { build, createServer } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
-import { FREE, TOOLS, VERSION } from './config.mjs'
+import { CONTRIBUTORS, FREE, REQUIRES_WP, TESTED_UP_TO, TOOLS, VERSION } from './config.mjs'
 
 const HERE = dirname(fileURLToPath(import.meta.url))
 const PACKAGES = join(HERE, '..')
@@ -54,6 +54,7 @@ const EDITIONS = {
     tools: FREE,
     description: 'Browser-only tools as blocks and shortcodes: files never leave the visitor\'s device.',
     readme: 'readme.txt',
+    tags: 'qr code, prayer times, image optimization, password generator, tools',
     text: '**toowl Pro** adds PDF, image, Office, video and audio tools, opened with a license key for one tool, a theme pack or all tools: https://toowl.my.id/embed/',
     external: 'This plugin connects to no external service. The tools run in the visitor\'s browser from files in this plugin\'s folder.',
   },
@@ -63,6 +64,7 @@ const EDITIONS = {
     tools: TOOLS,
     description: 'Browser-only tools as blocks and shortcodes: files never leave the visitor\'s device. A license key opens the paid tools.',
     readme: 'readme.txt',
+    tags: 'pdf, compress images, remove background, qr code, tools',
     text: 'The free tools always work. The others open with a license key from https://toowl.my.id/embed/: one tool, a theme pack, or all tools. Enter it in Settings → toowl.',
     external: 'To check a license key, this plugin sends the key and a toowl product id to Gumroad (https://api.gumroad.com/v2/licenses/verify), from your server, when you save the key and once a week after. Nothing about your visitors is sent. Gumroad terms: https://gumroad.com/terms, privacy: https://gumroad.com/privacy',
   },
@@ -229,6 +231,19 @@ function inScope(scope, tool) {
   return !!(scope.categories?.includes(tool.category) || scope.tools?.includes(tool.slug))
 }
 
+/**
+ * readme.txt "Screenshots": one line per wporg/<slug>/screenshot-N.png, its
+ * caption from screenshot-N.txt (WordPress.org shows the images from the
+ * plugin's SVN assets/ folder, matched by number).
+ */
+function screenshotsSection(slug) {
+  const dir = join(HERE, 'wporg', slug)
+  if (!existsSync(dir)) return ''
+  const shots = readdirSync(dir).filter((f) => /^screenshot-\d+\.txt$/.test(f)).sort((a, b) => parseInt(a.slice(11)) - parseInt(b.slice(11)))
+  if (!shots.length) return ''
+  return '== Screenshots ==\n\n' + shots.map((f, i) => `${i + 1}. ${read(join(dir, f)).trim()}`).join('\n') + '\n\n'
+}
+
 function filesIn(dir) {
   return readdirSync(dir).flatMap((f) => (statSync(join(dir, f)).isDirectory() ? filesIn(join(dir, f)) : [join(dir, f)]))
 }
@@ -265,6 +280,11 @@ async function buildEdition(id, site) {
     PLUGIN_DESCRIPTION: ed.description,
     SHORT_DESCRIPTION: ed.description,
     VERSION,
+    REQUIRES_WP,
+    TESTED_UP_TO,
+    CONTRIBUTORS,
+    TAGS: ed.tags ?? '',
+    SCREENSHOTS: screenshotsSection(ed.slug),
     EDITION: id,
     TEXT_DOMAIN: ed.slug,
     WIDER_PLUGINS: phpList(ORDER.slice(ORDER.indexOf(id) + 1)),

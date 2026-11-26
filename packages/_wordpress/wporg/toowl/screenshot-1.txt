@@ -1,0 +1,1 @@
+A QR code generator block on a page: links, text, Wi-Fi, WhatsApp, contacts; PNG or SVG download.

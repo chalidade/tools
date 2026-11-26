@@ -1,0 +1,1 @@
+Password generator in dark mode (each block can follow the visitor's theme or be set light or dark).
