@@ -1,6 +1,6 @@
 === {{PLUGIN_NAME}} ===
 Contributors: chalidade
-Tags: pdf, image compression, qr code, prayer times, tools
+Tags: image optimization, compress images, pdf, qr code, prayer times
 Requires at least: 6.5
 Tested up to: 6.8
 Requires PHP: 7.4
@@ -22,6 +22,10 @@ Tools in this plugin:
 
 * Block editor: open the block inserter, search "toowl", pick the tool.
 * Anywhere shortcodes work: `[toowl tool="{{FIRST_TOOL}}"]`. Options: `theme="auto|light|dark"`, `lang="en|id"` (default: your site language).
+
+**Image optimizer included**
+
+Images you upload (block editor, Media Library) are scaled down, re-encoded and stripped of GPS/camera data in your browser before they are sent, optionally as WebP; iPhone HEIC photos become JPEG. Images already in posts: "Compress with toowl" in the Image block toolbar. Settings → toowl.
 
 Each tool is a web component in a Shadow DOM, so your theme's CSS can't break it. Its JavaScript and WebAssembly are served from this plugin's own folder: no CDN, no third-party requests.
 

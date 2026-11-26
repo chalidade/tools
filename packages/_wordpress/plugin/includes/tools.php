@@ -50,7 +50,10 @@ function toowl_tool_unlocked( $slug ) {
 
 /** Registers the block (one variation per tool), the shortcode and the front-end style. */
 function toowl_register() {
-	$tools      = toowl_tools();
+	$tools = toowl_tools();
+	if ( ! $tools ) {
+		return; // toowl Image Optimizer: no tools to place.
+	}
 	$variations = array();
 	foreach ( $tools as $slug => $tool ) {
 		$variations[] = array(
@@ -101,6 +104,9 @@ function toowl_register() {
 add_filter(
 	'block_categories_all',
 	function ( $categories ) {
+		if ( ! toowl_tools() ) {
+			return $categories;
+		}
 		array_unshift(
 			$categories,
 			array(

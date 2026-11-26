@@ -7,28 +7,57 @@ ikut di dalam ZIP plugin dan dimuat dari folder plugin itu sendiri: tanpa CDN,
 tanpa upload, tool jalan di browser pengunjung.
 
 ```bash
-node packages/_wordpress/build.mjs          # dua edisi
-node packages/_wordpress/build.mjs free     # toowl (untuk WordPress.org)
-node packages/_wordpress/build.mjs pro      # toowl-pro (dijual)
+node packages/_wordpress/build.mjs             # semua edisi
+node packages/_wordpress/build.mjs optimizer   # toowl-image-optimizer (WordPress.org)
+node packages/_wordpress/build.mjs free        # toowl (WordPress.org)
+node packages/_wordpress/build.mjs pro         # toowl-pro (dijual)
 ```
 
-Hasilnya `packages/_wordpress/out/toowl-<versi>.zip` dan `toowl-pro-<versi>.zip`,
-siap di-upload lewat **Plugins → Add New → Upload Plugin**.
+Hasilnya `packages/_wordpress/out/<slug>-<versi>.zip`, siap di-upload lewat
+**Plugins → Add New → Upload Plugin**.
 
-## Dua edisi, satu sumber
+## Tiga edisi, satu sumber
 
-| | `toowl` (gratis) | `toowl-pro` |
-| --- | --- | --- |
-| Tool | hanya `FREE` di `config.mjs` | semua `TOOLS` |
-| Kode lisensi | **tidak ada sama sekali** | `includes/license.php` |
-| Dijual di | WordPress.org | Gumroad (nanti bisa Freemius) |
+| | `toowl-image-optimizer` | `toowl` (gratis) | `toowl-pro` |
+| --- | --- | --- | --- |
+| Image optimizer | ya | ya | ya |
+| Tool (block/shortcode) | tidak ada | hanya `FREE` di `config.mjs` | semua `TOOLS` |
+| Kode lisensi | tidak ada | **tidak ada sama sekali** | `includes/license.php` |
+| Dijual di | WordPress.org | WordPress.org | Gumroad (nanti bisa Freemius) |
+
+Edisinya bertingkat (optimizer ⊂ gratis ⊂ Pro). Kalau beberapa aktif sekaligus,
+hanya yang paling lengkap yang jalan, dan saat admin membuka wp-admin edisi
+yang lebih kecil dimatikan otomatis (pengaturan dipakai bersama). Text domain
+tiap edisi = slug-nya (syarat WordPress.org); `build.mjs` menulis ulang
+`'toowl'` di semua pemanggilan `__()` dan sejenisnya.
 
 Kenapa dua ZIP, bukan satu plugin yang dikunci: **WordPress.org melarang
 "trialware"** (fitur yang ada di plugin gratis tapi dikunci sampai bayar).
 Jadi ZIP gratis cuma berisi tool gratis; tool berbayar hanya ada di ZIP Pro.
 Di Pro, tool `FREE` selalu jalan, sisanya terbuka sesuai kunci lisensi.
-Kalau Pro diaktifkan sementara plugin gratis masih aktif, plugin gratis
-dimatikan otomatis (Pro sudah berisi semuanya, opsi dan lisensi tetap).
+
+## Image optimizer (semua edisi)
+
+Gambar dikecilkan **di browser penulis sebelum di-upload**: server cuma
+menerima file kecil, tanpa API pihak ketiga, tanpa kuota. Mesinnya
+`src/optimizer.ts` (kode `compress-image` dan `convert-image` situs ini),
+dibundel ke `assets/dist/optimizer.js` dan baru dimuat saat ada gambar.
+
+- `plugin/admin/optimizer.js` (JS biasa, tanpa build) memasang dua pintu:
+  middleware `wp.apiFetch` untuk upload dari block editor (`POST /wp/v2/media`,
+  file di FormData diganti), dan handler plupload `FilesAdded` prioritas 100
+  untuk Media Library / jendela media (gambar dikeluarkan dari antrean, diproses,
+  lalu `addFile` lagi; handler WordPress sendiri, prioritas 0, meng-upload
+  sisanya).
+- Yang diproses: JPEG, PNG, WebP, HEIC (jadi JPEG/WebP). GIF dan SVG lewat apa
+  adanya. Kalau hasil malah lebih besar, file asli yang dikirim (tanpa metadata).
+- `plugin/admin/image-button.js`: tombol **Compress with toowl** di toolbar block
+  Image. File ukuran penuh diambil dari Media Library, dikompres, di-upload
+  sebagai attachment baru (alt dan caption ikut), lalu block memakainya; yang
+  lama tetap di library.
+- Pengaturan di Settings → toowl: aktif/tidak, sisi terpanjang (default 1920),
+  kualitas (default 82), WebP (hanya bisa dinyalakan kalau server bisa memproses
+  WebP).
 
 ## Lisensi (Pro)
 
@@ -82,6 +111,12 @@ plugin gratis lalu Pro, kunci Gumroad tiruan lewat filter `pre_http_request`,
 lalu Chrome headless: elemen tampil di Shadow DOM, CSS tema "nakal" tidak bocor,
 dan Compress PDF benar-benar memproses file (qpdf.wasm dimuat dari folder plugin).
 
+Optimizer diuji dengan `@wordpress/api-fetch` dan `plupload` 2 asli (dari npm)
+plus `wp.Uploader` tiruan yang meniru urutan `wp-plupload.js`, meng-upload ke
+REST API dan `async-upload.php` WordPress sungguhan. Build WordPress tes itu
+tidak punya JS editor dan Media Library aslinya, jadi alur di Gutenberg dan
+Media Library yang asli perlu dicoba sekali di WordPress sungguhan.
+
 ## Sebelum rilis
 
 - Nama `toowl` di WordPress.org harus masih tersedia (slug ditentukan saat submit).
@@ -89,6 +124,8 @@ dan Compress PDF benar-benar memproses file (qpdf.wasm dimuat dari folder plugin
   update server sendiri); prototipe ini belum punya.
 - Terjemahan Indonesia untuk teks admin (`toowl.pot`) belum dibuat; judul dan
   deskripsi tool sudah dua bahasa dari registry.
+- Optimizer: kompres massal untuk gambar lama di library belum ada; halaman
+  `media-new.php` (uploader lama "browser") belum ikut.
 - Beberapa tool di satu halaman memakai satu bahasa UI yang sama (state
   bahasa paket bersifat global), jadi `lang` berbeda per block di satu halaman
   belum didukung.

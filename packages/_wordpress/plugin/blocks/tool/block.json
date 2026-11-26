@@ -7,7 +7,7 @@
 	"icon": "admin-tools",
 	"description": "A browser-only tool (PDF, image, QR, prayer times and more). Files never leave the visitor's device.",
 	"keywords": [ "toowl", "tool", "pdf", "image", "qr" ],
-	"textdomain": "toowl",
+	"textdomain": "{{TEXT_DOMAIN}}",
 	"attributes": {
 		"tool": { "type": "string", "default": "" },
 		"theme": { "type": "string", "enum": [ "auto", "light", "dark" ], "default": "auto" },

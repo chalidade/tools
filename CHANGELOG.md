@@ -3,6 +3,12 @@
 Catatan harian apa yang berubah di [tools](https://toowl.my.id/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-26 — Image optimizer di WordPress
+
+- Plugin WordPress sekarang punya **image optimizer**: gambar yang di-upload lewat block editor, Media Library, atau jendela media dikecilkan **di browser penulis sebelum dikirim**. Ukurannya diperkecil (default sisi terpanjang 1920 px), di-encode ulang (kualitas 82), dan data GPS/kamera dibuang. Bisa juga disimpan sebagai WebP, dan foto HEIC dari iPhone jadi JPEG. Server cuma menerima file kecil, tanpa API pihak ketiga. Foto 5,9 MB jadi sekitar 300 KB.
+- Tombol **Compress with toowl** di toolbar block Image untuk gambar yang sudah ada di artikel. Salinan kecilnya menggantikan gambar di artikel (alt dan caption ikut), dan yang asli tetap ada di Media Library.
+- Selain jadi bagian `toowl` dan `toowl-pro`, optimizer ini juga dibangun sebagai plugin sendiri, **toowl Image Optimizer**, untuk WordPress.org. Kalau beberapa edisi aktif bersamaan, hanya yang paling lengkap yang jalan.
+
 ## 2026-11-26 — Plugin WordPress (prototipe)
 
 - **Plugin WordPress** (`packages/_wordpress/`): tool toowl sebagai block Gutenberg (tiap tool punya block sendiri di inserter, kategori "toowl") dan shortcode `[toowl tool="compress-pdf"]`, dengan pilihan tema dan bahasa. Semua JS dan WebAssembly ikut di dalam plugin, tanpa CDN. Prototipe berisi 5 tool: Compress PDF, Merge PDF, Compress Images (Pro), QR Generator dan Jadwal Sholat (gratis).
