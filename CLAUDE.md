@@ -212,7 +212,15 @@ picture; the rules that matter when editing:
   `assets/products.json` is generated from `LICENSE.gumroad`). The plugin is
   GPL-2.0-or-later, not AGPL (WP.org requirement; the owner relicenses), so
   check a tool's bundled licenses before adding it. Credit link is opt-in
-  (WP.org rule).
+  (WP.org rule). Every edition (plus a third, `toowl-image-optimizer`, with
+  nothing else) has the **image optimizer**: `plugin/admin/optimizer.js`
+  shrinks images in the browser before upload through a `wp.apiFetch`
+  middleware (block editor) and a priority-100 plupload `FilesAdded` handler
+  (Media Library; read `getNative()` before `removeFile()`, which destroys it),
+  with the engine `src/optimizer.ts` (compress-image + convert-image) imported
+  lazily; `admin/image-button.js` adds "Compress with toowl" to the Image
+  block. Editions nest (optimizer ⊂ free ⊂ pro): the widest active one runs
+  and switches the others off; text domain = slug, rewritten by `build.mjs`.
 - **Analytics:** `src/lib/analytics.ts` loads the Cloudflare Web Analytics
   beacon (cookieless, `spa: true`) from `main.tsx`, only in production, only on
   host toowl.my.id (so never in the iOS bundle) and never in an embed. It is the

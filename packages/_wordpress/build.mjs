@@ -1,8 +1,14 @@
 // Builds the WordPress plugin ZIPs from the site's own tool source.
 //
-//   node packages/_wordpress/build.mjs            both editions
-//   node packages/_wordpress/build.mjs free       toowl (WordPress.org)
-//   node packages/_wordpress/build.mjs pro        toowl-pro (sold)
+//   node packages/_wordpress/build.mjs             every edition
+//   node packages/_wordpress/build.mjs free        toowl (WordPress.org)
+//   node packages/_wordpress/build.mjs pro         toowl-pro (sold)
+//   node packages/_wordpress/build.mjs optimizer   toowl-image-optimizer (WordPress.org)
+//
+// Every edition has the image optimizer (admin/optimizer.js + the engine
+// assets/dist/optimizer.js from src/optimizer.ts); the optimizer edition has
+// nothing else. Editions are nested (optimizer ⊂ free ⊂ pro): the widest
+// active one runs and switches the narrower ones off.
 //
 // Output: packages/_wordpress/out/<slug>-<version>.zip, a folder <slug>/ holding
 //   toowl.php, includes/, blocks/tool/   the PHP plugin (from plugin/)
@@ -33,27 +39,75 @@ const WORK = join(HERE, '.work')
 const read = (p) => readFileSync(p, 'utf8')
 
 const EDITIONS = {
+  optimizer: {
+    slug: 'toowl-image-optimizer',
+    name: 'toowl Image Optimizer',
+    tools: [],
+    readme: 'readme-optimizer.txt',
+    description: 'Compress, resize and convert images (JPEG, PNG, WebP, HEIC) in the browser before they are uploaded. No API, no quota; GPS data removed.',
+    text: '',
+    external: 'This plugin connects to no external service. Images are optimized in the uploader\'s browser with code from this plugin\'s folder.',
+  },
   free: {
     slug: 'toowl',
-    other: 'toowl-pro',
     name: 'toowl – Browser Tools',
     tools: FREE,
     description: 'Browser-only tools as blocks and shortcodes: files never leave the visitor\'s device.',
+    readme: 'readme.txt',
     text: '**toowl Pro** adds PDF, image, Office, video and audio tools, opened with a license key for one tool, a theme pack or all tools: https://toowl.my.id/embed/',
     external: 'This plugin connects to no external service. The tools run in the visitor\'s browser from files in this plugin\'s folder.',
   },
   pro: {
     slug: 'toowl-pro',
-    other: 'toowl',
     name: 'toowl Pro – Browser Tools',
     tools: TOOLS,
     description: 'Browser-only tools as blocks and shortcodes: files never leave the visitor\'s device. A license key opens the paid tools.',
+    readme: 'readme.txt',
     text: 'The free tools always work. The others open with a license key from https://toowl.my.id/embed/: one tool, a theme pack, or all tools. Enter it in Settings → toowl.',
     external: 'To check a license key, this plugin sends the key and a toowl product id to Gumroad (https://api.gumroad.com/v2/licenses/verify), from your server, when you save the key and once a week after. Nothing about your visitors is sent. Gumroad terms: https://gumroad.com/terms, privacy: https://gumroad.com/privacy',
   },
 }
 
 for (const t of FREE) if (!TOOLS.includes(t)) throw new Error(`config: free tool ${t} is not in TOOLS`)
+
+/** Narrowest first: each edition contains the ones before it. */
+const ORDER = ['optimizer', 'free', 'pro']
+const mainFile = (id) => `${EDITIONS[id].slug}/toowl.php`
+const phpList = (ids) => `array( ${ids.map((id) => `'${mainFile(id)}'`).join(', ')} )`
+
+/**
+ * WordPress.org wants each plugin's text domain to be its slug. The source
+ * says 'toowl'; rewrite it in translation calls (PHP and JS) for other slugs.
+ */
+const I18N_FN = /\b(?:__|_e|_x|_n|_nx|esc_html__|esc_html_e|esc_html_x|esc_attr__|esc_attr_e|esc_attr_x|wp_set_script_translations)\(/g
+function retextdomain(text, domain) {
+  if (domain === 'toowl') return text
+  let out = ''
+  let from = 0
+  for (const m of text.matchAll(I18N_FN)) {
+    // Walk to the call's closing parenthesis, skipping strings; its last argument is the domain.
+    let depth = 0
+    let i = m.index + m[0].length - 1
+    let quote = ''
+    let lastComma = -1
+    for (; i < text.length; i++) {
+      const c = text[i]
+      if (quote) {
+        if (c === '\\') i++
+        else if (c === quote) quote = ''
+      } else if (c === "'" || c === '"' || c === '`') quote = c
+      else if (c === '(') depth++
+      else if (c === ')' && --depth === 0) break
+      else if (c === ',' && depth === 1) lastComma = i
+    }
+    if (lastComma < 0 || i <= from) continue
+    const arg = text.slice(lastComma + 1, i)
+    if (arg.trim() !== "'toowl'") throw new Error(`text domain: unexpected ${text.slice(m.index, i + 1).slice(0, 120)}`)
+    out += text.slice(from, lastComma + 1) + arg.replace("'toowl'", `'${domain}'`)
+    from = i
+  }
+  return out + text.slice(from)
+}
 
 /** Registry, English text and license products, read from the site's TypeScript. */
 async function siteData() {
@@ -103,7 +157,7 @@ async function buildElements(tools, outDir) {
   const work = join(WORK, 'entries')
   rmSync(work, { recursive: true, force: true })
   mkdirSync(work, { recursive: true })
-  const input = {}
+  const input = { optimizer: join(HERE, 'src/optimizer.ts') }
   for (const tool of tools) {
     if (!existsSync(join(PACKAGES, tool, 'src/element.tsx'))) throw new Error(`${tool}: no package (packages/${tool}/src/element.tsx)`)
     // Re-exported, not a bare import: the packages declare their src/ free of side
@@ -130,6 +184,8 @@ async function buildElements(tools, outDir) {
       outDir,
       emptyOutDir: true,
       reportCompressedSize: false,
+      // libheif (HEIC) is one ~2.4 MB chunk, loaded only for HEIC files.
+      chunkSizeWarningLimit: 4000,
       copyPublicDir: false,
       modulePreload: false,
       rollupOptions: {
@@ -184,7 +240,12 @@ async function buildEdition(id, site) {
   mkdirSync(stage, { recursive: true })
 
   // PHP, block and readme, with placeholders filled.
-  cpSync(join(HERE, 'plugin'), stage, { recursive: true, filter: (f) => id === 'pro' || !f.endsWith('license.php') })
+  const skip = (f) =>
+    (id !== 'pro' && f.endsWith('license.php')) ||
+    (!ed.tools.length && (f.includes('/blocks') || f.endsWith('/assets/toowl.css'))) ||
+    (/readme[^/]*\.txt$/.test(f) && !f.endsWith(ed.readme))
+  cpSync(join(HERE, 'plugin'), stage, { recursive: true, filter: (f) => !skip(f) })
+  if (ed.readme !== 'readme.txt') execFileSync('mv', [join(stage, ed.readme), join(stage, 'readme.txt')])
   const byslug = Object.fromEntries(site.registry.map((t) => [t.slug, t]))
   const rows = ed.tools.map((slug) => {
     const r = byslug[slug]
@@ -205,15 +266,18 @@ async function buildEdition(id, site) {
     SHORT_DESCRIPTION: ed.description,
     VERSION,
     EDITION: id,
-    OTHER_SLUG: ed.other,
-    FIRST_TOOL: rows[0].slug,
+    TEXT_DOMAIN: ed.slug,
+    WIDER_PLUGINS: phpList(ORDER.slice(ORDER.indexOf(id) + 1)),
+    NARROWER_PLUGINS: phpList(ORDER.slice(0, ORDER.indexOf(id))),
+    OTHER_PLUGINS: phpList(ORDER.filter((o) => o !== id)),
+    FIRST_TOOL: rows[0]?.slug ?? '',
     TOOL_COUNT: String(rows.length),
     TOOL_LIST: rows.map((r) => `* **${r.title.en}**${id === 'pro' && r.free ? ' (free)' : ''}: ${r.description.en}`).join('\n'),
     EDITION_TEXT: ed.text,
     EXTERNAL: ed.external,
   }
-  for (const file of filesIn(stage).filter((f) => /\.(php|txt|json)$/.test(f) && !f.endsWith('LICENSE.txt'))) {
-    const text = read(file).replace(/\{\{(\w+)\}\}/g, (_, k) => {
+  for (const file of filesIn(stage).filter((f) => /\.(php|txt|json|js)$/.test(f) && !f.endsWith('LICENSE.txt'))) {
+    const text = retextdomain(read(file), ed.slug).replace(/\{\{(\w+)\}\}/g, (_, k) => {
       if (!(k in vars)) throw new Error(`${relative(stage, file)}: no value for {{${k}}}`)
       return vars[k]
     })
@@ -241,7 +305,7 @@ async function buildEdition(id, site) {
   }
 
   await buildElements(ed.tools, join(stage, 'assets', 'dist'))
-  writeFileSync(join(stage, 'THIRD-PARTY-NOTICES.md'), notices(ed.tools))
+  writeFileSync(join(stage, 'THIRD-PARTY-NOTICES.md'), notices([...ed.tools, 'compress-image', 'convert-image']))
 
   mkdirSync(OUT, { recursive: true })
   const zip = join(OUT, `${ed.slug}-${VERSION}.zip`)
@@ -253,6 +317,8 @@ async function buildEdition(id, site) {
 const arg = process.argv[2]
 const which = arg ? [arg] : Object.keys(EDITIONS)
 for (const id of which) if (!EDITIONS[id]) throw new Error(`unknown edition ${id} (free or pro)`)
+// The optimizer engine is TypeScript: type-check it before bundling.
+execFileSync('npx', ['tsc', '--noEmit', '-p', HERE], { cwd: ROOT, stdio: 'inherit' })
 const site = await siteData()
 for (const id of which) await buildEdition(id, site)
 rmSync(WORK, { recursive: true, force: true })
