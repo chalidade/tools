@@ -6,7 +6,7 @@
 // A template is plain HTML/CSS/JS in <name>/template/ (no build step for the
 // buyer). Its assets/toowl/ is the dist/ of the kit it uses, built here with
 // the kit builder in marketplace mode (readable code), and assets/fonts/ is
-// Geist from the site plus the template's own <name>/fonts/.
+// Geist from the site plus the template's typefaces from fonts/.
 
 import { cpSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { execFileSync } from 'node:child_process'
@@ -16,8 +16,17 @@ import { marked } from 'marked'
 
 const HERE = dirname(fileURLToPath(import.meta.url))
 const ROOT = join(HERE, '..', '..')
+// kit: the toowl kit whose dist/ goes into assets/toowl/ (null for none).
+// fonts: files from fonts/ that the template's stylesheets use (each family's OFL text comes along).
 const TEMPLATES = {
-  masjid: { title: 'Masjid: Mosque Website Template', kit: 'islamic-kit', zip: 'toowl-masjid-template', version: '1.0.0' },
+  masjid: {
+    title: 'Masjid: Mosque Website Template', kit: 'islamic-kit', zip: 'toowl-masjid-template', version: '1.0.0',
+    fonts: ['archivo-latin.woff2', 'newsreader-latin.woff2', 'newsreader-latin-italic.woff2', 'amiri-arabic.woff2'],
+  },
+  church: {
+    title: 'Church: Church Website Template', kit: null, zip: 'toowl-church-template', version: '1.0.0',
+    fonts: ['archivo-latin.woff2', 'newsreader-latin.woff2', 'newsreader-latin-italic.woff2'],
+  },
 }
 
 const args = process.argv.slice(2)
@@ -30,9 +39,12 @@ if (!T) {
 }
 
 // The kit, built for a marketplace so its code stays readable.
-execFileSync('node', [join(ROOT, 'packages/_kits/build.mjs'), T.kit, '--market=codester'], { stdio: ['ignore', 'ignore', 'inherit'] })
-const kitStage = join(ROOT, 'packages/_kits/out/codester/stage', `toowl-${T.kit}-1.0.0`)
-if (!existsSync(join(kitStage, 'dist'))) throw new Error(`kit build missing: ${kitStage}`)
+let kitStage = null
+if (T.kit) {
+  execFileSync('node', [join(ROOT, 'packages/_kits/build.mjs'), T.kit, '--market=codester'], { stdio: ['ignore', 'ignore', 'inherit'] })
+  kitStage = join(ROOT, 'packages/_kits/out/codester/stage', `toowl-${T.kit}-1.0.0`)
+  if (!existsSync(join(kitStage, 'dist'))) throw new Error(`kit build missing: ${kitStage}`)
+}
 
 /** The site itself: template files + kit dist + fonts. */
 function site(target) {
@@ -42,14 +54,20 @@ function site(target) {
     recursive: true,
     filter: (src) => !/[\\/]assets[\\/](toowl|fonts)([\\/]|$)/.test(src),
   })
-  cpSync(join(kitStage, 'dist'), join(target, 'assets/toowl'), {
-    recursive: true,
-    filter: (src) => !src.endsWith('.d.ts') && !/[\\/]types([\\/]|$)/.test(src),
-  })
+  if (kitStage)
+    cpSync(join(kitStage, 'dist'), join(target, 'assets/toowl'), {
+      recursive: true,
+      filter: (src) => !src.endsWith('.d.ts') && !/[\\/]types([\\/]|$)/.test(src),
+    })
   mkdirSync(join(target, 'assets/fonts'), { recursive: true })
   for (const f of ['geist-latin.woff2', 'OFL.txt']) cpSync(join(ROOT, 'src/assets/fonts', f), join(target, 'assets/fonts', f))
-  // The template's own typefaces (and their licenses), kept beside it.
-  if (existsSync(join(HERE, name, 'fonts'))) cpSync(join(HERE, name, 'fonts'), join(target, 'assets/fonts'), { recursive: true })
+  // The template's other typefaces, from the shared fonts/ folder, with each family's license.
+  for (const f of T.fonts ?? []) {
+    cpSync(join(HERE, 'fonts', f), join(target, 'assets/fonts', f))
+    const family = f.split('-')[0]
+    const ofl = `OFL-${family[0].toUpperCase()}${family.slice(1)}.txt`
+    cpSync(join(HERE, 'fonts', ofl), join(target, 'assets/fonts', ofl))
+  }
 }
 
 if (demo) {
@@ -70,8 +88,10 @@ const readme = readFileSync(join(HERE, name, 'README.md'), 'utf8')
 const license = readFileSync(join(HERE, name, 'codester/LICENSE.md'), 'utf8').replaceAll('{{ZIP}}', `${zipName}.zip`)
 writeFileSync(join(stage, 'README.md'), readme)
 writeFileSync(join(stage, 'LICENSE.md'), license)
-cpSync(join(kitStage, 'THIRD-PARTY-NOTICES.md'), join(stage, 'THIRD-PARTY-NOTICES.md'))
-cpSync(join(kitStage, 'licenses'), join(stage, 'licenses'), { recursive: true })
+if (kitStage) {
+  cpSync(join(kitStage, 'THIRD-PARTY-NOTICES.md'), join(stage, 'THIRD-PARTY-NOTICES.md'))
+  cpSync(join(kitStage, 'licenses'), join(stage, 'licenses'), { recursive: true })
+}
 writeDocs(join(stage, 'documentation'), T.title, readme, license)
 
 mkdirSync(OUT, { recursive: true })
