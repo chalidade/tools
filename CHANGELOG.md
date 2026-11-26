@@ -3,6 +3,13 @@
 Catatan harian apa yang berubah di [tools](https://toowl.my.id/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-26 — Template website masjid
+
+- **Template website masjid** (`packages/_templates/masjid/`, dijual di Codester): beranda dengan sholat berikutnya dan hitung mundur, jadwal hari ini plus iqamah, pengumuman, kajian, jadwal khatib Jumat, program, rekening infaq dengan tombol salin dan QR, kontak, serta arah kiblat, kalender Hijriah, zakat dan tasbih. Ada **jadwal sebulan** siap cetak A4 dan **layar TV masjid** (jam besar, slide, teks berjalan, layar adzan, hitung mundur iqamah, dan layar "sholat sedang berlangsung"). Semua diatur dari satu file `config.js`, bahasa Inggris atau Indonesia, tanpa server. Demo: `/templates/masjid/`.
+- Template masjid punya **dua desain** yang dipilih lewat `design` di `config.js`: **bold** (hijau zamrud gelap, aksen kuning saffron, huruf kapital besar, dan deretan lengkung mihrab untuk jadwal hari ini, sholat berikutnya menyala) dan **calm** (terang, gaya editorial dengan judul serif dan garis halus). Keduanya mencakup beranda, jadwal sebulan dan layar TV. Demo punya tombol Calm / Bold di pojok.
+- Isi contoh template sekarang untuk pasar internasional: masjid di London, zona waktu pakai nama (`Europe/London`, ikut daylight saving), nama sholat di config dalam bahasa Inggris (`fajr`, `dhuhr`, …). Arah kiblat dan kalkulator zakat dibuat ulang di template: kiblat dihitung dari posisi masjid atau pengunjung, zakat memakai mata uang dari config. Nama sholat tampil juga dalam huruf Arab, dan setelah Isya jadwal otomatis pindah ke besok.
+- **Jadwal Sholat** sekarang punya pilihan metode hitung di API-nya (`METHODS`): Kemenag RI (default, hasil tidak berubah), JAKIM, MUIS, Muslim World League, ISNA, Mesir, Karachi dan Umm al-Qura, plus Asar Hanafi.
+
 ## 2026-11-26 — Plugin WordPress siap rilis (1.0.0)
 
 - **toowl Pro** sekarang berisi **72 tool** (semua yang punya paket), dan semuanya sudah dicek tampil di WordPress. **toowl** gratis berisi 10 tool ringan: QR Generator, Jadwal Sholat, Hijriah, Arah Kiblat, Hitung Kata, Password Generator, Konversi Satuan, Persen, Terbilang, dan Color Picker. Ukuran ZIP: Image Optimizer 0,7 MB, toowl 1,4 MB, Pro 16,2 MB.

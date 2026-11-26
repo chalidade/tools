@@ -53,6 +53,9 @@ self.addEventListener('fetch', (event) => {
   const fonts = url.hostname === 'fonts.googleapis.com' || url.hostname === 'fonts.gstatic.com'
   if (url.origin !== self.location.origin && !fonts) return
   if (url.origin === self.location.origin && !url.href.startsWith(self.registration.scope)) return
+  // Demo sites that ship with the build (kit preview, templates) are separate apps: never cache them
+  // as this app's shell, and never pin their unhashed files.
+  if (/\/(kit-preview|templates)\//.test(url.pathname)) return
 
   if (req.mode === 'navigate') {
     event.respondWith(

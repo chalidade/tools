@@ -201,6 +201,22 @@ picture; the rules that matter when editing:
   `--market=codester` (or `envato`) builds marketplace ZIPs (that store's
   license, HTML docs, no links to Gumroad or other stores); CI builds their live preview at
   `/kit-preview/` (`--preview`).
+- **Site templates** (`packages/_templates/<name>/`, sold on Codester; see
+  each README): plain HTML/CSS/JS in `template/` with one `config.js`, no
+  build step for the buyer. `node packages/_templates/build.mjs <name>` copies
+  the matching kit's marketplace `dist/` (readable code) into
+  `assets/toowl/`, adds Geist plus the template's own `<name>/fonts/`, docs, the Codester license and notices, and
+  zips it; `--demo=<dir>` writes only the site (CI: `/templates/<name>/`).
+  The service worker leaves `/templates/` and `/kit-preview/` alone. `masjid`
+  is a mosque site plus a TV display (`display.html`, `?at=HH:MM` previews
+  the adhan/iqamah screens) built on the prayer engine's `METHODS`. It ships
+  two designs on the same HTML: `config.design` (`bold`/`calm`, or
+  `?design=`) makes `applyTheme()` load `assets/css/<design>.css` or
+  `<design>-display.css`, and the page stays hidden until it is in. Its demo
+  content is international (London, `tz` as a zone name, English prayer keys
+  mapped to the engine's in `common.js`); Qibla and zakat are the template's
+  own `tools.js` on the kit's headless API, because the site's elements are
+  Indonesia-specific (city list, rupiah). `--demo` turns `designSwitcher` on.
 - **WordPress plugin** (`packages/_wordpress/`, see its README):
   `node packages/_wordpress/build.mjs [optimizer|free|pro]` builds the same package
   elements (kit-style Vite app build, `base: './'`) into a PHP plugin: block
