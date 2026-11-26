@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Timetable</title>
+  <link rel="icon" href="assets/img/logo.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/timetable.css" />
+  <script>
+    // ES modules don't load from file://. Explain instead of showing a blank page.
+    if (location.protocol === 'file:') addEventListener('DOMContentLoaded', () => {
+      document.body.insertAdjacentHTML('afterbegin', '<div style="position:fixed;inset:0;z-index:99;display:grid;place-items:center;padding:24px;background:#f8f6f0;color:#17211d;font:16px/1.6 system-ui,sans-serif;text-align:center"><div style="max-width:560px"><h2 style="margin:0 0 12px">Open this page from a web server</h2><p>Browsers block the scripts of a page opened straight from a folder. Upload the files to your hosting, or run a local server in this folder (see documentation/index.html → Quick start).</p></div></div>')
+    })
+  </script>
+</head>
+<body>
+  <header class="nav">
+    <div class="wrap nav-in">
+      <a class="brand" href="index.html"><img src="assets/img/logo.svg" alt="" width="34" height="34" /><span id="brand-name"></span></a>
+      <a class="btn btn-small btn-ghost" href="index.html" data-t="← Home|← Beranda"></a>
+    </div>
+  </header>
+  <main class="section">
+    <div class="wrap">
+      <div class="head">
+        <div>
+          <p class="kicker" data-t="Prayer timetable|Jadwal sholat"></p>
+          <h2 id="month"></h2>
+          <p class="note" id="hijri-range"></p>
+        </div>
+        <div class="month-nav">
+          <button class="btn btn-ghost btn-small" id="prev" aria-label="Previous month">←</button>
+          <button class="btn btn-ghost btn-small" id="today" data-t="This month|Bulan ini"></button>
+          <button class="btn btn-ghost btn-small" id="next" aria-label="Next month">→</button>
+          <button class="btn btn-small" id="print" data-t="Print|Cetak"></button>
+        </div>
+      </div>
+      <div class="card month-card">
+        <table class="month">
+          <thead><tr id="cols"></tr></thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+      <p class="note" id="method-note"></p>
+    </div>
+  </main>
+  <script type="module" src="assets/js/timetable.js"></script>
+</body>
+</html>

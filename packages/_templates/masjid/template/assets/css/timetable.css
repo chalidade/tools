@@ -1,0 +1,21 @@
+.month-nav { display: flex; flex-wrap: wrap; gap: 8px; }
+.month-card { overflow-x: auto; }
+.month { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; font-size: 15px; }
+.month th { position: sticky; top: 0; background: var(--surface); text-align: center; font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); font-weight: 600; padding: 14px 10px; border-bottom: 1px solid var(--line); }
+.month td { text-align: center; padding: 10px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+.month td:first-child, .month th:first-child { text-align: left; padding-left: 20px; }
+.month .d { font-weight: 600; }
+.month .h { display: block; font-size: 12px; color: var(--muted); font-weight: 400; }
+.month tr.fri td { background: var(--accent-soft); }
+.month tr.today td { background: var(--primary); color: #fff; }
+.month tr.today .h { color: color-mix(in srgb, #fff 75%, transparent); }
+.month .sun { color: var(--muted); }
+@media print {
+  @page { size: A4 portrait; margin: 12mm; }
+  body { background: #fff; font-size: 11px; }
+  .section { padding: 0; }
+  .month-nav { display: none; }
+  .card { box-shadow: none; border: 0; }
+  .month td, .month th { padding: 4px 6px; }
+  .month tr.today td { background: none; color: inherit; font-weight: 700; }
+}

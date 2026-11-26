@@ -61,8 +61,42 @@ function hourAngle(lat: number, decl: number, altitude: number) {
   return deg(Math.acos(c)) / 15
 }
 
-/** Prayer times for a calendar day (y, m 1–12, d) at a place. */
-export function prayerTimes(y: number, m: number, d: number, p: Place): PrayerTimes {
+/**
+ * A calculation method. The default is Kemenag RI; the presets in METHODS
+ * cover the conventions used elsewhere, so mosques outside Indonesia can
+ * match their local timetable.
+ */
+export interface Method {
+  /** Sun depression for Fajr, degrees below the horizon. */
+  fajr: number
+  /** Sun depression for Isha, degrees below the horizon (ignored when ishaMinutes is set). */
+  isha: number
+  /** Isha a fixed number of minutes after Maghrib (Umm al-Qura). */
+  ishaMinutes?: number
+  /** Asr shadow length: 1 (Shafi'i, Maliki, Hanbali) or 2 (Hanafi). */
+  asr?: 1 | 2
+  /** Safety margin in minutes added to each time. */
+  ihtiyat?: number
+}
+
+/** Common methods. `kemenag` is the default and matches the times this tool has always shown. */
+export const METHODS = {
+  kemenag: { fajr: 20, isha: 18, ihtiyat: 2 },
+  jakim: { fajr: 20, isha: 18, ihtiyat: 2 },
+  muis: { fajr: 20, isha: 18, ihtiyat: 2 },
+  mwl: { fajr: 18, isha: 17 },
+  isna: { fajr: 15, isha: 15 },
+  egypt: { fajr: 19.5, isha: 17.5 },
+  karachi: { fajr: 18, isha: 18 },
+  makkah: { fajr: 18.5, isha: 0, ishaMinutes: 90 },
+} satisfies Record<string, Method>
+
+const KEMENAG: Method = METHODS.kemenag
+
+/** Prayer times for a calendar day (y, m 1–12, d) at a place; the method defaults to Kemenag RI. */
+export function prayerTimes(y: number, m: number, d: number, p: Place, method: Method = KEMENAG): PrayerTimes {
+  const margin = method.ihtiyat ?? 0
+  const shadow = method.asr ?? 1
   // Sun position at local noon is accurate enough for the whole day.
   const noonUtc = Date.UTC(y, m - 1, d, 12) - p.tz * 3600000
   const { decl, eqt } = sunPosition(julian(noonUtc))
@@ -71,18 +105,19 @@ export function prayerTimes(y: number, m: number, d: number, p: Place): PrayerTi
     const h = hourAngle(p.lat, decl, alt)
     return Number.isNaN(h) ? null : (noon + sign * h) * 60
   }
-  const asrAlt = deg(Math.atan(1 / (1 + Math.tan(Math.abs(rad(p.lat) - decl)))))
+  const asrAlt = deg(Math.atan(1 / (shadow + Math.tan(Math.abs(rad(p.lat) - decl)))))
   const plus = (v: number | null, min: number) => (v === null ? null : v + min)
-  const subuh = plus(at(-FAJR_ANGLE, -1), IHTIYAT)
+  const subuh = plus(at(-method.fajr, -1), margin)
+  const maghrib = plus(at(-0.833, 1), margin)
   return {
     imsak: plus(subuh, -10),
     subuh,
-    terbit: plus(at(-0.833, -1), -IHTIYAT),
+    terbit: plus(at(-0.833, -1), -margin),
     dhuha: at(DHUHA_ANGLE, -1),
-    zuhur: noon * 60 + IHTIYAT,
-    asar: plus(at(asrAlt, 1), IHTIYAT),
-    maghrib: plus(at(-0.833, 1), IHTIYAT),
-    isya: plus(at(-ISHA_ANGLE, 1), IHTIYAT),
+    zuhur: noon * 60 + margin,
+    asar: plus(at(asrAlt, 1), margin),
+    maghrib,
+    isya: method.ishaMinutes ? plus(maghrib, method.ishaMinutes) : plus(at(-method.isha, 1), margin),
   }
 }
 

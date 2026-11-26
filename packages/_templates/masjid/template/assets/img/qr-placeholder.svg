@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" font-family="system-ui, sans-serif">
+  <rect width="200" height="200" rx="14" fill="#f3f1ea"/>
+  <g fill="none" stroke="#17211d" stroke-width="10">
+    <rect x="22" y="22" width="44" height="44" rx="6"/><rect x="134" y="22" width="44" height="44" rx="6"/><rect x="22" y="134" width="44" height="44" rx="6"/>
+  </g>
+  <g fill="#17211d"><rect x="37" y="37" width="14" height="14"/><rect x="149" y="37" width="14" height="14"/><rect x="37" y="149" width="14" height="14"/></g>
+  <text x="100" y="98" text-anchor="middle" font-size="15" font-weight="600" fill="#17211d">Your QR code</text>
+  <text x="100" y="118" text-anchor="middle" font-size="11" fill="#5f6b66">config.js → donation.qr</text>
+</svg>
