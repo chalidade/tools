@@ -201,6 +201,18 @@ picture; the rules that matter when editing:
   `--market=codester` (or `envato`) builds marketplace ZIPs (that store's
   license, HTML docs, no links to Gumroad or other stores); CI builds their live preview at
   `/kit-preview/` (`--preview`).
+- **WordPress plugin** (`packages/_wordpress/`, see its README):
+  `node packages/_wordpress/build.mjs [free|pro]` builds the same package
+  elements (kit-style Vite app build, `base: './'`) into a PHP plugin: block
+  `toowl/tool` (one variation per tool) + `[toowl tool="…"]` shortcode,
+  modules enqueued from the plugin folder with `wp_enqueue_script_module`
+  (WP 6.5+). Tools and the free set are in `config.mjs`. Two ZIPs: `toowl`
+  (WordPress.org: free tools only, no license code — WP.org forbids
+  trialware) and `toowl-pro` (Gumroad keys checked server-side in PHP;
+  `assets/products.json` is generated from `LICENSE.gumroad`). The plugin is
+  GPL-2.0-or-later, not AGPL (WP.org requirement; the owner relicenses), so
+  check a tool's bundled licenses before adding it. Credit link is opt-in
+  (WP.org rule).
 - **Analytics:** `src/lib/analytics.ts` loads the Cloudflare Web Analytics
   beacon (cookieless, `spa: true`) from `main.tsx`, only in production, only on
   host toowl.my.id (so never in the iOS bundle) and never in an embed. It is the

@@ -1,0 +1,23 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "toowl/tool",
+	"title": "toowl tool",
+	"category": "toowl",
+	"icon": "admin-tools",
+	"description": "A browser-only tool (PDF, image, QR, prayer times and more). Files never leave the visitor's device.",
+	"keywords": [ "toowl", "tool", "pdf", "image", "qr" ],
+	"textdomain": "toowl",
+	"attributes": {
+		"tool": { "type": "string", "default": "" },
+		"theme": { "type": "string", "enum": [ "auto", "light", "dark" ], "default": "auto" },
+		"lang": { "type": "string", "enum": [ "", "en", "id" ], "default": "" }
+	},
+	"supports": {
+		"html": false,
+		"align": [ "wide", "full" ],
+		"spacing": { "margin": true, "padding": true }
+	},
+	"editorScript": "file:./editor.js",
+	"editorStyle": "file:./editor.css"
+}
