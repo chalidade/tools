@@ -3,6 +3,11 @@
 Catatan harian apa yang berubah di [tools](https://toowl.my.id/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-26 — Plugin WordPress siap rilis (1.0.0)
+
+- **toowl Pro** sekarang berisi **72 tool** (semua yang punya paket), dan semuanya sudah dicek tampil di WordPress. **toowl** gratis berisi 10 tool ringan: QR Generator, Jadwal Sholat, Hijriah, Arah Kiblat, Hitung Kata, Password Generator, Konversi Satuan, Persen, Terbilang, dan Color Picker. Ukuran ZIP: Image Optimizer 0,7 MB, toowl 1,4 MB, Pro 16,2 MB.
+- Bahan listing WordPress.org: banner 1544×500 dan 772×250, serta ikon 256 dan 128 untuk toowl dan toowl Image Optimizer, dibuat dari `packages/_wordpress/wporg/art.html`. Ada juga 3 screenshot asli untuk toowl. readme.txt mengikuti format WordPress.org (Contributors, Donate link Trakteer, tag per edisi, dan bagian Screenshots).
+
 ## 2026-11-26 — Image optimizer di WordPress
 
 - Plugin WordPress sekarang punya **image optimizer**: gambar yang di-upload lewat block editor, Media Library, atau jendela media dikecilkan **di browser penulis sebelum dikirim**. Ukurannya diperkecil (default sisi terpanjang 1920 px), di-encode ulang (kualitas 82), dan data GPS/kamera dibuang. Bisa juga disimpan sebagai WebP, dan foto HEIC dari iPhone jadi JPEG. Server cuma menerima file kecil, tanpa API pihak ketiga. Foto 5,9 MB jadi sekitar 300 KB.

@@ -1,0 +1,1 @@
+Prayer times for any city or the visitor's location, computed on the device.

@@ -1,8 +1,9 @@
 === {{PLUGIN_NAME}} ===
-Contributors: chalidade
-Tags: image optimization, compress images, pdf, qr code, prayer times
-Requires at least: 6.5
-Tested up to: 6.8
+Contributors: {{CONTRIBUTORS}}
+Donate link: https://trakteer.id/chalidade/tip
+Tags: {{TAGS}}
+Requires at least: {{REQUIRES_WP}}
+Tested up to: {{TESTED_UP_TO}}
 Requires PHP: 7.4
 Stable tag: {{VERSION}}
 License: GPLv2 or later
@@ -49,7 +50,7 @@ No. The tools read files with the browser's own APIs and write the result back a
 
 Only if you turn it on in Settings → toowl. It is off by default.
 
-== Changelog ==
+{{SCREENSHOTS}}== Changelog ==
 
 = {{VERSION}} =
 * First release: {{TOOL_COUNT}} tools as blocks and shortcodes.
