@@ -56,7 +56,7 @@ const EDITIONS = {
     tools: FREE,
     description: 'Browser-only tools as blocks and shortcodes: files never leave the visitor\'s device.',
     readme: 'readme.txt',
-    tags: 'qr code, prayer times, image optimization, password generator, tools',
+    tags: 'qr code, prayer times, qibla, hijri calendar, blocks',
     text: '**toowl Pro** adds PDF, image, Office, video and audio tools, opened with a license key for one tool, a theme pack or all tools: https://toowl.my.id/embed/',
     external: 'This plugin connects to no external service. The tools run in the visitor\'s browser from files in this plugin\'s folder.',
   },
