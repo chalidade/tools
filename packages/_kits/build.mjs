@@ -32,7 +32,7 @@ import { build } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import { marked } from 'marked'
-import { ALL_KITS, ENVATO_KITS, KITS, PREVIEW_URL, VERSION, kit as getKit } from './kits.mjs'
+import { ALL_KITS, CODESTER, ENVATO_KITS, KITS, PREVIEW_URL, VERSION, kit as getKit } from './kits.mjs'
 
 const HERE = dirname(fileURLToPath(import.meta.url))
 const PACKAGES = join(HERE, '..')
@@ -335,7 +335,7 @@ async function buildPreview(target) {
   cpSync(join(stage, 'dist'), join(target, 'dist'), { recursive: true })
   const all = await getKit('complete')
   const kits = { complete: { title: 'Complete Kit', tagline: all.tagline, items: all.tools.map((t) => [tagOf(t), t, pkg(t).description]) } }
-  for (const [id, k] of Object.entries(KITS)) kits[id] = { title: k.title, tagline: k.tagline, items: k.tools.map((t) => [tagOf(t), t, pkg(t).description]) }
+  for (const [id, k] of Object.entries(KITS)) kits[id] = { title: k.title, tagline: k.tagline, buy: CODESTER[id], items: k.tools.map((t) => [tagOf(t), t, pkg(t).description]) }
   const logo = read(join(ROOT, 'src', 'components', 'Logo.tsx')).match(/const MARK =\s*'([^']+)'/)[1]
   mkdirSync(join(target, 'fonts'))
   for (const font of ['geist-latin.woff2', 'geist-mono-latin.woff2']) cpSync(join(ROOT, 'src', 'assets', 'fonts', font), join(target, 'fonts', font))

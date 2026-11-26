@@ -37,6 +37,10 @@
     .select select { appearance: none; height: 36px; padding: 0 34px 0 14px; border: 1px solid var(--pv-line); border-radius: 10px; background: var(--card); color: var(--fg); font-size: 14px; cursor: pointer; }
     .select select option { background: var(--card); color: var(--fg); }
     .select::after { content: ''; position: absolute; right: 14px; top: 50%; width: 6px; height: 6px; border: solid var(--muted-fg); border-width: 0 1.5px 1.5px 0; transform: translateY(-70%) rotate(45deg); pointer-events: none; }
+    .buy { display: inline-flex; align-items: center; height: 36px; padding: 0 14px; border-radius: 10px; background: var(--fill); color: var(--ink); font-size: 14px; font-weight: 600; text-decoration: none; white-space: nowrap; }
+    .buy:hover { filter: brightness(1.05); }
+    .buy[hidden] { display: none; }
+    .buy .short { display: none; }
     .icon-btn { display: grid; place-items: center; width: 36px; height: 36px; border: 1px solid var(--pv-line); border-radius: 10px; background: var(--card); cursor: pointer; transition: border-color .15s; }
     .icon-btn:hover, .select select:hover { border-color: var(--accent); }
     .icon-btn svg { width: 16px; height: 16px; }
@@ -73,6 +77,12 @@
     @media (prefers-reduced-motion: reduce) { #stage > * { animation: none; } }
 
     @media (max-width: 860px) {
+      .buy { padding: 0 12px; }
+      .buy .long { display: none; }
+      .buy .short { display: inline; }
+      .select { min-width: 0; flex: 1 1 auto; }
+      .select select { width: 100%; }
+      .brand { margin-right: 0; }
       .wrap { padding: 0 16px; }
       .brand span { display: none; }
       .hero { padding: 32px 0 20px; }
@@ -93,6 +103,7 @@
         <span>Developer kits</span>
       </a>
       <label class="select"><select id="kit" aria-label="Kit"></select></label>
+      <a class="buy" id="buy" href="#" target="_blank" rel="noopener" hidden><span class="long">Buy on Codester</span><span class="short">Buy</span></a>
       <button class="icon-btn" id="theme" type="button" aria-label="Toggle theme"></button>
     </div>
   </header>
@@ -150,6 +161,8 @@
       $('title').textContent = k.title
       $('tagline').textContent = k.tagline
       $('count').textContent = k.items.length
+      $('buy').hidden = !k.buy
+      if (k.buy) $('buy').href = k.buy
       $('tabs').replaceChildren(...k.items.map(([tag]) => {
         const b = document.createElement('button')
         b.type = 'button'

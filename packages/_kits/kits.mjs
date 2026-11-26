@@ -96,4 +96,10 @@ export const ENVATO_KITS = ['complete', ...Object.keys(KITS)]
 /** The marketplaces' live preview (no store links), built by `--preview` and deployed with the site. */
 export const PREVIEW_URL = 'https://toowl.my.id/kit-preview/'
 
+/** Kits listed on Codester, with the owner's referral (?ref=) so sales through the demo earn the affiliate bonus. */
+export const CODESTER = {
+  'music-kit': 'https://www.codester.com/items/76990/music-kit-javascript-instruments-and-tools?ref=chalidade',
+  'islamic-kit': 'https://www.codester.com/items/76996/islamic-kit-javascript-web-components?ref=chalidade',
+}
+
 export const ALL_KITS = () => ['complete', ...Object.keys(KITS), ...SINGLES.map((t) => `single-${t}`)]
