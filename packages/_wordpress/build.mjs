@@ -41,6 +41,7 @@ const read = (p) => readFileSync(p, 'utf8')
 const EDITIONS = {
   optimizer: {
     slug: 'toowl-image-optimizer',
+    uri: 'https://toowl.my.id/compress-image/',
     name: 'toowl Image Optimizer',
     tools: [],
     readme: 'readme-optimizer.txt',
@@ -50,6 +51,7 @@ const EDITIONS = {
   },
   free: {
     slug: 'toowl',
+    uri: 'https://toowl.my.id/embed/',
     name: 'toowl – Browser Tools',
     tools: FREE,
     description: 'Browser-only tools as blocks and shortcodes: files never leave the visitor\'s device.',
@@ -60,6 +62,7 @@ const EDITIONS = {
   },
   pro: {
     slug: 'toowl-pro',
+    uri: 'https://toowl.my.id/embed/',
     name: 'toowl Pro – Browser Tools',
     tools: TOOLS,
     description: 'Browser-only tools as blocks and shortcodes: files never leave the visitor\'s device. A license key opens the paid tools.',
@@ -277,6 +280,7 @@ async function buildEdition(id, site) {
   })
   const vars = {
     PLUGIN_NAME: ed.name,
+    PLUGIN_URI: ed.uri,
     PLUGIN_DESCRIPTION: ed.description,
     SHORT_DESCRIPTION: ed.description,
     VERSION,
