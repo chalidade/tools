@@ -1,8 +1,9 @@
 === {{PLUGIN_NAME}} ===
-Contributors: chalidade
+Contributors: {{CONTRIBUTORS}}
+Donate link: https://trakteer.id/chalidade/tip
 Tags: image optimization, compress images, webp, heic, resize images
-Requires at least: 6.5
-Tested up to: 6.8
+Requires at least: {{REQUIRES_WP}}
+Tested up to: {{TESTED_UP_TO}}
 Requires PHP: 7.4
 Stable tag: {{VERSION}}
 License: GPLv2 or later
@@ -49,7 +50,7 @@ Use "Compress with toowl" on the Image block for the ones that matter. Bulk opti
 
 JPEG, PNG, WebP and HEIC/HEIF. GIF (which may be animated) and SVG are uploaded unchanged.
 
-== Changelog ==
+{{SCREENSHOTS}}== Changelog ==
 
 = {{VERSION}} =
 * First release.

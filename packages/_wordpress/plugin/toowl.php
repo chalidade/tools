@@ -4,7 +4,7 @@
  * Plugin URI:        https://toowl.my.id/
  * Description:       {{PLUGIN_DESCRIPTION}}
  * Version:           {{VERSION}}
- * Requires at least: 6.5
+ * Requires at least: {{REQUIRES_WP}}
  * Requires PHP:      7.4
  * Author:            Chalid Ade Rahman
  * Author URI:        https://toowl.my.id/

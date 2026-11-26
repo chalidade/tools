@@ -98,10 +98,12 @@ Plugin ini **GPL-2.0-or-later** (`plugin/LICENSE.txt`), bukan AGPL seperti
 repo. WordPress.org hanya menerima plugin yang kompatibel GPL v2-or-later, dan
 AGPL-3.0 tidak termasuk. Ini boleh karena pemilik repo memegang hak cipta
 kodenya sendiri dan bisa melisensikannya ulang untuk distribusi ini.
-Library pihak ketiga yang ter-bundle di 5 tool prototipe semuanya MIT / ISC /
-BSD / Apache-2.0 / Zlib, aman digabung di bawah GPL (Apache-2.0 lewat GPLv3,
-yang dicakup "or later"). **Sebelum menambah tool**, cek THIRD-PARTY-NOTICES-nya:
-yang GPL-3.0-only (mis. LibreDWG di `dwg-to-pdf`) atau LGPL perlu dicek dulu.
+Library pihak ketiga yang ter-bundle di 72 tool semuanya kompatibel GPL: MIT /
+ISC / BSD / Apache-2.0 / Zlib, MPL-2.0 (Mediabunny; boleh digabung dengan GPL),
+LGPL-3.0 (libheif) dan JSZip (dipakai di bawah MIT). Apache-2.0 dan LGPL-3.0 lewat
+GPLv3, yang dicakup "or later". **Sebelum menambah tool**, cek
+THIRD-PARTY-NOTICES-nya: yang GPL-3.0-only (mis. LibreDWG di `dwg-to-pdf`) tidak
+bisa masuk plugin GPL-2.0-or-later tanpa mengubah lisensi plugin ke GPLv3.
 
 ## Menguji
 
@@ -116,6 +118,27 @@ plus `wp.Uploader` tiruan yang meniru urutan `wp-plupload.js`, meng-upload ke
 REST API dan `async-upload.php` WordPress sungguhan. Build WordPress tes itu
 tidak punya JS editor dan Media Library aslinya, jadi alur di Gutenberg dan
 Media Library yang asli perlu dicoba sekali di WordPress sungguhan.
+
+## Rilis ke WordPress.org
+
+```bash
+node packages/_wordpress/build.mjs          # ZIP ke out/
+node packages/_wordpress/wporg/render.mjs   # banner, ikon, screenshot ke out/wporg/<slug>/
+```
+
+- Pertama kali: upload ZIP `toowl-image-optimizer` atau `toowl` di
+  https://wordpress.org/plugins/developers/add/ (satu plugin per antrean review).
+  Setelah disetujui, WordPress.org memberi repo SVN
+  `https://plugins.svn.wordpress.org/<slug>/`: isi ZIP ke `trunk/`, salin ke
+  `tags/<versi>/`, dan file dari `out/wporg/<slug>/` ke `assets/` (banner, ikon,
+  screenshot; bukan di dalam plugin).
+- Banner dan ikon dibuat dari `wporg/art.html`; screenshot dan keterangannya
+  ada di `wporg/<slug>/screenshot-N.png|txt` (keterangan otomatis masuk
+  `== Screenshots ==` di readme.txt).
+- `config.mjs`: `VERSION` (juga Stable tag), `TESTED_UP_TO` (naikkan setelah
+  dicoba di versi WordPress terbaru), `CONTRIBUTORS` (username WordPress.org).
+- Pro tidak masuk WordPress.org: ZIP-nya dilampirkan ke produk lisensi di
+  Gumroad. Update Pro = pembeli mengunduh ZIP baru dari library Gumroad.
 
 ## Sebelum rilis
 
