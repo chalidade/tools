@@ -1,0 +1,8 @@
+{
+  "extends": "../../tsconfig.app.json",
+  "compilerOptions": {
+    "tsBuildInfoFile": "../../node_modules/.tmp/tsconfig.wordpress.tsbuildinfo",
+    "paths": { "@/*": ["../../src/*"] }
+  },
+  "include": ["src", "../../src/vite-env.d.ts", "../../src/heic.d.ts", "../../src/types"]
+}

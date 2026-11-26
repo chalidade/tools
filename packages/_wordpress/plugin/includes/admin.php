@@ -11,7 +11,8 @@ defined( 'ABSPATH' ) || exit;
 add_action(
 	'admin_menu',
 	function () {
-		add_options_page( 'toowl', 'toowl', 'manage_options', 'toowl', 'toowl_settings_page' );
+		$title = toowl_tools() ? 'toowl' : 'toowl Image Optimizer';
+		add_options_page( $title, $title, 'manage_options', 'toowl', 'toowl_settings_page' );
 	}
 );
 
@@ -71,60 +72,72 @@ function toowl_settings_page() {
 	$pro   = function_exists( 'toowl_license' );
 	?>
 	<div class="wrap">
-		<h1>toowl</h1>
-		<p><?php esc_html_e( 'Browser-only tools as blocks and shortcodes. Files your visitors open in a tool never leave their device.', 'toowl' ); ?></p>
+		<h1><?php echo esc_html( $tools ? 'toowl' : 'toowl Image Optimizer' ); ?></h1>
+		<p><?php esc_html_e( 'Everything toowl does runs in the browser: files never pass through your server or anyone else\'s.', 'toowl' ); ?></p>
 
 		<?php if ( $pro ) : ?>
 			<?php toowl_license_section(); ?>
 		<?php endif; ?>
 
-		<h2><?php esc_html_e( 'Tools', 'toowl' ); ?></h2>
-		<p><?php esc_html_e( 'Add a tool with its block (search "toowl" in the block inserter) or paste its shortcode anywhere shortcodes work.', 'toowl' ); ?></p>
-		<table class="widefat striped" style="max-width:960px">
-			<thead><tr>
-				<th><?php esc_html_e( 'Tool', 'toowl' ); ?></th>
-				<th><?php esc_html_e( 'Shortcode', 'toowl' ); ?></th>
-				<th><?php esc_html_e( 'Status', 'toowl' ); ?></th>
-			</tr></thead>
-			<tbody>
-			<?php foreach ( $tools as $slug => $tool ) : ?>
-				<tr>
-					<td><strong><?php echo esc_html( toowl_text( $tool, 'title' ) ); ?></strong><br><span class="description"><?php echo esc_html( toowl_text( $tool, 'description' ) ); ?></span></td>
-					<td><code>[toowl tool="<?php echo esc_html( $slug ); ?>"]</code></td>
-					<td>
-						<?php
-						if ( ! empty( $tool['free'] ) ) {
-							esc_html_e( 'Free', 'toowl' );
-						} elseif ( toowl_tool_unlocked( $slug ) ) {
-							echo '<span style="color:#008a20">' . esc_html__( 'Licensed', 'toowl' ) . '</span>';
-						} else {
-							echo '<span style="color:#b32d2e">' . esc_html__( 'Needs a license', 'toowl' ) . '</span>';
-						}
-						?>
-					</td>
-				</tr>
-			<?php endforeach; ?>
-			</tbody>
-		</table>
-		<p class="description"><?php esc_html_e( 'Shortcode options: theme="auto|light|dark", lang="en|id" (default: the site language).', 'toowl' ); ?></p>
+		<?php if ( $tools ) : ?>
+			<?php toowl_tools_section( $tools ); ?>
+		<?php endif; ?>
+
+		<form method="post" action="options.php">
+			<?php settings_fields( 'toowl' ); ?>
+			<?php toowl_optimizer_fields(); ?>
+			<?php if ( $tools ) : ?>
+				<h2><?php esc_html_e( 'Credit', 'toowl' ); ?></h2>
+				<label>
+					<input type="checkbox" name="toowl_credit" value="1" <?php checked( get_option( 'toowl_credit', false ) ); ?>>
+					<?php esc_html_e( 'Show a small "Made with toowl" link under tools that no license covers.', 'toowl' ); ?>
+				</label>
+			<?php endif; ?>
+			<?php submit_button(); ?>
+		</form>
 
 		<?php if ( ! $pro ) : ?>
 			<p>
-				<?php esc_html_e( 'More tools (PDF, Office, image, video, audio and more) come with toowl Pro.', 'toowl' ); ?>
+				<?php esc_html_e( 'toowl Pro adds tools your visitors can use on your pages: PDF, Office, image, video, audio and more.', 'toowl' ); ?>
 				<a href="https://toowl.my.id/embed/" target="_blank" rel="noopener"><?php esc_html_e( 'See toowl Pro', 'toowl' ); ?></a>
 			</p>
 		<?php endif; ?>
-
-		<h2><?php esc_html_e( 'Credit', 'toowl' ); ?></h2>
-		<form method="post" action="options.php">
-			<?php settings_fields( 'toowl' ); ?>
-			<label>
-				<input type="checkbox" name="toowl_credit" value="1" <?php checked( get_option( 'toowl_credit', false ) ); ?>>
-				<?php esc_html_e( 'Show a small "Made with toowl" link under tools that no license covers.', 'toowl' ); ?>
-			</label>
-			<?php submit_button(); ?>
-		</form>
 	</div>
+	<?php
+}
+
+/** The tools in this build, with their shortcodes and whether they are open. */
+function toowl_tools_section( array $tools ) {
+	?>
+	<h2><?php esc_html_e( 'Tools', 'toowl' ); ?></h2>
+	<p><?php esc_html_e( 'Add a tool with its block (search "toowl" in the block inserter) or paste its shortcode anywhere shortcodes work.', 'toowl' ); ?></p>
+	<table class="widefat striped" style="max-width:960px">
+		<thead><tr>
+			<th><?php esc_html_e( 'Tool', 'toowl' ); ?></th>
+			<th><?php esc_html_e( 'Shortcode', 'toowl' ); ?></th>
+			<th><?php esc_html_e( 'Status', 'toowl' ); ?></th>
+		</tr></thead>
+		<tbody>
+		<?php foreach ( $tools as $slug => $tool ) : ?>
+			<tr>
+				<td><strong><?php echo esc_html( toowl_text( $tool, 'title' ) ); ?></strong><br><span class="description"><?php echo esc_html( toowl_text( $tool, 'description' ) ); ?></span></td>
+				<td><code>[toowl tool="<?php echo esc_html( $slug ); ?>"]</code></td>
+				<td>
+					<?php
+					if ( ! empty( $tool['free'] ) ) {
+						esc_html_e( 'Free', 'toowl' );
+					} elseif ( toowl_tool_unlocked( $slug ) ) {
+						echo '<span style="color:#008a20">' . esc_html__( 'Licensed', 'toowl' ) . '</span>';
+					} else {
+						echo '<span style="color:#b32d2e">' . esc_html__( 'Needs a license', 'toowl' ) . '</span>';
+					}
+					?>
+				</td>
+			</tr>
+		<?php endforeach; ?>
+		</tbody>
+	</table>
+	<p class="description"><?php esc_html_e( 'Shortcode options: theme="auto|light|dark", lang="en|id" (default: the site language).', 'toowl' ); ?></p>
 	<?php
 }
 
