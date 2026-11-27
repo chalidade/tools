@@ -160,6 +160,8 @@ for (const slug of ['', seo.EMBED_SLUG, ...TOOLS.map((t) => t.slug)]) {
     .join('')
   for (const lang of ['id', 'en']) urls.push(`<url><loc>${seo.absoluteUrl(slug, lang)}</loc>${alt}</url>`)
 }
+// Static page for WordPress site owners (public/wordpress/index.html).
+urls.push(`<url><loc>${seo.absoluteUrl('', 'id')}wordpress/</loc></url>`)
 write(
   'sitemap.xml',
   `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${urls.join('\n')}\n</urlset>\n`,
