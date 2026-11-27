@@ -8,22 +8,42 @@
       "type": "array",
       "description": "Direct links to the images (JPG, PNG, WebP, AVIF, TIFF).",
       "editor": "requestListSources",
-      "prefill": [{ "url": "https://raw.githubusercontent.com/danielgatis/rembg/main/examples/car-1.jpg" }]
+      "prefill": [
+        {
+          "url": "https://raw.githubusercontent.com/danielgatis/rembg/main/examples/car-1.jpg"
+        }
+      ]
     },
     "output": {
       "title": "Output",
       "type": "string",
+      "description": "The subject with the background removed, or just the black-and-white mask.",
       "editor": "select",
-      "enum": ["cutout", "mask"],
-      "enumTitles": ["Cut-out (subject without background)", "Mask only (white subject on black)"],
+      "enum": [
+        "cutout",
+        "mask"
+      ],
+      "enumTitles": [
+        "Cut-out (subject without background)",
+        "Mask only (white subject on black)"
+      ],
       "default": "cutout"
     },
     "format": {
       "title": "Format",
       "type": "string",
+      "description": "PNG and WebP keep transparency. JPG has no transparency, so the background colour below is used.",
       "editor": "select",
-      "enum": ["png", "webp", "jpg"],
-      "enumTitles": ["PNG (transparent)", "WebP (transparent, smaller)", "JPG (on the background colour)"],
+      "enum": [
+        "png",
+        "webp",
+        "jpg"
+      ],
+      "enumTitles": [
+        "PNG (transparent)",
+        "WebP (transparent, smaller)",
+        "JPG (on the background colour)"
+      ],
       "default": "png"
     },
     "background": {
@@ -42,6 +62,7 @@
     "padding": {
       "title": "Padding around the crop (px)",
       "type": "integer",
+      "description": "Space left around the subject when cropping to it.",
       "minimum": 0,
       "maximum": 2000,
       "default": 0
@@ -76,5 +97,7 @@
       "description": "Larger files are skipped with an error (not charged)."
     }
   },
-  "required": ["files"]
+  "required": [
+    "files"
+  ]
 }

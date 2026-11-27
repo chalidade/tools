@@ -8,7 +8,11 @@
       "type": "array",
       "description": "Direct links to the images. Accepted: JPG, PNG, WebP, AVIF, HEIC/HEIF, TIFF, GIF, SVG.",
       "editor": "requestListSources",
-      "prefill": [{ "url": "https://toowl.my.id/og.png" }]
+      "prefill": [
+        {
+          "url": "https://toowl.my.id/og.png"
+        }
+      ]
     },
     "quality": {
       "title": "Quality",
@@ -35,15 +39,29 @@
     "maxHeight": {
       "title": "Max height (px)",
       "type": "integer",
+      "description": "Images taller than this are scaled down, keeping the aspect ratio. Leave empty to keep the height.",
       "minimum": 1,
       "maximum": 16000
     },
     "format": {
       "title": "Output format",
       "type": "string",
+      "description": "Keep each image in its own format, or convert everything to one format. WebP and AVIF are usually the smallest.",
       "editor": "select",
-      "enum": ["same", "jpg", "webp", "avif", "png"],
-      "enumTitles": ["Same as input (HEIC becomes JPG)", "JPG", "WebP", "AVIF", "PNG"],
+      "enum": [
+        "same",
+        "jpg",
+        "webp",
+        "avif",
+        "png"
+      ],
+      "enumTitles": [
+        "Same as input (HEIC becomes JPG)",
+        "JPG",
+        "WebP",
+        "AVIF",
+        "PNG"
+      ],
       "default": "same",
       "sectionCaption": "Advanced"
     },
@@ -68,5 +86,7 @@
       "description": "Larger files are skipped with an error (not charged)."
     }
   },
-  "required": ["files"]
+  "required": [
+    "files"
+  ]
 }

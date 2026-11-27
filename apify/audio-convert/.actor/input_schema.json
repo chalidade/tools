@@ -8,14 +8,34 @@
       "type": "array",
       "description": "Direct links to audio files (MP3, WAV, FLAC, M4A, AAC, OGG, Opus, AMR, WMA, AIFF…) or videos (MP4, MOV, WebM, MKV…) to take the sound from.",
       "editor": "requestListSources",
-      "prefill": [{ "url": "https://raw.githubusercontent.com/chalidade/tools/main/apify/samples/sample-audio.wav" }]
+      "prefill": [
+        {
+          "url": "https://raw.githubusercontent.com/chalidade/tools/main/apify/samples/sample-audio.wav"
+        }
+      ]
     },
     "format": {
       "title": "Output format",
       "type": "string",
       "editor": "select",
-      "enum": ["mp3", "m4a", "wav", "ogg", "opus", "flac", "aac"],
-      "enumTitles": ["MP3", "M4A (AAC)", "WAV (16-bit PCM)", "OGG (Vorbis)", "Opus", "FLAC (lossless)", "AAC (raw ADTS)"],
+      "enum": [
+        "mp3",
+        "m4a",
+        "wav",
+        "ogg",
+        "opus",
+        "flac",
+        "aac"
+      ],
+      "enumTitles": [
+        "MP3",
+        "M4A (AAC)",
+        "WAV (16-bit PCM)",
+        "OGG (Vorbis)",
+        "Opus",
+        "FLAC (lossless)",
+        "AAC (raw ADTS)"
+      ],
       "default": "mp3",
       "description": "File type of the output."
     },
@@ -23,7 +43,15 @@
       "title": "Bitrate (kbps)",
       "type": "integer",
       "editor": "select",
-      "enum": [64, 96, 128, 160, 192, 256, 320],
+      "enum": [
+        64,
+        96,
+        128,
+        160,
+        192,
+        256,
+        320
+      ],
       "default": 192,
       "description": "For MP3, M4A, AAC, OGG and Opus. 128 is fine for speech, 192–320 for music."
     },
@@ -31,7 +59,14 @@
       "title": "Sample rate (Hz)",
       "type": "integer",
       "editor": "select",
-      "enum": [8000, 16000, 22050, 32000, 44100, 48000],
+      "enum": [
+        8000,
+        16000,
+        22050,
+        32000,
+        44100,
+        48000
+      ],
       "description": "Leave empty to keep the original. 16000 mono suits speech-to-text."
     },
     "mono": {
@@ -58,33 +93,39 @@
     "trimSilence": {
       "title": "Trim leading and trailing silence",
       "type": "boolean",
+      "description": "Removes silence at the very start and end of each file.",
       "default": false
     },
     "trimStart": {
       "title": "Trim: start (seconds)",
       "type": "number",
+      "description": "Cut everything before this point. Leave empty to start at the beginning.",
       "minimum": 0
     },
     "trimEnd": {
       "title": "Trim: end (seconds)",
       "type": "number",
+      "description": "Cut everything after this point. Leave empty to keep until the end.",
       "minimum": 0
     },
     "fadeIn": {
       "title": "Fade in (seconds)",
       "type": "number",
+      "description": "Fade the volume in over this many seconds at the start.",
       "minimum": 0,
       "maximum": 60
     },
     "fadeOut": {
       "title": "Fade out (seconds)",
       "type": "number",
+      "description": "Fade the volume out over this many seconds at the end.",
       "minimum": 0,
       "maximum": 60
     },
     "keepMetadata": {
       "title": "Keep tags (title, artist, cover)",
       "type": "boolean",
+      "description": "Copy title, artist, album and cover art into the output where the format supports it.",
       "default": false,
       "sectionCaption": "Advanced"
     },
@@ -97,5 +138,7 @@
       "description": "Larger files are skipped with an error (not charged)."
     }
   },
-  "required": ["files"]
+  "required": [
+    "files"
+  ]
 }
