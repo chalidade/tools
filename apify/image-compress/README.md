@@ -63,3 +63,31 @@ Pay per event: one `image-compressed` per image. Failed images are free.
 ## Free browser version
 
 [toowl.my.id/en/compress-image](https://toowl.my.id/en/compress-image/) compresses images in your browser, free, nothing uploaded.
+
+<!-- toowl-footer -->
+## Call it from your code
+
+```bash
+curl -X POST "https://api.apify.com/v2/acts/toowl~image-compressor/run-sync-get-dataset-items" \
+  -H "Authorization: Bearer $APIFY_TOKEN" \
+  -H 'Content-Type: application/json' \
+  -d '{"files":[{"url":"https://example.com/your-file"}]}'
+```
+
+The same call works from Python (`apify-client`), JavaScript, Make, Zapier and n8n (Apify app/node or a plain HTTP request).
+
+## Use it from AI agents (MCP)
+
+Add this Actor as a tool to Claude, Cursor, VS Code or any MCP client through Apify's MCP server:
+
+```
+https://mcp.apify.com/?actors=toowl/image-compressor
+```
+
+The agent can then pass file URLs and read the results itself.
+
+## More toowl file APIs
+
+PDF to Markdown, OCR, Office to PDF, PDF compressor, PDF merge/split, PDF to image, image converter and compressor, background remover, AI upscaler, image to SVG, QR/barcode reader, video compressor, frame extractor and audio converter. All pay per file, all batch-friendly: [toowl.my.id/en/api](https://toowl.my.id/en/api/).
+
+Questions or a format that fails? Open an issue on the Actor's **Issues** tab.

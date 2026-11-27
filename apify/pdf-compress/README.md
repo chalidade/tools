@@ -72,3 +72,20 @@ Pay per event: you pay a small fee per successfully compressed PDF (see the Pric
 ## Want it in the browser instead?
 
 The same engine runs free in your browser at [toowl.my.id/en/compress-pdf](https://toowl.my.id/en/compress-pdf/) — nothing uploaded.
+
+<!-- toowl-footer -->
+## Use it from AI agents (MCP)
+
+Add this Actor as a tool to Claude, Cursor, VS Code or any MCP client through Apify's MCP server:
+
+```
+https://mcp.apify.com/?actors=toowl/pdf-compressor
+```
+
+The agent can then pass file URLs and read the results itself.
+
+## More toowl file APIs
+
+PDF to Markdown, OCR, Office to PDF, PDF compressor, PDF merge/split, PDF to image, image converter and compressor, background remover, AI upscaler, image to SVG, QR/barcode reader, video compressor, frame extractor and audio converter. All pay per file, all batch-friendly: [toowl.my.id/en/api](https://toowl.my.id/en/api/).
+
+Questions or a format that fails? Open an issue on the Actor's **Issues** tab.
