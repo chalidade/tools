@@ -1,0 +1,66 @@
+{
+  "title": "QR & Barcode Reader input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "files": {
+      "title": "Image URLs",
+      "type": "array",
+      "description": "Direct links to photos, screenshots or scans (JPG, PNG, WebP, AVIF, GIF, TIFF, SVG).",
+      "editor": "requestListSources",
+      "prefill": [
+        {
+          "url": "https://raw.githubusercontent.com/chalidade/tools/main/apify/samples/codes.jpg"
+        }
+      ]
+    },
+    "formats": {
+      "title": "Only these formats",
+      "type": "array",
+      "description": "Leave empty to read every supported format. Restricting is faster and avoids false hits.",
+      "editor": "select",
+      "items": {
+        "type": "string",
+        "enum": [
+          "QRCode",
+          "MicroQRCode",
+          "rMQRCode",
+          "DataMatrix",
+          "Aztec",
+          "PDF417",
+          "MaxiCode",
+          "EAN13",
+          "EAN8",
+          "UPCA",
+          "UPCE",
+          "Code128",
+          "Code39",
+          "Code93",
+          "ITF",
+          "Codabar",
+          "DataBar",
+          "DataBarExpanded",
+          "DataBarLimited",
+          "DXFilmEdge"
+        ]
+      }
+    },
+    "includePositions": {
+      "title": "Include corner positions",
+      "type": "boolean",
+      "description": "Adds each code's four corners (pixels in the original image).",
+      "default": false
+    },
+    "maxFileSizeMb": {
+      "title": "Max file size (MB)",
+      "type": "integer",
+      "default": 30,
+      "minimum": 1,
+      "maximum": 200,
+      "description": "Larger files are skipped with an error (not charged)."
+    }
+  },
+  "required": [
+    "files"
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "actorSpecification": 1,
+  "name": "qr-barcode-reader",
+  "title": "QR Code & Barcode Reader (Bulk)",
+  "description": "Decode QR codes and barcodes from image URLs in bulk: QR, Micro QR, rMQR, Data Matrix, Aztec, PDF417, EAN-13/8, UPC-A/E, Code 128/39/93, ITF, Codabar and more. Several codes per image, rotated, inverted or small. Pay per image.",
+  "version": "1.0",
+  "buildTag": "latest",
+  "minMemoryMbytes": 256,
+  "maxMemoryMbytes": 4096,
+  "input": "./input_schema.json",
+  "dockerfile": "../Dockerfile",
+  "readme": "../README.md",
+  "storages": {
+    "dataset": {
+      "actorSpecification": 1,
+      "views": {
+        "overview": {
+          "title": "Decoded codes",
+          "transformation": { "fields": ["name", "found", "text", "format", "codes", "error", "url"] },
+          "display": {
+            "component": "table",
+            "properties": {
+              "found": { "label": "Codes found", "format": "number" },
+              "text": { "label": "First code" },
+              "codes": { "label": "All codes", "format": "object" },
+              "url": { "label": "Image", "format": "image" }
+            }
+          }
+        }
+      }
+    }
+  }
+}
