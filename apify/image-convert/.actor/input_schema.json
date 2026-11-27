@@ -1,0 +1,115 @@
+{
+  "title": "Image Converter input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "files": {
+      "title": "Image URLs",
+      "type": "array",
+      "description": "Direct links to the images. Accepted: HEIC/HEIF, AVIF, WebP, PNG, JPG, TIFF, GIF, SVG.",
+      "editor": "requestListSources",
+      "prefill": [
+        {
+          "url": "https://toowl.my.id/og.png"
+        }
+      ]
+    },
+    "format": {
+      "title": "Output format",
+      "type": "string",
+      "editor": "select",
+      "enum": [
+        "webp",
+        "jpg",
+        "png",
+        "avif",
+        "tiff",
+        "gif"
+      ],
+      "enumTitles": [
+        "WebP",
+        "JPG",
+        "PNG",
+        "AVIF",
+        "TIFF",
+        "GIF"
+      ],
+      "default": "webp",
+      "description": "File type of the converted images."
+    },
+    "quality": {
+      "title": "Quality",
+      "type": "integer",
+      "description": "1–100. For PNG below 100 the image is palette-quantized (much smaller, like TinyPNG).",
+      "default": 80,
+      "minimum": 1,
+      "maximum": 100
+    },
+    "width": {
+      "title": "Max width (px)",
+      "type": "integer",
+      "description": "Leave empty to keep the original size.",
+      "minimum": 1,
+      "maximum": 16000,
+      "sectionCaption": "Resize"
+    },
+    "height": {
+      "title": "Max height (px)",
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 16000,
+      "description": "Leave empty to keep the original size."
+    },
+    "fit": {
+      "title": "Fit",
+      "type": "string",
+      "description": "inside = keep aspect ratio within the box. cover = fill the box and crop. contain = fit and pad with the background colour. fill = stretch.",
+      "editor": "select",
+      "enum": [
+        "inside",
+        "cover",
+        "contain",
+        "fill",
+        "outside"
+      ],
+      "default": "inside"
+    },
+    "allowUpscale": {
+      "title": "Allow upscaling",
+      "type": "boolean",
+      "description": "By default smaller images are never enlarged.",
+      "default": false
+    },
+    "background": {
+      "title": "Background colour",
+      "type": "string",
+      "description": "Used when flattening transparency to JPG and for 'contain' padding.",
+      "editor": "textfield",
+      "default": "#ffffff",
+      "sectionCaption": "Advanced"
+    },
+    "lossless": {
+      "title": "Lossless",
+      "type": "boolean",
+      "description": "Lossless WebP/AVIF, full-colour PNG, LZW TIFF.",
+      "default": false
+    },
+    "keepMetadata": {
+      "title": "Keep metadata (EXIF, GPS, ICC)",
+      "type": "boolean",
+      "description": "Off by default: location and camera data are removed.",
+      "default": false
+    },
+    "maxFileSizeMb": {
+      "title": "Max file size (MB)",
+      "type": "integer",
+      "default": 50,
+      "minimum": 1,
+      "maximum": 300,
+      "description": "Larger files are skipped with an error (not charged)."
+    }
+  },
+  "required": [
+    "files"
+  ]
+}
