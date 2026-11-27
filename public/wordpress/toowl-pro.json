@@ -1,0 +1,9 @@
+{
+ "version": "1.0.0",
+ "requires": "6.5",
+ "tested": "7.1",
+ "requires_php": "7.4",
+ "changelog": {
+  "1.0.0": ["First release: 72 tools as blocks and shortcodes, image optimizer, Gumroad license keys."]
+ }
+}
