@@ -1,5 +1,5 @@
 import { Check } from 'lucide-react'
-import { aboutPoints, faqHeading, relatedHeading, relatedTools, toolFaq } from '@/lib/seo'
+import { aboutPoints, faqHeading, popularHeading, popularTools, relatedHeading, relatedTools, toolFaq } from '@/lib/seo'
 import { pageUrl } from '@/lib/route'
 import { toolText, type Tool } from '@/tools/registry'
 import { useLang, useT } from '@/lib/i18n'
@@ -13,6 +13,7 @@ export function ToolAbout({ tool }: { tool: Tool }) {
   const t = useT()
   const lang = useLang()
   const related = relatedTools(tool)
+  const popular = popularTools(tool)
   const faq = toolFaq(tool, lang)
 
   return (
@@ -41,23 +42,28 @@ export function ToolAbout({ tool }: { tool: Tool }) {
           ))}
         </ul>
       </div>
-      {related.length > 0 && (
-        <nav aria-label={relatedHeading(tool, lang)}>
-          <h2 className="font-semibold tracking-tight">{relatedHeading(tool, lang)}</h2>
-          <ul className="mt-3 flex flex-wrap gap-2 text-sm">
-            {related.map((other) => (
-              <li key={other.slug}>
-                <a
-                  href={pageUrl(other.slug, lang)}
-                  className="group inline-flex h-9 items-center gap-2 rounded-full border bg-card pr-3.5 pl-3 text-foreground/80 transition-colors hover:border-brand-2/50 hover:text-foreground active:bg-accent"
-                >
-                  <other.icon className="size-4 text-muted-foreground transition-colors group-hover:text-brand-2" />
-                  {toolText(other, lang).title}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
+      {[
+        { heading: relatedHeading(tool, lang), tools: related },
+        { heading: popularHeading(lang), tools: popular },
+      ].map(({ heading, tools }) =>
+        tools.length > 0 && (
+          <nav key={heading} aria-label={heading}>
+            <h2 className="font-semibold tracking-tight">{heading}</h2>
+            <ul className="mt-3 flex flex-wrap gap-2 text-sm">
+              {tools.map((other) => (
+                <li key={other.slug}>
+                  <a
+                    href={pageUrl(other.slug, lang)}
+                    className="group inline-flex h-9 items-center gap-2 rounded-full border bg-card pr-3.5 pl-3 text-foreground/80 transition-colors hover:border-brand-2/50 hover:text-foreground active:bg-accent"
+                  >
+                    <other.icon className="size-4 text-muted-foreground transition-colors group-hover:text-brand-2" />
+                    {toolText(other, lang).title}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        ),
       )}
     </div>
   )

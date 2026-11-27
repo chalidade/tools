@@ -5,10 +5,12 @@
 //   node packages/_wordpress/build.mjs pro         toowl-pro (sold)
 //   node packages/_wordpress/build.mjs optimizer   toowl-image-optimizer (WordPress.org)
 //
-// Every edition has the image optimizer (admin/optimizer.js + the engine
-// assets/dist/optimizer.js from src/optimizer.ts); the optimizer edition has
-// nothing else. Editions are nested (optimizer ⊂ free ⊂ pro): the widest
-// active one runs and switches the narrower ones off.
+// The image optimizer (admin/optimizer.js + the engine assets/dist/optimizer.js
+// from src/optimizer.ts) is in the optimizer edition (nothing else) and in Pro.
+// The WordPress.org edition (free) leaves it out: WordPress.org turned the
+// optimizer down under guideline 18 (category full), so the free plugin must
+// not look like a way round that. Each edition lists the ones it contains
+// (`includes`): the widest active one runs and switches those off.
 //
 // Output: packages/_wordpress/out/<slug>-<version>.zip, a folder <slug>/ holding
 //   toowl.php, includes/, blocks/tool/   the PHP plugin (from plugin/)
@@ -38,6 +40,22 @@ const OUT = join(HERE, 'out')
 const WORK = join(HERE, '.work')
 const read = (p) => readFileSync(p, 'utf8')
 
+/** readme.txt paragraph for editions with the image optimizer. */
+const OPTIMIZER_TEXT = [
+  '**Image optimizer included**',
+  '',
+  'Images you upload (block editor, Media Library) are scaled down, re-encoded and stripped of GPS/camera data in your browser before they are sent, optionally as WebP; iPhone HEIC photos become JPEG. Images already in posts: "Compress with toowl" in the Image block toolbar. Settings → toowl.',
+  '',
+  '',
+].join('\n')
+
+/** The free plugin's one paragraph about Pro (readme.txt; the settings page says the same). */
+const PRO_PITCH = [
+  '**toowl Pro**',
+  '',
+  `This plugin has ${FREE.length} free tools and nothing in it is locked. toowl Pro is a separate plugin with ${TOOLS.length} tools: PDF (compress, merge, sign, PDF to Word), Office to PDF, image (remove background, compress, passport photo), video and audio, music, business and Islamic tools. A license opens one tool, a theme pack or all of them, from $19: https://toowl.my.id/wordpress/`,
+].join('\n')
+
 const EDITIONS = {
   optimizer: {
     slug: 'toowl-image-optimizer',
@@ -45,39 +63,45 @@ const EDITIONS = {
     name: 'toowl Image Optimizer',
     tools: [],
     readme: 'readme-optimizer.txt',
+    optimizer: true,
+    includes: [],
     description: 'Compress, resize and convert images (JPEG, PNG, WebP, HEIC) in the browser before they are uploaded. No API, no quota; GPS data removed.',
     text: '',
     external: 'This plugin connects to no external service. Images are optimized in the uploader\'s browser with code from this plugin\'s folder.',
   },
   free: {
     slug: 'toowl',
-    uri: 'https://toowl.my.id/embed/',
+    uri: 'https://toowl.my.id/wordpress/',
     name: 'toowl – Browser Tools',
     tools: FREE,
+    optimizer: false,
+    includes: [],
     description: 'Browser-only tools as blocks and shortcodes: files never leave the visitor\'s device.',
     readme: 'readme.txt',
-    tags: 'qr code, prayer times, image optimization, password generator, tools',
-    text: '**toowl Pro** adds PDF, image, Office, video and audio tools, opened with a license key for one tool, a theme pack or all tools: https://toowl.my.id/embed/',
+    tags: 'qr code, prayer times, password generator, calculator, tools',
+    text: PRO_PITCH,
     external: 'This plugin connects to no external service. The tools run in the visitor\'s browser from files in this plugin\'s folder.',
   },
   pro: {
     slug: 'toowl-pro',
-    uri: 'https://toowl.my.id/embed/',
+    uri: 'https://toowl.my.id/wordpress/',
     name: 'toowl Pro – Browser Tools',
     tools: TOOLS,
+    optimizer: true,
+    includes: ['optimizer', 'free'],
     description: 'Browser-only tools as blocks and shortcodes: files never leave the visitor\'s device. A license key opens the paid tools.',
     readme: 'readme.txt',
     tags: 'pdf, compress images, remove background, qr code, tools',
-    text: 'The free tools always work. The others open with a license key from https://toowl.my.id/embed/: one tool, a theme pack, or all tools. Enter it in Settings → toowl.',
-    external: 'To check a license key, this plugin sends the key and a toowl product id to Gumroad (https://api.gumroad.com/v2/licenses/verify), from your server, when you save the key and once a week after. Nothing about your visitors is sent. Gumroad terms: https://gumroad.com/terms, privacy: https://gumroad.com/privacy',
+    text: 'The free tools always work. The others open with a license key from https://toowl.my.id/wordpress/: one tool, a theme pack, or all tools. Enter it in Settings → toowl.',
+    external: 'To check a license key, this plugin sends the key and a toowl product id to Gumroad (https://api.gumroad.com/v2/licenses/verify), from your server, when you save the key and once a week after. Nothing about your visitors is sent. Gumroad terms: https://gumroad.com/terms, privacy: https://gumroad.com/privacy\n\nTo tell you about new versions, your server fetches https://toowl.my.id/wordpress/toowl-pro.json (the latest version number and its changelog) twice a day, like WordPress does for plugins from WordPress.org. Nothing is sent but a normal request. toowl privacy: https://toowl.my.id/privacy/',
   },
 }
 
 for (const t of FREE) if (!TOOLS.includes(t)) throw new Error(`config: free tool ${t} is not in TOOLS`)
 
-/** Narrowest first: each edition contains the ones before it. */
-const ORDER = ['optimizer', 'free', 'pro']
 const mainFile = (id) => `${EDITIONS[id].slug}/toowl.php`
+/** The editions that contain this one (it stands down when one of them is active). */
+const widerThan = (id) => Object.keys(EDITIONS).filter((o) => EDITIONS[o].includes.includes(id))
 const phpList = (ids) => `array( ${ids.map((id) => `'${mainFile(id)}'`).join(', ')} )`
 
 /**
@@ -158,11 +182,11 @@ const inlineWorker = {
 }
 
 /** Each tool's element as an ES module, sharing chunks; wasm and models as files next to them. */
-async function buildElements(tools, outDir) {
+async function buildElements(tools, outDir, optimizer) {
   const work = join(WORK, 'entries')
   rmSync(work, { recursive: true, force: true })
   mkdirSync(work, { recursive: true })
-  const input = { optimizer: join(HERE, 'src/optimizer.ts') }
+  const input = optimizer ? { optimizer: join(HERE, 'src/optimizer.ts') } : {}
   for (const tool of tools) {
     if (!existsSync(join(PACKAGES, tool, 'src/element.tsx'))) throw new Error(`${tool}: no package (packages/${tool}/src/element.tsx)`)
     // Re-exported, not a bare import: the packages declare their src/ free of side
@@ -259,7 +283,8 @@ async function buildEdition(id, site) {
 
   // PHP, block and readme, with placeholders filled.
   const skip = (f) =>
-    (id !== 'pro' && f.endsWith('license.php')) ||
+    (id !== 'pro' && /\/includes\/(license|updates)\.php$/.test(f)) ||
+    (!ed.optimizer && /\/(includes\/optimizer\.php|admin\/optimizer\.js|admin\/image-button\.js)$/.test(f)) ||
     (!ed.tools.length && (f.includes('/blocks') || f.endsWith('/assets/toowl.css'))) ||
     (/readme[^/]*\.txt$/.test(f) && !f.endsWith(ed.readme))
   cpSync(join(HERE, 'plugin'), stage, { recursive: true, filter: (f) => !skip(f) })
@@ -291,9 +316,11 @@ async function buildEdition(id, site) {
     SCREENSHOTS: screenshotsSection(ed.slug),
     EDITION: id,
     TEXT_DOMAIN: ed.slug,
-    WIDER_PLUGINS: phpList(ORDER.slice(ORDER.indexOf(id) + 1)),
-    NARROWER_PLUGINS: phpList(ORDER.slice(0, ORDER.indexOf(id))),
-    OTHER_PLUGINS: phpList(ORDER.filter((o) => o !== id)),
+    WIDER_PLUGINS: phpList(widerThan(id)),
+    NARROWER_PLUGINS: phpList(ed.includes),
+    OTHER_PLUGINS: phpList(Object.keys(EDITIONS).filter((o) => o !== id)),
+    PRO_TOOL_COUNT: String(TOOLS.length),
+    OPTIMIZER_TEXT: ed.optimizer ? OPTIMIZER_TEXT : '',
     FIRST_TOOL: rows[0]?.slug ?? '',
     TOOL_COUNT: String(rows.length),
     TOOL_LIST: rows.map((r) => `* **${r.title.en}**${id === 'pro' && r.free ? ' (free)' : ''}: ${r.description.en}`).join('\n'),
@@ -328,8 +355,8 @@ async function buildEdition(id, site) {
     writeFileSync(join(stage, 'assets', 'products.json'), JSON.stringify(products, null, 1) + '\n')
   }
 
-  await buildElements(ed.tools, join(stage, 'assets', 'dist'))
-  writeFileSync(join(stage, 'THIRD-PARTY-NOTICES.txt'), notices([...ed.tools, 'compress-image', 'convert-image']))
+  await buildElements(ed.tools, join(stage, 'assets', 'dist'), ed.optimizer)
+  writeFileSync(join(stage, 'THIRD-PARTY-NOTICES.txt'), notices([...ed.tools, ...(ed.optimizer ? ['compress-image', 'convert-image'] : [])]))
 
   mkdirSync(OUT, { recursive: true })
   const zip = join(OUT, `${ed.slug}-${VERSION}.zip`)

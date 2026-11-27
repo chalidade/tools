@@ -31,6 +31,19 @@ add_action(
 	}
 );
 
+// Free edition: one "toowl Pro" link next to "View details" in the plugin's own row.
+add_filter(
+	'plugin_row_meta',
+	function ( $meta, $file ) {
+		if ( plugin_basename( TOOWL_FILE ) === $file && 'free' === TOOWL_EDITION ) {
+			$meta[] = '<a href="https://toowl.my.id/wordpress/?ref=wp-plugins" target="_blank" rel="noopener">' . esc_html__( 'toowl Pro: {{PRO_TOOL_COUNT}} tools', 'toowl' ) . '</a>';
+		}
+		return $meta;
+	},
+	10,
+	2
+);
+
 add_filter(
 	'plugin_action_links_' . plugin_basename( TOOWL_FILE ),
 	function ( $links ) {
@@ -85,7 +98,11 @@ function toowl_settings_page() {
 
 		<form method="post" action="options.php">
 			<?php settings_fields( 'toowl' ); ?>
-			<?php toowl_optimizer_fields(); ?>
+			<?php
+			if ( function_exists( 'toowl_optimizer_fields' ) ) {
+				toowl_optimizer_fields();
+			}
+			?>
 			<?php if ( $tools ) : ?>
 				<h2><?php esc_html_e( 'Credit', 'toowl' ); ?></h2>
 				<label>
@@ -96,13 +113,33 @@ function toowl_settings_page() {
 			<?php submit_button(); ?>
 		</form>
 
-		<?php if ( ! $pro ) : ?>
-			<p>
-				<?php esc_html_e( 'toowl Pro adds tools your visitors can use on your pages: PDF, Office, image, video, audio and more.', 'toowl' ); ?>
-				<a href="https://toowl.my.id/embed/" target="_blank" rel="noopener"><?php esc_html_e( 'See toowl Pro', 'toowl' ); ?></a>
-			</p>
+		<?php if ( ! $pro && $tools ) : ?>
+			<?php toowl_pro_section(); ?>
 		<?php endif; ?>
 	</div>
+	<?php
+}
+
+/**
+ * Free edition: what toowl Pro adds. A plain section at the bottom of this
+ * plugin's own settings page: no admin notice, no locked items, nothing on
+ * other screens (WordPress.org guidelines 5 and 11).
+ */
+function toowl_pro_section() {
+	$url = 'https://toowl.my.id/wordpress/?ref=wp-free';
+	?>
+	<hr>
+	<h2><?php esc_html_e( 'More tools: toowl Pro', 'toowl' ); ?></h2>
+	<p><?php esc_html_e( 'toowl Pro is a separate plugin with {{PRO_TOOL_COUNT}} tools that run in the visitor\'s browser, the same way as the ones above. It replaces this plugin and keeps your blocks and settings.', 'toowl' ); ?></p>
+	<ul style="list-style:disc;padding-left:1.5em">
+		<li><?php esc_html_e( 'PDF: compress, merge, split, sign, protect, PDF to Word/Excel/PowerPoint', 'toowl' ); ?></li>
+		<li><?php esc_html_e( 'Word, Excel and PowerPoint to PDF', 'toowl' ); ?></li>
+		<li><?php esc_html_e( 'Images: remove background, compress, convert, crop, passport photo', 'toowl' ); ?></li>
+		<li><?php esc_html_e( 'Video and audio: compress, trim, GIF to MP4, change speed, screen recorder', 'toowl' ); ?></li>
+		<li><?php esc_html_e( 'Music, business and finance, developer and Islamic tools', 'toowl' ); ?></li>
+	</ul>
+	<p><?php esc_html_e( 'One tool from $19, a theme pack from $29, or every tool for $99. One payment, no yearly renewal.', 'toowl' ); ?></p>
+	<p><a class="button button-primary" href="<?php echo esc_url( $url ); ?>" target="_blank" rel="noopener"><?php esc_html_e( 'See toowl Pro', 'toowl' ); ?></a></p>
 	<?php
 }
 

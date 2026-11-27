@@ -52,6 +52,10 @@ picture; the rules that matter when editing:
   shown under the tool by `ToolAbout`, in the static page, and as FAQPage
   JSON-LD — use it for searches the tool answers indirectly (e.g. "JPG ke
   ARW" lands on `image-to-dng`).
+  `src/lib/seo-content.ts` adds search copy for the most-visited tools: a
+  `<title>` in the words people search with and extra FAQ, merged by
+  `toolMeta`/`toolFaq` in `seo.ts`; `POPULAR` in `seo.ts` is the "Tools
+  populer" list linked from every tool page.
 - `doc-to-pdf` renders with docx-preview, extended in `docx-extend.ts` by
   wrapping its internal parser's methods once (the prototype comes from
   parsing an empty package): floating pictures (wrapNone/behind) and framePr
