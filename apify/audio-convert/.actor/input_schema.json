@@ -1,0 +1,101 @@
+{
+  "title": "Audio Converter input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "files": {
+      "title": "Audio or video URLs",
+      "type": "array",
+      "description": "Direct links to audio files (MP3, WAV, FLAC, M4A, AAC, OGG, Opus, AMR, WMA, AIFF…) or videos (MP4, MOV, WebM, MKV…) to take the sound from.",
+      "editor": "requestListSources",
+      "prefill": [{ "url": "https://raw.githubusercontent.com/chalidade/tools/main/apify/samples/sample-audio.wav" }]
+    },
+    "format": {
+      "title": "Output format",
+      "type": "string",
+      "editor": "select",
+      "enum": ["mp3", "m4a", "wav", "ogg", "opus", "flac", "aac"],
+      "enumTitles": ["MP3", "M4A (AAC)", "WAV (16-bit PCM)", "OGG (Vorbis)", "Opus", "FLAC (lossless)", "AAC (raw ADTS)"],
+      "default": "mp3",
+      "description": "File type of the output."
+    },
+    "bitrate": {
+      "title": "Bitrate (kbps)",
+      "type": "integer",
+      "editor": "select",
+      "enum": [64, 96, 128, 160, 192, 256, 320],
+      "default": 192,
+      "description": "For MP3, M4A, AAC, OGG and Opus. 128 is fine for speech, 192–320 for music."
+    },
+    "sampleRate": {
+      "title": "Sample rate (Hz)",
+      "type": "integer",
+      "editor": "select",
+      "enum": [8000, 16000, 22050, 32000, 44100, 48000],
+      "description": "Leave empty to keep the original. 16000 mono suits speech-to-text."
+    },
+    "mono": {
+      "title": "Mono",
+      "type": "boolean",
+      "default": false,
+      "description": "Mix down to one channel (half the size for speech)."
+    },
+    "normalize": {
+      "title": "Normalise loudness",
+      "type": "boolean",
+      "default": false,
+      "description": "EBU R128 loudness normalisation, so every file plays at the same volume.",
+      "sectionCaption": "Edit"
+    },
+    "loudness": {
+      "title": "Target loudness (LUFS)",
+      "type": "integer",
+      "minimum": -30,
+      "maximum": -5,
+      "default": -16,
+      "description": "-16 for podcasts and the web, -14 for streaming music, -23 for broadcast."
+    },
+    "trimSilence": {
+      "title": "Trim leading and trailing silence",
+      "type": "boolean",
+      "default": false
+    },
+    "trimStart": {
+      "title": "Trim: start (seconds)",
+      "type": "number",
+      "minimum": 0
+    },
+    "trimEnd": {
+      "title": "Trim: end (seconds)",
+      "type": "number",
+      "minimum": 0
+    },
+    "fadeIn": {
+      "title": "Fade in (seconds)",
+      "type": "number",
+      "minimum": 0,
+      "maximum": 60
+    },
+    "fadeOut": {
+      "title": "Fade out (seconds)",
+      "type": "number",
+      "minimum": 0,
+      "maximum": 60
+    },
+    "keepMetadata": {
+      "title": "Keep tags (title, artist, cover)",
+      "type": "boolean",
+      "default": false,
+      "sectionCaption": "Advanced"
+    },
+    "maxFileSizeMb": {
+      "title": "Max file size (MB)",
+      "type": "integer",
+      "default": 300,
+      "minimum": 1,
+      "maximum": 2000,
+      "description": "Larger files are skipped with an error (not charged)."
+    }
+  },
+  "required": ["files"]
+}

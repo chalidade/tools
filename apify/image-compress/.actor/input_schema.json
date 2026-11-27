@@ -1,0 +1,72 @@
+{
+  "title": "Image Compressor input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "files": {
+      "title": "Image URLs",
+      "type": "array",
+      "description": "Direct links to the images. Accepted: JPG, PNG, WebP, AVIF, HEIC/HEIF, TIFF, GIF, SVG.",
+      "editor": "requestListSources",
+      "prefill": [{ "url": "https://toowl.my.id/og.png" }]
+    },
+    "quality": {
+      "title": "Quality",
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 100,
+      "default": 75,
+      "description": "1–100. 75 is visually lossless for most photos. With a target size, this is the highest quality tried."
+    },
+    "targetSizeKb": {
+      "title": "Target size (KB)",
+      "type": "integer",
+      "minimum": 5,
+      "maximum": 100000,
+      "description": "Optional: the best quality that fits under this size, e.g. 200 for a 200 KB upload limit."
+    },
+    "maxWidth": {
+      "title": "Max width (px)",
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 16000,
+      "description": "Optional: shrink wider images (keeps the ratio, never enlarges). 1920 or 2560 saves a lot on phone photos."
+    },
+    "maxHeight": {
+      "title": "Max height (px)",
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 16000
+    },
+    "format": {
+      "title": "Output format",
+      "type": "string",
+      "editor": "select",
+      "enum": ["same", "jpg", "webp", "avif", "png"],
+      "enumTitles": ["Same as input (HEIC becomes JPG)", "JPG", "WebP", "AVIF", "PNG"],
+      "default": "same",
+      "sectionCaption": "Advanced"
+    },
+    "lossless": {
+      "title": "Lossless",
+      "type": "boolean",
+      "default": false,
+      "description": "Lossless WebP/AVIF and full-colour PNG (smaller savings, no quality loss)."
+    },
+    "keepMetadata": {
+      "title": "Keep metadata (EXIF, GPS, ICC)",
+      "type": "boolean",
+      "default": false,
+      "description": "Off by default: location and camera data are removed."
+    },
+    "maxFileSizeMb": {
+      "title": "Max file size (MB)",
+      "type": "integer",
+      "default": 50,
+      "minimum": 1,
+      "maximum": 300,
+      "description": "Larger files are skipped with an error (not charged)."
+    }
+  },
+  "required": ["files"]
+}

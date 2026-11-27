@@ -1,0 +1,37 @@
+{
+  "actorSpecification": 1,
+  "name": "image-compressor",
+  "title": "Image Compressor (JPG, PNG, WebP, AVIF, HEIC, Bulk) — TinyPNG alternative",
+  "description": "Compress images in bulk from URLs, TinyPNG/TinyJPG-style: mozjpeg JPG, palette PNG, WebP, AVIF. Keep the format or convert, resize to a max width, or hit a target file size in KB. Never returns a bigger file. Metadata stripped. Pay per image.",
+  "version": "1.0",
+  "buildTag": "latest",
+  "minMemoryMbytes": 512,
+  "maxMemoryMbytes": 4096,
+  "input": "./input_schema.json",
+  "output": "./output_schema.json",
+  "dockerfile": "../Dockerfile",
+  "readme": "../README.md",
+  "storages": {
+    "dataset": {
+      "actorSpecification": 1,
+      "views": {
+        "overview": {
+          "title": "Compressed images",
+          "transformation": {
+            "fields": ["name", "downloadUrl", "inputFormat", "outputFormat", "quality", "width", "height", "sizeBefore", "sizeAfter", "savedPercent", "error", "url"]
+          },
+          "display": {
+            "component": "table",
+            "properties": {
+              "downloadUrl": { "label": "Download", "format": "link" },
+              "sizeBefore": { "label": "Before (bytes)", "format": "number" },
+              "sizeAfter": { "label": "After (bytes)", "format": "number" },
+              "savedPercent": { "label": "Saved %", "format": "number" },
+              "url": { "label": "Source", "format": "image" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

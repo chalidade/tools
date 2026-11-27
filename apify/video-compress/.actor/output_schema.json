@@ -1,0 +1,18 @@
+{
+  "actorOutputSchemaVersion": 1,
+  "title": "Output of Video Compressor & Converter",
+  "properties": {
+    "results": {
+      "type": "string",
+      "title": "Compressed videos",
+      "description": "One row per input file, with a download link for the result where there is one.",
+      "template": "{{links.apiDefaultDatasetUrl}}/items?view=overview"
+    },
+    "files": {
+      "type": "string",
+      "title": "Video files",
+      "description": "Result files in the default key-value store, plus a SUMMARY record.",
+      "template": "{{links.apiDefaultKeyValueStoreUrl}}/keys"
+    }
+  }
+}

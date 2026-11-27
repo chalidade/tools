@@ -3,6 +3,11 @@
 Catatan harian apa yang berubah di [tools](https://toowl.my.id/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-27 — Apify batch 3: video, audio, kompres gambar, hapus latar, frame video
+
+- Lima **Actor Apify** baru (`apify/`): **Video Compressor & Converter** (MP4/WebM/MOV/MKV/GIF, 1080p–360p, trim, tanpa suara; ditagih per menit video), **Audio Converter** (MP3/M4A/WAV/OGG/Opus/FLAC, normalisasi loudness, potong, fade, buang hening), **Image Compressor** (gaya TinyPNG, target ukuran KB, tidak pernah lebih besar dari aslinya), **AI Background Remover** (model IS-Net, PNG transparan, latar putih untuk marketplace, crop ke objek) dan **Video Frame Extractor** (per N detik, N thumbnail, timestamp, atau tiap ganti adegan). Tiga Actor media memakai ffmpeg di image Debian.
+- README Actor lama: link versi browser kini ke alamat yang benar (`toowl.my.id/en/<tool>/`).
+
 ## 2026-11-27 — Link API di Apify
 
 - Halaman tool yang punya Actor Apify (Kompres PDF, Ubah Format & Kompres Gambar, Baca QR, Perbesar Gambar, OCR, PDF ke Markdown) bisa menampilkan kartu **"Butuh ribuan file sekaligus? Pakai API-nya"**, plus link **API · Apify** di footer. Muncul begitu Actor-nya terbit di Apify Store (`src/lib/apify.ts`). Link memakai token afiliasi Apify toowl dan hanya berupa link biasa; situs tidak menghubungi Apify.

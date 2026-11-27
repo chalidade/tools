@@ -1,0 +1,92 @@
+{
+  "title": "Video Frame Extractor input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "files": {
+      "title": "Video URLs",
+      "type": "array",
+      "description": "Direct links to the videos (MP4, MOV, WebM, MKV, AVI and most others).",
+      "editor": "requestListSources",
+      "prefill": [{ "url": "https://raw.githubusercontent.com/chalidade/tools/main/apify/samples/sample-video.mp4" }]
+    },
+    "mode": {
+      "title": "Which frames",
+      "type": "string",
+      "editor": "select",
+      "enum": ["interval", "count", "times", "scenes"],
+      "enumTitles": ["One every N seconds", "N frames spread evenly (thumbnails)", "At exact timestamps", "At every scene change"],
+      "default": "interval"
+    },
+    "interval": {
+      "title": "Every N seconds",
+      "type": "number",
+      "minimum": 0.04,
+      "default": 1,
+      "description": "For 'One every N seconds'. 0.5 = two frames a second."
+    },
+    "count": {
+      "title": "Number of frames",
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 1000,
+      "default": 10,
+      "description": "For 'N frames spread evenly'."
+    },
+    "timestamps": {
+      "title": "Timestamps (seconds)",
+      "type": "array",
+      "editor": "json",
+      "description": "For 'At exact timestamps', e.g. [0, 12.5, 60].",
+      "prefill": [1, 3, 5]
+    },
+    "sceneThreshold": {
+      "title": "Scene change sensitivity",
+      "type": "number",
+      "minimum": 0.05,
+      "maximum": 0.9,
+      "default": 0.3,
+      "description": "For 'At every scene change'. Lower = more frames."
+    },
+    "maxFrames": {
+      "title": "Max frames per video",
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 1000,
+      "default": 100
+    },
+    "format": {
+      "title": "Image format",
+      "type": "string",
+      "editor": "select",
+      "enum": ["jpg", "png", "webp"],
+      "enumTitles": ["JPG", "PNG (lossless)", "WebP"],
+      "default": "jpg",
+      "sectionCaption": "Output"
+    },
+    "quality": {
+      "title": "Quality",
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 100,
+      "default": 85,
+      "description": "For JPG and WebP."
+    },
+    "width": {
+      "title": "Width (px)",
+      "type": "integer",
+      "minimum": 16,
+      "maximum": 7680,
+      "description": "Resize frames to this width (height keeps the ratio). Empty = original size."
+    },
+    "maxFileSizeMb": {
+      "title": "Max file size (MB)",
+      "type": "integer",
+      "default": 500,
+      "minimum": 1,
+      "maximum": 2000,
+      "description": "Larger files are skipped with an error (not charged)."
+    }
+  },
+  "required": ["files"]
+}
