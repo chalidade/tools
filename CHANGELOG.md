@@ -3,6 +3,10 @@
 Catatan harian apa yang berubah di [tools](https://toowl.my.id/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-27 — Actor Apify (PDF, gambar, QR)
+
+- Tiga engine toowl sekarang dibungkus jadi **Actor Apify** di `apify/`, siap dijual di Apify Store dengan harga per file (pay-per-event): **PDF Compressor** (metode yang sama dengan Kompres PDF, teks tetap bisa dipilih; PDF contoh 3,4 MB jadi 190 KB di level medium), **Image Converter & Resizer** (HEIC, AVIF, WebP, PNG, JPG, TIFF, GIF, SVG, plus resize dan hapus metadata), dan **QR & Barcode Reader** (QR, Data Matrix, EAN, UPC, Code 128 dan lainnya, banyak kode per gambar). Input berupa daftar URL, hasilnya link download per file; file yang gagal tidak ditagih. Panduan publish, saran harga dan cek lisensi ada di `apify/README.md`.
+
 ## 2026-11-26 — Template website masjid
 
 - **Template website masjid** (`packages/_templates/masjid/`, dijual di Codester): beranda dengan sholat berikutnya dan hitung mundur, jadwal hari ini plus iqamah, pengumuman, kajian, jadwal khatib Jumat, program, rekening infaq dengan tombol salin dan QR, kontak, serta arah kiblat, kalender Hijriah, zakat dan tasbih. Ada **jadwal sebulan** siap cetak A4 dan **layar TV masjid** (jam besar, slide, teks berjalan, layar adzan, hitung mundur iqamah, dan layar "sholat sedang berlangsung"). Semua diatur dari satu file `config.js`, bahasa Inggris atau Indonesia, tanpa server. Demo: `/templates/masjid/`.
