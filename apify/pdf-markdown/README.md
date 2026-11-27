@@ -57,4 +57,4 @@ Pay per event: a small fee **per page** converted (see the Pricing tab). Files t
 
 ## Free browser version
 
-[toowl.my.id/tools/pdf-to-markdown](https://toowl.my.id/tools/pdf-to-markdown/) converts a PDF in your browser, free. Same engine.
+[toowl.my.id/en/pdf-to-markdown](https://toowl.my.id/en/pdf-to-markdown/) converts a PDF in your browser, free. Same engine.

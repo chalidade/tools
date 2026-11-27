@@ -1,0 +1,80 @@
+{
+  "title": "Background Remover input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "files": {
+      "title": "Image URLs",
+      "type": "array",
+      "description": "Direct links to the images (JPG, PNG, WebP, AVIF, TIFF).",
+      "editor": "requestListSources",
+      "prefill": [{ "url": "https://raw.githubusercontent.com/danielgatis/rembg/main/examples/car-1.jpg" }]
+    },
+    "output": {
+      "title": "Output",
+      "type": "string",
+      "editor": "select",
+      "enum": ["cutout", "mask"],
+      "enumTitles": ["Cut-out (subject without background)", "Mask only (white subject on black)"],
+      "default": "cutout"
+    },
+    "format": {
+      "title": "Format",
+      "type": "string",
+      "editor": "select",
+      "enum": ["png", "webp", "jpg"],
+      "enumTitles": ["PNG (transparent)", "WebP (transparent, smaller)", "JPG (on the background colour)"],
+      "default": "png"
+    },
+    "background": {
+      "title": "Background colour",
+      "type": "string",
+      "editor": "textfield",
+      "description": "Leave empty for transparent. Any CSS colour, e.g. #ffffff for Amazon/Shopee/Tokopedia-style white. JPG uses white when empty."
+    },
+    "cropToSubject": {
+      "title": "Crop to the subject",
+      "type": "boolean",
+      "default": false,
+      "description": "Trim the empty area around the subject.",
+      "sectionCaption": "Advanced"
+    },
+    "padding": {
+      "title": "Padding around the crop (px)",
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 2000,
+      "default": 0
+    },
+    "hardEdges": {
+      "title": "Hard edges",
+      "type": "boolean",
+      "default": false,
+      "description": "Crisper outline for products and logos; leave off for hair and fur."
+    },
+    "maxWidth": {
+      "title": "Max width (px)",
+      "type": "integer",
+      "minimum": 16,
+      "maximum": 8000,
+      "description": "Shrink larger images first. Empty = original size."
+    },
+    "quality": {
+      "title": "Quality",
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 100,
+      "default": 90,
+      "description": "For WebP and JPG."
+    },
+    "maxFileSizeMb": {
+      "title": "Max file size (MB)",
+      "type": "integer",
+      "default": 30,
+      "minimum": 1,
+      "maximum": 100,
+      "description": "Larger files are skipped with an error (not charged)."
+    }
+  },
+  "required": ["files"]
+}

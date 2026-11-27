@@ -72,4 +72,4 @@ Pay per event: a small fee per converted image (see the Pricing tab). Failed ima
 
 ## Free browser version
 
-Converting a few files by hand? Use [toowl.my.id/tools/convert-image](https://toowl.my.id/tools/convert-image/) — free, runs in your browser.
+Converting a few files by hand? Use [toowl.my.id/en/convert-image](https://toowl.my.id/en/convert-image/) — free, runs in your browser.

@@ -58,4 +58,4 @@ Pay per event: a small fee per scanned image (see the Pricing tab), whether or n
 
 ## Free browser version
 
-[toowl.my.id/tools/qr-reader](https://toowl.my.id/tools/qr-reader/) reads codes from your camera or a picture, free and offline.
+[toowl.my.id/en/qr-reader](https://toowl.my.id/en/qr-reader/) reads codes from your camera or a picture, free and offline.

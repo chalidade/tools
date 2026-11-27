@@ -55,6 +55,6 @@ Pay per event: a fee per image or **per PDF page** read (see the Pricing tab). F
 
 ## Free browser version
 
-[toowl.my.id/tools/ocr](https://toowl.my.id/tools/ocr/) reads text from a picture in your browser, free.
+[toowl.my.id/en/ocr](https://toowl.my.id/en/ocr/) reads text from a picture in your browser, free.
 
 Engine: Tesseract OCR via tesseract.js (Apache-2.0); language models from tessdata (Apache-2.0).

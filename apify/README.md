@@ -1,6 +1,6 @@
 # toowl di Apify Store
 
-Enam engine toowl dibungkus jadi **Actor Apify** berbayar (pay-per-event).
+Sebelas engine toowl dibungkus jadi **Actor Apify** berbayar (pay-per-event).
 Kode tool di situs berjalan di browser; di sini engine yang sama di-port ke
 Node supaya bisa dipanggil lewat API, Zapier, Make, n8n, atau jadwal.
 
@@ -12,6 +12,11 @@ Node supaya bisa dipanggil lewat API, Zapier, Make, n8n, atau jadwal.
 | [`image-upscale/`](./image-upscale) | AI Image Upscaler (Real-ESRGAN 4x/2x) | onnxruntime-node + model `realesr-general-x4v3.onnx` yang sama dengan `src/tools/upscale-image/` (disalin ke folder Actor) | `image-upscaled` |
 | [`ocr/`](./ocr) | OCR: Image & Scanned PDF to Text | tesseract.js 7 + `@tesseract.js-data/*` (8 bahasa, lokal) + pdf.js untuk render halaman scan | `page-ocr` (per gambar / halaman) |
 | [`pdf-markdown/`](./pdf-markdown) | PDF to Markdown for LLM & RAG | **engine situs persis**: `src/tools/pdf-to-markdown/convert.ts` dibundel jadi `src/engine.js` | `pdf-page-converted` (per halaman) |
+| [`video-compress/`](./video-compress) | Video Compressor & Converter (MP4, WebM, MOV, GIF) | ffmpeg (Debian) — x264 CRF / VP9 CRF, scale, trim, GIF palet | `video-minute` (per menit dimulai) |
+| [`audio-convert/`](./audio-convert) | Audio Converter (MP3, M4A, WAV, OGG, Opus, FLAC) | ffmpeg — loudnorm, trim, fade, silenceremove | `audio-converted` (per file) |
+| [`image-compress/`](./image-compress) | Image Compressor (TinyPNG alternative) | engine `image-convert` (disalin) + target ukuran KB (binary search quality) | `image-compressed` |
+| [`remove-background/`](./remove-background) | AI Background Remover | onnxruntime-node + IS-Net `isnet-general-use.onnx` (Apache-2.0, ±170 MB, diunduh saat build dengan checksum — tidak di git) | `background-removed` |
+| [`video-frames/`](./video-frames) | Video Frame Extractor & Thumbnail Maker | ffmpeg — interval, jumlah, timestamp, scene change | `video-processed` (per video) |
 
 `pdf-markdown/src/engine.js` adalah hasil build — setelah mengubah
 `src/tools/pdf-to-markdown`, `pdf-to-word/convert.ts`, `pdf-to-excel/convert.ts`
@@ -23,7 +28,7 @@ key-value store run, satu baris dataset per file (dengan `downloadUrl`). File
 yang gagal tetap dapat baris dengan `error`, **tanpa ditagih**. Run berhenti
 rapi saat batas biaya user ("Max cost per run") tercapai.
 
-`_shared/batch.js` dipakai ketiganya — edit di situ lalu jalankan
+`_shared/batch.js` (dan `_shared/ffmpeg.js` untuk Actor media) dipakai semua Actor — edit di situ lalu jalankan
 `node apify/sync-shared.mjs` untuk menyalin ke `src/` tiap Actor (Apify
 mem-build tiap folder sendiri-sendiri, jadi tidak bisa import dari folder
 sebelah). `samples/` berisi file contoh untuk prefill input.
@@ -82,8 +87,13 @@ ditanggung Apify.
 | AI Image Upscaler | `image-upscaled` (primary) | **$0.02** | $20 | ~$0.001–0.01 (CPU, 4 GB; 2 MP di 4× ±30 detik) |
 | OCR | `page-ocr` (primary) | **$0.002** | $2 | ~$0.0002 (±1 detik per halaman) |
 | PDF to Markdown | `pdf-page-converted` (primary) | **$0.001** | $1 | ~$0.00002 |
+| Video Compressor | `video-minute` (primary) | **$0.03** | $30 | ~$0.005–0.02 per menit (1080p x264 veryfast ±50 detik CPU per menit video) |
+| Audio Converter | `audio-converted` (primary) | **$0.002** | $2 | ~$0.0002 |
+| Image Compressor | `image-compressed` (primary) | **$0.001** | $1 | ~$0.00002 (target KB: ±7 kali encode) |
+| Background Remover | `background-removed` (primary) | **$0.01** | $10 | ~$0.001–0.004 (IS-Net 1024², 2–8 detik CPU) |
+| Video Frame Extractor | `video-processed` (primary) | **$0.003** | $3 | ~$0.0005 |
 
-OCR dan PDF to Markdown menagih **per halaman**: halaman pertama ikut baris
+Video Compressor menagih **per menit video hasil** (menit pertama ikut baris dataset). OCR dan PDF to Markdown menagih **per halaman**: halaman pertama ikut baris
 dataset, sisanya lewat `Actor.charge` (tetap dalam batas "Max cost per run").
 
 \* 1 GB RAM, ~0,3–2 detik per file. Margin bersih ±75%.
@@ -108,6 +118,8 @@ cipta, jadi boleh menjual layanannya). Dependensi yang ikut di image:
 | zxing-wasm | MIT (ZXing-C++: Apache-2.0) | |
 | onnxruntime-node | MIT | binari CUDA/TensorRT dan platform lain dihapus di Dockerfile |
 | realesr-general-x4v3 (model) | BSD-3-Clause | |
+| isnet-general-use (model, IS-Net/DIS) | Apache-2.0 | diunduh dari rilis rembg saat build |
+| ffmpeg (paket Debian, binari terpisah) | GPL-2.0-or-later (build Debian dengan x264) | dipanggil sebagai proses, tidak di-link; GPL-2+ kompatibel dengan AGPL-3.0 |
 | tesseract.js, tesseract.js-core | Apache-2.0 | |
 | @tesseract.js-data/* (tessdata best_int) | Apache-2.0 | |
 | pdfjs-dist (+ @napi-rs/canvas, opsional) | Apache-2.0 / MIT | |

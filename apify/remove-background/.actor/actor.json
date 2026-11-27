@@ -1,0 +1,36 @@
+{
+  "actorSpecification": 1,
+  "name": "background-remover",
+  "title": "AI Background Remover (Bulk, transparent PNG)",
+  "description": "Remove image backgrounds in bulk from URLs with the IS-Net AI model: transparent PNG or WebP, a solid colour background (white for marketplaces), the mask alone, or cropped to the subject. Products, people, animals, cars. No third-party API. Pay per image.",
+  "version": "1.0",
+  "buildTag": "latest",
+  "minMemoryMbytes": 2048,
+  "maxMemoryMbytes": 8192,
+  "input": "./input_schema.json",
+  "output": "./output_schema.json",
+  "dockerfile": "../Dockerfile",
+  "readme": "../README.md",
+  "storages": {
+    "dataset": {
+      "actorSpecification": 1,
+      "views": {
+        "overview": {
+          "title": "Cut-outs",
+          "transformation": {
+            "fields": ["name", "downloadUrl", "width", "height", "subjectPercent", "sizeAfter", "seconds", "error", "url"]
+          },
+          "display": {
+            "component": "table",
+            "properties": {
+              "downloadUrl": { "label": "Result", "format": "image" },
+              "subjectPercent": { "label": "Subject %", "format": "number" },
+              "sizeAfter": { "label": "Size (bytes)", "format": "number" },
+              "url": { "label": "Source", "format": "image" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

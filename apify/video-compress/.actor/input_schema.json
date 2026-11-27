@@ -1,0 +1,89 @@
+{
+  "title": "Video Compressor input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "files": {
+      "title": "Video URLs",
+      "type": "array",
+      "description": "Direct links to the videos. Accepted: MP4, MOV, MKV, WebM, AVI, M4V, 3GP, FLV, WMV, MPEG-TS and most others ffmpeg reads.",
+      "editor": "requestListSources",
+      "prefill": [{ "url": "https://raw.githubusercontent.com/chalidade/tools/main/apify/samples/sample-video.mp4" }]
+    },
+    "format": {
+      "title": "Output format",
+      "type": "string",
+      "editor": "select",
+      "enum": ["mp4", "webm", "mov", "mkv", "gif"],
+      "enumTitles": ["MP4 (H.264 + AAC, plays everywhere)", "WebM (VP9 + Opus, smaller, for the web)", "MOV (H.264 + AAC)", "MKV (H.264 + AAC)", "GIF (animated, no sound)"],
+      "default": "mp4",
+      "description": "File type of the output."
+    },
+    "quality": {
+      "title": "Compression",
+      "type": "string",
+      "editor": "select",
+      "enum": ["high", "medium", "small"],
+      "enumTitles": ["High quality (light compression)", "Balanced (recommended)", "Smallest file (strong compression)"],
+      "default": "medium",
+      "description": "Constant-quality encoding: the file is as small as the chosen quality allows."
+    },
+    "resolution": {
+      "title": "Max resolution",
+      "type": "string",
+      "editor": "select",
+      "enum": ["original", "2160p", "1440p", "1080p", "720p", "480p", "360p"],
+      "default": "original",
+      "description": "Caps the short side (height of a landscape video). Smaller videos are never enlarged. 720p is a good choice for WhatsApp and email."
+    },
+    "fps": {
+      "title": "Max frame rate",
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 120,
+      "description": "Leave empty to keep the original. For GIF the default is 12."
+    },
+    "removeAudio": {
+      "title": "Remove audio",
+      "type": "boolean",
+      "default": false,
+      "description": "Mute the video (also makes it smaller)."
+    },
+    "trimStart": {
+      "title": "Trim: start (seconds)",
+      "type": "number",
+      "minimum": 0,
+      "description": "Cut everything before this point.",
+      "sectionCaption": "Trim and advanced"
+    },
+    "trimEnd": {
+      "title": "Trim: end (seconds)",
+      "type": "number",
+      "minimum": 0,
+      "description": "Cut everything after this point."
+    },
+    "gifWidth": {
+      "title": "GIF width (px)",
+      "type": "integer",
+      "minimum": 64,
+      "maximum": 1920,
+      "default": 480,
+      "description": "Only for GIF output."
+    },
+    "keepMetadata": {
+      "title": "Keep metadata",
+      "type": "boolean",
+      "default": false,
+      "description": "Off by default: GPS location, device and date tags are removed."
+    },
+    "maxFileSizeMb": {
+      "title": "Max file size (MB)",
+      "type": "integer",
+      "default": 500,
+      "minimum": 1,
+      "maximum": 2000,
+      "description": "Larger files are skipped with an error (not charged). Give the run more memory for very large files."
+    }
+  },
+  "required": ["files"]
+}
