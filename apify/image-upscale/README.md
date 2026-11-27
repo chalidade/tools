@@ -57,6 +57,6 @@ Pay per event: a fee per upscaled image (see the Pricing tab). Failed images are
 
 ## Free browser version
 
-[toowl.my.id/tools/upscale-image](https://toowl.my.id/tools/upscale-image/) upscales a picture in your browser, free.
+[toowl.my.id/en/upscale-image](https://toowl.my.id/en/upscale-image/) upscales a picture in your browser, free.
 
 Model: Real-ESRGAN `realesr-general-x4v3` by Xintao Wang et al., BSD-3-Clause.

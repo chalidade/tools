@@ -1,0 +1,39 @@
+{
+  "actorSpecification": 1,
+  "name": "video-compressor",
+  "title": "Video Compressor & Converter (MP4, WebM, MOV, GIF, Bulk)",
+  "description": "Compress and convert videos in bulk from URLs: shrink MP4 for email, WhatsApp or the web, convert MOV/AVI/MKV/WebM to MP4 (H.264) or WebM (VP9), resize to 1080p/720p/480p, trim, mute or make a GIF. ffmpeg, no third-party API. Pay per minute of video.",
+  "version": "1.0",
+  "buildTag": "latest",
+  "minMemoryMbytes": 2048,
+  "maxMemoryMbytes": 16384,
+  "input": "./input_schema.json",
+  "output": "./output_schema.json",
+  "dockerfile": "../Dockerfile",
+  "readme": "../README.md",
+  "storages": {
+    "dataset": {
+      "actorSpecification": 1,
+      "views": {
+        "overview": {
+          "title": "Compressed videos",
+          "transformation": {
+            "fields": ["name", "downloadUrl", "outputFormat", "duration", "widthBefore", "heightBefore", "width", "height", "sizeBefore", "sizeAfter", "savedPercent", "minutes", "error", "url"]
+          },
+          "display": {
+            "component": "table",
+            "properties": {
+              "downloadUrl": { "label": "Download", "format": "link" },
+              "duration": { "label": "Duration (s)", "format": "number" },
+              "sizeBefore": { "label": "Before (bytes)", "format": "number" },
+              "sizeAfter": { "label": "After (bytes)", "format": "number" },
+              "savedPercent": { "label": "Saved %", "format": "number" },
+              "minutes": { "label": "Billed minutes", "format": "number" },
+              "url": { "label": "Source", "format": "link" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

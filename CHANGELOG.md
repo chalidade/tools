@@ -11,9 +11,15 @@ Dua tool baru; total sekarang **142 tools**.
 - **Generator Barcode** (`/barcode/`): EAN-13, EAN-8, UPC-A, Code 128 (set B, otomatis set C untuk deretan angka), dan Code 39, ditulis sendiri tanpa library. Digit cek EAN/UPC dihitung otomatis atau divalidasi bila diisi, dengan pesan jelas untuk panjang atau karakter yang salah. Atur lebar modul, tinggi batang, dan teks di bawahnya; unduh PNG atau SVG. Tulis satu nomor per baris untuk membuat **lembar label A4** (2×5, 3×8, atau 4×10, dengan jumlah salinan per baris) sebagai PDF vektor lewat pdf-lib. Semua pola sudah diuji dengan membaca ulang hasilnya memakai pembaca zxing.
 
 
+## 2026-11-27 — Apify batch 3: video, audio, kompres gambar, hapus latar, frame video
+
+- Lima **Actor Apify** baru (`apify/`): **Video Compressor & Converter** (MP4/WebM/MOV/MKV/GIF, 1080p–360p, trim, tanpa suara; ditagih per menit video), **Audio Converter** (MP3/M4A/WAV/OGG/Opus/FLAC, normalisasi loudness, potong, fade, buang hening), **Image Compressor** (gaya TinyPNG, target ukuran KB, tidak pernah lebih besar dari aslinya), **AI Background Remover** (model IS-Net, PNG transparan, latar putih untuk marketplace, crop ke objek) dan **Video Frame Extractor** (per N detik, N thumbnail, timestamp, atau tiap ganti adegan). Tiga Actor media memakai ffmpeg di image Debian.
+- README Actor lama: link versi browser kini ke alamat yang benar (`toowl.my.id/en/<tool>/`).
+
 ## 2026-11-27 — Link API di Apify
 
 - Halaman tool yang punya Actor Apify (Kompres PDF, Ubah Format & Kompres Gambar, Baca QR, Perbesar Gambar, OCR, PDF ke Markdown) bisa menampilkan kartu **"Butuh ribuan file sekaligus? Pakai API-nya"**, plus link **API · Apify** di footer. Muncul begitu Actor-nya terbit di Apify Store (`src/lib/apify.ts`). Link memakai token afiliasi Apify toowl dan hanya berupa link biasa; situs tidak menghubungi Apify.
+- Lima Actor sudah terbit di Apify Store dan linknya aktif: Ubah Format & Kompres Gambar, Baca QR, Perbesar Gambar, OCR, PDF ke Markdown. Kompres PDF menyusul (Apify membatasi 5 publikasi per hari). Tiap Actor kini punya output schema, syarat terbit di Store.
 
 ## 2026-11-27 — Apify: Upscale AI, OCR, PDF ke Markdown
 
