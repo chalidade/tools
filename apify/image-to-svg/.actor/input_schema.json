@@ -1,0 +1,119 @@
+{
+  "title": "Image to SVG Vectorizer input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "files": {
+      "title": "Image URLs",
+      "type": "array",
+      "description": "Direct links to the images: PNG, JPG, WebP, AVIF, GIF, TIFF. Logos, icons, illustrations, scans of drawings and signatures work best.",
+      "editor": "requestListSources",
+      "prefill": [
+        { "url": "https://toowl.my.id/icon-512.png" }
+      ]
+    },
+    "mode": {
+      "title": "Mode",
+      "type": "string",
+      "description": "Colour keeps every colour layer. Black and white makes one solid shape from the dark parts: best for signatures, line art, stencils, cutting machines (Cricut, laser).",
+      "editor": "select",
+      "enum": ["color", "bw"],
+      "enumTitles": ["Colour", "Black and white"],
+      "default": "color"
+    },
+    "colorDetail": {
+      "title": "Colour detail",
+      "type": "integer",
+      "description": "Colour mode, 1–7: lower merges similar shades into fewer, flatter layers (smaller files); higher keeps more shades.",
+      "default": 5,
+      "minimum": 1,
+      "maximum": 7
+    },
+    "layerDifference": {
+      "title": "Layer merge",
+      "type": "integer",
+      "description": "Colour mode, 0–255: how different two neighbouring colours must be to stay separate layers.",
+      "default": 16,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "filterSpeckle": {
+      "title": "Remove specks smaller than (px)",
+      "type": "integer",
+      "description": "Drops noise and tiny spots whose side is smaller than this. Raise it for scans and photos.",
+      "default": 4,
+      "minimum": 1,
+      "maximum": 16
+    },
+    "curveMode": {
+      "title": "Shapes",
+      "type": "string",
+      "description": "Smooth curves for logos and drawings, straight polygons for geometric art, or square pixels for pixel art.",
+      "editor": "select",
+      "enum": ["spline", "polygon", "pixel"],
+      "enumTitles": ["Smooth curves", "Polygons", "Pixels"],
+      "default": "spline"
+    },
+    "cornerThreshold": {
+      "title": "Corner angle (degrees)",
+      "type": "integer",
+      "description": "Angles sharper than this stay corners; the rest become curves.",
+      "default": 60,
+      "minimum": 0,
+      "maximum": 180
+    },
+    "threshold": {
+      "title": "Black and white: threshold",
+      "type": "integer",
+      "description": "0–255: pixels darker than this become the shape.",
+      "default": 128,
+      "minimum": 1,
+      "maximum": 254,
+      "sectionCaption": "Black and white"
+    },
+    "invert": {
+      "title": "Black and white: trace the light parts",
+      "type": "boolean",
+      "description": "Use the light areas as the shape instead (light logo on a dark background).",
+      "default": false
+    },
+    "color": {
+      "title": "Black and white: shape colour",
+      "type": "string",
+      "description": "Hex colour of the traced shape, e.g. #1a7f37. Default black.",
+      "editor": "textfield"
+    },
+    "background": {
+      "title": "Background for transparent images",
+      "type": "string",
+      "description": "Colour mode: hex colour to put behind transparent pixels before tracing, e.g. #ffffff. Leave empty to keep transparency.",
+      "editor": "textfield",
+      "sectionCaption": "Advanced"
+    },
+    "maxSize": {
+      "title": "Max image side (px)",
+      "type": "integer",
+      "description": "Larger images are scaled down before tracing (tracing time grows fast with size). The SVG scales to any size anyway.",
+      "default": 2000,
+      "minimum": 64,
+      "maximum": 6000
+    },
+    "timeoutSecs": {
+      "title": "Time limit per image (seconds)",
+      "type": "integer",
+      "description": "An image that takes longer is skipped with an error (not charged).",
+      "default": 120,
+      "minimum": 10,
+      "maximum": 900
+    },
+    "maxFileSizeMb": {
+      "title": "Max file size (MB)",
+      "type": "integer",
+      "description": "Larger files are skipped with an error (not charged).",
+      "default": 30,
+      "minimum": 1,
+      "maximum": 200
+    }
+  },
+  "required": ["files"]
+}

@@ -1,0 +1,19 @@
+{
+  "name": "toowl-pdf-to-image",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Bulk PDF to JPG, PNG and WebP: every page as an image at the DPI you choose. Apify Actor by toowl.",
+  "type": "module",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "node src/main.js"
+  },
+  "license": "AGPL-3.0-only",
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "apify": "^3.8.0",
+    "sharp": "^0.34.5"
+  }
+}

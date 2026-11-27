@@ -1,0 +1,38 @@
+{
+  "actorSpecification": 1,
+  "name": "image-to-svg",
+  "title": "Image to SVG Vectorizer (PNG, JPG to SVG, Bulk)",
+  "description": "Convert PNG, JPG and WebP images to scalable SVG vectors in bulk from URLs: logos, icons, illustrations, signatures, line art for Cricut and laser cutters. Colour or black-and-white, VTracer engine. Pay per image.",
+  "version": "1.0",
+  "buildTag": "latest",
+  "minMemoryMbytes": 512,
+  "maxMemoryMbytes": 8192,
+  "input": "./input_schema.json",
+  "output": "./output_schema.json",
+  "dockerfile": "../Dockerfile",
+  "readme": "../README.md",
+  "storages": {
+    "dataset": {
+      "actorSpecification": 1,
+      "views": {
+        "overview": {
+          "title": "SVG files",
+          "transformation": {
+            "fields": ["name", "preview", "downloadUrl", "width", "height", "shapes", "sizeBefore", "sizeAfter", "error", "url"]
+          },
+          "display": {
+            "component": "table",
+            "properties": {
+              "preview": { "label": "Preview", "format": "image" },
+              "downloadUrl": { "label": "SVG", "format": "link" },
+              "shapes": { "label": "Paths", "format": "number" },
+              "sizeBefore": { "label": "Image (bytes)", "format": "number" },
+              "sizeAfter": { "label": "SVG (bytes)", "format": "number" },
+              "url": { "label": "Source", "format": "link" }
+            }
+          }
+        }
+      }
+    }
+  }
+}
