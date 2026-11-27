@@ -1,0 +1,70 @@
+{
+  "title": "PDF Compressor input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "files": {
+      "title": "PDF URLs",
+      "type": "array",
+      "description": "Direct links to the PDFs to compress (public URLs, Google Drive/Dropbox direct-download links, S3 presigned URLs…).",
+      "editor": "requestListSources",
+      "prefill": [
+        {
+          "url": "https://raw.githubusercontent.com/chalidade/tools/main/apify/samples/sample.pdf"
+        }
+      ]
+    },
+    "level": {
+      "title": "Compression level",
+      "type": "string",
+      "description": "light = max 2400 px, JPEG q82 (print). medium = 1600 px, q70 (email, web). strong = 1100 px, q55 (smallest that still reads well). extreme = 800 px, q40.",
+      "editor": "select",
+      "enum": [
+        "light",
+        "medium",
+        "strong",
+        "extreme"
+      ],
+      "enumTitles": [
+        "Light (print quality)",
+        "Medium (recommended)",
+        "Strong",
+        "Extreme"
+      ],
+      "default": "medium"
+    },
+    "maxImageSide": {
+      "title": "Max image side (px)",
+      "type": "integer",
+      "description": "Overrides the level: longest side of each embedded photo after compression.",
+      "minimum": 200,
+      "maximum": 6000,
+      "sectionCaption": "Advanced"
+    },
+    "jpegQuality": {
+      "title": "JPEG quality",
+      "type": "integer",
+      "description": "Overrides the level: 1–100.",
+      "minimum": 1,
+      "maximum": 100
+    },
+    "password": {
+      "title": "Password",
+      "type": "string",
+      "description": "For password-protected PDFs (same password for every file). The output is saved without a password.",
+      "isSecret": true,
+      "editor": "textfield"
+    },
+    "maxFileSizeMb": {
+      "title": "Max file size (MB)",
+      "type": "integer",
+      "description": "Larger files are skipped with an error (not charged).",
+      "default": 100,
+      "minimum": 1,
+      "maximum": 500
+    }
+  },
+  "required": [
+    "files"
+  ]
+}
