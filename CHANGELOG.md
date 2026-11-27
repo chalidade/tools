@@ -10,6 +10,11 @@ Dua tool baru; total sekarang **143 tools**.
 - **Kalkulator Pesangon** (`/pesangon/`): uang pesangon, uang penghargaan masa kerja, dan uang penggantian hak menurut PP 35/2021 untuk tiap alasan PHK (efisiensi, tutup, pailit, merger, pelanggaran, pensiun, sakit, meninggal, resign, mangkir). Isi upah sebulan terakhir, masa kerja, sisa cuti, dan hak lain; layar menunjukkan rumus per baris (tabel Pasal 40 × faktor alasan), pasalnya, dan catatan bahwa perjanjian kerja atau PKB bisa memberi lebih, kontrak PKWT mendapat kompensasi (bukan pesangon), dan ini bukan nasihat hukum. Tabel, faktor, pasal, dan tanggal berlakunya ada di `rules.ts` supaya mudah diperbarui.
 - **Cek Stunting & Kurva Tumbuh Anak** (`/kurva-tumbuh/`): dari tanggal lahir, jenis kelamin, berat, panjang/tinggi, dan lingkar kepala, hitung z-score BB/U, TB/U, BB/TB, IMT/U, dan LK/U dengan metode LMS Standar Pertumbuhan Anak WHO 0–5 tahun (dasar Permenkes 2/2020), lengkap dengan kategorinya, persentil, koreksi 0,7 cm berbaring/berdiri, dan peringatan angka yang tidak wajar. Ada grafik kurva (−3, −2, median, +2, +3 SD) dengan titik pengukuran dan riwayat yang hanya tersimpan di perangkat. Tabel LMS WHO (dijarangkan, selisih < 0,01 SD) ada di satu berkas `data.ts`. Ditandai tool khusus web seperti Hitung HPL; tertulis jelas bahwa ini skrining, bukan diagnosis.
 
+
+## 2026-11-27 — Actor Apify (PDF, gambar, QR)
+
+- Tiga engine toowl sekarang dibungkus jadi **Actor Apify** di `apify/`, siap dijual di Apify Store dengan harga per file (pay-per-event): **PDF Compressor** (metode yang sama dengan Kompres PDF, teks tetap bisa dipilih; PDF contoh 3,4 MB jadi 190 KB di level medium), **Image Converter & Resizer** (HEIC, AVIF, WebP, PNG, JPG, TIFF, GIF, SVG, plus resize dan hapus metadata), dan **QR & Barcode Reader** (QR, Data Matrix, EAN, UPC, Code 128 dan lainnya, banyak kode per gambar). Input berupa daftar URL, hasilnya link download per file; file yang gagal tidak ditagih. Panduan publish, saran harga dan cek lisensi ada di `apify/README.md`.
+
 ## 2026-11-26 — Foto produk & barcode
 
 Dua tool baru; total sekarang **141 tools**.

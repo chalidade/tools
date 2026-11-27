@@ -1,0 +1,36 @@
+{
+  "actorSpecification": 1,
+  "name": "image-converter",
+  "title": "Image Converter & Resizer (HEIC, AVIF, WebP, PNG, JPG)",
+  "description": "Convert, resize and compress images in bulk from URLs: HEIC/HEIF (iPhone), AVIF, WebP, PNG, JPG, TIFF, GIF and SVG in, JPG/PNG/WebP/AVIF/TIFF/GIF out. EXIF rotation applied, metadata stripped by default. Pay per image.",
+  "version": "1.0",
+  "buildTag": "latest",
+  "minMemoryMbytes": 512,
+  "maxMemoryMbytes": 4096,
+  "input": "./input_schema.json",
+  "dockerfile": "../Dockerfile",
+  "readme": "../README.md",
+  "storages": {
+    "dataset": {
+      "actorSpecification": 1,
+      "views": {
+        "overview": {
+          "title": "Converted images",
+          "transformation": {
+            "fields": ["name", "downloadUrl", "inputFormat", "outputFormat", "width", "height", "sizeBefore", "sizeAfter", "savedPercent", "error", "url"]
+          },
+          "display": {
+            "component": "table",
+            "properties": {
+              "downloadUrl": { "label": "Download", "format": "link" },
+              "sizeBefore": { "label": "Before (bytes)", "format": "number" },
+              "sizeAfter": { "label": "After (bytes)", "format": "number" },
+              "savedPercent": { "label": "Saved %", "format": "number" },
+              "url": { "label": "Source", "format": "link" }
+            }
+          }
+        }
+      }
+    }
+  }
+}
