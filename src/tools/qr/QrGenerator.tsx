@@ -65,11 +65,17 @@ function luminance(hex: string) {
   return 0.2126 * r + 0.7152 * g + 0.0722 * b
 }
 
-export default function QrGenerator() {
+/** Something to encode right away, e.g. the page the Chrome extension was opened on. */
+export interface QrStart {
+  kind: 'url' | 'text'
+  value: string
+}
+
+export default function QrGenerator({ start }: { start?: QrStart } = {}) {
   const t = useT()
-  const [kind, setKind] = useState<QrKind>('url')
-  const [url, setUrl] = useState('')
-  const [text, setText] = useState('')
+  const [kind, setKind] = useState<QrKind>(start?.kind ?? 'url')
+  const [url, setUrl] = useState(start?.kind === 'url' ? start.value : '')
+  const [text, setText] = useState(start?.kind === 'text' ? start.value : '')
   const [wifi, setWifi] = useState<WifiFields>({ ssid: '', password: '', security: 'WPA', hidden: false })
   const [wa, setWa] = useState<MessageFields>({ to: '', subject: '', body: '' })
   const [contact, setContact] = useState<ContactFields>({ name: '', phone: '', email: '', org: '', url: '' })

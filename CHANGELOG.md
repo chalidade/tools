@@ -3,6 +3,13 @@
 Catatan harian apa yang berubah di [tools](https://toowl.my.id/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-27 — Ekstensi Chrome (freemium)
+
+- **toowl untuk Chrome** (`packages/_chrome/`): 16 tool di side panel browser, semua jalan di komputer pengguna. Gratis: Kompres Gambar, Ubah Format Gambar, Buat QR Code, Baca QR & Barcode. **Pro**: Hapus Latar (AI), Crop & Resize, Hapus Metadata, Kompres/Gabung/Pisah PDF, Gambar ke PDF, PDF ke Gambar, Tanda Tangan, Watermark, Kunci dan Buka Kunci PDF. Pengguna gratis bisa mencoba tool Pro 2 kali simpan per hari.
+- Menu **klik kanan**: QR code untuk halaman, link, atau teks terpilih; dan di gambar: kompres, ubah format, hapus latar, atau baca QR-nya. Gambar dari situs yang menolak diambil meminta izin untuk situs itu saja.
+- toowl Pro dibuka dengan kunci **Gumroad** atau **Lemon Squeezy** (kunci All-Access yang sudah ada ikut berlaku), dicek seminggu sekali. ZIP 14 MB, plus screenshot 1280×800 (EN/ID), promo tile, dan teks listing Chrome Web Store.
+- Hapus Latar: teks di samping tombol AI tidak lagi terjepit di layar sempit.
+
 ## 2026-11-26 — Template website masjid
 
 - **Template website masjid** (`packages/_templates/masjid/`, dijual di Codester): beranda dengan sholat berikutnya dan hitung mundur, jadwal hari ini plus iqamah, pengumuman, kajian, jadwal khatib Jumat, program, rekening infaq dengan tombol salin dan QR, kontak, serta arah kiblat, kalender Hijriah, zakat dan tasbih. Ada **jadwal sebulan** siap cetak A4 dan **layar TV masjid** (jam besar, slide, teks berjalan, layar adzan, hitung mundur iqamah, dan layar "sholat sedang berlangsung"). Semua diatur dari satu file `config.js`, bahasa Inggris atau Indonesia, tanpa server. Demo: `/templates/masjid/`.

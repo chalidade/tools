@@ -1,0 +1,9 @@
+{
+  "extends": "../../tsconfig.app.json",
+  "compilerOptions": {
+    "tsBuildInfoFile": "../../node_modules/.tmp/tsconfig.chrome.tsbuildinfo",
+    "paths": { "@/*": ["../../src/*"] },
+    "types": ["vite/client", "chrome"]
+  },
+  "include": ["src", "../../src/vite-env.d.ts", "../../src/heic.d.ts", "../../src/types"]
+}

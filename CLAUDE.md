@@ -238,6 +238,19 @@ picture; the rules that matter when editing:
   lazily; `admin/image-button.js` adds "Compress with toowl" to the Image
   block. Editions nest (optimizer ⊂ free ⊂ pro): the widest active one runs
   and switches the others off; text domain = slug, rewritten by `build.mjs`.
+- **Chrome extension** (`packages/_chrome/`, see its README): Manifest V3,
+  16 tools in the side panel (`sidepanel.html`, its own list in `src/tools.ts`
+  — never the site registry, which would chunk every tool) plus right-click
+  menus (`background.ts`) that park a job in `chrome.storage.session`. Images
+  from a menu reach the tool's `FileDrop` through `deliverIncoming` /
+  `setShownSlug` in `src/lib/native.ts`; `QrGenerator` takes `start`.
+  Freemium: free tools always work, Pro tools give `PRO.freeSavesPerDay`
+  saves a day (counted on `tools:downloaded`), then the upgrade screen; keys
+  from Gumroad or Lemon Squeezy (`src/config.ts`, `license.ts`, separate from
+  `src/lib/license.ts`). Everything is bundled (no remote code; `build.mjs`
+  fails on CDN URLs). `node packages/_chrome/build.mjs` → `dist/` + ZIP;
+  store art `store/render.mjs`, listing text `store/listing.md`. Keep the
+  privacy page's "Ekstensi Chrome" section in step.
 - **Analytics:** `src/lib/analytics.ts` loads the Cloudflare Web Analytics
   beacon (cookieless, `spa: true`) from `main.tsx`, only in production, only on
   host toowl.my.id (so never in the iOS bundle) and never in an embed. It is the
