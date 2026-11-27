@@ -2,7 +2,7 @@
 
 [English](README.md) · **Bahasa Indonesia**
 
-Kotak perkakas file sehari-hari: **142 tools gratis** untuk PDF, Office, gambar
+Kotak perkakas file sehari-hari: **144 tools gratis** untuk PDF, Office, gambar
 CAD, foto, video, audio, musik, dan hitungan sehari-hari yang jalan **sepenuhnya
 di browser**. File diproses di perangkat pengguna: tidak di-upload ke server dan
 tidak disimpan di mana pun.
@@ -188,6 +188,8 @@ dan mengirim event berisi file rekaman. Ada juga API tanpa UI untuk developer.
 | Undian & Arisan | [`/undian/`](https://toowl.my.id/undian/) | Acak nama dengan `crypto.getRandomValues` tanpa bias dan animasi singkat; mode arisan mengecualikan pemenang sebelumnya sampai semua dapat giliran; riwayat tersimpan di perangkat. |
 | Kalkulator Token Listrik | [`/token-listrik/`](https://toowl.my.id/token-listrik/) | Nominal pembelian token PLN menjadi perkiraan kWh per golongan tarif (setelah PPJ, biaya admin, dan PPN bila berlaku) plus berapa hari habis; tarif di satu berkas. |
 | Kalkulator THR & Lembur | [`/thr-lembur/`](https://toowl.my.id/thr-lembur/) | THR penuh atau prorata dan upah lembur menurut PP 35/2021 (hari kerja vs libur, 5 atau 6 hari kerja) dengan rincian per jam; aturan di satu berkas. |
+| Kalkulator Pesangon | [`/pesangon/`](https://toowl.my.id/pesangon/) | Uang pesangon, penghargaan masa kerja, dan penggantian hak menurut PP 35/2021 untuk tiap alasan PHK, dengan rumus dan pasalnya; aturan di satu berkas. |
+| Cek Stunting & Kurva Tumbuh Anak | [`/kurva-tumbuh/`](https://toowl.my.id/kurva-tumbuh/) | Z-score berat, tinggi, IMT, dan lingkar kepala anak 0–5 tahun menurut standar WHO (kategori Permenkes 2/2020), kurva pertumbuhan, dan riwayat di perangkat; tabel LMS WHO di satu berkas. |
 | Hitung HPL Kehamilan | [`/hpl/`](https://toowl.my.id/hpl/) | HPL dari HPHT (rumus Naegele, panjang siklus bisa diatur) atau dari USG, plus usia kehamilan, trimester, dan tonggak penting. Hanya perkiraan; bidan/dokter yang menentukan. |
 | BMI & Berat Ideal | [`/bmi/`](https://toowl.my.id/bmi/) | BMI dengan kategori Asia-Pasifik, Kemenkes, atau WHO, rentang berat ideal, dan kebutuhan kalori harian (Mifflin-St Jeor); ambang di satu berkas data. Skrining, bukan diagnosis. |
 | SOS & Senter | [`/sos/`](https://toowl.my.id/sos/) | Satu tombol: senter HP (Chrome Android) berkedip pola morse SOS, layar putih berkedip, sirene Web Audio, mode senter biasa, dan Wake Lock; di iPhone hanya layar. Kategori Darurat, jalan offline. |

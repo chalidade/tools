@@ -3,13 +3,19 @@
 Catatan harian apa yang berubah di [tools](https://toowl.my.id/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-27 — Kerja & anak
+
+Dua tool baru; total sekarang **144 tools**.
+
+- **Kalkulator Pesangon** (`/pesangon/`): uang pesangon, uang penghargaan masa kerja, dan uang penggantian hak menurut PP 35/2021 untuk tiap alasan PHK (efisiensi, tutup, pailit, merger, pelanggaran, pensiun, sakit, meninggal, resign, mangkir). Isi upah sebulan terakhir, masa kerja, sisa cuti, dan hak lain; layar menunjukkan rumus per baris (tabel Pasal 40 × faktor alasan), pasalnya, dan catatan bahwa perjanjian kerja atau PKB bisa memberi lebih, kontrak PKWT mendapat kompensasi (bukan pesangon), dan ini bukan nasihat hukum. Tabel, faktor, pasal, dan tanggal berlakunya ada di `rules.ts` supaya mudah diperbarui.
+- **Cek Stunting & Kurva Tumbuh Anak** (`/kurva-tumbuh/`): dari tanggal lahir, jenis kelamin, berat, panjang/tinggi, dan lingkar kepala, hitung z-score BB/U, TB/U, BB/TB, IMT/U, dan LK/U dengan metode LMS Standar Pertumbuhan Anak WHO 0–5 tahun (dasar Permenkes 2/2020), lengkap dengan kategorinya, persentil, koreksi 0,7 cm berbaring/berdiri, dan peringatan angka yang tidak wajar. Ada grafik kurva (−3, −2, median, +2, +3 SD) dengan titik pengukuran dan riwayat yang hanya tersimpan di perangkat. Tabel LMS WHO (dijarangkan, selisih < 0,01 SD) ada di satu berkas `data.ts`. Ditandai tool khusus web seperti Hitung HPL; tertulis jelas bahwa ini skrining, bukan diagnosis.
+
 ## 2026-11-26 — Foto produk & barcode
 
 Dua tool baru; total sekarang **142 tools**.
 
 - **Watermark Foto Massal** (`/watermark-foto/`): logo (PNG transparan) atau teks toko dipasang di banyak foto produk sekaligus. Pilih salah satu dari sembilan posisi atau pola berulang yang memenuhi foto (jarak dan sudut bisa diatur), ukuran relatif terhadap lebar foto, dan opasitas. Pratinjau satu foto langsung berubah saat pengaturan digeser, lalu semua foto diproses satu per satu di Web Worker (OffscreenCanvas) dan diunduh sebagai ZIP. Foto dibaca dengan `decodeImage`-nya (rotasi EXIF diterapkan), bisa diperkecil ke 2048/1200/800 px, dan metadata (GPS, kamera) tidak ikut ke hasil.
 - **Generator Barcode** (`/barcode/`): EAN-13, EAN-8, UPC-A, Code 128 (set B, otomatis set C untuk deretan angka), dan Code 39, ditulis sendiri tanpa library. Digit cek EAN/UPC dihitung otomatis atau divalidasi bila diisi, dengan pesan jelas untuk panjang atau karakter yang salah. Atur lebar modul, tinggi batang, dan teks di bawahnya; unduh PNG atau SVG. Tulis satu nomor per baris untuk membuat **lembar label A4** (2×5, 3×8, atau 4×10, dengan jumlah salinan per baris) sebagai PDF vektor lewat pdf-lib. Semua pola sudah diuji dengan membaca ulang hasilnya memakai pembaca zxing.
-
 
 ## 2026-11-27 — Halaman API untuk developer
 
@@ -166,7 +172,6 @@ Dasar untuk menjual lisensi lewat **Lemon Squeezy** dan **Gumroad**; masih terse
 - Kunci dicek di browser ke endpoint lisensi publik toko (format kunci menentukan tokonya: UUID untuk Lemon Squeezy, empat kelompok 8 karakter untuk Gumroad), tanpa server dan tanpa API key rahasia. Hasilnya disimpan seminggu di perangkat. Kunci yang di-refund, dinonaktifkan, kedaluwarsa, atau dari toko lain ditolak.
 - Kebijakan privasi menjelaskan pengecekan kunci ini.
 
-
 ## 2026-11-20 — AI di perangkat: latar foto
 
 Hapus Latar Gambar (`#/remove-background`) kini punya mode sekali ketuk; jumlah tool tetap.
@@ -204,11 +209,9 @@ Dua tool baru; total sekarang **130 tools**.
 - **Gabung & Pisah Excel/CSV** (`#/merge-excel`): gabung banyak file `.xlsx`/`.csv` (atau sheet tertentu dari tiap file) jadi satu — kolom dicocokkan dari judulnya tanpa peduli huruf besar/kecil dan spasi ganda, atau dari urutan; kolom yang tidak ada di sebuah file dibiarkan kosong, dan bisa ditambah kolom "Sumber" berisi nama file/sheet asal. Hasilnya satu sheet atau satu sheet per sumber. Mode pisah memecah satu sheet menurut nilai sebuah kolom jadi sheet-sheet dalam satu file, atau ZIP berisi `.xlsx`/`.csv` per nilai. Rumus dibaca hasilnya, nama sheet/file dibersihkan dan dibuat unik. ExcelJS dan JSZip dimuat hanya saat tool dibuka.
 - **Markdown & Teks ke PDF / Word** (`#/markdown-to-pdf`): tulis, tempel, atau buka `.md`/`.txt`, lihat pratinjau halaman (A4/Letter, margin, huruf sans/serif), lalu unduh PDF lewat mesin halaman Word ke PDF (tiap halaman berupa gambar; "Cetak / Simpan PDF" menghasilkan teks yang bisa diseleksi) atau DOCX dengan judul, daftar bersarang/bernomor, checklist, kutipan, kode, tabel, dan tautan asli. HTML disaring DOMPurify dan gambar dari internet tidak pernah dimuat, jadi tidak ada koneksi keluar.
 
-
 ## 2026-11-19 — Tool medis hanya di web
 
 - Di aplikasi Android, tool CPR, P3K, Kartu Medis, dan HPL Kehamilan disembunyikan (flag `webOnly` di registry, deteksi app lewat `src/lib/platform.ts`). Play Store mewajibkan akun organisasi untuk fitur medis. Di toowl.my.id semuanya tetap ada.
-
 
 ## 2026-11-19 — Statistik kunjungan tanpa cookie
 
@@ -223,7 +226,6 @@ Dua tool baru; total sekarang **130 tools**.
 - Kerangka **In-App Purchase** (StoreKit 2, tanpa server dan tanpa SDK pihak ketiga) untuk freemium nanti; belum ada tool yang dikunci.
 - Di dalam app, tombol "Pasang aplikasi" dan link Traktir kopi disembunyikan, dan **Rekam Layar** tidak tampil karena iOS tidak mengizinkannya di app. Situs web tidak berubah.
 
-
 ## 2026-11-19 — Persiapan aplikasi Android (Play Store)
 
 - toowl disiapkan jadi aplikasi Android lewat **Trusted Web Activity**: konfigurasi Bubblewrap di `android/twa-manifest.json` (package `id.my.toowl`) dan panduan build, tanda tangan, dan upload ke Play Console di `android/README.md`.
@@ -231,12 +233,10 @@ Dua tool baru; total sekarang **130 tools**.
 - Manifest PWA: ikon **monochrome** baru untuk ikon bertema Android 13+, dan shortcut Piano/Gitar/Drum/Tuner sekarang memakai alamat halaman (`/piano/`), bukan `#/piano`.
 - Halaman **Kebijakan Privasi** baru di `/privacy/` (Indonesia dan English), ditautkan dari footer. Play Store mewajibkannya.
 
-
 ## 2026-11-19 — Nominal Kwitansi rapi di PDF
 
 - **Kwitansi** (`/kwitansi/`): di PDF, nominal sekarang duduk di tengah kotaknya. Sebelumnya teksnya naik menimpa garis atas kotak (laporan pengguna).
 - Kotak nominal ikut melebar untuk nominal panjang, dan ukuran hurufnya baru mengecil kalau kotaknya sudah selebar halaman.
-
 
 ## 2026-11-19 — Lisensi jadi AGPL-3.0
 
@@ -244,13 +244,11 @@ Dua tool baru; total sekarang **130 tools**.
 - Kode sampai commit 43c1e4a tetap berlaku MIT.
 - Teks "open source (MIT)" di halaman tool dan kartu **Pasang di situsmu** ikut diganti.
 
-
 ## 2026-11-19 — README dan video pengenalan baru
 
 - README (English dan Indonesia) diperbarui ke kondisi sekarang: 113 tools, alamat `/<tool>/` dan `/en/<tool>/` di toowl.my.id, beranda satu kotak pencarian, dan desain baru. Tiga tool yang belum tercatat ditambahkan: **Gambar ke SVG**, **Peredam Noise**, dan **Tambah Musik ke Video**.
 - Video pengenalan 30 detik (ID dan EN, GIF dan MP4) direkam dari situsnya sendiri dan menggantikan animasi launch lama; screenshot laptop dan HP ikut diperbarui.
 - `docs/ARCHITECTURE.md` tidak lagi menyebut sub-path `/tools/` dan menjelaskan beranda yang baru.
-
 
 ## 2026-11-19 — Gambar Word yang hilang
 
@@ -262,7 +260,6 @@ Dua tool baru; total sekarang **130 tools**.
   - di dokumen panjang tanpa jeda halaman, header dan footer (beserta gambarnya) diulang di setiap halaman PDF.
 
 Semuanya tetap diproses di browser; file tidak dikirim ke mana pun.
-
 
 ## 2026-11-19 — Gambar ke SVG
 
@@ -282,13 +279,11 @@ Kategori baru **Buka Dokumen** dengan empat tool; total sekarang **112 tools**. 
 
 Format lama (.doc, .xls, .ppt) belum bisa dibuka. Semuanya diproses di browser; file tidak dikirim ke mana pun.
 
-
 ## 2026-11-19 — PDF ke Word yang sama persis
 
 - **PDF ke Word** (`/pdf-to-word/`) sekarang punya pilihan hasil **"Sama persis seperti PDF"** (bawaan). Sebelumnya hanya teks yang diambil lalu disusun ulang jadi paragraf, jadi gambar, garis tabel, warna, kolom, dan posisi hilang dan hasil Word terlihat beda dari PDF-nya. Sekarang tiap halaman Word dibuat seukuran halaman PDF: gambar, logo, garis dan warna tabel, serta latar digambar di belakang persis seperti aslinya, lalu teksnya ditaruh di atas pada posisi aslinya dengan font, ukuran, tebal/miring, warna, dan rata kanan-kiri yang sama, dan tetap bisa diedit. Teks miring/diputar dan lapisan OCR tak terlihat tetap jadi bagian gambar supaya tidak muncul dua kali. Ada pratinjau halaman sebelum diunduh. Cara lama masih ada sebagai **"Teks mengalir (mudah diedit)"** untuk yang ingin menulis ulang banyak teks.
 
 Semuanya tetap diproses di browser; tidak ada file yang dikirim.
-
 
 ## 2026-11-19 — CAD & upscale
 

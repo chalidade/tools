@@ -3,7 +3,7 @@
 **English** · [Bahasa Indonesia](README.id.md)
 
 **My everyday file toolbox, built for the file work I do every day and published free for everyone.**
-142 tools for PDF, Office files, CAD drawings, images, video, audio, music and everyday calculations, and every one of them runs entirely in your browser.
+144 tools for PDF, Office files, CAD drawings, images, video, audio, music and everyday calculations, and every one of them runs entirely in your browser.
 Your files are never uploaded.
 
 [![Live demo](https://img.shields.io/badge/live-toowl.my.id-c8f031)](https://toowl.my.id/)
@@ -40,7 +40,7 @@ browser's own media encoders, and a library is downloaded only when you open the
 
 ## Tools
 
-All 142, grouped the way the site groups them. Each name links to the live tool.
+All 144, grouped the way the site groups them. Each name links to the live tool.
 
 **Open Documents**
 - [PDF Reader](https://toowl.my.id/en/pdf-reader/): pages drawn by pdf.js with its text layer on top (select, copy, Ctrl+F), working links, password-protected PDFs, zoom, page jump, full screen
@@ -175,6 +175,8 @@ Each reader opens the other three formats too.
 - [Take-Home Pay Calculator](https://toowl.my.id/en/gaji-bersih/): gross to net salary with PPh 21 (Article 17 brackets, PTKP), BPJS health, JHT and pension; rates in one source file
 - [Electricity Token Calculator](https://toowl.my.id/en/token-listrik/): PLN prepaid amount to estimated kWh by tariff class after PPJ, admin fee and VAT, with days left from daily use; tariffs in one source file
 - [THR & Overtime Calculator](https://toowl.my.id/en/thr-lembur/): full or prorated THR and PP 35/2021 overtime (working day vs holiday, 5- or 6-day week) with an hour-by-hour breakdown; rules in one source file
+- [Severance Pay Calculator](https://toowl.my.id/en/pesangon/): severance, long-service award and entitlements under PP 35/2021 for each reason for termination, with the formula and article shown; rules in one source file
+- [Child Growth Chart & Stunting Check](https://toowl.my.id/en/kurva-tumbuh/): WHO 0–5 year z-scores (weight, length/height, BMI, head) with the Permenkes 2/2020 categories, growth curves and a history kept on the device; WHO LMS tables in one data file
 - [WhatsApp Link](https://toowl.my.id/en/link-wa/): number (08…, +62…) and optional message to a `wa.me` chat link, copy button and QR (reuses the QR generator); the number is remembered only if you ask
 - [Percentage & Discount Calculator](https://toowl.my.id/en/persen/): X% of Y, what percent, percent change and stacked discounts with a step table (50% + 20% = 60%)
 - [Which Is Cheaper](https://toowl.my.id/en/mana-lebih-murah/): compare packs on one unit price (g/kg/ml/L/pcs, pieces per pack), cheapest marked with the percent difference
