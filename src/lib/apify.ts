@@ -31,6 +31,15 @@ export const APIFY_ACTORS: Record<string, ApifyActor> = {
   'compress-audio': { name: 'audio-converter', published: false },
   'remove-background': { name: 'background-remover', published: false },
   'extract-frames': { name: 'video-frame-extractor', published: false },
+  'doc-to-pdf': { name: 'office-converter', published: false },
+  'excel-to-pdf': { name: 'office-converter', published: false },
+  'ppt-to-pdf': { name: 'office-converter', published: false },
+  'pdf-to-image': { name: 'pdf-to-image', published: false },
+  'image-to-svg': { name: 'image-to-svg', published: false },
+  'merge-pdf': { name: 'pdf-toolkit', published: false },
+  'split-pdf': { name: 'pdf-toolkit', published: false },
+  'organize-pdf': { name: 'pdf-toolkit', published: false },
+  'unlock-pdf': { name: 'pdf-toolkit', published: false },
 }
 
 const withRef = (url: string) => `${url}${url.includes('?') ? '&' : '?'}fpr=${APIFY_REF}`

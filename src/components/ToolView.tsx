@@ -1,8 +1,8 @@
-import { Suspense, useEffect, useState } from 'react'
+import { Suspense, useEffect, useRef, useState } from 'react'
 import { ChevronDown, ChevronRight, Loader2, ShieldCheck } from 'lucide-react'
-import { ApiCard } from '@/components/ApiCard'
-import { InstallCard } from '@/components/InstallCard'
+import { InstallCard, INSTALL_CARD_ID } from '@/components/InstallCard'
 import { ToolAbout } from '@/components/ToolAbout'
+import { ToolExtras } from '@/components/ToolExtras'
 import { ToolBoundary } from '@/components/tool/ToolBoundary'
 import { categoryText, toolText, type Tool } from '@/tools/registry'
 import { useLang, useT } from '@/lib/i18n'
@@ -54,6 +54,7 @@ export function ToolView({ tool, embed = false }: { tool: Tool; embed?: boolean 
   const lang = useLang()
   const text = toolText(tool, lang)
   const license = useEmbedLicense(embed, tool)
+  const aboutRef = useRef<HTMLDetailsElement>(null)
 
   useEffect(() => {
     if (embed) {
@@ -96,6 +97,18 @@ export function ToolView({ tool, embed = false }: { tool: Tool; embed?: boolean 
       </div>
     )
 
+  // Embed code and the paid API are for site owners on the web, not the store apps.
+  const sells = !isNativeApp() && !isPlayApp()
+  const openInstall = () => {
+    if (aboutRef.current) aboutRef.current.open = true
+    requestAnimationFrame(() => {
+      const card = document.getElementById(INSTALL_CARD_ID) as HTMLDetailsElement | null
+      if (!card) return
+      card.open = true
+      card.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    })
+  }
+
   const about = <p className="text-[15px] leading-snug text-muted-foreground text-pretty lg:mt-1.5 lg:text-base">{text.description}</p>
 
   return (
@@ -133,12 +146,15 @@ export function ToolView({ tool, embed = false }: { tool: Tool; embed?: boolean 
         </ToolBoundary>
       </div>
 
+      {/* What we sell (embed, API) stays in sight; the rest folds away below. */}
+      {sells && <ToolExtras tool={tool} onEmbed={openInstall} />}
+
       {/*
         Everything that is not the tool sits behind one quiet line: what it does,
         why it is safe, questions, related tools and the embed code. It stays in
         the page (a closed <details>), so search engines still read it.
       */}
-      <details className="group/about mt-8 lg:mt-10">
+      <details ref={aboutRef} className="group/about mt-6 lg:mt-8">
         <summary className="flex cursor-pointer list-none items-center justify-between gap-3 rounded-xl py-2 text-muted-foreground transition-colors hover:text-foreground [&::-webkit-details-marker]:hidden">
           {/* A laptop already says this next to the title. */}
           <span className="inline-flex min-w-0 items-center gap-2 font-mono text-xs lg:invisible">
@@ -154,12 +170,7 @@ export function ToolView({ tool, embed = false }: { tool: Tool; embed?: boolean 
           <div className="lg:hidden">{about}</div>
           <ToolAbout tool={tool} />
           {/* Embed code is for site owners on the web, not for people using the store apps. */}
-          {!isNativeApp() && !isPlayApp() && (
-            <>
-              <InstallCard tool={tool} />
-              <ApiCard tool={tool} />
-            </>
-          )}
+          {sells && <InstallCard tool={tool} />}
         </div>
       </details>
     </section>

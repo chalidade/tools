@@ -1,0 +1,18 @@
+{
+  "actorOutputSchemaVersion": 1,
+  "title": "Output of PDF to Image",
+  "properties": {
+    "results": {
+      "type": "string",
+      "title": "Rendered PDFs",
+      "description": "One row per input file, with a download link for the result where there is one.",
+      "template": "{{links.apiDefaultDatasetUrl}}/items?view=overview"
+    },
+    "files": {
+      "type": "string",
+      "title": "Page images",
+      "description": "Result files in the default key-value store, plus a SUMMARY record.",
+      "template": "{{links.apiDefaultKeyValueStoreUrl}}/keys"
+    }
+  }
+}

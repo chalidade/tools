@@ -1,6 +1,6 @@
 # toowl di Apify Store
 
-Sebelas engine toowl dibungkus jadi **Actor Apify** berbayar (pay-per-event).
+Lima belas engine toowl dibungkus jadi **Actor Apify** berbayar (pay-per-event).
 Kode tool di situs berjalan di browser; di sini engine yang sama di-port ke
 Node supaya bisa dipanggil lewat API, Zapier, Make, n8n, atau jadwal.
 
@@ -17,6 +17,10 @@ Node supaya bisa dipanggil lewat API, Zapier, Make, n8n, atau jadwal.
 | [`image-compress/`](./image-compress) | Image Compressor (TinyPNG alternative) | engine `image-convert` (disalin) + target ukuran KB (binary search quality) | `image-compressed` |
 | [`remove-background/`](./remove-background) | AI Background Remover | onnxruntime-node + IS-Net `isnet-general-use.onnx` (Apache-2.0, ±170 MB, diunduh saat build dengan checksum — tidak di git) | `background-removed` |
 | [`video-frames/`](./video-frames) | Video Frame Extractor & Thumbnail Maker | ffmpeg — interval, jumlah, timestamp, scene change | `video-processed` (per video) |
+| [`office-convert/`](./office-convert) | Word, Excel & PowerPoint to PDF Converter | LibreOffice headless (Debian) + font metrik-kompatibel (Carlito, Caladea, Liberation, Noto); juga DOCX↔ODT, XLSX↔ODS/CSV, PPTX↔ODP, PDF/A | `document-converted` (per dokumen) |
+| [`pdf-to-image/`](./pdf-to-image) | PDF to JPG, PNG & WebP | Poppler `pdftoppm` (Debian) + sharp untuk WebP, ZIP per PDF | `pdf-page-rendered` (per halaman) |
+| [`image-to-svg/`](./image-to-svg) | Image to SVG Vectorizer | VTracer (`vtracer-wasm`, sama dengan `src/tools/image-to-svg/`), satu worker thread per gambar | `image-vectorized` |
+| [`pdf-toolkit/`](./pdf-toolkit) | PDF Merge, Split, Extract & Rotate | qpdf (wasm) — merge, split (per N halaman / rentang), extract, delete, rotate, unlock | `pdf-processed` (per PDF input) |
 
 `pdf-markdown/src/engine.js` adalah hasil build — setelah mengubah
 `src/tools/pdf-to-markdown`, `pdf-to-word/convert.ts`, `pdf-to-excel/convert.ts`
@@ -92,9 +96,15 @@ ditanggung Apify.
 | Image Compressor | `image-compressed` (primary) | **$0.001** | $1 | ~$0.00002 (target KB: ±7 kali encode) |
 | Background Remover | `background-removed` (primary) | **$0.01** | $10 | ~$0.001–0.004 (IS-Net 1024², 2–8 detik CPU) |
 | Video Frame Extractor | `video-processed` (primary) | **$0.003** | $3 | ~$0.0005 |
+| Office Converter | `document-converted` (primary) | **$0.005** | $5 | ~$0.0005–0.002 (LibreOffice 1–5 detik, 2 GB) |
+| PDF to Image | `pdf-page-rendered` (primary) | **$0.001** | $1 | ~$0.00005 (150 DPI ±0,2 detik per halaman) |
+| Image to SVG | `image-vectorized` (primary) | **$0.005** | $5 | ~$0.0002 (logo ±0,5 detik; foto 2000 px bisa 10–30 detik) |
+| PDF Toolkit | `pdf-processed` (primary) | **$0.002** | $2 | ~$0.00005 |
 
-Video Compressor menagih **per menit video hasil** (menit pertama ikut baris dataset). OCR dan PDF to Markdown menagih **per halaman**: halaman pertama ikut baris
+Video Compressor menagih **per menit video hasil** (menit pertama ikut baris dataset). OCR, PDF to Markdown dan PDF to Image menagih **per halaman**: halaman pertama ikut baris
 dataset, sisanya lewat `Actor.charge` (tetap dalam batas "Max cost per run").
+PDF Toolkit mode merge menagih satu event per PDF input (dicek dulu terhadap
+batas biaya sebelum mulai).
 
 \* 1 GB RAM, ~0,3–2 detik per file. Margin bersih ±75%.
 
@@ -120,6 +130,11 @@ cipta, jadi boleh menjual layanannya). Dependensi yang ikut di image:
 | realesr-general-x4v3 (model) | BSD-3-Clause | |
 | isnet-general-use (model, IS-Net/DIS) | Apache-2.0 | diunduh dari rilis rembg saat build |
 | ffmpeg (paket Debian, binari terpisah) | GPL-2.0-or-later (build Debian dengan x264) | dipanggil sebagai proses, tidak di-link; GPL-2+ kompatibel dengan AGPL-3.0 |
+| LibreOffice (paket Debian, binari terpisah) | MPL-2.0 | dipanggil sebagai proses |
+| Poppler `pdftoppm`/`pdfinfo` (paket Debian, binari terpisah) | GPL-2.0-or-later | dipanggil sebagai proses, tidak di-link |
+| Font: Liberation, Carlito, Caladea, Noto, DejaVu | OFL-1.1 / Apache-2.0 / bebas | paket Debian |
+| vtracer-wasm (VTracer) | MIT | |
+| fflate | MIT | ZIP hasil split |
 | tesseract.js, tesseract.js-core | Apache-2.0 | |
 | @tesseract.js-data/* (tessdata best_int) | Apache-2.0 | |
 | pdfjs-dist (+ @napi-rs/canvas, opsional) | Apache-2.0 / MIT | |

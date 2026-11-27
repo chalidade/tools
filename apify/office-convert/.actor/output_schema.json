@@ -1,0 +1,18 @@
+{
+  "actorOutputSchemaVersion": 1,
+  "title": "Output of Office Document Converter",
+  "properties": {
+    "results": {
+      "type": "string",
+      "title": "Converted documents",
+      "description": "One row per input file, with a download link for the result where there is one.",
+      "template": "{{links.apiDefaultDatasetUrl}}/items?view=overview"
+    },
+    "files": {
+      "type": "string",
+      "title": "Converted files",
+      "description": "Result files in the default key-value store, plus a SUMMARY record.",
+      "template": "{{links.apiDefaultKeyValueStoreUrl}}/keys"
+    }
+  }
+}
