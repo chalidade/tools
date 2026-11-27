@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Church</title>
+  <meta name="description" content="Service times, sermons, events, ministries and giving." />
+  <link rel="icon" href="assets/img/logo.svg" type="image/svg+xml" />
+  <link rel="preload" href="assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <style>html:not([data-design]) body { visibility: hidden }</style>
+  <script>
+    // ES modules don't load from file://. Explain instead of showing a blank page.
+    if (location.protocol === 'file:') addEventListener('DOMContentLoaded', () => {
+      document.documentElement.dataset.design = 'calm'
+      document.body.insertAdjacentHTML('afterbegin', '<div style="position:fixed;inset:0;z-index:99;display:grid;place-items:center;padding:24px;background:#f5f3ee;color:#141815;font:16px/1.6 system-ui,sans-serif;text-align:center"><div style="max-width:560px"><h2 style="margin:0 0 12px">Open this page from a web server</h2><p>Browsers block the scripts of a page opened straight from a folder. Upload the files to your hosting, or run a local server in this folder (see documentation/index.html → Quick start).</p></div></div>')
+    })
+  </script>
+</head>
+<body>
+  <header class="nav">
+    <div class="wrap nav-in">
+      <a class="brand" href="#top"><img src="assets/img/logo.svg" alt="" width="26" height="26" /><span id="brand-name"></span></a>
+      <nav class="links" id="links">
+        <a href="#services" data-t="Services|Ibadah"></a>
+        <a href="#sermons" data-t="Sermons|Khotbah"></a>
+        <a href="#events" data-t="Events|Acara"></a>
+        <a href="#ministries" data-t="Ministries|Pelayanan"></a>
+        <a href="#visit" data-t="Visit|Kunjungi"></a>
+      </nav>
+      <a class="btn btn-small" href="#give" data-t="Give|Persembahan"></a>
+      <button class="menu" id="menu" aria-label="Menu" aria-expanded="false"><span></span><span></span></button>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="wrap hero-in">
+        <div class="hero-text">
+          <p class="dates"><span id="today"></span><span id="services-line"></span></p>
+          <h1 id="name"></h1>
+          <p class="tagline" id="tagline"></p>
+          <div class="hero-cta">
+            <a class="btn" href="#visit"><span data-t="Plan your visit|Rencanakan kunjungan"></span><i aria-hidden="true">→</i></a>
+            <a class="link" id="live" target="_blank" rel="noopener"></a>
+          </div>
+        </div>
+        <aside class="arch next" aria-live="polite">
+          <p class="next-mark" id="next-mark" aria-hidden="true"></p>
+          <p class="next-label" id="next-label"></p>
+          <p class="next-name" id="next-name"></p>
+          <p class="next-time" id="next-time"></p>
+          <p class="next-in" id="next-in"></p>
+          <p class="next-count" id="next-count" aria-hidden="true"></p>
+          <p class="next-note" id="next-note"></p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="times-sec" id="services">
+      <div class="wrap">
+        <div class="times-head">
+          <h2 data-t="Every week|Setiap pekan"></h2>
+          <a class="link" href="calendar.html" data-t="Calendar|Kalender"></a>
+        </div>
+        <div class="times" id="times-grid"></div>
+        <p class="note" id="times-note"></p>
+      </div>
+    </section>
+
+    <!-- Notices as a moving band (the bold design shows it; the calm one hides it). -->
+    <div class="marquee" id="marquee" aria-hidden="true"><div class="marquee-track" id="marquee-track"></div></div>
+
+    <section class="row" id="sermons">
+      <div class="wrap row-in">
+        <header>
+          <h2 data-t="Sermons|Khotbah"></h2>
+          <a class="link" id="sermons-live" target="_blank" rel="noopener"></a>
+        </header>
+        <article class="sermon" id="sermon"></article>
+        <div class="events" id="sermon-list"></div>
+      </div>
+    </section>
+
+    <section class="row" id="announce-wrap">
+      <div class="wrap row-in">
+        <header><h2 data-t="Notices|Pengumuman"></h2></header>
+        <ol class="notices" id="notices"></ol>
+      </div>
+    </section>
+
+    <section class="row" id="events">
+      <div class="wrap row-in">
+        <header>
+          <h2 data-t="Events|Acara"></h2>
+          <a class="link" href="calendar.html" data-t="Full calendar|Kalender lengkap"></a>
+        </header>
+        <div class="events" id="events-list"></div>
+      </div>
+    </section>
+
+    <section class="row" id="ministries">
+      <div class="wrap row-in">
+        <header><h2 data-t="Ministries|Pelayanan"></h2></header>
+        <div class="programs" id="programs"></div>
+      </div>
+    </section>
+
+    <section class="row" id="visit">
+      <div class="wrap row-in">
+        <header><h2 data-t="Plan your visit|Kunjungi kami"></h2></header>
+        <div class="visit-in">
+          <div>
+            <p class="statement" id="visit-title"></p>
+            <p class="lead" id="visit-text"></p>
+          </div>
+          <div class="faq" id="faq"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="row donate" id="give">
+      <div class="wrap row-in">
+        <header><h2 data-t="Give|Persembahan"></h2></header>
+        <div class="donate-in">
+          <div>
+            <p class="statement" id="give-text"></p>
+            <a class="btn" id="give-online" target="_blank" rel="noopener"><span data-t="Give online|Beri secara online"></span><i aria-hidden="true">↗</i></a>
+            <div class="accounts" id="accounts"></div>
+          </div>
+          <figure class="arch qr" id="qr-wrap"><figcaption data-t="Scan to give|Scan untuk memberi"></figcaption><img id="qr" alt="" /></figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="row" id="contact">
+      <div class="wrap row-in">
+        <header><h2 data-t="Find us|Lokasi & kontak"></h2></header>
+        <div class="visit">
+          <div>
+            <p class="statement" id="address"></p>
+            <a class="link" id="map" target="_blank" rel="noopener" data-t="Open in maps|Buka di peta"></a>
+          </div>
+          <ul class="contact" id="contact-list"></ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="wrap foot-in">
+      <p class="foot-mark" id="foot-mark" aria-hidden="true"></p>
+      <p><span id="foot-name"></span> · © <span id="year"></span></p>
+      <p><a href="calendar.html" data-t="Calendar|Kalender"></a><a href="display.html" data-t="TV display|Layar TV"></a></p>
+    </div>
+  </footer>
+
+  <script type="module" src="assets/js/site.js"></script>
+</body>
+</html>

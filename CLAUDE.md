@@ -210,9 +210,11 @@ picture; the rules that matter when editing:
 - **Site templates** (`packages/_templates/<name>/`, sold on Codester; see
   each README): plain HTML/CSS/JS in `template/` with one `config.js`, no
   build step for the buyer. `node packages/_templates/build.mjs <name>` copies
-  the matching kit's marketplace `dist/` (readable code) into
-  `assets/toowl/`, adds Geist plus the template's own `<name>/fonts/`, docs, the Codester license and notices, and
-  zips it; `--demo=<dir>` writes only the site (CI: `/templates/<name>/`).
+  the matching kit's marketplace `dist/` (readable code, when `TEMPLATES[name].kit`
+  is set) into `assets/toowl/`, adds Geist plus the template's typefaces from
+  the shared `_templates/fonts/` (with their OFL texts), docs, the Codester
+  license and notices, and zips it; `--demo=<dir>` writes only the site (CI:
+  `/templates/<name>/`).
   The service worker leaves `/templates/` and `/kit-preview/` alone. `masjid`
   is a mosque site plus a TV display (`display.html`, `?at=HH:MM` previews
   the adhan/iqamah screens) built on the prayer engine's `METHODS`. It ships
@@ -223,6 +225,14 @@ picture; the rules that matter when editing:
   mapped to the engine's in `common.js`); Qibla and zakat are the template's
   own `tools.js` on the kit's headless API, because the site's elements are
   Indonesia-specific (city list, rupiah). `--demo` turns `designSwitcher` on.
+  `church` is a church site plus a lobby TV display on the same frame and
+  class names (no kit): services/events/sermons from `config.js`, the
+  church's clock from `timeZone` (`churchNow`, `nextService`, `upcoming` in
+  its `common.js`), a printable month calendar, and TV phases normal →
+  countdown (`display.countdown` minutes before) → welcome (during the
+  service); `display.html?at=HH:MM&day=sun` previews them. Pointed arches are
+  an SVG path stretched with `preserveAspectRatio="none"` (outlines) or the
+  `--arch` mask (filled).
 - **WordPress plugin** (`packages/_wordpress/`, see its README):
   `node packages/_wordpress/build.mjs [optimizer|free|pro]` builds the same package
   elements (kit-style Vite app build, `base: './'`) into a PHP plugin: block

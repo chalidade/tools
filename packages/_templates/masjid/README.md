@@ -62,9 +62,6 @@ Every page reads `config.js`. The file is commented; the main settings are:
 | `theme` | `primary` and `accent` colors. Leave them empty to use each design's own palette. |
 | `display` | TV settings: how long the adhan and "prayer in progress" screens stay up, slide timing, and the slides. |
 
-Daylight saving time: `tz` is a fixed offset. If your city changes its clocks,
-update `tz` when it does.
-
 ## The TV display
 
 Open `display.html` on the computer, TV box or smart TV browser connected to
