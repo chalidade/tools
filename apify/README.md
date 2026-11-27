@@ -60,7 +60,12 @@ Atau pakai Apify CLI: `npm i -g apify-cli`, lalu `apify run` di folder Actor.
 6. **Publication**: isi kategori, ikon (pakai `codester/<kit>/icon-200x200.png`
    atau logo toowl), lalu *Publish to Store*. Deskripsi diambil dari
    `README.md` masing-masing Actor (sudah ditulis untuk SEO Store).
-7. Pasang **auto-build**: di Actor → *Settings* → aktifkan webhook GitHub
+7. **Tampilkan di situs**: setelah Actor publik, ubah `published: true` untuk
+   tool-nya di `src/lib/apify.ts`. Kartu "Butuh ribuan file sekaligus?" muncul
+   di halaman tool itu dan link "API · Apify" di footer, semuanya memakai token
+   afiliasi Apify `?fpr=toowl` (komisi 20% tiga bulan pertama, lalu 30%
+   berulang, dari pelanggan baru yang daftar lewat link itu).
+8. Pasang **auto-build**: di Actor → *Settings* → aktifkan webhook GitHub
    supaya push ke `main` mem-build ulang.
 
 ## Harga yang disarankan (pay per event)
