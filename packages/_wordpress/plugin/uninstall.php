@@ -18,3 +18,4 @@ delete_option( 'toowl_credit' );
 delete_option( 'toowl_license' );
 delete_option( 'toowl_optimizer' );
 wp_clear_scheduled_hook( 'toowl_license_recheck' );
+delete_site_transient( 'toowl_update_info' );

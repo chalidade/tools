@@ -483,6 +483,17 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
       { q: 'How do I make a video from photos for WhatsApp Status?', a: 'Drop your photos, put them in order, pick 9:16, add a song if you like, then make the MP4. Everything is processed on your device.' },
     ],
   },
+  kpr: {
+    title: 'Mortgage Calculator',
+    description: 'Work out a mortgage with a fixed rate for the first years, then a variable rate: down payment, payment before and after the rate changes, total interest, a yearly schedule, and the price your income can afford.',
+    formats: 'Home price → Monthly payment',
+    keywords: ['mortgage', 'mortgage calculator', 'home loan', 'house', 'down payment', 'fixed rate', 'variable rate', 'adjustable rate', 'arm', 'amortization', 'affordability', 'how much house can i afford'],
+    faq: [
+      { q: 'How is a mortgage payment calculated?', a: 'The loan is the price minus the down payment. During the fixed period the payment is an annuity on that loan over the full term; when the rate changes, it is recomputed on the remaining balance over the remaining months.' },
+      { q: 'How much house can I afford?', a: 'Lenders often cap the payment at around 30% of gross monthly income. Enter your income and this calculator shows the highest price that keeps the payment within that share, at your down payment and rate.' },
+      { q: 'Does it include taxes and insurance?', a: 'No. It shows principal and interest only; add property tax, insurance and fees from your lender’s quote.' },
+    ],
+  },
   'harga-jual': {
     title: 'Selling Price & Cost Calculator',
     description: 'Work out the cost per unit, then the selling price from the margin or markup you want, after marketplace fees, service charges, discounts and tax. Shows profit per unit and break-even.',
