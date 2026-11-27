@@ -1,6 +1,7 @@
-import { Code2, Coffee, Github, Shield } from 'lucide-react'
+import { Code2, Coffee, Github, Shield, Workflow } from 'lucide-react'
 import { Logo } from '@/components/Logo'
 import { SUPPORT_URL } from '@/components/SupportToast'
+import { apifyProfileUrl } from '@/lib/apify'
 import { useLang, useT } from '@/lib/i18n'
 import { isPlayApp } from '@/lib/platform'
 import { pageUrl } from '@/lib/route'
@@ -28,6 +29,12 @@ export function Footer({ className, quiet = false }: { className?: string; quiet
             <a href={pageUrl('embed', lang)} className={link}>
               <Code2 className="size-4" />
               {t('Untuk website', 'For websites')}
+            </a>
+          )}
+          {!isNativeApp() && !isPlayApp() && apifyProfileUrl() && (
+            <a href={apifyProfileUrl()!} target="_blank" rel="sponsored noopener" className={link}>
+              <Workflow className="size-4" />
+              API · Apify
             </a>
           )}
           <a href={`${import.meta.env.BASE_URL}privacy/`} rel="external" className={link}>
