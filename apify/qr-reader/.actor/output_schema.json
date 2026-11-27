@@ -1,0 +1,18 @@
+{
+  "actorOutputSchemaVersion": 1,
+  "title": "Output of QR Code & Barcode Reader (Bulk)",
+  "properties": {
+    "results": {
+      "type": "string",
+      "title": "Decoded codes",
+      "description": "One row per input file, with a download link for the result where there is one.",
+      "template": "{{links.apiDefaultDatasetUrl}}/items?view=overview"
+    },
+    "summary": {
+      "type": "string",
+      "title": "Summary",
+      "description": "Counts of files read and codes found.",
+      "template": "{{links.apiDefaultKeyValueStoreUrl}}/records/SUMMARY"
+    }
+  }
+}
