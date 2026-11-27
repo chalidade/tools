@@ -1,0 +1,18 @@
+{
+  "name": "toowl-office-convert",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Bulk Word, Excel and PowerPoint converter (DOCX, XLSX, PPTX, ODT, RTF, CSV → PDF and back). Apify Actor by toowl.",
+  "type": "module",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "node src/main.js"
+  },
+  "license": "AGPL-3.0-only",
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "apify": "^3.8.0"
+  }
+}

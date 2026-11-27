@@ -1,0 +1,39 @@
+{
+  "actorSpecification": 1,
+  "name": "pdf-toolkit",
+  "title": "PDF Merge, Split, Extract & Rotate Pages (Bulk)",
+  "description": "Merge PDFs into one, split PDFs by page or range, extract or delete pages, rotate pages and unlock password-protected PDFs, in bulk from URLs. Text, links and quality untouched (qpdf). Pay per PDF.",
+  "version": "1.0",
+  "buildTag": "latest",
+  "minMemoryMbytes": 512,
+  "maxMemoryMbytes": 8192,
+  "input": "./input_schema.json",
+  "output": "./output_schema.json",
+  "dockerfile": "../Dockerfile",
+  "readme": "../README.md",
+  "storages": {
+    "dataset": {
+      "actorSpecification": 1,
+      "views": {
+        "overview": {
+          "title": "Result PDFs",
+          "transformation": {
+            "fields": ["name", "operation", "downloadUrl", "pages", "parts", "inputFiles", "sizeBefore", "sizeAfter", "error", "url"]
+          },
+          "display": {
+            "component": "table",
+            "properties": {
+              "downloadUrl": { "label": "Download", "format": "link" },
+              "pages": { "label": "Pages", "format": "number" },
+              "parts": { "label": "Split files", "format": "number" },
+              "inputFiles": { "label": "Merged files", "format": "number" },
+              "sizeBefore": { "label": "Before (bytes)", "format": "number" },
+              "sizeAfter": { "label": "After (bytes)", "format": "number" },
+              "url": { "label": "Source", "format": "link" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

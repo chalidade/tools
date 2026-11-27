@@ -1,0 +1,91 @@
+{
+  "title": "PDF to Image input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "files": {
+      "title": "PDF URLs",
+      "type": "array",
+      "description": "Direct links to the PDF files.",
+      "editor": "requestListSources",
+      "prefill": [
+        { "url": "https://raw.githubusercontent.com/chalidade/tools/main/apify/samples/sample.pdf" }
+      ]
+    },
+    "format": {
+      "title": "Image format",
+      "type": "string",
+      "description": "JPG is smallest for scans and photos, PNG is lossless (sharp text and line art), WebP is small and sharp.",
+      "editor": "select",
+      "enum": ["jpg", "png", "webp"],
+      "enumTitles": ["JPG", "PNG (lossless)", "WebP"],
+      "default": "jpg"
+    },
+    "dpi": {
+      "title": "Resolution (DPI)",
+      "type": "integer",
+      "description": "72–96 for previews and thumbnails, 150 for screens, 300 for print and OCR. An A4 page at 150 DPI is 1240 × 1754 px.",
+      "default": 150,
+      "minimum": 36,
+      "maximum": 600
+    },
+    "pages": {
+      "title": "Pages",
+      "type": "string",
+      "description": "Leave empty for every page, or list pages and ranges: \"1\", \"1-3,7\", \"5-\" (5 to the end), \"last\".",
+      "editor": "textfield"
+    },
+    "quality": {
+      "title": "Quality (JPG, WebP)",
+      "type": "integer",
+      "description": "1–100. 85 looks clean for text pages.",
+      "default": 85,
+      "minimum": 1,
+      "maximum": 100
+    },
+    "zip": {
+      "title": "Also make a ZIP per PDF",
+      "type": "boolean",
+      "description": "One ZIP with all page images of each PDF, besides the single images.",
+      "default": true
+    },
+    "maxSide": {
+      "title": "Max image side (px)",
+      "type": "integer",
+      "description": "Optional: scale every page so its longer side is this many pixels, whatever the page size (overrides the DPI). Handy for thumbnails, e.g. 400.",
+      "minimum": 16,
+      "maximum": 10000,
+      "sectionCaption": "Advanced"
+    },
+    "grayscale": {
+      "title": "Grayscale",
+      "type": "boolean",
+      "description": "Render in shades of grey (smaller files for text documents).",
+      "default": false
+    },
+    "password": {
+      "title": "PDF password",
+      "type": "string",
+      "description": "For password-protected PDFs. Used for every file in this run.",
+      "editor": "textfield",
+      "isSecret": true
+    },
+    "maxPages": {
+      "title": "Max pages per PDF",
+      "type": "integer",
+      "description": "Pages after this are skipped (and not charged).",
+      "default": 500,
+      "minimum": 1,
+      "maximum": 5000
+    },
+    "maxFileSizeMb": {
+      "title": "Max file size (MB)",
+      "type": "integer",
+      "description": "Larger files are skipped with an error (not charged).",
+      "default": 100,
+      "minimum": 1,
+      "maximum": 500
+    }
+  },
+  "required": ["files"]
+}
