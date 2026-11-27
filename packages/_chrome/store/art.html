@@ -1,0 +1,137 @@
+<!doctype html>
+<!--
+  Chrome Web Store art, rendered by render.mjs (headless Chrome, no network).
+  ?kind=shot&n=1..5&lang=en|id   1280×800 screenshot (side panel from panels/<lang>/)
+  ?kind=tile                     440×280 small promo tile
+  ?kind=marquee                  1400×560 marquee promo tile
+-->
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      @font-face { font-family: Geist; src: url("../../../src/assets/fonts/geist-latin.woff2") format("woff2"); font-weight: 100 900; }
+      @font-face { font-family: "Geist Mono"; src: url("../../../src/assets/fonts/geist-mono-latin.woff2") format("woff2"); font-weight: 100 900; }
+      :root { --bg: #09090a; --card: #121214; --line: #26262b; --muted: #9b9ba3; --lime: #c6ff3a; --ink: #0b0b0c; }
+      * { box-sizing: border-box; margin: 0; }
+      html, body { background: var(--bg); color: #f4f4f5; font-family: Geist, system-ui, sans-serif; overflow: hidden; }
+      .dots { position: absolute; inset: 0; background-image: radial-gradient(#ffffff14 1px, transparent 1px); background-size: 22px 22px; mask-image: radial-gradient(ellipse at 30% 50%, #000 20%, transparent 75%); }
+      .mono { font-family: "Geist Mono", monospace; }
+      .logo { fill: currentColor; }
+
+      /* screenshot */
+      .shot { position: relative; width: 1280px; height: 800px; display: flex; align-items: center; padding: 0 0 0 80px; gap: 56px; }
+      .copy { position: relative; flex: 1; }
+      .kicker { display: inline-flex; gap: 8px; align-items: center; border: 1px solid var(--line); border-radius: 999px; padding: 6px 14px; font-size: 15px; color: var(--lime); }
+      h1 { margin-top: 22px; font-size: 56px; line-height: 1.04; letter-spacing: -0.03em; font-weight: 650; }
+      h1 em { font-style: normal; color: var(--lime); }
+      .sub { margin-top: 20px; font-size: 21px; line-height: 1.45; color: var(--muted); max-width: 520px; }
+      .bullets { margin-top: 26px; display: grid; gap: 10px; font-size: 18px; }
+      .bullets li { list-style: none; display: flex; gap: 10px; align-items: center; }
+      .bullets li::before { content: ""; width: 8px; height: 8px; border-radius: 2px; background: var(--lime); }
+      .win { position: relative; width: 600px; height: 800px; border-left: 1px solid var(--line); background: #0d0d0f; display: flex; }
+      .page { flex: 1; padding: 28px 22px; display: grid; align-content: start; gap: 14px; }
+      .page .bar { height: 30px; border-radius: 8px; background: #17171a; }
+      .page .blk { border-radius: 10px; background: #141417; }
+      .panel { width: 400px; height: 800px; border-left: 1px solid var(--line); background: var(--bg); overflow: hidden; }
+      .panel img { width: 400px; display: block; }
+      .ptitle { height: 40px; display: flex; align-items: center; gap: 8px; padding: 0 14px; border-bottom: 1px solid var(--line); font-size: 13px; color: var(--muted); }
+
+      /* tiles */
+      .tile { position: relative; width: 440px; height: 280px; padding: 34px; display: flex; flex-direction: column; justify-content: space-between; }
+      .tile h2 { font-size: 34px; line-height: 1.05; letter-spacing: -0.02em; font-weight: 650; }
+      .tile h2 em, .marquee h2 em { font-style: normal; color: var(--lime); }
+      .tile p { color: var(--muted); font-size: 16px; }
+      .marquee { position: relative; width: 1400px; height: 560px; padding: 0 90px; display: flex; align-items: center; gap: 70px; }
+      .marquee h2 { font-size: 64px; line-height: 1.02; letter-spacing: -0.03em; font-weight: 650; }
+      .marquee p { margin-top: 18px; color: var(--muted); font-size: 24px; }
+      .chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 30px; }
+      .chips span { border: 1px solid var(--line); border-radius: 999px; padding: 8px 16px; font-size: 18px; }
+      .mark { width: 76px; height: 68px; color: var(--lime); }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script>
+      const q = new URLSearchParams(location.search)
+      const kind = q.get('kind') ?? 'shot'
+      const lang = q.get('lang') ?? 'en'
+      const logo = q.get('logo') ?? ''
+      const mark = (cls = 'mark') => `<svg class="${cls}" viewBox="0 0 1026 912"><path class="logo" fill-rule="evenodd" d="${logo}"/></svg>`
+      const L = (en, id) => (lang === 'id' ? id : en)
+
+      const SHOTS = {
+        1: {
+          panel: 'home',
+          kicker: L('Free · works offline', 'Gratis · bisa offline'),
+          title: L('PDF, image & QR tools <em>that never upload your files</em>', 'Tool PDF, gambar & QR <em>tanpa upload file</em>'),
+          sub: L('16 tools in your browser’s side panel. Everything runs on your computer.', '16 tool di side panel browser. Semua diproses di komputermu.'),
+          bullets: [L('No account, no upload', 'Tanpa akun, tanpa upload'), L('Works on any site', 'Jalan di situs mana pun'), L('English & Indonesian', 'Bahasa Indonesia & Inggris')],
+        },
+        2: {
+          panel: 'compress',
+          kicker: L('Right-click any image', 'Klik kanan gambar apa pun'),
+          title: L('Compress images <em>up to 90% smaller</em>', 'Kompres gambar <em>hingga 90% lebih kecil</em>'),
+          sub: L('JPG, PNG and WebP, many at once. GPS data removed. Convert HEIC and AVIF too.', 'JPG, PNG, WebP sekaligus banyak. Data GPS dihapus. Bisa ubah HEIC & AVIF juga.'),
+          bullets: [L('Right-click → toowl → Compress', 'Klik kanan → toowl → Kompres'), L('Target a file size (e.g. 200 KB)', 'Atur target ukuran (mis. 200 KB)')],
+        },
+        3: {
+          panel: 'rembg',
+          kicker: 'Pro',
+          title: L('Remove backgrounds <em>with on-device AI</em>', 'Hapus latar <em>dengan AI di perangkat</em>'),
+          sub: L('One click for a transparent PNG, then tidy up with the brush, lasso and wand.', 'Sekali klik jadi PNG transparan, lalu rapikan dengan kuas, laso, dan tongkat.'),
+          bullets: [L('Your photo never leaves your device', 'Fotomu tidak keluar dari perangkat'), L('No credits, no watermark', 'Tanpa kredit, tanpa watermark')],
+        },
+        4: {
+          panel: 'merge',
+          kicker: 'Pro',
+          title: L('Merge, split, compress <em>and sign PDFs</em>', 'Gabung, pisah, kompres <em>& tanda tangan PDF</em>'),
+          sub: L('Private documents stay private: contracts, invoices and IDs are processed locally.', 'Dokumen rahasia tetap aman: kontrak, invoice, KTP diproses di komputermu.'),
+          bullets: [L('Merge · Split · Compress · Sign', 'Gabung · Pisah · Kompres · Tanda tangan'), L('Watermark · Password · Unlock', 'Watermark · Password · Buka kunci'), L('Images ↔ PDF', 'Gambar ↔ PDF')],
+        },
+        5: {
+          panel: 'qr',
+          kicker: L('Right-click any page or link', 'Klik kanan halaman atau link'),
+          title: L('A QR code <em>for any page</em> in one click', 'QR code <em>halaman mana pun</em> sekali klik'),
+          sub: L('Links, text, Wi-Fi, WhatsApp and contacts. Add your logo. Read QR codes from screenshots.', 'Link, teks, Wi-Fi, WhatsApp, kontak. Pasang logo. Baca QR dari screenshot.'),
+          bullets: [L('PNG & SVG download', 'Unduh PNG & SVG'), L('QR & barcode reader', 'Pembaca QR & barcode')],
+        },
+      }
+
+      const root = document.getElementById('root')
+      if (kind === 'shot') {
+        const s = SHOTS[q.get('n') ?? '1']
+        root.innerHTML = `
+          <div class="shot"><div class="dots"></div>
+            <div class="copy">
+              <span class="kicker mono">${s.kicker}</span>
+              <h1>${s.title}</h1>
+              <p class="sub">${s.sub}</p>
+              <ul class="bullets">${s.bullets.map((b) => `<li>${b}</li>`).join('')}</ul>
+            </div>
+            <div class="win">
+              <div class="page"><div class="bar"></div><div class="blk" style="height:180px"></div><div class="blk" style="height:90px"></div><div class="blk" style="height:90px"></div><div class="blk" style="height:220px"></div></div>
+              <div class="panel"><img src="panels/${lang}/${s.panel}.png" /></div>
+            </div>
+          </div>`
+      } else if (kind === 'tile') {
+        root.innerHTML = `
+          <div class="tile"><div class="dots"></div>
+            ${mark('mark')}
+            <div style="position:relative">
+              <h2>${L('PDF, image & QR tools<br><em>no uploads</em>', 'Tool PDF, gambar & QR<br><em>tanpa upload</em>')}</h2>
+              <p style="margin-top:8px">${L('Runs 100% in your browser', 'Jalan 100% di browser')}</p>
+            </div>
+          </div>`
+      } else {
+        root.innerHTML = `
+          <div class="marquee"><div class="dots"></div>
+            ${mark('mark" style="width:150px;height:134px;flex:none;position:relative')}
+            <div style="position:relative">
+              <h2>${L('PDF, image & QR tools<br><em>that never upload your files</em>', 'Tool PDF, gambar & QR<br><em>tanpa upload file</em>')}</h2>
+              <div class="chips">${['Compress images', 'Remove background', 'Merge PDF', 'Sign PDF', 'QR codes'].map((c) => `<span>${c}</span>`).join('')}</div>
+            </div>
+          </div>`
+      }
+    </script>
+  </body>
+</html>
