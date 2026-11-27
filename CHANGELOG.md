@@ -3,6 +3,13 @@
 Catatan harian apa yang berubah di [tools](https://toowl.my.id/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-27 — SEO halaman tools populer & Simulasi KPR
+
+- **Simulasi KPR** (`/kpr/`, Inggris: Mortgage Calculator): harga rumah, DP, tenor, bunga fix beberapa tahun lalu floating. Hasilnya pokok pinjaman, angsuran sebelum dan sesudah floating, total bunga, tabel per tahun (CSV per bulan), dan cek kemampuan bayar: angsuran dibanding batas umum bank 30% penghasilan serta harga rumah yang terjangkau. Halaman Inggris tanpa simbol rupiah, untuk pengunjung luar negeri.
+- **Judul halaman untuk Google** di tools yang paling banyak dicari (pas foto, hapus background, kompres PDF/foto/video, PDF ke Word, QR, gabung PDF, Word/JPG ke PDF, jadwal sholat, cicilan, gaji bersih): memakai kata yang diketik orang, misalnya "Kompres Foto Online ke 100KB, 200KB, 500KB". Teksnya di `src/lib/seo-content.ts`.
+- **Tanya jawab baru** di tools tersebut (ID dan EN), tampil di bawah tool dan sebagai FAQPage JSON-LD.
+- Tiap halaman tool sekarang punya **BreadcrumbList** JSON-LD dan daftar **Tools populer** (tautan internal ke halaman yang paling sering dibuka); beranda punya data **Organization**.
+
 ## 2026-11-27 — Actor Apify (PDF, gambar, QR)
 
 - Tiga engine toowl sekarang dibungkus jadi **Actor Apify** di `apify/`, siap dijual di Apify Store dengan harga per file (pay-per-event): **PDF Compressor** (metode yang sama dengan Kompres PDF, teks tetap bisa dipilih; PDF contoh 3,4 MB jadi 190 KB di level medium), **Image Converter & Resizer** (HEIC, AVIF, WebP, PNG, JPG, TIFF, GIF, SVG, plus resize dan hapus metadata), dan **QR & Barcode Reader** (QR, Data Matrix, EAN, UPC, Code 128 dan lainnya, banyak kode per gambar). Input berupa daftar URL, hasilnya link download per file; file yang gagal tidak ditagih. Panduan publish, saran harga dan cek lisensi ada di `apify/README.md`.
