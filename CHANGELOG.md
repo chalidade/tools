@@ -10,6 +10,7 @@ terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
 ## 2026-11-27 — Link API di Apify
 
+- Halaman tool: **"Pasang tool ini di situsmu"** dan **"Butuh ribuan file? Pakai API-nya"** kini tampil langsung di bawah tool, tidak lagi tersembunyi di "Tentang tool ini". Baris pertama membuka kartu kode embed dan lisensinya.
 - Halaman tool yang punya Actor Apify (Kompres PDF, Ubah Format & Kompres Gambar, Baca QR, Perbesar Gambar, OCR, PDF ke Markdown) bisa menampilkan kartu **"Butuh ribuan file sekaligus? Pakai API-nya"**, plus link **API · Apify** di footer. Muncul begitu Actor-nya terbit di Apify Store (`src/lib/apify.ts`). Link memakai token afiliasi Apify toowl dan hanya berupa link biasa; situs tidak menghubungi Apify.
 - Lima Actor sudah terbit di Apify Store dan linknya aktif: Ubah Format & Kompres Gambar, Baca QR, Perbesar Gambar, OCR, PDF ke Markdown. Kompres PDF menyusul (Apify membatasi 5 publikasi per hari). Tiap Actor kini punya output schema, syarat terbit di Store.
 
