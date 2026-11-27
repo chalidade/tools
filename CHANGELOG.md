@@ -3,6 +3,14 @@
 Catatan harian apa yang berubah di [tools](https://toowl.my.id/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-26 — Foto produk & barcode
+
+Dua tool baru; total sekarang **142 tools**.
+
+- **Watermark Foto Massal** (`/watermark-foto/`): logo (PNG transparan) atau teks toko dipasang di banyak foto produk sekaligus. Pilih salah satu dari sembilan posisi atau pola berulang yang memenuhi foto (jarak dan sudut bisa diatur), ukuran relatif terhadap lebar foto, dan opasitas. Pratinjau satu foto langsung berubah saat pengaturan digeser, lalu semua foto diproses satu per satu di Web Worker (OffscreenCanvas) dan diunduh sebagai ZIP. Foto dibaca dengan `decodeImage`-nya (rotasi EXIF diterapkan), bisa diperkecil ke 2048/1200/800 px, dan metadata (GPS, kamera) tidak ikut ke hasil.
+- **Generator Barcode** (`/barcode/`): EAN-13, EAN-8, UPC-A, Code 128 (set B, otomatis set C untuk deretan angka), dan Code 39, ditulis sendiri tanpa library. Digit cek EAN/UPC dihitung otomatis atau divalidasi bila diisi, dengan pesan jelas untuk panjang atau karakter yang salah. Atur lebar modul, tinggi batang, dan teks di bawahnya; unduh PNG atau SVG. Tulis satu nomor per baris untuk membuat **lembar label A4** (2×5, 3×8, atau 4×10, dengan jumlah salinan per baris) sebagai PDF vektor lewat pdf-lib. Semua pola sudah diuji dengan membaca ulang hasilnya memakai pembaca zxing.
+
+
 ## 2026-11-27 — Halaman API untuk developer
 
 - Halaman baru **/api/** ([toowl.my.id/en/api/](https://toowl.my.id/en/api/)): semua API toowl di Apify dalam satu tempat, dengan harga per 1.000 file, link ke tool gratis yang sama, contoh kode cURL/Python/JavaScript dan FAQ (termasuk penjelasan jujur bahwa lewat API file diproses di server Apify). Ditulis juga sebagai halaman statis untuk mesin pencari, masuk sitemap.

@@ -3,7 +3,7 @@
 **English** · [Bahasa Indonesia](README.id.md)
 
 **My everyday file toolbox, built for the file work I do every day and published free for everyone.**
-139 tools for PDF, Office files, CAD drawings, images, video, audio, music and everyday calculations, and every one of them runs entirely in your browser.
+142 tools for PDF, Office files, CAD drawings, images, video, audio, music and everyday calculations, and every one of them runs entirely in your browser.
 Your files are never uploaded.
 
 [![Live demo](https://img.shields.io/badge/live-toowl.my.id-c8f031)](https://toowl.my.id/)
@@ -40,7 +40,7 @@ browser's own media encoders, and a library is downloaded only when you open the
 
 ## Tools
 
-All 139, grouped the way the site groups them. Each name links to the live tool.
+All 142, grouped the way the site groups them. Each name links to the live tool.
 
 **Open Documents**
 - [PDF Reader](https://toowl.my.id/en/pdf-reader/): pages drawn by pdf.js with its text layer on top (select, copy, Ctrl+F), working links, password-protected PDFs, zoom, page jump, full screen
@@ -161,6 +161,8 @@ Each reader opens the other three formats too.
 - [Case Converter](https://toowl.my.id/en/ubah-huruf/): UPPERCASE, lowercase, Title Case, Sentence case, collapse extra spaces, remove blank lines, join lines; one tap, then copy
 - [Selling Price & Cost Calculator](https://toowl.my.id/en/harga-jual/): unit cost from a production run, then the price from a target margin or markup after fees, discount and tax you enter; profit per unit and break-even, last entry kept on the device
 - [Shipping Labels](https://toowl.my.id/en/label-pengiriman/): sender saved once, recipients pasted from Excel/CSV, labels several per A4 sheet, one per A6 page or 100 × 150 mm stickers as PDF (pdf-lib)
+- [Bulk Photo Watermark](https://toowl.my.id/en/watermark-foto/): logo or text on many product photos at once (position or repeating pattern, size, opacity), processed in a Web Worker, metadata dropped, downloaded as ZIP
+- [Barcode Generator](https://toowl.my.id/en/barcode/): EAN-13, EAN-8, UPC-A, Code 128 and Code 39 with automatic check digit, PNG/SVG download and a print-ready A4 label sheet (pdf-lib), in-house encoders
 - [Receipt & Invoice](https://toowl.my.id/en/kwitansi/): PDF receipt or invoice with items, discount and tax, amount in words from Terbilang, last entry kept on the device (pdf-lib)
 - [Loan Instalment Calculator](https://toowl.my.id/en/cicilan/): flat or annuity interest, month-by-month schedule, total interest, CSV export
 - [GPA Calculator](https://toowl.my.id/en/ipk/): semester GPA and cumulative GPA from credits × letter grades (A/AB/B or A/A-/B+ scale), "what average do I need for GPA X" simulation, weighted report-card average, saved on the device

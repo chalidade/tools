@@ -478,11 +478,11 @@ sesudahnya.
 
 ## Hari 40 — 2026-11-26 · Foto produk & barcode
 
-- [ ] **Watermark Foto Massal** (`#/watermark-foto`): logo atau teks toko
+- [x] **Watermark Foto Massal** (`#/watermark-foto`): logo atau teks toko
   ke banyak foto produk sekaligus, dengan posisi, ukuran relatif, opasitas,
   dan pola berulang. Pratinjau satu foto, lalu proses semua di Web Worker dan
   unduh ZIP. Foto dibaca dengan `decodeImage` dan metadata ikut dibuang.
-- [ ] **Generator Barcode** (`#/barcode`): EAN-13, EAN-8, UPC-A, Code 128,
+- [x] **Generator Barcode** (`#/barcode`): EAN-13, EAN-8, UPC-A, Code 128,
   dan Code 39, dengan validasi digit cek, ukuran dan teks di bawahnya, unduh
   PNG/SVG, dan lembar label banyak sekaligus siap cetak.
 
