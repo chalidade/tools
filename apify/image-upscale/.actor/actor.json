@@ -1,0 +1,34 @@
+{
+  "actorSpecification": 1,
+  "name": "ai-image-upscaler",
+  "title": "AI Image Upscaler (Real-ESRGAN 4x/2x, Bulk)",
+  "description": "Upscale photos, product shots and screenshots 2× or 4× with Real-ESRGAN in bulk from URLs. Sharper detail than resizing, transparency kept, PNG/JPG/WebP out. No third-party API. Pay per image.",
+  "version": "1.0",
+  "buildTag": "latest",
+  "minMemoryMbytes": 2048,
+  "maxMemoryMbytes": 8192,
+  "input": "./input_schema.json",
+  "dockerfile": "../Dockerfile",
+  "readme": "../README.md",
+  "storages": {
+    "dataset": {
+      "actorSpecification": 1,
+      "views": {
+        "overview": {
+          "title": "Upscaled images",
+          "transformation": {
+            "fields": ["name", "downloadUrl", "scale", "widthBefore", "heightBefore", "width", "height", "sizeAfter", "seconds", "error", "url"]
+          },
+          "display": {
+            "component": "table",
+            "properties": {
+              "downloadUrl": { "label": "Download", "format": "link" },
+              "sizeAfter": { "label": "Size (bytes)", "format": "number" },
+              "url": { "label": "Source", "format": "image" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -3,6 +3,11 @@
 Catatan harian apa yang berubah di [tools](https://toowl.my.id/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-27 — Apify: Upscale AI, OCR, PDF ke Markdown
+
+- Tiga **Actor Apify** baru (`apify/`), bayar per pemakaian: **AI Image Upscaler** (Real-ESRGAN 2×/4×, model yang sama dengan Perbesar Gambar), **OCR** gambar dan PDF hasil scan (8 bahasa, halaman PDF yang sudah ada teksnya dibaca langsung), dan **PDF ke Markdown** untuk LLM/RAG (engine situs yang sama, dibundel).
+- PDF ke Markdown: daftar berpoin yang penandanya berjarak dari teks tidak lagi terbaca sebagai tabel atau judul.
+
 ## 2026-11-27 — Ekstensi Chrome (freemium)
 
 - **toowl untuk Chrome** (`packages/_chrome/`): 16 tool di side panel browser, semua jalan di komputer pengguna. Gratis: Kompres Gambar, Ubah Format Gambar, Buat QR Code, Baca QR & Barcode. **Pro**: Hapus Latar (AI), Crop & Resize, Hapus Metadata, Kompres/Gabung/Pisah PDF, Gambar ke PDF, PDF ke Gambar, Tanda Tangan, Watermark, Kunci dan Buka Kunci PDF. Pengguna gratis bisa mencoba tool Pro 2 kali simpan per hari.

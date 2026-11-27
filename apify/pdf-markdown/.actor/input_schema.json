@@ -1,0 +1,45 @@
+{
+  "title": "PDF to Markdown input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "files": {
+      "title": "PDF URLs",
+      "type": "array",
+      "description": "Direct links to digital PDFs (reports, papers, manuals, contracts, invoices). Scanned PDFs need the OCR Actor first.",
+      "editor": "requestListSources",
+      "prefill": [
+        { "url": "https://raw.githubusercontent.com/chalidade/tools/main/apify/samples/report.pdf" }
+      ]
+    },
+    "includeMarkdown": {
+      "title": "Put the Markdown in the dataset",
+      "type": "boolean",
+      "description": "Each row gets a markdown field, handy for LLM / RAG pipelines and integrations. A .md file is always saved too.",
+      "default": true
+    },
+    "pageBreaks": {
+      "title": "Mark page breaks",
+      "type": "boolean",
+      "description": "Adds a --- line between pages (useful for citing page numbers in RAG).",
+      "default": false
+    },
+    "maxPages": {
+      "title": "Max pages per PDF",
+      "type": "integer",
+      "description": "Only the first pages are converted; each page is charged.",
+      "minimum": 1,
+      "maximum": 2000,
+      "default": 200
+    },
+    "maxFileSizeMb": {
+      "title": "Max file size (MB)",
+      "type": "integer",
+      "default": 50,
+      "minimum": 1,
+      "maximum": 200,
+      "description": "Larger files are skipped with an error (not charged)."
+    }
+  },
+  "required": ["files"]
+}
