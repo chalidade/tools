@@ -10,6 +10,12 @@ Dua tool baru; total sekarang **144 tools**.
 - **Kalkulator Pesangon** (`/pesangon/`): uang pesangon, uang penghargaan masa kerja, dan uang penggantian hak menurut PP 35/2021 untuk tiap alasan PHK (efisiensi, tutup, pailit, merger, pelanggaran, pensiun, sakit, meninggal, resign, mangkir). Isi upah sebulan terakhir, masa kerja, sisa cuti, dan hak lain; layar menunjukkan rumus per baris (tabel Pasal 40 × faktor alasan), pasalnya, dan catatan bahwa perjanjian kerja atau PKB bisa memberi lebih, kontrak PKWT mendapat kompensasi (bukan pesangon), dan ini bukan nasihat hukum. Tabel, faktor, pasal, dan tanggal berlakunya ada di `rules.ts` supaya mudah diperbarui.
 - **Cek Stunting & Kurva Tumbuh Anak** (`/kurva-tumbuh/`): dari tanggal lahir, jenis kelamin, berat, panjang/tinggi, dan lingkar kepala, hitung z-score BB/U, TB/U, BB/TB, IMT/U, dan LK/U dengan metode LMS Standar Pertumbuhan Anak WHO 0–5 tahun (dasar Permenkes 2/2020), lengkap dengan kategorinya, persentil, koreksi 0,7 cm berbaring/berdiri, dan peringatan angka yang tidak wajar. Ada grafik kurva (−3, −2, median, +2, +3 SD) dengan titik pengukuran dan riwayat yang hanya tersimpan di perangkat. Tabel LMS WHO (dijarangkan, selisih < 0,01 SD) ada di satu berkas `data.ts`. Ditandai tool khusus web seperti Hitung HPL; tertulis jelas bahwa ini skrining, bukan diagnosis.
 
+## 2026-11-27 — Halaman API untuk developer
+
+- Halaman baru **/api/** ([toowl.my.id/en/api/](https://toowl.my.id/en/api/)): semua API toowl di Apify dalam satu tempat, dengan harga per 1.000 file, link ke tool gratis yang sama, contoh kode cURL/Python/JavaScript dan FAQ (termasuk penjelasan jujur bahwa lewat API file diproses di server Apify). Ditulis juga sebagai halaman statis untuk mesin pencari, masuk sitemap.
+- Link **API** di header (laptop), menu ⋯ (ponsel) dan footer; tidak tampil di aplikasi iOS/Play.
+- `src/lib/apify.ts` kini menyimpan katalog Actor (judul, deskripsi, harga) yang dipakai halaman ini.
+
 ## 2026-11-27 — Apify batch 4: Office ke PDF, PDF ke gambar, gambar ke SVG, PDF toolkit
 
 - Empat **Actor Apify** baru (`apify/`): **Word, Excel & PowerPoint to PDF** (LibreOffice dengan font yang mirip Office, PDF/A, satu halaman per sheet, juga DOC→DOCX, XLSX→CSV per sheet, PPTX↔ODP), **PDF to JPG/PNG/WebP** (36–600 DPI atau ukuran tetap untuk thumbnail, pilih halaman, ZIP per PDF; ditagih per halaman), **Image to SVG** (VTracer, warna atau hitam-putih untuk Cricut/laser) dan **PDF Toolkit** (gabung, pisah, ambil/hapus halaman, putar, buka kunci).
