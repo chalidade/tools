@@ -42,18 +42,11 @@
     "bitrate": {
       "title": "Bitrate (kbps)",
       "type": "integer",
-      "editor": "select",
-      "enum": [
-        64,
-        96,
-        128,
-        160,
-        192,
-        256,
-        320
-      ],
+      "editor": "number",
       "default": 192,
-      "description": "For MP3, M4A, AAC, OGG and Opus. 128 is fine for speech, 192–320 for music."
+      "description": "For MP3, M4A, AAC, OGG and Opus (32–320). 128 is fine for speech, 192–320 for music.",
+      "minimum": 32,
+      "maximum": 320
     },
     "sampleRate": {
       "title": "Sample rate (Hz)",
