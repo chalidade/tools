@@ -19,12 +19,12 @@ export interface ApifyActor {
 /** Tool slug → its Actor. */
 export const APIFY_ACTORS: Record<string, ApifyActor> = {
   'compress-pdf': { name: 'pdf-compressor', published: false },
-  'convert-image': { name: 'image-converter', published: false },
-  'compress-image': { name: 'image-converter', published: false },
-  'qr-reader': { name: 'qr-barcode-reader', published: false },
-  'upscale-image': { name: 'ai-image-upscaler', published: false },
-  ocr: { name: 'ocr-image-pdf-to-text', published: false },
-  'pdf-to-markdown': { name: 'pdf-to-markdown', published: false },
+  'convert-image': { name: 'image-converter', published: true },
+  'compress-image': { name: 'image-converter', published: true },
+  'qr-reader': { name: 'qr-barcode-reader', published: true },
+  'upscale-image': { name: 'ai-image-upscaler', published: true },
+  ocr: { name: 'ocr-image-pdf-to-text', published: true },
+  'pdf-to-markdown': { name: 'pdf-to-markdown', published: true },
 }
 
 const withRef = (url: string) => `${url}${url.includes('?') ? '&' : '?'}fpr=${APIFY_REF}`
