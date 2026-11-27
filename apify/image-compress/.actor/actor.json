@@ -1,7 +1,7 @@
 {
   "actorSpecification": 1,
   "name": "image-compressor",
-  "title": "Image Compressor (JPG, PNG, WebP, AVIF, HEIC, Bulk) — TinyPNG alternative",
+  "title": "Image Compressor (JPG, PNG, WebP, AVIF) - TinyPNG alternative",
   "description": "Compress images in bulk from URLs, TinyPNG/TinyJPG-style: mozjpeg JPG, palette PNG, WebP, AVIF. Keep the format or convert, resize to a max width, or hit a target file size in KB. Never returns a bigger file. Metadata stripped. Pay per image.",
   "version": "1.0",
   "buildTag": "latest",
