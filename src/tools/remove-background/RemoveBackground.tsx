@@ -518,7 +518,7 @@ export default function RemoveBackground() {
                   ? t('Menerapkan…', 'Applying…')
                   : t('Hapus latar otomatis (AI)', 'Remove background automatically (AI)')}
             </Button>
-            <p className="min-w-0 flex-1 text-xs text-muted-foreground">
+            <p className="min-w-48 flex-1 text-xs text-muted-foreground">
               {t(
                 'Sekali ketuk, lalu rapikan dengan alat di bawah. Pertama kali, model AI + mesinnya (±12 MB) diunduh dari situs ini dan tersimpan di browser; fotomu tetap di perangkat.',
                 'One tap, then tidy up with the tools below. The first time, the AI model + runtime (~12 MB) is downloaded from this site and kept by the browser; your photo stays on your device.',

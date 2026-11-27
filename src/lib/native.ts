@@ -85,12 +85,24 @@ function toolFor(file: File): string | null {
 let incoming: { slug: string; file: File } | null = null
 const waiting = new Set<() => void>()
 
+/** The tool on screen. The Chrome extension (packages/_chrome) has no router and sets its own. */
+let shownSlug = () => getRoute().slug
+export function setShownSlug(f: () => string) {
+  shownSlug = f
+}
+
+/** Hands a file to the tool `slug`'s FileDrop (now, or when it mounts). */
+export function deliverIncoming(slug: string, file: File) {
+  incoming = { slug, file }
+  waiting.forEach((f) => f())
+}
+
 /**
  * Called by FileDrop on mount (and when a file arrives while it is shown):
  * the file handed to the app, if it is meant for the page now open.
  */
 export function takeIncoming(): File | null {
-  if (!incoming || incoming.slug !== getRoute().slug) return null
+  if (!incoming || incoming.slug !== shownSlug()) return null
   const { file } = incoming
   incoming = null
   return file
@@ -132,9 +144,8 @@ async function openUrl(url: string) {
   void import('@capacitor/filesystem').then(({ Filesystem }) => Filesystem.deleteFile({ path: url }).catch(() => {}))
   const slug = toolFor(file)
   if (!slug) return
-  incoming = { slug, file }
   if (getRoute().slug !== slug) navigate(pageUrl(slug, getLang()))
-  waiting.forEach((f) => f())
+  deliverIncoming(slug, file)
 }
 
 /** Call once at start-up inside the app: files opened with toowl, now and at launch. */
