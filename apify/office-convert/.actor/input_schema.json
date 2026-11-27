@@ -1,0 +1,70 @@
+{
+  "title": "Office Document Converter input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "files": {
+      "title": "Document URLs",
+      "type": "array",
+      "description": "Direct links to the documents. Word (DOC, DOCX), Excel (XLS, XLSX, CSV), PowerPoint (PPT, PPTX, PPS), OpenDocument (ODT, ODS, ODP) and RTF.",
+      "editor": "requestListSources",
+      "prefill": [
+        { "url": "https://raw.githubusercontent.com/chalidade/tools/main/apify/samples/sample-document.docx" },
+        { "url": "https://raw.githubusercontent.com/chalidade/tools/main/apify/samples/sample-sheet.xlsx" }
+      ]
+    },
+    "outputFormat": {
+      "title": "Convert to",
+      "type": "string",
+      "description": "PDF for every kind of document, or another editable format of the same kind (Word ↔ ODT, Excel ↔ ODS, PowerPoint ↔ ODP). Plain text is TXT for documents and CSV (one file per sheet) for spreadsheets.",
+      "editor": "select",
+      "enum": ["pdf", "office", "odf", "text"],
+      "enumTitles": ["PDF", "Microsoft Office (DOCX, XLSX, PPTX)", "OpenDocument (ODT, ODS, ODP)", "Plain text (TXT, CSV)"],
+      "default": "pdf"
+    },
+    "pdfA": {
+      "title": "PDF/A (archiving)",
+      "type": "boolean",
+      "description": "Write PDF/A-2b, the archival PDF many courts, tenders and government portals ask for.",
+      "default": false,
+      "sectionCaption": "PDF options"
+    },
+    "onePagePerSheet": {
+      "title": "Spreadsheets: one page per sheet",
+      "type": "boolean",
+      "description": "Fit each whole sheet on a single PDF page instead of splitting it over printed pages.",
+      "default": false
+    },
+    "includeNotes": {
+      "title": "Presentations: add speaker notes pages",
+      "type": "boolean",
+      "description": "Append a notes page for every slide after the slides.",
+      "default": false
+    },
+    "imageQuality": {
+      "title": "JPEG quality of pictures (%)",
+      "type": "integer",
+      "description": "Recompress pictures inside the PDF at this quality and at most 300 DPI, for smaller files. Leave empty to keep them as they are.",
+      "minimum": 10,
+      "maximum": 100
+    },
+    "maxFileSizeMb": {
+      "title": "Max file size (MB)",
+      "type": "integer",
+      "description": "Larger files are skipped with an error (not charged).",
+      "default": 100,
+      "minimum": 1,
+      "maximum": 500,
+      "sectionCaption": "Advanced"
+    },
+    "timeoutSecs": {
+      "title": "Time limit per document (seconds)",
+      "type": "integer",
+      "description": "A document that takes longer is skipped with an error (not charged).",
+      "default": 180,
+      "minimum": 10,
+      "maximum": 1800
+    }
+  },
+  "required": ["files"]
+}

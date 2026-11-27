@@ -3,6 +3,11 @@
 Catatan harian apa yang berubah di [tools](https://toowl.my.id/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-27 — Apify batch 4: Office ke PDF, PDF ke gambar, gambar ke SVG, PDF toolkit
+
+- Empat **Actor Apify** baru (`apify/`): **Word, Excel & PowerPoint to PDF** (LibreOffice dengan font yang mirip Office, PDF/A, satu halaman per sheet, juga DOC→DOCX, XLSX→CSV per sheet, PPTX↔ODP), **PDF to JPG/PNG/WebP** (36–600 DPI atau ukuran tetap untuk thumbnail, pilih halaman, ZIP per PDF; ditagih per halaman), **Image to SVG** (VTracer, warna atau hitam-putih untuk Cricut/laser) dan **PDF Toolkit** (gabung, pisah, ambil/hapus halaman, putar, buka kunci).
+- Skema input semua Actor kini dicek dengan validator resmi Apify sebelum push.
+
 ## 2026-11-27 — Apify batch 3: video, audio, kompres gambar, hapus latar, frame video
 
 - Lima **Actor Apify** baru (`apify/`): **Video Compressor & Converter** (MP4/WebM/MOV/MKV/GIF, 1080p–360p, trim, tanpa suara; ditagih per menit video), **Audio Converter** (MP3/M4A/WAV/OGG/Opus/FLAC, normalisasi loudness, potong, fade, buang hening), **Image Compressor** (gaya TinyPNG, target ukuran KB, tidak pernah lebih besar dari aslinya), **AI Background Remover** (model IS-Net, PNG transparan, latar putih untuk marketplace, crop ke objek) dan **Video Frame Extractor** (per N detik, N thumbnail, timestamp, atau tiap ganti adegan). Tiga Actor media memakai ffmpeg di image Debian.

@@ -1,0 +1,20 @@
+{
+  "name": "toowl-image-to-svg",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Bulk image to SVG vectorizer (PNG, JPG, WebP → SVG) with VTracer: colour or black-and-white, logos, icons, illustrations. Apify Actor by toowl.",
+  "type": "module",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "node src/main.js"
+  },
+  "license": "AGPL-3.0-only",
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "apify": "^3.8.0",
+    "sharp": "^0.34.5",
+    "vtracer-wasm": "^0.1.0"
+  }
+}

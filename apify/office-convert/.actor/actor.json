@@ -1,0 +1,38 @@
+{
+  "actorSpecification": 1,
+  "name": "office-converter",
+  "title": "Word, Excel & PowerPoint to PDF Converter (Bulk, LibreOffice)",
+  "description": "Convert DOCX, DOC, XLSX, XLS, PPTX, PPT, ODT, RTF and CSV to PDF (or PDF/A) in bulk from URLs, or between Word/ODT, Excel/ODS/CSV and PowerPoint/ODP. LibreOffice with Office-compatible fonts. Pay per document.",
+  "version": "1.0",
+  "buildTag": "latest",
+  "minMemoryMbytes": 1024,
+  "maxMemoryMbytes": 8192,
+  "defaultMemoryMbytes": 2048,
+  "input": "./input_schema.json",
+  "output": "./output_schema.json",
+  "dockerfile": "../Dockerfile",
+  "readme": "../README.md",
+  "storages": {
+    "dataset": {
+      "actorSpecification": 1,
+      "views": {
+        "overview": {
+          "title": "Converted documents",
+          "transformation": {
+            "fields": ["name", "downloadUrl", "inputFormat", "outputFormat", "pages", "sizeBefore", "sizeAfter", "error", "url"]
+          },
+          "display": {
+            "component": "table",
+            "properties": {
+              "downloadUrl": { "label": "Download", "format": "link" },
+              "pages": { "label": "PDF pages", "format": "number" },
+              "sizeBefore": { "label": "Before (bytes)", "format": "number" },
+              "sizeAfter": { "label": "After (bytes)", "format": "number" },
+              "url": { "label": "Source", "format": "link" }
+            }
+          }
+        }
+      }
+    }
+  }
+}
