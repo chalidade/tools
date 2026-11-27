@@ -102,6 +102,10 @@ function toolBody(tool, lang) {
     .relatedTools(tool)
     .map((t) => `<li><a class="${LINK}" href="${href(t.slug, lang)}">${esc(toolText(t, lang).title)}</a></li>`)
     .join('')
+  const popular = seo
+    .popularTools(tool)
+    .map((t) => `<li><a class="${LINK}" href="${href(t.slug, lang)}">${esc(toolText(t, lang).title)}</a></li>`)
+    .join('')
   return `<main class="${MAIN}">
 <a class="text-sm ${LINK}" href="${href('all', lang)}">← ${en ? 'All tools' : 'Semua tools'}</a>
 <h1 class="mt-8 text-3xl font-semibold tracking-tight sm:text-4xl">${esc(text.title)}</h1>
@@ -111,6 +115,7 @@ function toolBody(tool, lang) {
 <ul class="mt-3 space-y-1.5 text-sm text-muted-foreground">${points}</ul>
 ${faq ? `<h2 class="mt-8 text-lg font-semibold">${esc(seo.faqHeading(lang))}</h2><dl class="mt-3 text-sm">${faq}</dl>` : ''}
 ${related ? `<h2 class="mt-8 text-lg font-semibold">${esc(seo.relatedHeading(tool, lang))}</h2><ul class="mt-3 space-y-1.5 text-sm">${related}</ul>` : ''}
+${popular ? `<h2 class="mt-8 text-lg font-semibold">${esc(seo.popularHeading(lang))}</h2><ul class="mt-3 space-y-1.5 text-sm">${popular}</ul>` : ''}
 </main>`
 }
 

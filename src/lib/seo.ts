@@ -7,6 +7,7 @@
 import type { Lang } from '@/lib/i18n'
 import { TOOLS, categoryText, toolText, type Tool } from '@/tools/registry'
 import { TOOLS_EN } from '@/tools/registry-en'
+import { seoCopy } from '@/lib/seo-content'
 
 export const SITE = 'https://toowl.my.id/'
 
@@ -88,8 +89,10 @@ export function toolMeta(tool: Tool, lang: Lang): PageMeta {
   const text = toolText(tool, lang)
   const files = takesFiles(tool)
   const online = /online/i.test(text.title) ? '' : ' Online'
-  const title =
-    lang === 'en'
+  const custom = seoCopy(tool.slug, lang)?.title
+  const title = custom
+    ? `${custom} | toowl`
+    : lang === 'en'
       ? `${text.title}${online} — Free${files ? ', No Upload' : ''} | toowl`
       : `${text.title}${online} Gratis${files ? ', Tanpa Upload' : ''} — toowl`
   const tail =
@@ -124,11 +127,27 @@ export function aboutPoints(tool: Tool, lang: Lang): string[] {
 
 /** Questions and answers shown under a tool (and in its static page), if it has any. */
 export function toolFaq(tool: Tool, lang: Lang) {
-  return (lang === 'en' ? TOOLS_EN[tool.slug]?.faq : undefined) ?? tool.faq ?? []
+  const own = (lang === 'en' ? TOOLS_EN[tool.slug]?.faq : undefined) ?? (lang === 'en' ? [] : tool.faq) ?? []
+  return [...own, ...(seoCopy(tool.slug, lang)?.faq ?? [])]
 }
 
 export function faqHeading(lang: Lang) {
   return lang === 'en' ? 'Questions' : 'Tanya jawab'
+}
+
+/** The tools most visitors come for (Cloudflare analytics), linked from every tool page. */
+const POPULAR = ['pas-foto', 'remove-background', 'compress-pdf', 'compress-image', 'pdf-to-word', 'compress-video', 'qr-generator', 'merge-pdf', 'kpr']
+
+export function popularTools(tool: Tool, max = 6): Tool[] {
+  const related = new Set(relatedTools(tool).map((t) => t.slug))
+  return POPULAR.filter((s) => s !== tool.slug && !related.has(s))
+    .map((s) => TOOLS.find((t) => t.slug === s))
+    .filter((t): t is Tool => !!t)
+    .slice(0, max)
+}
+
+export function popularHeading(lang: Lang) {
+  return lang === 'en' ? 'Popular tools' : 'Tools populer'
 }
 
 /** Other tools in the same category, for the "related" links. */
@@ -145,7 +164,10 @@ export function relatedHeading(tool: Tool, lang: Lang) {
 export function structuredData(meta: PageMeta) {
   const url = absoluteUrl(meta.slug, meta.lang)
   if (!meta.slug)
-    return { '@context': 'https://schema.org', '@type': 'WebSite', name: 'toowl', url, inLanguage: meta.lang, description: meta.description }
+    return [
+      { '@context': 'https://schema.org', '@type': 'WebSite', name: 'toowl', url, inLanguage: meta.lang, description: meta.description, publisher: { '@id': `${SITE}#org` } },
+      { '@context': 'https://schema.org', '@type': 'Organization', '@id': `${SITE}#org`, name: 'toowl', url: SITE, logo: `${SITE}icon-512.png`, sameAs: ['https://github.com/chalidade/tools'] },
+    ]
   if (meta.slug === EMBED_SLUG)
     return [
       { '@context': 'https://schema.org', '@type': 'WebPage', name: meta.title, url, inLanguage: meta.lang, description: meta.description, isPartOf: { '@type': 'WebSite', name: 'toowl', url: SITE } },
@@ -171,10 +193,19 @@ export function structuredData(meta: PageMeta) {
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'IDR' },
     isPartOf: { '@type': 'WebSite', name: 'toowl', url: SITE },
   }
+  const crumbs = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'toowl', item: absoluteUrl('', meta.lang) },
+      { '@type': 'ListItem', position: 2, name: toolText(tool, meta.lang).title, item: url },
+    ],
+  }
   const faq = toolFaq(tool, meta.lang)
-  if (!faq.length) return app
+  if (!faq.length) return [app, crumbs]
   return [
     app,
+    crumbs,
     {
       '@context': 'https://schema.org',
       '@type': 'FAQPage',

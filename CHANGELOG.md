@@ -3,6 +3,13 @@
 Catatan harian apa yang berubah di [tools](https://toowl.my.id/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-27 — SEO halaman tools populer & Simulasi KPR
+
+- **Simulasi KPR** (`/kpr/`, Inggris: Mortgage Calculator): harga rumah, DP, tenor, bunga fix beberapa tahun lalu floating. Hasilnya pokok pinjaman, angsuran sebelum dan sesudah floating, total bunga, tabel per tahun (CSV per bulan), dan cek kemampuan bayar: angsuran dibanding batas umum bank 30% penghasilan serta harga rumah yang terjangkau. Halaman Inggris tanpa simbol rupiah, untuk pengunjung luar negeri.
+- **Judul halaman untuk Google** di tools yang paling banyak dicari (pas foto, hapus background, kompres PDF/foto/video, PDF ke Word, QR, gabung PDF, Word/JPG ke PDF, jadwal sholat, cicilan, gaji bersih): memakai kata yang diketik orang, misalnya "Kompres Foto Online ke 100KB, 200KB, 500KB". Teksnya di `src/lib/seo-content.ts`.
+- **Tanya jawab baru** di tools tersebut (ID dan EN), tampil di bawah tool dan sebagai FAQPage JSON-LD.
+- Tiap halaman tool sekarang punya **BreadcrumbList** JSON-LD dan daftar **Tools populer** (tautan internal ke halaman yang paling sering dibuka); beranda punya data **Organization**.
+
 ## 2026-11-26 — Template website masjid
 
 - **Template website masjid** (`packages/_templates/masjid/`, dijual di Codester): beranda dengan sholat berikutnya dan hitung mundur, jadwal hari ini plus iqamah, pengumuman, kajian, jadwal khatib Jumat, program, rekening infaq dengan tombol salin dan QR, kontak, serta arah kiblat, kalender Hijriah, zakat dan tasbih. Ada **jadwal sebulan** siap cetak A4 dan **layar TV masjid** (jam besar, slide, teks berjalan, layar adzan, hitung mundur iqamah, dan layar "sholat sedang berlangsung"). Semua diatur dari satu file `config.js`, bahasa Inggris atau Indonesia, tanpa server. Demo: `/templates/masjid/`.

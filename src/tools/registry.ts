@@ -712,6 +712,23 @@ const ALL_TOOLS: Tool[] = [
     package: { name: '@chalidade/cicilan', element: 'loan-calculator', dir: 'cicilan', published: false },
   },
   {
+    slug: 'kpr',
+    category: 'productivity',
+    keywords: ['kpr', 'simulasi kpr', 'kalkulator kpr', 'cicilan rumah', 'kredit rumah', 'kredit pemilikan rumah', 'angsuran rumah', 'dp rumah', 'uang muka', 'bunga fix', 'bunga floating', 'mortgage', 'home loan', 'rumah', 'apartemen', 'btn', 'subsidi'],
+    title: 'Simulasi KPR',
+    description: 'Hitung cicilan KPR dengan bunga fix beberapa tahun lalu floating: uang muka, angsuran sebelum dan sesudah floating, total bunga, tabel per tahun, dan harga rumah yang terjangkau dari penghasilanmu.',
+    icon: Landmark,
+    formats: 'Harga rumah → Angsuran KPR',
+    badge: 'Baru',
+    component: lazy(() => import('./kpr/Kpr')),
+    faq: [
+      { q: 'Bagaimana cara menghitung cicilan KPR?', a: 'Pokok pinjaman = harga rumah dikurangi DP. Selama masa fix, angsuran dihitung anuitas dari pokok itu untuk seluruh tenor. Saat masa fix habis, angsuran dihitung ulang dari sisa pokok dengan bunga floating untuk sisa tenor.' },
+      { q: 'Berapa gaji minimal untuk KPR rumah 500 juta?', a: 'Bank umumnya membatasi angsuran sekitar 30% penghasilan. Dengan DP 10%, tenor 20 tahun, dan bunga 11%, angsurannya sekitar Rp4,6 juta, jadi penghasilan minimal sekitar Rp15,5 juta per bulan. Isi angka bankmu sendiri untuk hasil yang pas.' },
+      { q: 'Kenapa cicilan KPR naik setelah masa fix?', a: 'Bunga promo fix biasanya lebih rendah dari bunga floating. Setelah masa fix, bunga mengikuti suku bunga bank, sehingga angsuran dihitung ulang dan sering naik cukup jauh. Masukkan perkiraan bunga floating untuk melihat lonjakannya.' },
+      { q: 'Lebih baik tenor KPR pendek atau panjang?', a: 'Tenor panjang membuat angsuran per bulan lebih ringan, tetapi total bunganya jauh lebih besar. Bandingkan Total bunga di kalkulator ini untuk tenor 10, 15, dan 20 tahun.' },
+    ],
+  },
+  {
     slug: 'kalkulator-waris',
     category: 'productivity',
     keywords: ['waris', 'warisan', 'kalkulator waris', 'faraid', 'faraidh', 'hukum waris islam', 'pembagian warisan', 'ahli waris', 'harta warisan', 'ashabah', 'aul', 'radd', 'inheritance', 'islamic inheritance', 'estate'],
