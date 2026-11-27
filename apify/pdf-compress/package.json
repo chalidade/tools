@@ -1,0 +1,18 @@
+{
+  "name": "toowl-pdf-compress",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Bulk PDF compressor that keeps text selectable. Apify Actor by toowl.",
+  "type": "module",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "node src/main.js"
+  },
+  "license": "AGPL-3.0-only",
+  "engines": { "node": ">=20" },
+  "dependencies": {
+    "@neslinesli93/qpdf-wasm": "^0.3.0",
+    "apify": "^3.8.0",
+    "sharp": "^0.34.5"
+  }
+}
