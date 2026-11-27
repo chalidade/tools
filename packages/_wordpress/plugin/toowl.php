@@ -40,10 +40,15 @@ define( 'TOOWL_EDITION', '{{EDITION}}' );
 
 require __DIR__ . '/includes/tools.php';
 require __DIR__ . '/includes/render.php';
-require __DIR__ . '/includes/optimizer.php';
+if ( file_exists( __DIR__ . '/includes/optimizer.php' ) ) {
+	require __DIR__ . '/includes/optimizer.php';
+}
 require __DIR__ . '/includes/admin.php';
 if ( file_exists( __DIR__ . '/includes/license.php' ) ) {
 	require __DIR__ . '/includes/license.php';
+}
+if ( file_exists( __DIR__ . '/includes/updates.php' ) ) {
+	require __DIR__ . '/includes/updates.php';
 }
 
 add_action( 'init', 'toowl_register' );

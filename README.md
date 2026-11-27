@@ -3,7 +3,7 @@
 **English** · [Bahasa Indonesia](README.id.md)
 
 **My everyday file toolbox, built for the file work I do every day and published free for everyone.**
-143 tools for PDF, Office files, CAD drawings, images, video, audio, music and everyday calculations, and every one of them runs entirely in your browser.
+144 tools for PDF, Office files, CAD drawings, images, video, audio, music and everyday calculations, and every one of them runs entirely in your browser.
 Your files are never uploaded.
 
 [![Live demo](https://img.shields.io/badge/live-toowl.my.id-c8f031)](https://toowl.my.id/)
@@ -40,7 +40,7 @@ browser's own media encoders, and a library is downloaded only when you open the
 
 ## Tools
 
-All 143, grouped the way the site groups them. Each name links to the live tool.
+All 144, grouped the way the site groups them. Each name links to the live tool.
 
 **Open Documents**
 - [PDF Reader](https://toowl.my.id/en/pdf-reader/): pages drawn by pdf.js with its text layer on top (select, copy, Ctrl+F), working links, password-protected PDFs, zoom, page jump, full screen

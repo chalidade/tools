@@ -5,15 +5,29 @@ terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
 ## 2026-11-27 — Kerja & anak
 
-Dua tool baru; total sekarang **143 tools**.
+Dua tool baru; total sekarang **144 tools**.
 
 - **Kalkulator Pesangon** (`/pesangon/`): uang pesangon, uang penghargaan masa kerja, dan uang penggantian hak menurut PP 35/2021 untuk tiap alasan PHK (efisiensi, tutup, pailit, merger, pelanggaran, pensiun, sakit, meninggal, resign, mangkir). Isi upah sebulan terakhir, masa kerja, sisa cuti, dan hak lain; layar menunjukkan rumus per baris (tabel Pasal 40 × faktor alasan), pasalnya, dan catatan bahwa perjanjian kerja atau PKB bisa memberi lebih, kontrak PKWT mendapat kompensasi (bukan pesangon), dan ini bukan nasihat hukum. Tabel, faktor, pasal, dan tanggal berlakunya ada di `rules.ts` supaya mudah diperbarui.
 - **Cek Stunting & Kurva Tumbuh Anak** (`/kurva-tumbuh/`): dari tanggal lahir, jenis kelamin, berat, panjang/tinggi, dan lingkar kepala, hitung z-score BB/U, TB/U, BB/TB, IMT/U, dan LK/U dengan metode LMS Standar Pertumbuhan Anak WHO 0–5 tahun (dasar Permenkes 2/2020), lengkap dengan kategorinya, persentil, koreksi 0,7 cm berbaring/berdiri, dan peringatan angka yang tidak wajar. Ada grafik kurva (−3, −2, median, +2, +3 SD) dengan titik pengukuran dan riwayat yang hanya tersimpan di perangkat. Tabel LMS WHO (dijarangkan, selisih < 0,01 SD) ada di satu berkas `data.ts`. Ditandai tool khusus web seperti Hitung HPL; tertulis jelas bahwa ini skrining, bukan diagnosis.
 
 
+## 2026-11-27 — SEO halaman tools populer & Simulasi KPR
+
+- **Simulasi KPR** (`/kpr/`, Inggris: Mortgage Calculator): harga rumah, DP, tenor, bunga fix beberapa tahun lalu floating. Hasilnya pokok pinjaman, angsuran sebelum dan sesudah floating, total bunga, tabel per tahun (CSV per bulan), dan cek kemampuan bayar: angsuran dibanding batas umum bank 30% penghasilan serta harga rumah yang terjangkau. Halaman Inggris tanpa simbol rupiah, untuk pengunjung luar negeri.
+- **Judul halaman untuk Google** di tools yang paling banyak dicari (pas foto, hapus background, kompres PDF/foto/video, PDF ke Word, QR, gabung PDF, Word/JPG ke PDF, jadwal sholat, cicilan, gaji bersih): memakai kata yang diketik orang, misalnya "Kompres Foto Online ke 100KB, 200KB, 500KB". Teksnya di `src/lib/seo-content.ts`.
+- **Tanya jawab baru** di tools tersebut (ID dan EN), tampil di bawah tool dan sebagai FAQPage JSON-LD.
+- Tiap halaman tool sekarang punya **BreadcrumbList** JSON-LD dan daftar **Tools populer** (tautan internal ke halaman yang paling sering dibuka); beranda punya data **Organization**.
+
 ## 2026-11-27 — Actor Apify (PDF, gambar, QR)
 
 - Tiga engine toowl sekarang dibungkus jadi **Actor Apify** di `apify/`, siap dijual di Apify Store dengan harga per file (pay-per-event): **PDF Compressor** (metode yang sama dengan Kompres PDF, teks tetap bisa dipilih; PDF contoh 3,4 MB jadi 190 KB di level medium), **Image Converter & Resizer** (HEIC, AVIF, WebP, PNG, JPG, TIFF, GIF, SVG, plus resize dan hapus metadata), dan **QR & Barcode Reader** (QR, Data Matrix, EAN, UPC, Code 128 dan lainnya, banyak kode per gambar). Input berupa daftar URL, hasilnya link download per file; file yang gagal tidak ditagih. Panduan publish, saran harga dan cek lisensi ada di `apify/README.md`.
+
+## 2026-11-27 — Plugin WordPress gratis siap submit, jalur ke Pro
+
+- Plugin **toowl** gratis (10 tool) disiapkan untuk WordPress.org **tanpa image optimizer**: optimizer sudah ditolak WordPress.org, jadi plugin baru tidak boleh terlihat membawanya lagi. Optimizer sekarang salah satu isi **toowl Pro**. ZIP gratis turun dari 1,4 MB ke 0,6 MB.
+- Halaman baru **toowl untuk WordPress** (`/wordpress/`): gratis vs Pro, harga semua lisensi, tombol beli ke Gumroad, dan FAQ, dalam bahasa Inggris dan Indonesia. Plugin gratis dan Pro menautkan ke sini.
+- Plugin gratis menunjukkan Pro dengan cara yang diizinkan WordPress.org: satu bagian "More tools: toowl Pro" di halaman pengaturannya sendiri dan satu tautan di baris plugin, tanpa notice dan tanpa fitur terkunci.
+- **toowl Pro sekarang memberi tahu kalau ada versi baru** di halaman Plugins, lengkap dengan changelog, dan menunjukkan bahwa ZIP-nya ada di library Gumroad. Datanya dari `/wordpress/toowl-pro.json`. Kebijakan privasi menyebut pengecekan ini.
 
 ## 2026-11-26 — Foto produk & barcode
 
