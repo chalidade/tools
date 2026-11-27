@@ -3,6 +3,10 @@
 Catatan harian apa yang berubah di [tools](https://toowl.my.id/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-27 — Actor Apify (PDF, gambar, QR)
+
+- Tiga engine toowl sekarang dibungkus jadi **Actor Apify** di `apify/`, siap dijual di Apify Store dengan harga per file (pay-per-event): **PDF Compressor** (metode yang sama dengan Kompres PDF, teks tetap bisa dipilih; PDF contoh 3,4 MB jadi 190 KB di level medium), **Image Converter & Resizer** (HEIC, AVIF, WebP, PNG, JPG, TIFF, GIF, SVG, plus resize dan hapus metadata), dan **QR & Barcode Reader** (QR, Data Matrix, EAN, UPC, Code 128 dan lainnya, banyak kode per gambar). Input berupa daftar URL, hasilnya link download per file; file yang gagal tidak ditagih. Panduan publish, saran harga dan cek lisensi ada di `apify/README.md`.
+
 ## 2026-11-27 — Plugin WordPress gratis siap submit, jalur ke Pro
 
 - Plugin **toowl** gratis (10 tool) disiapkan untuk WordPress.org **tanpa image optimizer**: optimizer sudah ditolak WordPress.org, jadi plugin baru tidak boleh terlihat membawanya lagi. Optimizer sekarang salah satu isi **toowl Pro**. ZIP gratis turun dari 1,4 MB ke 0,6 MB.
