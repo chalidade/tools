@@ -154,7 +154,9 @@ picture; the rules that matter when editing:
   `seo.ts` the single source for titles/descriptions/about text. Old
   `#/<slug>` links are rewritten on load; embeds keep `#/<slug>?embed`.
   `public/robots.txt` and `public/CNAME` (custom domain toowl.my.id, served
-  at the root, so `--base=/`) ship with the build. A new tool needs nothing extra: its pages come from the registry.
+  at the root, so `--base=/`) ship with the build. After deploy, CI runs
+  `scripts/indexnow.mjs` to submit every sitemap URL to IndexNow (key file
+  `public/<key>.txt`; never fatal). A new tool needs nothing extra: its pages come from the registry.
 - The home page is one search box (`SearchHome`): type, pick a result. On a
   laptop it is a command palette in the middle of the page: `/` or ⌘/Ctrl-K
   focuses it, the arrow keys move through the rows and Enter opens the marked

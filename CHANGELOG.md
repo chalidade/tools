@@ -9,6 +9,10 @@ terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 - Menu **klik kanan**: QR code untuk halaman, link, atau teks terpilih; dan di gambar: kompres, ubah format, hapus latar, atau baca QR-nya. Gambar dari situs yang menolak diambil meminta izin untuk situs itu saja.
 - toowl Pro dibuka dengan kunci **Gumroad** atau **Lemon Squeezy** (kunci All-Access yang sudah ada ikut berlaku), dicek seminggu sekali. ZIP 14 MB, plus screenshot 1280×800 (EN/ID), promo tile, dan teks listing Chrome Web Store.
 - Hapus Latar: teks di samping tombol AI tidak lagi terjepit di layar sempit.
+## 2026-11-27 — IndexNow
+
+- Setiap deploy sekarang mengirim semua halaman di `sitemap.xml` ke **IndexNow** (Bing, Yandex, dan lainnya) lewat `scripts/indexnow.mjs`, jadi tool baru cepat masuk mesin pencari. Kuncinya ada di `public/<kunci>.txt`. Google tidak memakai IndexNow; Google membaca sitemap dari Search Console.
+
 ## 2026-11-27 — SEO halaman tools populer & Simulasi KPR
 
 - **Simulasi KPR** (`/kpr/`, Inggris: Mortgage Calculator): harga rumah, DP, tenor, bunga fix beberapa tahun lalu floating. Hasilnya pokok pinjaman, angsuran sebelum dan sesudah floating, total bunga, tabel per tahun (CSV per bulan), dan cek kemampuan bayar: angsuran dibanding batas umum bank 30% penghasilan serta harga rumah yang terjangkau. Halaman Inggris tanpa simbol rupiah, untuk pengunjung luar negeri.
