@@ -51,16 +51,10 @@
     "sampleRate": {
       "title": "Sample rate (Hz)",
       "type": "integer",
-      "editor": "select",
-      "enum": [
-        8000,
-        16000,
-        22050,
-        32000,
-        44100,
-        48000
-      ],
-      "description": "Leave empty to keep the original. 16000 mono suits speech-to-text."
+      "editor": "number",
+      "description": "Leave empty to keep the original. Common values: 16000 (speech, speech-to-text), 44100 (CD), 48000 (video).",
+      "minimum": 8000,
+      "maximum": 48000
     },
     "mono": {
       "title": "Mono",
