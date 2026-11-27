@@ -71,4 +71,4 @@ Pay per event: you pay a small fee per successfully compressed PDF (see the Pric
 
 ## Want it in the browser instead?
 
-The same engine runs free in your browser at [toowl.my.id/tools/compress-pdf](https://toowl.my.id/tools/compress-pdf/) — nothing uploaded.
+The same engine runs free in your browser at [toowl.my.id/en/compress-pdf](https://toowl.my.id/en/compress-pdf/) — nothing uploaded.

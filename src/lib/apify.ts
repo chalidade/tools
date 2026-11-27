@@ -20,11 +20,17 @@ export interface ApifyActor {
 export const APIFY_ACTORS: Record<string, ApifyActor> = {
   'compress-pdf': { name: 'pdf-compressor', published: false },
   'convert-image': { name: 'image-converter', published: true },
+  // Moves to 'image-compressor' once that Actor is published.
   'compress-image': { name: 'image-converter', published: true },
   'qr-reader': { name: 'qr-barcode-reader', published: true },
   'upscale-image': { name: 'ai-image-upscaler', published: true },
   ocr: { name: 'ocr-image-pdf-to-text', published: true },
   'pdf-to-markdown': { name: 'pdf-to-markdown', published: true },
+  'compress-video': { name: 'video-compressor', published: false },
+  'gif-mp4': { name: 'video-compressor', published: false },
+  'compress-audio': { name: 'audio-converter', published: false },
+  'remove-background': { name: 'background-remover', published: false },
+  'extract-frames': { name: 'video-frame-extractor', published: false },
 }
 
 const withRef = (url: string) => `${url}${url.includes('?') ? '&' : '?'}fpr=${APIFY_REF}`

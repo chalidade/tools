@@ -8,6 +8,9 @@ const shared = fs.readdirSync(path.join(root, '_shared')).filter((f) => f.endsWi
 for (const dir of fs.readdirSync(root)) {
   const src = path.join(root, dir, 'src')
   if (dir.startsWith('_') || !fs.existsSync(path.join(root, dir, '.actor'))) continue
-  for (const f of shared) fs.copyFileSync(path.join(root, '_shared', f), path.join(src, f))
-  console.log(`synced ${shared.join(', ')} → ${dir}/src/`)
+  // batch.js goes everywhere; the others only where an Actor imports them.
+  const code = fs.readdirSync(src).filter((f) => !shared.includes(f)).map((f) => fs.readFileSync(path.join(src, f), 'utf8')).join('\n')
+  const used = shared.filter((f) => f === 'batch.js' || code.includes(`./${f}`))
+  for (const f of used) fs.copyFileSync(path.join(root, '_shared', f), path.join(src, f))
+  console.log(`synced ${used.join(', ')} → ${dir}/src/`)
 }
