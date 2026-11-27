@@ -11,6 +11,10 @@ Dua tool baru; total sekarang **142 tools**.
 - **Generator Barcode** (`/barcode/`): EAN-13, EAN-8, UPC-A, Code 128 (set B, otomatis set C untuk deretan angka), dan Code 39, ditulis sendiri tanpa library. Digit cek EAN/UPC dihitung otomatis atau divalidasi bila diisi, dengan pesan jelas untuk panjang atau karakter yang salah. Atur lebar modul, tinggi batang, dan teks di bawahnya; unduh PNG atau SVG. Tulis satu nomor per baris untuk membuat **lembar label A4** (2×5, 3×8, atau 4×10, dengan jumlah salinan per baris) sebagai PDF vektor lewat pdf-lib. Semua pola sudah diuji dengan membaca ulang hasilnya memakai pembaca zxing.
 
 
+## 2026-11-27 — Link API di Apify
+
+- Halaman tool yang punya Actor Apify (Kompres PDF, Ubah Format & Kompres Gambar, Baca QR, Perbesar Gambar, OCR, PDF ke Markdown) bisa menampilkan kartu **"Butuh ribuan file sekaligus? Pakai API-nya"**, plus link **API · Apify** di footer. Muncul begitu Actor-nya terbit di Apify Store (`src/lib/apify.ts`). Link memakai token afiliasi Apify toowl dan hanya berupa link biasa; situs tidak menghubungi Apify.
+
 ## 2026-11-27 — Apify: Upscale AI, OCR, PDF ke Markdown
 
 - Tiga **Actor Apify** baru (`apify/`), bayar per pemakaian: **AI Image Upscaler** (Real-ESRGAN 2×/4×, model yang sama dengan Perbesar Gambar), **OCR** gambar dan PDF hasil scan (8 bahasa, halaman PDF yang sudah ada teksnya dibaca langsung), dan **PDF ke Markdown** untuk LLM/RAG (engine situs yang sama, dibundel).

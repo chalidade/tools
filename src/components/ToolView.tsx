@@ -1,5 +1,6 @@
 import { Suspense, useEffect, useState } from 'react'
 import { ChevronDown, ChevronRight, Loader2, ShieldCheck } from 'lucide-react'
+import { ApiCard } from '@/components/ApiCard'
 import { InstallCard } from '@/components/InstallCard'
 import { ToolAbout } from '@/components/ToolAbout'
 import { ToolBoundary } from '@/components/tool/ToolBoundary'
@@ -153,7 +154,12 @@ export function ToolView({ tool, embed = false }: { tool: Tool; embed?: boolean 
           <div className="lg:hidden">{about}</div>
           <ToolAbout tool={tool} />
           {/* Embed code is for site owners on the web, not for people using the store apps. */}
-          {!isNativeApp() && !isPlayApp() && <InstallCard tool={tool} />}
+          {!isNativeApp() && !isPlayApp() && (
+            <>
+              <InstallCard tool={tool} />
+              <ApiCard tool={tool} />
+            </>
+          )}
         </div>
       </details>
     </section>
