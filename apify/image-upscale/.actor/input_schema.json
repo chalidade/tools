@@ -1,0 +1,53 @@
+{
+  "title": "AI Image Upscaler input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "files": {
+      "title": "Image URLs",
+      "type": "array",
+      "description": "Direct links to the images to upscale (JPG, PNG, WebP, AVIF, GIF, TIFF, SVG).",
+      "editor": "requestListSources",
+      "prefill": [
+        {
+          "url": "https://raw.githubusercontent.com/chalidade/tools/main/apify/samples/small-photo.jpg"
+        }
+      ]
+    },
+    "scale": {
+      "title": "Scale",
+      "type": "string",
+      "description": "4× runs Real-ESRGAN directly. 2× is the 4× result reduced with a sharp filter (crisper than plain resizing). Inputs up to 2 MP for 4×, 4 MP for 2×.",
+      "editor": "select",
+      "enum": ["4", "2"],
+      "enumTitles": ["4× (up to 2 MP input)", "2× (up to 4 MP input)"],
+      "default": "4"
+    },
+    "format": {
+      "title": "Output format",
+      "type": "string",
+      "description": "PNG is lossless and keeps transparency. JPG and WebP are much smaller.",
+      "editor": "select",
+      "enum": ["png", "jpg", "webp"],
+      "enumTitles": ["PNG (lossless)", "JPG", "WebP"],
+      "default": "png"
+    },
+    "quality": {
+      "title": "JPG/WebP quality",
+      "type": "integer",
+      "description": "1–100. Ignored for PNG.",
+      "minimum": 1,
+      "maximum": 100,
+      "default": 92
+    },
+    "maxFileSizeMb": {
+      "title": "Max file size (MB)",
+      "type": "integer",
+      "default": 30,
+      "minimum": 1,
+      "maximum": 200,
+      "description": "Larger files are skipped with an error (not charged)."
+    }
+  },
+  "required": ["files"]
+}

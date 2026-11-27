@@ -1,6 +1,6 @@
 # toowl di Apify Store
 
-Tiga engine toowl dibungkus jadi **Actor Apify** berbayar (pay-per-event).
+Enam engine toowl dibungkus jadi **Actor Apify** berbayar (pay-per-event).
 Kode tool di situs berjalan di browser; di sini engine yang sama di-port ke
 Node supaya bisa dipanggil lewat API, Zapier, Make, n8n, atau jadwal.
 
@@ -9,6 +9,14 @@ Node supaya bisa dipanggil lewat API, Zapier, Make, n8n, atau jadwal.
 | [`pdf-compress/`](./pdf-compress) | PDF Compressor (Bulk, keeps text) | qpdf (wasm) + sharp/mozjpeg, metode sama dengan `src/tools/compress-pdf/compress.ts` | `pdf-compressed` |
 | [`image-convert/`](./image-convert) | Image Converter & Resizer | sharp (libvips) + libheif-js untuk HEIC | `image-converted` |
 | [`qr-reader/`](./qr-reader) | QR Code & Barcode Reader | zxing-wasm, opsi sama dengan `src/tools/qr/scan.ts` | `image-scanned` |
+| [`image-upscale/`](./image-upscale) | AI Image Upscaler (Real-ESRGAN 4x/2x) | onnxruntime-node + model `realesr-general-x4v3.onnx` yang sama dengan `src/tools/upscale-image/` (disalin ke folder Actor) | `image-upscaled` |
+| [`ocr/`](./ocr) | OCR: Image & Scanned PDF to Text | tesseract.js 7 + `@tesseract.js-data/*` (8 bahasa, lokal) + pdf.js untuk render halaman scan | `page-ocr` (per gambar / halaman) |
+| [`pdf-markdown/`](./pdf-markdown) | PDF to Markdown for LLM & RAG | **engine situs persis**: `src/tools/pdf-to-markdown/convert.ts` dibundel jadi `src/engine.js` | `pdf-page-converted` (per halaman) |
+
+`pdf-markdown/src/engine.js` adalah hasil build — setelah mengubah
+`src/tools/pdf-to-markdown`, `pdf-to-word/convert.ts`, `pdf-to-excel/convert.ts`
+atau `src/lib/pdf-text.ts`, jalankan `node apify/pdf-markdown/build-engine.mjs`
+(dari root repo, setelah `npm install`) lalu commit hasilnya.
 
 Semua Actor: input `files` (daftar URL), unduh paralel, hasil file disimpan di
 key-value store run, satu baris dataset per file (dengan `downloadUrl`). File
@@ -66,6 +74,12 @@ ditanggung Apify.
 | PDF Compressor | `pdf-compressed` (primary) | **$0.005** | $5 | ~$0.0001–0.0005 |
 | Image Converter | `image-converted` (primary) | **$0.0015** | $1.50 | ~$0.00002 |
 | QR & Barcode Reader | `image-scanned` (primary) | **$0.001** | $1 | ~$0.00001 |
+| AI Image Upscaler | `image-upscaled` (primary) | **$0.02** | $20 | ~$0.001–0.01 (CPU, 4 GB; 2 MP di 4× ±30 detik) |
+| OCR | `page-ocr` (primary) | **$0.002** | $2 | ~$0.0002 (±1 detik per halaman) |
+| PDF to Markdown | `pdf-page-converted` (primary) | **$0.001** | $1 | ~$0.00002 |
+
+OCR dan PDF to Markdown menagih **per halaman**: halaman pertama ikut baris
+dataset, sisanya lewat `Actor.charge` (tetap dalam batas "Max cost per run").
 
 \* 1 GB RAM, ~0,3–2 detik per file. Margin bersih ±75%.
 
@@ -87,6 +101,11 @@ cipta, jadi boleh menjual layanannya). Dependensi yang ikut di image:
 | @neslinesli93/qpdf-wasm | ISC (qpdf: Apache-2.0) | |
 | libheif-js | LGPL-3.0 | wasm tidak dimodifikasi — aman |
 | zxing-wasm | MIT (ZXing-C++: Apache-2.0) | |
+| onnxruntime-node | MIT | binari CUDA/TensorRT dan platform lain dihapus di Dockerfile |
+| realesr-general-x4v3 (model) | BSD-3-Clause | |
+| tesseract.js, tesseract.js-core | Apache-2.0 | |
+| @tesseract.js-data/* (tessdata best_int) | Apache-2.0 | |
+| pdfjs-dist (+ @napi-rs/canvas, opsional) | Apache-2.0 / MIT | |
 | lain-lain | MIT/BSD/ISC/0BSD/BlueOak; caniuse-lite CC-BY-4.0 (data) | dicek dengan `license-checker` |
 
 Tidak ada Ghostscript (AGPL, lisensi komersial mahal) atau potrace (GPL).

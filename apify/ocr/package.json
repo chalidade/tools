@@ -1,0 +1,27 @@
+{
+  "name": "toowl-ocr",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Bulk OCR for images and scanned PDFs (Tesseract). Apify Actor by toowl.",
+  "type": "module",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "node src/main.js"
+  },
+  "license": "AGPL-3.0-only",
+  "engines": { "node": ">=20" },
+  "dependencies": {
+    "@tesseract.js-data/deu": "^1.0.0",
+    "@tesseract.js-data/eng": "^1.0.0",
+    "@tesseract.js-data/fra": "^1.0.0",
+    "@tesseract.js-data/ind": "^1.0.0",
+    "@tesseract.js-data/ita": "^1.0.0",
+    "@tesseract.js-data/nld": "^1.0.0",
+    "@tesseract.js-data/por": "^1.0.0",
+    "@tesseract.js-data/spa": "^1.0.0",
+    "apify": "^3.8.0",
+    "pdfjs-dist": "^6.5.438",
+    "sharp": "^0.34.5",
+    "tesseract.js": "^7.0.0"
+  }
+}

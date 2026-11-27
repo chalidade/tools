@@ -25,3 +25,4 @@ packages/_kits/.work/
 # WordPress plugin: built ZIPs and their scratch folder
 packages/_wordpress/out/
 packages/_wordpress/.work/
+apify/*/storage/

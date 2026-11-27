@@ -11,12 +11,21 @@ Dua tool baru; total sekarang **142 tools**.
 - **Generator Barcode** (`/barcode/`): EAN-13, EAN-8, UPC-A, Code 128 (set B, otomatis set C untuk deretan angka), dan Code 39, ditulis sendiri tanpa library. Digit cek EAN/UPC dihitung otomatis atau divalidasi bila diisi, dengan pesan jelas untuk panjang atau karakter yang salah. Atur lebar modul, tinggi batang, dan teks di bawahnya; unduh PNG atau SVG. Tulis satu nomor per baris untuk membuat **lembar label A4** (2×5, 3×8, atau 4×10, dengan jumlah salinan per baris) sebagai PDF vektor lewat pdf-lib. Semua pola sudah diuji dengan membaca ulang hasilnya memakai pembaca zxing.
 
 
+## 2026-11-27 — Apify: Upscale AI, OCR, PDF ke Markdown
+
+- Tiga **Actor Apify** baru (`apify/`), bayar per pemakaian: **AI Image Upscaler** (Real-ESRGAN 2×/4×, model yang sama dengan Perbesar Gambar), **OCR** gambar dan PDF hasil scan (8 bahasa, halaman PDF yang sudah ada teksnya dibaca langsung), dan **PDF ke Markdown** untuk LLM/RAG (engine situs yang sama, dibundel).
+- PDF ke Markdown: daftar berpoin yang penandanya berjarak dari teks tidak lagi terbaca sebagai tabel atau judul.
+
 ## 2026-11-27 — Ekstensi Chrome (freemium)
 
 - **toowl untuk Chrome** (`packages/_chrome/`): 16 tool di side panel browser, semua jalan di komputer pengguna. Gratis: Kompres Gambar, Ubah Format Gambar, Buat QR Code, Baca QR & Barcode. **Pro**: Hapus Latar (AI), Crop & Resize, Hapus Metadata, Kompres/Gabung/Pisah PDF, Gambar ke PDF, PDF ke Gambar, Tanda Tangan, Watermark, Kunci dan Buka Kunci PDF. Pengguna gratis bisa mencoba tool Pro 2 kali simpan per hari.
 - Menu **klik kanan**: QR code untuk halaman, link, atau teks terpilih; dan di gambar: kompres, ubah format, hapus latar, atau baca QR-nya. Gambar dari situs yang menolak diambil meminta izin untuk situs itu saja.
 - toowl Pro dibuka dengan kunci **Gumroad** atau **Lemon Squeezy** (kunci All-Access yang sudah ada ikut berlaku), dicek seminggu sekali. ZIP 14 MB, plus screenshot 1280×800 (EN/ID), promo tile, dan teks listing Chrome Web Store.
 - Hapus Latar: teks di samping tombol AI tidak lagi terjepit di layar sempit.
+## 2026-11-27 — IndexNow
+
+- Setiap deploy sekarang mengirim semua halaman di `sitemap.xml` ke **IndexNow** (Bing, Yandex, dan lainnya) lewat `scripts/indexnow.mjs`, jadi tool baru cepat masuk mesin pencari. Kuncinya ada di `public/<kunci>.txt`. Google tidak memakai IndexNow; Google membaca sitemap dari Search Console.
+
 ## 2026-11-27 — SEO halaman tools populer & Simulasi KPR
 
 - **Simulasi KPR** (`/kpr/`, Inggris: Mortgage Calculator): harga rumah, DP, tenor, bunga fix beberapa tahun lalu floating. Hasilnya pokok pinjaman, angsuran sebelum dan sesudah floating, total bunga, tabel per tahun (CSV per bulan), dan cek kemampuan bayar: angsuran dibanding batas umum bank 30% penghasilan serta harga rumah yang terjangkau. Halaman Inggris tanpa simbol rupiah, untuk pengunjung luar negeri.
@@ -34,6 +43,11 @@ Dua tool baru; total sekarang **142 tools**.
 - Halaman baru **toowl untuk WordPress** (`/wordpress/`): gratis vs Pro, harga semua lisensi, tombol beli ke Gumroad, dan FAQ, dalam bahasa Inggris dan Indonesia. Plugin gratis dan Pro menautkan ke sini.
 - Plugin gratis menunjukkan Pro dengan cara yang diizinkan WordPress.org: satu bagian "More tools: toowl Pro" di halaman pengaturannya sendiri dan satu tautan di baris plugin, tanpa notice dan tanpa fitur terkunci.
 - **toowl Pro sekarang memberi tahu kalau ada versi baru** di halaman Plugins, lengkap dengan changelog, dan menunjukkan bahwa ZIP-nya ada di library Gumroad. Datanya dari `/wordpress/toowl-pro.json`. Kebijakan privasi menyebut pengecekan ini.
+
+## 2026-11-26 — Template website gereja
+
+- **Template website gereja** (`packages/_templates/church/`, untuk Codester): beranda dengan ibadah berikutnya dan hitung mundur, jadwal ibadah mingguan sebagai deretan lengkung gotik (yang berikutnya menyala), khotbah terbaru plus daftar khotbah sebelumnya, link siaran langsung, pengumuman, acara (sekali atau mingguan), pelayanan, bagian "rencanakan kunjungan" dengan tanya-jawab, persembahan (link online, rekening dengan tombol salin, QR) dan kontak. Ada **kalender bulanan** siap cetak (jadi daftar di HP) dan **layar TV lobi**: jam besar, ibadah berikutnya, slide ayat, acara mendatang, teks berjalan, hitung mundur besar "ibadah dimulai dalam" sebelum ibadah, dan layar "selamat datang" selama ibadah. Dua desain (bold: biru navy dan oranye vermilion; calm: terang dan editorial), bahasa Inggris atau Indonesia, satu file `config.js`, tanpa server. Demo: `/templates/church/`.
+- Font template (Archivo, Newsreader, Amiri) sekarang di folder bersama `packages/_templates/fonts/`, dan tiap template memilih font yang dipakainya. Template tanpa kit toowl juga bisa dibangun.
 
 ## 2026-11-26 — Template website masjid
 
