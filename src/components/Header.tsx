@@ -1,11 +1,12 @@
 import { useState } from 'react'
-import { ChevronLeft, Code2, Ellipsis, Github, LayoutGrid, Moon, Sun } from 'lucide-react'
+import { ChevronLeft, Code2, Ellipsis, Github, LayoutGrid, Moon, Sun, Workflow } from 'lucide-react'
 import { InstallButton } from '@/components/InstallButton'
 import { Logo } from '@/components/Logo'
 import { useTheme } from '@/lib/use-theme'
 import { setLang, useLang, useT, type Lang } from '@/lib/i18n'
 import { getRoute, navigate, pageUrl } from '@/lib/route'
 import { toolText, type Tool } from '@/tools/registry'
+import { apifyProfileUrl } from '@/lib/apify'
 import { cn } from '@/lib/utils'
 import { isNativeApp } from '@/lib/native'
 import { isPlayApp } from '@/lib/platform'
@@ -81,6 +82,12 @@ export function Header({ tool }: { tool?: Tool }) {
                       {t('Untuk website', 'For websites')}
                     </a>
                   )}
+                  {forSites && apifyProfileUrl() && (
+                    <a href={pageUrl('api', lang)} className="flex h-11 items-center gap-3 rounded-xl px-3 active:bg-accent">
+                      <Workflow className="size-4 text-muted-foreground" />
+                      {t('API untuk developer', 'API for developers')}
+                    </a>
+                  )}
                   <button type="button" onClick={() => switchLang(lang)} className="flex h-11 w-full items-center gap-3 rounded-xl px-3 active:bg-accent">
                     <span className="w-4 text-center font-mono text-[10px] text-muted-foreground">{lang === 'en' ? 'ID' : 'EN'}</span>
                     {lang === 'en' ? 'Bahasa Indonesia' : 'English'}
@@ -107,6 +114,12 @@ export function Header({ tool }: { tool?: Tool }) {
             <a href={pageUrl('embed', lang)} aria-label={t('Untuk website', 'For websites')} className={cn(item, 'gap-2 px-2.5 text-sm sm:px-3')}>
               <Code2 className="size-[18px] sm:size-4" />
               <span className="hidden sm:inline">{t('Untuk website', 'For websites')}</span>
+            </a>
+          )}
+          {forSites && apifyProfileUrl() && (
+            <a href={pageUrl('api', lang)} aria-label="API" className={cn(item, 'gap-2 px-2.5 text-sm max-sm:hidden sm:px-3')}>
+              <Workflow className="size-4" />
+              <span>API</span>
             </a>
           )}
           <a href={pageUrl('all', lang)} aria-label={t('Semua tools', 'All tools')} className={cn(item, 'gap-2 px-2.5 text-sm sm:px-3')}>

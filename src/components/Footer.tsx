@@ -32,9 +32,9 @@ export function Footer({ className, quiet = false }: { className?: string; quiet
             </a>
           )}
           {!isNativeApp() && !isPlayApp() && apifyProfileUrl() && (
-            <a href={apifyProfileUrl()!} target="_blank" rel="sponsored noopener" className={link}>
+            <a href={pageUrl('api', lang)} className={link}>
               <Workflow className="size-4" />
-              API · Apify
+              API
             </a>
           )}
           <a href={`${import.meta.env.BASE_URL}privacy/`} rel="external" className={link}>

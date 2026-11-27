@@ -85,6 +85,52 @@ export function embedFaq(lang: Lang): { q: string; a: string }[] {
   ]
 }
 
+/** The developer page: toowl's engines as paid Apify Actors (src/lib/apify.ts). */
+export const API_SLUG = 'api'
+
+export function apiMeta(lang: Lang): PageMeta {
+  return lang === 'en'
+    ? {
+        title: 'toowl API — Bulk PDF, image, document & video APIs (Apify)',
+        description:
+          'The engines behind toowl as pay-per-use APIs: PDF to Markdown, OCR, Word/Excel to PDF, PDF compressor, PDF to image, image compressor (TinyPNG alternative), background remover, image to SVG and more. Call them from code, n8n, Make or Zapier. No subscription.',
+        slug: API_SLUG,
+        lang,
+      }
+    : {
+        title: 'API toowl — API massal untuk PDF, gambar, dokumen & video (Apify)',
+        description:
+          'Engine di balik toowl sebagai API bayar per pemakaian: PDF ke Markdown, OCR, Word/Excel ke PDF, kompres PDF, PDF ke gambar, kompres gambar, hapus latar, gambar ke SVG dan lainnya. Panggil dari kode, n8n, Make atau Zapier. Tanpa langganan.',
+        slug: API_SLUG,
+        lang,
+      }
+}
+
+/** Questions a developer asks first; shown on /api/ and as FAQPage JSON-LD. */
+export function apiFaq(lang: Lang): { q: string; a: string }[] {
+  const en = lang === 'en'
+  return [
+    en
+      ? { q: 'Is it the same as the free tools on toowl?', a: 'Same engines and settings, run on a server instead of your browser, so you can send thousands of files at once, on a schedule or from your own app.' }
+      : { q: 'Apakah sama dengan tool gratis di toowl?', a: 'Engine dan pengaturannya sama, hanya dijalankan di server, bukan di browser. Jadi kamu bisa kirim ribuan file sekaligus, terjadwal, atau dari aplikasimu sendiri.' },
+    en
+      ? { q: 'Where are my files processed?', a: 'With the API, files are downloaded from the URLs you give and processed on Apify’s servers, then kept in your Apify storage (deleted after your plan’s retention period). The free tools on toowl.my.id still never upload anything.' }
+      : { q: 'File-ku diproses di mana?', a: 'Lewat API, file diunduh dari URL yang kamu berikan dan diproses di server Apify, lalu disimpan di storage Apify-mu (dihapus sesuai masa simpan paketmu). Tool gratis di toowl.my.id tetap tidak meng-upload apa pun.' },
+    en
+      ? { q: 'How much does it cost?', a: 'You pay per file or per page, nothing per month. Every Apify account gets free monthly credit, enough for thousands of files on most of these APIs, so you can try them without paying.' }
+      : { q: 'Berapa biayanya?', a: 'Bayar per file atau per halaman, tanpa biaya bulanan. Setiap akun Apify dapat kredit gratis tiap bulan, cukup untuk ribuan file di kebanyakan API ini, jadi bisa dicoba tanpa bayar.' },
+    en
+      ? { q: 'Do failed files cost anything?', a: 'No. A file that cannot be processed gets a row with the error and is not charged. You can also cap the cost of every run.' }
+      : { q: 'Apakah file yang gagal ditagih?', a: 'Tidak. File yang gagal diproses dapat baris berisi error dan tidak ditagih. Kamu juga bisa membatasi biaya maksimal tiap run.' },
+    en
+      ? { q: 'Can I use it without code?', a: 'Yes. Apify has apps for n8n, Make and Zapier, and you can run any of these from the Apify Console with a form.' }
+      : { q: 'Bisa dipakai tanpa coding?', a: 'Bisa. Apify punya integrasi n8n, Make dan Zapier, dan setiap API bisa dijalankan dari Apify Console lewat formulir.' },
+    en
+      ? { q: 'Is the code open?', a: 'Yes, the Actors live in toowl’s public repository (AGPL-3.0). The API is for when you would rather not host and scale it yourself.' }
+      : { q: 'Apakah kodenya terbuka?', a: 'Ya, kode Actor ada di repositori publik toowl (AGPL-3.0). API-nya untuk kamu yang tidak mau repot meng-host dan mengurus server sendiri.' },
+  ]
+}
+
 export function toolMeta(tool: Tool, lang: Lang): PageMeta {
   const text = toolText(tool, lang)
   const files = takesFiles(tool)
@@ -168,14 +214,14 @@ export function structuredData(meta: PageMeta) {
       { '@context': 'https://schema.org', '@type': 'WebSite', name: 'toowl', url, inLanguage: meta.lang, description: meta.description, publisher: { '@id': `${SITE}#org` } },
       { '@context': 'https://schema.org', '@type': 'Organization', '@id': `${SITE}#org`, name: 'toowl', url: SITE, logo: `${SITE}icon-512.png`, sameAs: ['https://github.com/chalidade/tools'] },
     ]
-  if (meta.slug === EMBED_SLUG)
+  if (meta.slug === EMBED_SLUG || meta.slug === API_SLUG)
     return [
       { '@context': 'https://schema.org', '@type': 'WebPage', name: meta.title, url, inLanguage: meta.lang, description: meta.description, isPartOf: { '@type': 'WebSite', name: 'toowl', url: SITE } },
       {
         '@context': 'https://schema.org',
         '@type': 'FAQPage',
         inLanguage: meta.lang,
-        mainEntity: embedFaq(meta.lang).map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+        mainEntity: (meta.slug === API_SLUG ? apiFaq : embedFaq)(meta.lang).map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
       },
     ]
   const tool = TOOLS.find((t) => t.slug === meta.slug)!

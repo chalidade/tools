@@ -293,6 +293,9 @@ picture; the rules that matter when editing:
   `/embed/` (`EmbedPage.tsx`; text and FAQ in `seo.ts` as `embedMeta`/`embedFaq`)
   is the page for site owners: live embed demo, free vs licensed, every product
   from `licenseProducts()`; hidden in the store apps, linked from Header/Footer.
+  `/api/` (`ApiPage.tsx`; `apiMeta`/`apiFaq` in `seo.ts`) lists the paid Apify
+  Actors from `APIFY_CATALOG` in `src/lib/apify.ts` (flip `published` there when
+  an Actor goes live); links carry the affiliate token; hidden in the store apps.
 - **Support link (Trakteer):** `SUPPORT_URL` in `src/components/SupportToast.tsx`
   is used by the footer and by a once-per-session toast shown after the first
   save (`downloadBlob` fires `tools:downloaded`). Plain links only — never
