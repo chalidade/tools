@@ -20,12 +20,13 @@ Hasilnya `packages/_wordpress/out/<slug>-<versi>.zip`, siap di-upload lewat
 
 | | `toowl-image-optimizer` | `toowl` (gratis) | `toowl-pro` |
 | --- | --- | --- | --- |
-| Image optimizer | ya | ya | ya |
+| Image optimizer | ya | **tidak** (lihat di bawah) | ya |
 | Tool (block/shortcode) | tidak ada | hanya `FREE` di `config.mjs` | semua `TOOLS` |
 | Kode lisensi | tidak ada | **tidak ada sama sekali** | `includes/license.php` |
 | Dijual di | WordPress.org | WordPress.org | Gumroad (nanti bisa Freemius) |
 
-Edisinya bertingkat (optimizer ⊂ gratis ⊂ Pro). Kalau beberapa aktif sekaligus,
+Pro berisi kedua edisi lain (`includes` di `build.mjs`); edisi gratis dan
+optimizer berdiri sendiri-sendiri. Kalau beberapa aktif sekaligus,
 hanya yang paling lengkap yang jalan, dan saat admin membuka wp-admin edisi
 yang lebih kecil dimatikan otomatis (pengaturan dipakai bersama). Text domain
 tiap edisi = slug-nya (syarat WordPress.org); `build.mjs` menulis ulang
@@ -36,7 +37,12 @@ Kenapa dua ZIP, bukan satu plugin yang dikunci: **WordPress.org melarang
 Jadi ZIP gratis cuma berisi tool gratis; tool berbayar hanya ada di ZIP Pro.
 Di Pro, tool `FREE` selalu jalan, sisanya terbuka sesuai kunci lisensi.
 
-## Image optimizer (semua edisi)
+## Image optimizer (edisi optimizer dan Pro)
+
+Edisi gratis (WordPress.org) **tidak** membawa optimizer: WordPress.org
+menolak `toowl-image-optimizer` (guideline 18, kategori penuh), jadi plugin
+gratis tidak boleh terlihat seperti jalan memutar untuk memasukkannya lagi.
+Optimizer jadi salah satu isi Pro.
 
 Gambar dikecilkan **di browser penulis sebelum di-upload**: server cuma
 menerima file kecil, tanpa API pihak ketiga, tanpa kuota. Mesinnya
@@ -121,10 +127,10 @@ Media Library yang asli perlu dicoba sekali di WordPress sungguhan.
 
 ## Rilis ke WordPress.org
 
-**Status (2026-11-26): ditunda.** `toowl-image-optimizer` ditolak (guideline 18,
-kategori image optimization sudah penuh) dan tidak boleh disubmit ulang. Pemilik
-memilih tidak lewat WordPress.org dulu: Pro dijual di Gumroad, ZIP gratis bisa
-dibagikan langsung. Akun WordPress.org: `salingjaga`, kepemilikan toowl.my.id
+**Status (2026-11-27):** `toowl-image-optimizer` ditolak (guideline 18,
+kategori image optimization sudah penuh) dan **tidak boleh disubmit ulang**.
+Yang disiapkan untuk submit sekarang `toowl` (10 tool gratis, tanpa optimizer,
+tanpa kode lisensi). Akun WordPress.org: `salingjaga`, kepemilikan toowl.my.id
 sudah diverifikasi lewat TXT `wordpressorg-salingjaga-verification`.
 
 ```bash
@@ -146,11 +152,27 @@ node packages/_wordpress/wporg/render.mjs   # banner, ikon, screenshot ke out/wp
 - Pro tidak masuk WordPress.org: ZIP-nya dilampirkan ke produk lisensi di
   Gumroad. Update Pro = pembeli mengunduh ZIP baru dari library Gumroad.
 
+## Jalur gratis → Pro
+
+- Halaman jualannya `public/wordpress/index.html` (https://toowl.my.id/wordpress/,
+  statis seperti `/privacy/`): gratis vs Pro, harga, tombol ke Gumroad. Harga
+  di sana disalin dari `LICENSE.gumroad`, jumlah tool dari `config.mjs`:
+  ubah bersama.
+- Plugin gratis (aturan WordPress.org: tanpa notice, tanpa fitur terkunci):
+  satu bagian "More tools: toowl Pro" di bawah Settings → toowl, satu tautan
+  di baris plugin (Plugins), dan satu paragraf di readme.txt. Tautannya
+  membawa `?ref=wp-free` / `?ref=wp-plugins` supaya kelihatan di analytics.
+- Update Pro (`includes/updates.php`): membaca
+  `public/wordpress/toowl-pro.json` dua kali sehari dan menampilkan update di
+  Plugins, tanpa paket unduhan (ZIP ada di library Gumroad). **Setiap rilis
+  Pro: naikkan `version` dan tambah `changelog` di file itu**, setelah ZIP baru
+  di-upload ke semua produk Gumroad.
+
 ## Sebelum rilis
 
 - Nama `toowl` di WordPress.org harus masih tersedia (slug ditentukan saat submit).
-- Untuk Pro di luar WordPress.org perlu mekanisme update (Freemius, atau
-  update server sendiri); prototipe ini belum punya.
+- Update Pro baru berupa pemberitahuan (pembeli unduh manual dari Gumroad);
+  update otomatis perlu server yang memeriksa kunci sebelum memberi ZIP.
 - Terjemahan Indonesia untuk teks admin (`toowl.pot`) belum dibuat; judul dan
   deskripsi tool sudah dua bahasa dari registry.
 - Optimizer: kompres massal untuk gambar lama di library belum ada; halaman

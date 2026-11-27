@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>toowl for WordPress · browser tools as blocks</title>
+    <meta name="description" content="Add PDF, image, QR, prayer-time and calculator tools to WordPress as blocks and shortcodes. Every tool runs in the visitor's browser: no uploads, no API, no server load." />
+    <link rel="canonical" href="https://toowl.my.id/wordpress/" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <meta name="theme-color" content="#09090a" />
+    <meta property="og:title" content="toowl for WordPress" />
+    <meta property="og:description" content="Browser-only tools as WordPress blocks: files never leave the visitor's device." />
+    <meta property="og:image" content="https://toowl.my.id/og.png" />
+    <!-- A plain static page (not part of the React app), like /privacy/. The
+         WordPress plugins link here ("See toowl Pro"), so keep the prices in
+         step with LICENSE.gumroad in src/lib/license.ts and the tool counts
+         with packages/_wordpress/config.mjs. toowl-pro.json next to it is what
+         toowl Pro reads for update notices. -->
+    <style>
+      :root { color-scheme: dark; --bg: #09090a; --fg: #ededed; --muted: #a1a1aa; --line: #27272a; --card: #111113; --accent: #c6f432; --ink: #09090a; }
+      @media (prefers-color-scheme: light) {
+        :root { color-scheme: light; --bg: #fafafa; --fg: #18181b; --muted: #52525b; --line: #e4e4e7; --card: #fff; --accent: #3f6212; }
+      }
+      * { box-sizing: border-box; }
+      body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.6 system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; }
+      main { max-width: 56rem; margin: 0 auto; padding: 2.5rem 1rem 4rem; }
+      a { color: var(--accent); }
+      h1 { font-size: 2rem; line-height: 1.2; margin: 0 0 0.75rem; letter-spacing: -0.02em; }
+      h2 { font-size: 1.25rem; margin: 2.75rem 0 0.75rem; }
+      p.lead { font-size: 1.1rem; color: var(--muted); margin: 0 0 1.5rem; max-width: 40rem; }
+      .mono { font: 12px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+      .top { display: flex; justify-content: space-between; gap: 1rem; margin-bottom: 2rem; font-size: 0.9rem; }
+      .top nav { display: flex; gap: 1rem; }
+      .btn { display: inline-block; padding: 0.6rem 1.1rem; border-radius: 0.5rem; text-decoration: none; font-weight: 600; border: 1px solid var(--line); color: var(--fg); }
+      .btn.primary { background: #c6f432; border-color: #c6f432; color: var(--ink); }
+      .cta { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; }
+      .grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr)); }
+      .card { background: var(--card); border: 1px solid var(--line); border-radius: 0.75rem; padding: 1.25rem; }
+      .card h3 { margin: 0 0 0.25rem; font-size: 1rem; }
+      .card .price { font-size: 1.5rem; font-weight: 700; margin: 0.25rem 0 0.5rem; }
+      .card.best { border-color: var(--accent); }
+      .card p { margin: 0 0 0.75rem; color: var(--muted); font-size: 0.95rem; }
+      table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+      th, td { text-align: left; padding: 0.55rem 0.5rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+      th { font-weight: 600; }
+      td.c, th.c { text-align: center; white-space: nowrap; }
+      ul { padding-left: 1.25rem; }
+      li + li { margin-top: 0.35rem; }
+      dt { font-weight: 600; margin-top: 1rem; }
+      dd { margin: 0.25rem 0 0; color: var(--muted); }
+      section + section { border-top: 1px solid var(--line); margin-top: 3.5rem; padding-top: 2rem; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="top"><a href="/">← toowl</a><nav><a href="#en">English</a><a href="#id">Bahasa Indonesia</a></nav></div>
+
+      <section id="en" lang="en">
+        <p class="mono">WordPress plugin</p>
+        <h1>Useful tools for your visitors, right on your pages.</h1>
+        <p class="lead">Compress a PDF, remove a photo background, make a QR code, show today's prayer times. Add a block, or paste a shortcode. Every tool runs in the visitor's browser, so files are never uploaded and your hosting does no work.</p>
+        <div class="cta">
+          <a class="btn primary" href="https://chalidade.gumroad.com/l/toowl-embed?wanted=true">Get toowl Pro, all 72 tools · $99</a>
+          <a class="btn" href="#pricing">See all prices</a>
+        </div>
+
+        <h2>Why site owners use it</h2>
+        <div class="grid">
+          <div class="card"><h3>Visitors stay on your site</h3><p>A tool page answers what people search for ("compress pdf", "jadwal sholat", "qr code generator") and keeps them on your domain instead of sending them to another site.</p></div>
+          <div class="card"><h3>No server load, no API bills</h3><p>Processing happens on the visitor's device with WebAssembly. No upload limits to raise, no quota, no third-party API key.</p></div>
+          <div class="card"><h3>Private by design</h3><p>Files never leave the device. Nothing is sent to toowl or anyone else, which is easy to explain in your own privacy policy.</p></div>
+          <div class="card"><h3>Won't fight your theme</h3><p>Each tool is a web component in a Shadow DOM: your theme's CSS can't break it. Light, dark or follow the visitor; English or Indonesian.</p></div>
+        </div>
+
+        <h2>Free and Pro</h2>
+        <table>
+          <thead><tr><th></th><th class="c">toowl (free)</th><th class="c">toowl Pro</th></tr></thead>
+          <tbody>
+            <tr><td>QR generator, prayer times, Hijri date, Qibla, password generator, word counter, unit converter, percent, number to words, color picker</td><td class="c">10 tools</td><td class="c">included</td></tr>
+            <tr><td>PDF: compress, merge, split, organize, sign, protect, unlock, watermark, page numbers, PDF to Word / Excel / PowerPoint / image / Markdown</td><td class="c">–</td><td class="c">yes</td></tr>
+            <tr><td>Office: Word, Excel and PowerPoint to PDF, images to PDF</td><td class="c">–</td><td class="c">yes</td></tr>
+            <tr><td>Images: remove background, compress, convert, crop and resize, passport photo, favicon, strip EXIF</td><td class="c">–</td><td class="c">yes</td></tr>
+            <tr><td>Video and audio: compress, trim, GIF ↔ MP4, change speed, merge audio, extract frames, screen and audio recorders</td><td class="c">–</td><td class="c">yes</td></tr>
+            <tr><td>Music (tuner, metronome, chords, piano, drums), business and finance, developer and Islamic tools</td><td class="c">–</td><td class="c">yes</td></tr>
+            <tr><td>Image optimizer: uploads shrunk and stripped of GPS data in your browser before they reach the server</td><td class="c">–</td><td class="c">yes</td></tr>
+            <tr><td>"Made with toowl" link under tools</td><td class="c">off unless you turn it on</td><td class="c">never on licensed tools</td></tr>
+            <tr><td>Update notices in wp-admin</td><td class="c">WordPress.org</td><td class="c">yes</td></tr>
+          </tbody>
+        </table>
+        <p class="mono" style="margin-top:0.75rem">The free plugin is being reviewed for WordPress.org. Pro is a separate plugin that replaces it and keeps your blocks and settings.</p>
+
+        <h2 id="pricing">Prices</h2>
+        <p>One payment, no renewal (Agency is monthly). Every license comes with the toowl Pro ZIP and its updates; the key decides which tools open. A license covers one site (a domain and its subdomains); for client sites, take Agency.</p>
+        <div class="grid">
+          <div class="card"><h3>This tool only</h3><div class="price">$19</div><p>One tool of your choice, picked at checkout (compress PDF, remove background, PDF to Word, sign PDF…).</p><a class="btn" href="https://chalidade.gumroad.com/l/toowl-single?wanted=true">Buy</a></div>
+          <div class="card"><h3>Theme packs</h3><div class="price">$29–49</div><p>Islamic $29 · Music $29 · Developer $39 · PDF Suite $49 · Business &amp; Finance $49 · Creator &amp; Media $49.</p>
+            <p><a href="https://chalidade.gumroad.com/l/toowl-islami?wanted=true">Islamic</a> · <a href="https://chalidade.gumroad.com/l/toowl-music?wanted=true">Music</a> · <a href="https://chalidade.gumroad.com/l/toowl-dev?wanted=true">Developer</a> · <a href="https://chalidade.gumroad.com/l/toowl-pdf?wanted=true">PDF</a> · <a href="https://chalidade.gumroad.com/l/toowl-bisnis?wanted=true">Business</a> · <a href="https://chalidade.gumroad.com/l/toowl-creator?wanted=true">Creator</a></p></div>
+          <div class="card best"><h3>All-Access</h3><div class="price">$99</div><p>All 72 tools and the image optimizer, plus every tool added later.</p><a class="btn primary" href="https://chalidade.gumroad.com/l/toowl-embed?wanted=true">Buy All-Access</a></div>
+          <div class="card"><h3>Agency</h3><div class="price">$29/mo</div><p>Everything in All-Access on unlimited client sites. Cancel any time.</p><a class="btn" href="https://chalidade.gumroad.com/l/toowl-agency?wanted=true">Subscribe</a></div>
+        </div>
+        <p>Need a tool that isn't here? <a href="https://chalidade.gumroad.com/l/toowl-custom">Order a custom tool</a>.</p>
+
+        <h2>Questions</h2>
+        <dl>
+          <dt>What do I need?</dt><dd>WordPress 6.5 or newer and PHP 7.4 or newer. Works with block themes and classic themes; the shortcode works in page builders.</dd>
+          <dt>How do I install Pro?</dt><dd>Download the ZIP from your Gumroad library, then Plugins → Add New → Upload Plugin. Paste your key in Settings → toowl. If the free plugin is active, Pro switches it off and keeps its blocks and settings.</dd>
+          <dt>How do updates work?</dt><dd>wp-admin shows when a new version is out. Download the new ZIP from your Gumroad library and upload it with "Replace current with uploaded".</dd>
+          <dt>Does it send my visitors' files anywhere?</dt><dd>No. Every tool runs from the plugin's own folder in the visitor's browser. The only outside calls are from your server: the license check with Gumroad and the update check. See the <a href="/privacy/#en">privacy policy</a>.</dd>
+          <dt>Refunds?</dt><dd>If a tool doesn't work on your site, write within 14 days and you get your money back.</dd>
+        </dl>
+      </section>
+
+      <section id="id" lang="id">
+        <p class="mono">Plugin WordPress</p>
+        <h1>Tool yang berguna buat pengunjung, langsung di halamanmu.</h1>
+        <p class="lead">Kompres PDF, hapus background foto, bikin QR, tampilkan jadwal sholat. Tambah block atau tempel shortcode. Semua tool jalan di browser pengunjung: file tidak pernah di-upload, hosting-mu tidak ikut kerja.</p>
+        <div class="cta">
+          <a class="btn primary" href="https://chalidade.gumroad.com/l/toowl-embed?wanted=true">Beli toowl Pro, 72 tool · $99</a>
+          <a class="btn" href="#pricing">Lihat semua harga</a>
+        </div>
+        <ul>
+          <li><strong>Gratis (10 tool):</strong> QR, jadwal sholat, kalender Hijriah, arah kiblat, password, penghitung kata, konversi satuan, persen, terbilang, color picker.</li>
+          <li><strong>Pro (72 tool):</strong> semua tool PDF, Office ke PDF, gambar (hapus background, kompres, pas foto), video dan audio, musik, bisnis dan keuangan, developer, Islami, plus image optimizer yang mengecilkan gambar sebelum di-upload.</li>
+          <li><strong>Harga:</strong> satu tool $19, paket tema $29–49, semua tool $99, agensi $29/bulan untuk situs klien tanpa batas. Sekali bayar (kecuali agensi), ZIP Pro dan update-nya ikut di semua lisensi. Satu lisensi untuk satu situs (domain beserta subdomainnya); untuk situs klien, ambil Agensi.</li>
+          <li><strong>Pasang:</strong> unduh ZIP dari library Gumroad → Plugins → Add New → Upload Plugin, lalu masukkan kunci di Settings → toowl. Butuh WordPress 6.5+ dan PHP 7.4+.</li>
+          <li><strong>Privasi:</strong> file pengunjung tidak dikirim ke mana pun. Yang keluar dari server-mu hanya cek lisensi ke Gumroad dan cek versi terbaru. <a href="/privacy/#id">Kebijakan privasi</a>.</li>
+        </ul>
+      </section>
+    </main>
+  </body>
+</html>

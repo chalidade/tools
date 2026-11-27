@@ -3,6 +3,13 @@
 Catatan harian apa yang berubah di [tools](https://toowl.my.id/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-27 — Plugin WordPress gratis siap submit, jalur ke Pro
+
+- Plugin **toowl** gratis (10 tool) disiapkan untuk WordPress.org **tanpa image optimizer**: optimizer sudah ditolak WordPress.org, jadi plugin baru tidak boleh terlihat membawanya lagi. Optimizer sekarang salah satu isi **toowl Pro**. ZIP gratis turun dari 1,4 MB ke 0,6 MB.
+- Halaman baru **toowl untuk WordPress** (`/wordpress/`): gratis vs Pro, harga semua lisensi, tombol beli ke Gumroad, dan FAQ, dalam bahasa Inggris dan Indonesia. Plugin gratis dan Pro menautkan ke sini.
+- Plugin gratis menunjukkan Pro dengan cara yang diizinkan WordPress.org: satu bagian "More tools: toowl Pro" di halaman pengaturannya sendiri dan satu tautan di baris plugin, tanpa notice dan tanpa fitur terkunci.
+- **toowl Pro sekarang memberi tahu kalau ada versi baru** di halaman Plugins, lengkap dengan changelog, dan menunjukkan bahwa ZIP-nya ada di library Gumroad. Datanya dari `/wordpress/toowl-pro.json`. Kebijakan privasi menyebut pengecekan ini.
+
 ## 2026-11-26 — Template website masjid
 
 - **Template website masjid** (`packages/_templates/masjid/`, dijual di Codester): beranda dengan sholat berikutnya dan hitung mundur, jadwal hari ini plus iqamah, pengumuman, kajian, jadwal khatib Jumat, program, rekening infaq dengan tombol salin dan QR, kontak, serta arah kiblat, kalender Hijriah, zakat dan tasbih. Ada **jadwal sebulan** siap cetak A4 dan **layar TV masjid** (jam besar, slide, teks berjalan, layar adzan, hitung mundur iqamah, dan layar "sholat sedang berlangsung"). Semua diatur dari satu file `config.js`, bahasa Inggris atau Indonesia, tanpa server. Demo: `/templates/masjid/`.
