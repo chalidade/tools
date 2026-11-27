@@ -8,14 +8,29 @@
       "type": "array",
       "description": "Direct links to the videos (MP4, MOV, WebM, MKV, AVI and most others).",
       "editor": "requestListSources",
-      "prefill": [{ "url": "https://raw.githubusercontent.com/chalidade/tools/main/apify/samples/sample-video.mp4" }]
+      "prefill": [
+        {
+          "url": "https://raw.githubusercontent.com/chalidade/tools/main/apify/samples/sample-video.mp4"
+        }
+      ]
     },
     "mode": {
       "title": "Which frames",
       "type": "string",
+      "description": "How frames are picked from each video.",
       "editor": "select",
-      "enum": ["interval", "count", "times", "scenes"],
-      "enumTitles": ["One every N seconds", "N frames spread evenly (thumbnails)", "At exact timestamps", "At every scene change"],
+      "enum": [
+        "interval",
+        "count",
+        "times",
+        "scenes"
+      ],
+      "enumTitles": [
+        "One every N seconds",
+        "N frames spread evenly (thumbnails)",
+        "At exact timestamps",
+        "At every scene change"
+      ],
       "default": "interval"
     },
     "interval": {
@@ -38,7 +53,11 @@
       "type": "array",
       "editor": "json",
       "description": "For 'At exact timestamps', e.g. [0, 12.5, 60].",
-      "prefill": [1, 3, 5]
+      "prefill": [
+        1,
+        3,
+        5
+      ]
     },
     "sceneThreshold": {
       "title": "Scene change sensitivity",
@@ -51,6 +70,7 @@
     "maxFrames": {
       "title": "Max frames per video",
       "type": "integer",
+      "description": "Stop after this many frames per video.",
       "minimum": 1,
       "maximum": 1000,
       "default": 100
@@ -58,9 +78,18 @@
     "format": {
       "title": "Image format",
       "type": "string",
+      "description": "Image format of the extracted frames.",
       "editor": "select",
-      "enum": ["jpg", "png", "webp"],
-      "enumTitles": ["JPG", "PNG (lossless)", "WebP"],
+      "enum": [
+        "jpg",
+        "png",
+        "webp"
+      ],
+      "enumTitles": [
+        "JPG",
+        "PNG (lossless)",
+        "WebP"
+      ],
       "default": "jpg",
       "sectionCaption": "Output"
     },
@@ -88,5 +117,7 @@
       "description": "Larger files are skipped with an error (not charged)."
     }
   },
-  "required": ["files"]
+  "required": [
+    "files"
+  ]
 }
