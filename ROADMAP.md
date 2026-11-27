@@ -488,13 +488,13 @@ sesudahnya.
 
 ## Hari 41 — 2026-11-27 · Kerja & anak
 
-- [ ] **Kalkulator Pesangon** (`#/pesangon`): uang pesangon, penghargaan
+- [x] **Kalkulator Pesangon** (`#/pesangon`): uang pesangon, penghargaan
   masa kerja, dan penggantian hak menurut PP 35/2021 untuk tiap alasan PHK,
   dari masa kerja dan upah. Rumus dan pasalnya disebut di layar, dengan
   catatan bahwa perjanjian kerja atau PKB bisa memberi lebih, dan ini bukan
   nasihat hukum. Tanggal berlakunya aturan ditulis di file data supaya mudah
   diperbarui.
-- [ ] **Cek Stunting & Kurva Tumbuh Anak** (`#/kurva-tumbuh`): umur, jenis
+- [x] **Cek Stunting & Kurva Tumbuh Anak** (`#/kurva-tumbuh`): umur, jenis
   kelamin, berat, tinggi/panjang, dan lingkar kepala → z-score dan
   kategorinya (BB/U, TB/U, BB/TB, IMT/U) menurut Standar Pertumbuhan Anak
   WHO 0–5 tahun yang dipakai Permenkes 2/2020, dengan tabel LMS WHO di satu

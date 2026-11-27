@@ -190,6 +190,25 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
     formats: 'LMP / Ultrasound → Due date',
     keywords: ['due date', 'pregnancy', 'pregnant', 'lmp', 'naegele', 'gestational age', 'trimester', 'ultrasound', 'midwife', 'edd', 'baby'],
   },
+  'pesangon': {
+    title: 'Severance Pay Calculator (Indonesia)',
+    description: 'Work out severance pay, long-service award and entitlements under PP 35/2021 for each reason for termination, with the formula and article shown.',
+    formats: 'Wage + Service → Severance',
+    keywords: ['severance', 'severance pay', 'layoff', 'termination', 'redundancy', 'retrenchment', 'pp 35/2021', 'dismissal', 'resign', 'retirement', 'indonesia labour', 'upmk'],
+    faq: [
+      { q: 'How is severance pay calculated in Indonesia?', a: 'Pick the reason for termination and enter the last monthly wage (base pay + fixed allowances) and years of service. You get severance + long-service award + entitlements under PP 35/2021 with the formula. It is an estimate; your contract or collective agreement may give more.' },
+      { q: 'Do I get severance if I resign?', a: 'Under PP 35/2021 an employee who resigns voluntarily is only entitled to the entitlements payment (e.g. unused leave); a separation payment applies only if the contract, company rules or collective agreement provide one.' },
+    ],
+  },
+  'kurva-tumbuh': {
+    title: 'Child Growth Chart & Stunting Check',
+    description: "Z-scores for a 0–5 year old's weight, length/height, BMI and head size on the WHO standards (Indonesia's Permenkes 2/2020), with growth curves and a history kept on your device.",
+    formats: 'Age + Measures → z-score & chart',
+    keywords: ['stunting', 'growth chart', 'child growth', 'z-score', 'percentile', 'weight for age', 'height for age', 'bmi for age', 'head circumference', 'wasting', 'toddler', 'baby', 'who standards'],
+    faq: [
+      { q: 'How do I check if a child is stunted?', a: 'Enter the date of birth, sex and length/height. Length/height-for-age below −2 SD is stunted and below −3 SD severely stunted on the WHO standards used by Permenkes 2/2020. It is a screening, not a diagnosis; see a clinic.' },
+    ],
+  },
   'bmi': {
     title: 'BMI & Ideal Weight',
     description: 'Work out your BMI with Asia-Pacific, Indonesian MoH or WHO categories, a healthy weight range, and daily calorie needs.',
