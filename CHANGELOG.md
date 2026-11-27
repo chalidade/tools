@@ -10,6 +10,13 @@ Dua tool baru; total sekarang **144 tools**.
 - **Kalkulator Pesangon** (`/pesangon/`): uang pesangon, uang penghargaan masa kerja, dan uang penggantian hak menurut PP 35/2021 untuk tiap alasan PHK (efisiensi, tutup, pailit, merger, pelanggaran, pensiun, sakit, meninggal, resign, mangkir). Isi upah sebulan terakhir, masa kerja, sisa cuti, dan hak lain; layar menunjukkan rumus per baris (tabel Pasal 40 × faktor alasan), pasalnya, dan catatan bahwa perjanjian kerja atau PKB bisa memberi lebih, kontrak PKWT mendapat kompensasi (bukan pesangon), dan ini bukan nasihat hukum. Tabel, faktor, pasal, dan tanggal berlakunya ada di `rules.ts` supaya mudah diperbarui.
 - **Cek Stunting & Kurva Tumbuh Anak** (`/kurva-tumbuh/`): dari tanggal lahir, jenis kelamin, berat, panjang/tinggi, dan lingkar kepala, hitung z-score BB/U, TB/U, BB/TB, IMT/U, dan LK/U dengan metode LMS Standar Pertumbuhan Anak WHO 0–5 tahun (dasar Permenkes 2/2020), lengkap dengan kategorinya, persentil, koreksi 0,7 cm berbaring/berdiri, dan peringatan angka yang tidak wajar. Ada grafik kurva (−3, −2, median, +2, +3 SD) dengan titik pengukuran dan riwayat yang hanya tersimpan di perangkat. Tabel LMS WHO (dijarangkan, selisih < 0,01 SD) ada di satu berkas `data.ts`. Ditandai tool khusus web seperti Hitung HPL; tertulis jelas bahwa ini skrining, bukan diagnosis.
 
+## 2026-11-26 — Foto produk & barcode
+
+Dua tool baru; total sekarang **142 tools**.
+
+- **Watermark Foto Massal** (`/watermark-foto/`): logo (PNG transparan) atau teks toko dipasang di banyak foto produk sekaligus. Pilih salah satu dari sembilan posisi atau pola berulang yang memenuhi foto (jarak dan sudut bisa diatur), ukuran relatif terhadap lebar foto, dan opasitas. Pratinjau satu foto langsung berubah saat pengaturan digeser, lalu semua foto diproses satu per satu di Web Worker (OffscreenCanvas) dan diunduh sebagai ZIP. Foto dibaca dengan `decodeImage`-nya (rotasi EXIF diterapkan), bisa diperkecil ke 2048/1200/800 px, dan metadata (GPS, kamera) tidak ikut ke hasil.
+- **Generator Barcode** (`/barcode/`): EAN-13, EAN-8, UPC-A, Code 128 (set B, otomatis set C untuk deretan angka), dan Code 39, ditulis sendiri tanpa library. Digit cek EAN/UPC dihitung otomatis atau divalidasi bila diisi, dengan pesan jelas untuk panjang atau karakter yang salah. Atur lebar modul, tinggi batang, dan teks di bawahnya; unduh PNG atau SVG. Tulis satu nomor per baris untuk membuat **lembar label A4** (2×5, 3×8, atau 4×10, dengan jumlah salinan per baris) sebagai PDF vektor lewat pdf-lib. Semua pola sudah diuji dengan membaca ulang hasilnya memakai pembaca zxing.
+
 ## 2026-11-27 — Halaman API untuk developer
 
 - Halaman baru **/api/** ([toowl.my.id/en/api/](https://toowl.my.id/en/api/)): semua API toowl di Apify dalam satu tempat, dengan harga per 1.000 file, link ke tool gratis yang sama, contoh kode cURL/Python/JavaScript dan FAQ (termasuk penjelasan jujur bahwa lewat API file diproses di server Apify). Ditulis juga sebagai halaman statis untuk mesin pencari, masuk sitemap.
@@ -69,13 +76,6 @@ Dua tool baru; total sekarang **144 tools**.
 
 - **Template website gereja** (`packages/_templates/church/`, untuk Codester): beranda dengan ibadah berikutnya dan hitung mundur, jadwal ibadah mingguan sebagai deretan lengkung gotik (yang berikutnya menyala), khotbah terbaru plus daftar khotbah sebelumnya, link siaran langsung, pengumuman, acara (sekali atau mingguan), pelayanan, bagian "rencanakan kunjungan" dengan tanya-jawab, persembahan (link online, rekening dengan tombol salin, QR) dan kontak. Ada **kalender bulanan** siap cetak (jadi daftar di HP) dan **layar TV lobi**: jam besar, ibadah berikutnya, slide ayat, acara mendatang, teks berjalan, hitung mundur besar "ibadah dimulai dalam" sebelum ibadah, dan layar "selamat datang" selama ibadah. Dua desain (bold: biru navy dan oranye vermilion; calm: terang dan editorial), bahasa Inggris atau Indonesia, satu file `config.js`, tanpa server. Demo: `/templates/church/`.
 - Font template (Archivo, Newsreader, Amiri) sekarang di folder bersama `packages/_templates/fonts/`, dan tiap template memilih font yang dipakainya. Template tanpa kit toowl juga bisa dibangun.
-
-## 2026-11-26 — Foto produk & barcode
-
-Dua tool baru; total sekarang **141 tools**.
-
-- **Watermark Foto Massal** (`/watermark-foto/`): logo (PNG transparan) atau teks toko dipasang di banyak foto produk sekaligus. Pilih salah satu dari sembilan posisi atau pola berulang yang memenuhi foto (jarak dan sudut bisa diatur), ukuran relatif terhadap lebar foto, dan opasitas. Pratinjau satu foto langsung berubah saat pengaturan digeser, lalu semua foto diproses satu per satu di Web Worker (OffscreenCanvas) dan diunduh sebagai ZIP. Foto dibaca dengan `decodeImage`-nya (rotasi EXIF diterapkan), bisa diperkecil ke 2048/1200/800 px, dan metadata (GPS, kamera) tidak ikut ke hasil.
-- **Generator Barcode** (`/barcode/`): EAN-13, EAN-8, UPC-A, Code 128 (set B, otomatis set C untuk deretan angka), dan Code 39, ditulis sendiri tanpa library. Digit cek EAN/UPC dihitung otomatis atau divalidasi bila diisi, dengan pesan jelas untuk panjang atau karakter yang salah. Atur lebar modul, tinggi batang, dan teks di bawahnya; unduh PNG atau SVG. Tulis satu nomor per baris untuk membuat **lembar label A4** (2×5, 3×8, atau 4×10, dengan jumlah salinan per baris) sebagai PDF vektor lewat pdf-lib. Semua pola sudah diuji dengan membaca ulang hasilnya memakai pembaca zxing.
 
 ## 2026-11-26 — Template website masjid
 
