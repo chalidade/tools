@@ -3,6 +3,10 @@
 Catatan harian apa yang berubah di [tools](https://toowl.my.id/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-27 — Link API di Apify
+
+- Halaman tool yang punya Actor Apify (Kompres PDF, Ubah Format & Kompres Gambar, Baca QR, Perbesar Gambar, OCR, PDF ke Markdown) bisa menampilkan kartu **"Butuh ribuan file sekaligus? Pakai API-nya"**, plus link **API · Apify** di footer. Muncul begitu Actor-nya terbit di Apify Store (`src/lib/apify.ts`). Link memakai token afiliasi Apify toowl dan hanya berupa link biasa; situs tidak menghubungi Apify.
+
 ## 2026-11-27 — Apify: Upscale AI, OCR, PDF ke Markdown
 
 - Tiga **Actor Apify** baru (`apify/`), bayar per pemakaian: **AI Image Upscaler** (Real-ESRGAN 2×/4×, model yang sama dengan Perbesar Gambar), **OCR** gambar dan PDF hasil scan (8 bahasa, halaman PDF yang sudah ada teksnya dibaca langsung), dan **PDF ke Markdown** untuk LLM/RAG (engine situs yang sama, dibundel).
