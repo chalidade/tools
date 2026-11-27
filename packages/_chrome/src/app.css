@@ -1,0 +1,16 @@
+/* The side panel is narrow (320–500 px): the tools' phone layout fits it.
+   Classes come from this folder plus the site's shared components and tools. */
+@import "../../../src/index.css";
+
+@source "./";
+@source "../../../src/components/tool";
+@source "../../../src/components/ui";
+@source "../../../src/tools";
+
+html,
+body {
+  min-height: 100%;
+}
+body {
+  overscroll-behavior: contain;
+}
