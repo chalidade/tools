@@ -1,0 +1,80 @@
+{
+  "title": "OCR input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "files": {
+      "title": "Image or PDF URLs",
+      "type": "array",
+      "description": "Direct links to photos, screenshots, scans (JPG, PNG, WebP, AVIF, GIF, TIFF) or PDFs, including scanned PDFs.",
+      "editor": "requestListSources",
+      "prefill": [
+        { "url": "https://raw.githubusercontent.com/chalidade/tools/main/apify/samples/invoice.jpg" }
+      ]
+    },
+    "languages": {
+      "title": "Languages",
+      "type": "array",
+      "description": "Languages in the documents. Pick only the ones you need: each extra language slows OCR down a little.",
+      "editor": "select",
+      "items": {
+        "type": "string",
+        "enum": ["eng", "ind", "spa", "fra", "deu", "por", "ita", "nld"],
+        "enumTitles": ["English", "Indonesian / Malay", "Spanish", "French", "German", "Portuguese", "Italian", "Dutch"]
+      },
+      "default": ["eng"]
+    },
+    "pageSegmentation": {
+      "title": "Layout",
+      "type": "string",
+      "description": "auto suits documents and pages. single-block suits receipts, cards and cropped text. sparse finds scattered text (labels, signs, screenshots).",
+      "editor": "select",
+      "enum": ["auto", "single-block", "sparse"],
+      "enumTitles": ["Auto (documents)", "Single block (receipts, crops)", "Sparse text (labels, signs, UI)"],
+      "default": "auto"
+    },
+    "useTextLayer": {
+      "title": "Use the PDF's own text when it has one",
+      "type": "boolean",
+      "description": "Pages of a digital (non-scanned) PDF are read directly: exact and fast. Turn off to OCR every page.",
+      "default": true
+    },
+    "maxPages": {
+      "title": "Max pages per PDF",
+      "type": "integer",
+      "description": "Only the first pages are read; each page is charged.",
+      "minimum": 1,
+      "maximum": 500,
+      "default": 50
+    },
+    "pdfDpi": {
+      "title": "PDF render resolution (DPI)",
+      "type": "integer",
+      "description": "Scanned PDF pages are rendered at this resolution before OCR. 200 suits most scans; 300 helps with small print.",
+      "minimum": 100,
+      "maximum": 400,
+      "default": 200
+    },
+    "saveTextFiles": {
+      "title": "Save a .txt file per input",
+      "type": "boolean",
+      "description": "Adds a download link to a plain-text file next to the text in the dataset.",
+      "default": false
+    },
+    "includePages": {
+      "title": "Include per-page text for PDFs",
+      "type": "boolean",
+      "description": "Adds pageTexts: page number, text, confidence and whether it came from OCR or the text layer.",
+      "default": false
+    },
+    "maxFileSizeMb": {
+      "title": "Max file size (MB)",
+      "type": "integer",
+      "default": 50,
+      "minimum": 1,
+      "maximum": 200,
+      "description": "Larger files are skipped with an error (not charged)."
+    }
+  },
+  "required": ["files"]
+}

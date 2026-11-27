@@ -10,6 +10,11 @@ Dua tool baru; total sekarang **144 tools**.
 - **Kalkulator Pesangon** (`/pesangon/`): uang pesangon, uang penghargaan masa kerja, dan uang penggantian hak menurut PP 35/2021 untuk tiap alasan PHK (efisiensi, tutup, pailit, merger, pelanggaran, pensiun, sakit, meninggal, resign, mangkir). Isi upah sebulan terakhir, masa kerja, sisa cuti, dan hak lain; layar menunjukkan rumus per baris (tabel Pasal 40 × faktor alasan), pasalnya, dan catatan bahwa perjanjian kerja atau PKB bisa memberi lebih, kontrak PKWT mendapat kompensasi (bukan pesangon), dan ini bukan nasihat hukum. Tabel, faktor, pasal, dan tanggal berlakunya ada di `rules.ts` supaya mudah diperbarui.
 - **Cek Stunting & Kurva Tumbuh Anak** (`/kurva-tumbuh/`): dari tanggal lahir, jenis kelamin, berat, panjang/tinggi, dan lingkar kepala, hitung z-score BB/U, TB/U, BB/TB, IMT/U, dan LK/U dengan metode LMS Standar Pertumbuhan Anak WHO 0–5 tahun (dasar Permenkes 2/2020), lengkap dengan kategorinya, persentil, koreksi 0,7 cm berbaring/berdiri, dan peringatan angka yang tidak wajar. Ada grafik kurva (−3, −2, median, +2, +3 SD) dengan titik pengukuran dan riwayat yang hanya tersimpan di perangkat. Tabel LMS WHO (dijarangkan, selisih < 0,01 SD) ada di satu berkas `data.ts`. Ditandai tool khusus web seperti Hitung HPL; tertulis jelas bahwa ini skrining, bukan diagnosis.
 
+## 2026-11-27 — Apify: Upscale AI, OCR, PDF ke Markdown
+
+- Tiga **Actor Apify** baru (`apify/`), bayar per pemakaian: **AI Image Upscaler** (Real-ESRGAN 2×/4×, model yang sama dengan Perbesar Gambar), **OCR** gambar dan PDF hasil scan (8 bahasa, halaman PDF yang sudah ada teksnya dibaca langsung), dan **PDF ke Markdown** untuk LLM/RAG (engine situs yang sama, dibundel).
+- PDF ke Markdown: daftar berpoin yang penandanya berjarak dari teks tidak lagi terbaca sebagai tabel atau judul.
+
 ## 2026-11-27 — Ekstensi Chrome (freemium)
 
 - **toowl untuk Chrome** (`packages/_chrome/`): 16 tool di side panel browser, semua jalan di komputer pengguna. Gratis: Kompres Gambar, Ubah Format Gambar, Buat QR Code, Baca QR & Barcode. **Pro**: Hapus Latar (AI), Crop & Resize, Hapus Metadata, Kompres/Gabung/Pisah PDF, Gambar ke PDF, PDF ke Gambar, Tanda Tangan, Watermark, Kunci dan Buka Kunci PDF. Pengguna gratis bisa mencoba tool Pro 2 kali simpan per hari.

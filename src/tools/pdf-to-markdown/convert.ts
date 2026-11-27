@@ -55,10 +55,13 @@ function inline(runs: Run[]) {
 
 const BULLET = /^\s*[•●▪◦‣∙·\-–*]\s+/
 const NUMBERED = /^\s*(\d{1,3}|[a-zA-Z])[.)]\s+/
+/** A cell holding only a list marker. */
+const LIST_MARK = /^([•●▪◦‣∙·\-–*]|\d{1,3}[.)])$/
 
 function headingLevel(p: Paragraph, body: number) {
   const text = textOf(p).trim()
-  if (!text || text.length > 120 || text.includes('\t')) return 0
+  // A bullet item is never a heading, even when its marker glyph is set larger.
+  if (!text || text.length > 120 || text.includes('\t') || BULLET.test(text)) return 0
   const size = Math.max(...p.runs.map((r) => r.size))
   const ratio = size / body
   if (ratio >= 1.6) return 1
@@ -66,7 +69,7 @@ function headingLevel(p: Paragraph, body: number) {
   if (ratio >= 1.12) return 3
   // Same size but entirely bold, short and not a sentence: a small heading.
   const allBold = p.runs.every((r) => r.bold || !r.text.trim())
-  if (allBold && text.length <= 70 && !/[.:;,]$/.test(text) && !BULLET.test(text)) return 3
+  if (allBold && text.length <= 70 && !/[.:;,]$/.test(text)) return 3
   return 0
 }
 
@@ -97,10 +100,14 @@ function tableMarkdown(rows: TableBlock['rows']) {
 
 export function toMarkdown(pages: PageText[], opts: { pageBreaks: boolean }) {
   // Real tables only: 2+ rows and 2+ filled columns. A single "label ⇥ value"
-  // line stays a paragraph.
+  // line stays a paragraph, and so does a list whose markers sit apart from
+  // the text ("•   item" reads as two columns).
   const tables = pages.map((page) =>
     tableBlocks(page).filter(
-      (t) => t.rows.length >= 2 && t.rows[0].texts.filter((_, c) => t.rows.some((r) => r.texts[c]?.trim())).length >= 2,
+      (t) =>
+        t.rows.length >= 2 &&
+        t.rows[0].texts.filter((_, c) => t.rows.some((r) => r.texts[c]?.trim())).length >= 2 &&
+        !t.rows.every((r) => LIST_MARK.test(r.texts.find((x) => x.trim())?.trim() ?? '')),
     ),
   )
   const inTable = (page: number, line: number) => tables[page].some((t) => line >= t.start && line <= t.end)

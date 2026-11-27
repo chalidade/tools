@@ -1,0 +1,35 @@
+{
+  "actorSpecification": 1,
+  "name": "ocr-image-pdf-to-text",
+  "title": "OCR: Image & Scanned PDF to Text (Bulk, 8 languages)",
+  "description": "Extract text from photos, screenshots, receipts and scanned PDFs in bulk from URLs with Tesseract OCR. English, Indonesian, Spanish, French, German, Portuguese, Italian, Dutch. Digital PDFs read directly. No third-party API. Pay per page.",
+  "version": "1.0",
+  "buildTag": "latest",
+  "minMemoryMbytes": 1024,
+  "maxMemoryMbytes": 4096,
+  "input": "./input_schema.json",
+  "dockerfile": "../Dockerfile",
+  "readme": "../README.md",
+  "storages": {
+    "dataset": {
+      "actorSpecification": 1,
+      "views": {
+        "overview": {
+          "title": "Extracted text",
+          "transformation": {
+            "fields": ["name", "kind", "pages", "confidence", "characters", "text", "downloadUrl", "error", "url"]
+          },
+          "display": {
+            "component": "table",
+            "properties": {
+              "confidence": { "label": "Confidence %", "format": "number" },
+              "characters": { "format": "number" },
+              "downloadUrl": { "label": "Text file", "format": "link" },
+              "url": { "label": "Source", "format": "link" }
+            }
+          }
+        }
+      }
+    }
+  }
+}
