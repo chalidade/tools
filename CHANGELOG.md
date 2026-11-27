@@ -11,6 +11,12 @@ Dua tool baru; total sekarang **142 tools**.
 - **Generator Barcode** (`/barcode/`): EAN-13, EAN-8, UPC-A, Code 128 (set B, otomatis set C untuk deretan angka), dan Code 39, ditulis sendiri tanpa library. Digit cek EAN/UPC dihitung otomatis atau divalidasi bila diisi, dengan pesan jelas untuk panjang atau karakter yang salah. Atur lebar modul, tinggi batang, dan teks di bawahnya; unduh PNG atau SVG. Tulis satu nomor per baris untuk membuat **lembar label A4** (2×5, 3×8, atau 4×10, dengan jumlah salinan per baris) sebagai PDF vektor lewat pdf-lib. Semua pola sudah diuji dengan membaca ulang hasilnya memakai pembaca zxing.
 
 
+## 2026-11-27 — Halaman API untuk developer
+
+- Halaman baru **/api/** ([toowl.my.id/en/api/](https://toowl.my.id/en/api/)): semua API toowl di Apify dalam satu tempat, dengan harga per 1.000 file, link ke tool gratis yang sama, contoh kode cURL/Python/JavaScript dan FAQ (termasuk penjelasan jujur bahwa lewat API file diproses di server Apify). Ditulis juga sebagai halaman statis untuk mesin pencari, masuk sitemap.
+- Link **API** di header (laptop), menu ⋯ (ponsel) dan footer; tidak tampil di aplikasi iOS/Play.
+- `src/lib/apify.ts` kini menyimpan katalog Actor (judul, deskripsi, harga) yang dipakai halaman ini.
+
 ## 2026-11-27 — Apify batch 4: Office ke PDF, PDF ke gambar, gambar ke SVG, PDF toolkit
 
 - Empat **Actor Apify** baru (`apify/`): **Word, Excel & PowerPoint to PDF** (LibreOffice dengan font yang mirip Office, PDF/A, satu halaman per sheet, juga DOC→DOCX, XLSX→CSV per sheet, PPTX↔ODP), **PDF to JPG/PNG/WebP** (36–600 DPI atau ukuran tetap untuk thumbnail, pilih halaman, ZIP per PDF; ditagih per halaman), **Image to SVG** (VTracer, warna atau hitam-putih untuk Cricut/laser) dan **PDF Toolkit** (gabung, pisah, ambil/hapus halaman, putar, buka kunci).
