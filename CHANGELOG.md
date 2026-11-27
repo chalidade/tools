@@ -31,6 +31,11 @@ terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 - Plugin gratis menunjukkan Pro dengan cara yang diizinkan WordPress.org: satu bagian "More tools: toowl Pro" di halaman pengaturannya sendiri dan satu tautan di baris plugin, tanpa notice dan tanpa fitur terkunci.
 - **toowl Pro sekarang memberi tahu kalau ada versi baru** di halaman Plugins, lengkap dengan changelog, dan menunjukkan bahwa ZIP-nya ada di library Gumroad. Datanya dari `/wordpress/toowl-pro.json`. Kebijakan privasi menyebut pengecekan ini.
 
+## 2026-11-26 — Template website gereja
+
+- **Template website gereja** (`packages/_templates/church/`, untuk Codester): beranda dengan ibadah berikutnya dan hitung mundur, jadwal ibadah mingguan sebagai deretan lengkung gotik (yang berikutnya menyala), khotbah terbaru plus daftar khotbah sebelumnya, link siaran langsung, pengumuman, acara (sekali atau mingguan), pelayanan, bagian "rencanakan kunjungan" dengan tanya-jawab, persembahan (link online, rekening dengan tombol salin, QR) dan kontak. Ada **kalender bulanan** siap cetak (jadi daftar di HP) dan **layar TV lobi**: jam besar, ibadah berikutnya, slide ayat, acara mendatang, teks berjalan, hitung mundur besar "ibadah dimulai dalam" sebelum ibadah, dan layar "selamat datang" selama ibadah. Dua desain (bold: biru navy dan oranye vermilion; calm: terang dan editorial), bahasa Inggris atau Indonesia, satu file `config.js`, tanpa server. Demo: `/templates/church/`.
+- Font template (Archivo, Newsreader, Amiri) sekarang di folder bersama `packages/_templates/fonts/`, dan tiap template memilih font yang dipakainya. Template tanpa kit toowl juga bisa dibangun.
+
 ## 2026-11-26 — Template website masjid
 
 - **Template website masjid** (`packages/_templates/masjid/`, dijual di Codester): beranda dengan sholat berikutnya dan hitung mundur, jadwal hari ini plus iqamah, pengumuman, kajian, jadwal khatib Jumat, program, rekening infaq dengan tombol salin dan QR, kontak, serta arah kiblat, kalender Hijriah, zakat dan tasbih. Ada **jadwal sebulan** siap cetak A4 dan **layar TV masjid** (jam besar, slide, teks berjalan, layar adzan, hitung mundur iqamah, dan layar "sholat sedang berlangsung"). Semua diatur dari satu file `config.js`, bahasa Inggris atau Indonesia, tanpa server. Demo: `/templates/masjid/`.
