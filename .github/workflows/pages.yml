@@ -51,3 +51,7 @@ jobs:
 
       - id: deployment
         uses: actions/deploy-pages@v5
+
+      # Tell Bing & co. (IndexNow) about every page once the new site is live.
+      - run: node scripts/indexnow.mjs
+        continue-on-error: true
