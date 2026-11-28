@@ -1,0 +1,19 @@
+{
+  "name": "toowl-food-prices",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Indonesian daily food prices (Bank Indonesia PIHPS). Apify Actor by toowl.",
+  "type": "module",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "node src/main.js"
+  },
+  "license": "AGPL-3.0-only",
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "apify": "^3.8.0",
+    "undici": "^8.14.0"
+  }
+}
