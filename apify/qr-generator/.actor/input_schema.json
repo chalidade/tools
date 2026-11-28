@@ -1,0 +1,92 @@
+{
+  "title": "QR Code Generator input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "items": {
+      "title": "URLs or texts",
+      "type": "array",
+      "description": "One QR code per line: a URL, any text, or a special format such as WIFI:T:WPA;S:MyNetwork;P:secret;; or a vCard. Via the API you can also pass objects {\"text\": \"…\", \"name\": \"file-name\"}.",
+      "editor": "stringList",
+      "prefill": ["https://toowl.my.id", "https://apify.com/toowl", "WIFI:T:WPA;S:Cafe Guest;P:coffee123;;"]
+    },
+    "format": {
+      "title": "File format",
+      "type": "string",
+      "editor": "select",
+      "enum": ["png", "svg", "both"],
+      "enumTitles": ["PNG", "SVG (vector, for print)", "PNG + SVG"],
+      "default": "png",
+      "description": "PNG for web and documents, SVG for print and design tools."
+    },
+    "size": {
+      "title": "PNG size (px)",
+      "type": "integer",
+      "editor": "number",
+      "minimum": 64,
+      "maximum": 4096,
+      "default": 1024,
+      "description": "Width and height of each PNG, quiet zone included."
+    },
+    "style": {
+      "title": "Style",
+      "type": "string",
+      "editor": "select",
+      "enum": ["square", "rounded", "dots"],
+      "enumTitles": ["Square (classic)", "Rounded", "Dots"],
+      "default": "square",
+      "description": "Shape of the modules. Finder squares stay solid so every scanner reads them."
+    },
+    "foreground": {
+      "title": "Foreground colour",
+      "type": "string",
+      "editor": "textfield",
+      "default": "#000000",
+      "description": "Hex colour of the code, e.g. #000000. Keep it darker than the background."
+    },
+    "background": {
+      "title": "Background colour",
+      "type": "string",
+      "editor": "textfield",
+      "default": "#ffffff",
+      "description": "Hex colour behind the code, e.g. #ffffff."
+    },
+    "transparent": {
+      "title": "Transparent background",
+      "type": "boolean",
+      "default": false,
+      "description": "No background at all (PNG with alpha, SVG without a rect). Overrides the background colour."
+    },
+    "logoUrl": {
+      "title": "Logo URL",
+      "type": "string",
+      "editor": "textfield",
+      "description": "Optional image (PNG, JPG, SVG, WebP) placed in the middle of every code. Error correction switches to H automatically."
+    },
+    "margin": {
+      "title": "Quiet zone (modules)",
+      "type": "integer",
+      "editor": "number",
+      "minimum": 0,
+      "maximum": 16,
+      "default": 4,
+      "description": "Empty border around the code. 4 is the standard; less can fail on some scanners."
+    },
+    "errorCorrection": {
+      "title": "Error correction",
+      "type": "string",
+      "editor": "select",
+      "enum": ["auto", "L", "M", "Q", "H"],
+      "enumTitles": ["Auto (M, or H with a logo)", "L (7%)", "M (15%)", "Q (25%)", "H (30%)"],
+      "default": "auto",
+      "description": "How much damage the code survives. Higher means denser codes."
+    },
+    "zip": {
+      "title": "Bundle into one ZIP",
+      "type": "boolean",
+      "default": true,
+      "description": "Also save every file in qr-codes.zip (when there is more than one item)."
+    }
+  },
+  "required": ["items"]
+}

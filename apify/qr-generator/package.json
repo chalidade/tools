@@ -1,0 +1,21 @@
+{
+  "name": "toowl-qr-generator",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Bulk QR code generator: PNG/SVG, colours, rounded or dot styles, logo in the middle, one ZIP. Apify Actor by toowl.",
+  "type": "module",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "node src/main.js"
+  },
+  "license": "AGPL-3.0-only",
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "apify": "^3.8.0",
+    "fflate": "^0.8.2",
+    "qrcode": "^1.5.4",
+    "sharp": "^0.34.5"
+  }
+}

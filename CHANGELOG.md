@@ -10,6 +10,15 @@ Dua tool baru; total sekarang **146 tools**.
 - **Kalkulator Masa Subur & Haid** (`/masa-subur/`): isi hari pertama haid terakhir, atau beberapa tanggal haid untuk menghitung rata-rata dan rentang siklus (selisih di luar 15–60 hari dianggap tanggal yang terlewat), lalu lihat perkiraan ovulasi (14 hari sebelum haid berikutnya), jendela subur (5 hari sebelum sampai sehari sesudah ovulasi, Wilcox dkk. 2000), dan haid berikutnya dalam kalender tiga bulan. Hitungan tanggalnya berbagi `hpl.ts` dengan Hitung HPL. Tanggal tersimpan otomatis di perangkat saja dan bisa dihapus dengan satu tombol. Tertulis jelas bahwa ini perkiraan metode kalender, bukan kontrasepsi dan bukan nasihat medis. Ditandai tool khusus web.
 - **Tes Buta Warna** (`/tes-buta-warna/`): 10 pelat titik-titik yang digambar sendiri secara acak di canvas (bukan pelat Ishihara): satu pelat kontrol yang mudah, lima merah-hijau, dan empat biru-kuning; angka 2–9 terbentuk dari titik berwarna di sepanjang garis kebingungan warna dengan kecerahan diacak per titik. Hasil per sumbu (normal / kemungkinan gangguan / belum jelas) plus peringatan bila pelat kontrol salah. Disertai catatan bahwa layar yang belum dikalibrasi memengaruhi hasil dan ini bukan pengganti tes resmi untuk SIM atau kerja. Ditandai tool khusus web.
 
+## 2026-11-28 — Generator di API
+
+Tiga Actor Apify baru untuk developer (situs tetap gratis, tidak berubah); halaman `/api/` menampilkannya setelah terbit.
+
+- **QR Code Generator** (`apify/qr-generator/`): banyak QR sekaligus dari daftar teks/URL, PNG atau SVG, gaya kotak/bulat/titik, warna, latar transparan, dan logo di tengah (koreksi error otomatis naik ke H, versi minimal 5 supaya tetap terbaca). Semua gaya diuji dengan membaca ulang hasilnya memakai zxing. Hasil bisa dibungkus satu ZIP.
+- **Barcode Generator** (`apify/barcode-generator/`): EAN-13/8, UPC-A, ITF-14, Code 128, Code 39 dan lainnya lewat bwip-js (MIT), jenis ditebak dari panjang angka, pesan error yang jelas untuk digit cek salah, PNG/SVG dan ZIP.
+- **Favicon Generator** (`apify/favicon-generator/`): satu gambar jadi set lengkap (favicon.ico 16/32/48, PNG, apple-touch, android, maskable, `site.webmanifest`, contoh tag HTML) dalam satu ZIP per gambar, bentuk kotak/bulat/membulat.
+- Semua README Actor kini punya contoh cURL, bagian pemakaian dari agen AI lewat MCP, dan tautan ke Actor toowl lainnya (`apify/readme-footer.mjs`). Pemrosesan per item berbagi `apify/_shared/items.js`.
+
 ## 2026-11-27 — Kerja & anak
 
 Dua tool baru; total sekarang **144 tools**.

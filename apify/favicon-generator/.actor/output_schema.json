@@ -1,0 +1,18 @@
+{
+  "actorOutputSchemaVersion": 1,
+  "title": "Output of Favicon Generator",
+  "properties": {
+    "results": {
+      "type": "string",
+      "title": "Favicon sets",
+      "description": "One row per image with the ZIP link, file list, HTML tags and manifest.",
+      "template": "{{links.apiDefaultDatasetUrl}}/items?view=overview"
+    },
+    "summary": {
+      "type": "string",
+      "title": "Summary",
+      "description": "Counts of icon sets generated and failed.",
+      "template": "{{links.apiDefaultKeyValueStoreUrl}}/records/SUMMARY"
+    }
+  }
+}
