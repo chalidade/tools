@@ -3,7 +3,7 @@
 **English** · [Bahasa Indonesia](README.id.md)
 
 **My everyday file toolbox, built for the file work I do every day and published free for everyone.**
-144 tools for PDF, Office files, CAD drawings, images, video, audio, music and everyday calculations, and every one of them runs entirely in your browser.
+145 tools for PDF, Office files, CAD drawings, images, video, audio, music and everyday calculations, and every one of them runs entirely in your browser.
 Your files are never uploaded.
 
 [![Live demo](https://img.shields.io/badge/live-toowl.my.id-c8f031)](https://toowl.my.id/)
@@ -107,6 +107,7 @@ Each reader opens the other three formats too.
 - [Split Photo for Grid & Carousel](https://toowl.my.id/en/grid-instagram/): one photo into 3, 6 or 9 Instagram tiles or seamless carousel slides, with upload order, JPG/PNG or ZIP
 - [GIF ⇄ MP4](https://toowl.my.id/en/gif-mp4/), [Extract Video Frames](https://toowl.my.id/en/extract-frames/)
 - [Change Speed](https://toowl.my.id/en/change-speed/): 0.25× to 4× with the pitch kept natural (a hand-written WSOLA time-stretch)
+- [Speech to Text](https://toowl.my.id/en/transkrip/): turns recordings, voice notes or videos into editable text with a self-hosted Whisper base model running on the device, exported as TXT, SRT or VTT
 - [Noise Remover](https://toowl.my.id/en/denoise/): removes background noise, hiss and hum from voices in video or audio with DeepFilterNet 3 or RNNoise (self-hosted wasm), latency compensated so lips stay in sync
 - [Add Music to Video](https://toowl.my.id/en/add-music/): background music under a video with volume, loop, fade and automatic ducking when someone talks
 - [Merge Audio](https://toowl.my.id/en/merge-audio/), [Compress Audio](https://toowl.my.id/en/compress-audio/) (MP3, AAC or Opus)

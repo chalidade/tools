@@ -3,6 +3,12 @@
 Catatan harian apa yang berubah di [tools](https://toowl.my.id/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-28 — Transkrip suara ke teks
+
+Satu tool baru; total sekarang **145 tools**.
+
+- **Transkrip Suara ke Teks** (`/transkrip/`): rekaman, voice note WhatsApp (.opus), atau video jadi teks dengan AI Whisper yang jalan di perangkat, tanpa upload dan tanpa batas menit. Pilih bahasa Indonesia, Inggris, atau deteksi otomatis; teks muncul sambil berjalan, tiap kalimat punya cap waktu yang bisa diklik untuk memutar bagian itu dan bisa diedit langsung. Unduh TXT (dengan atau tanpa cap waktu), SRT, atau VTT, atau buka hasilnya di tool Subtitle. Mesin Whisper ditulis sendiri di atas onnxruntime-web yang sudah dipakai situs (`whisper.ts`: log-mel, decoder dengan cache, aturan cap waktu, dekode panjang per 30 detik, lompat jeda hening), dengan model Whisper base 8-bit (78 MB, sha256 sama dengan Xenova/whisper-base) di-host sendiri dan diunduh sekali saat pertama dipakai. Suara diambil lewat `audioMono` baru di `src/lib/media.ts`.
+
 ## 2026-11-28 — Generator di API
 
 Delapan Actor Apify baru untuk developer (situs tetap gratis, tidak berubah); halaman `/api/` menampilkannya setelah terbit.

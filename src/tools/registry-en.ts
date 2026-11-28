@@ -563,6 +563,18 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
   'sensor-foto': { title: 'Censor Photo', description: 'Cover ID numbers, faces, licence plates or addresses with a box or brush — black block, pixelate or blur.', keywords: ['censor', 'blur', 'redact', 'hide', 'pixelate', 'face', 'privacy'] },
   'extract-frames': { title: 'Extract Video Frames', description: 'Grab video frames as full-resolution images — one by one or every N seconds.', keywords: ['screenshot', 'frame', 'still'] },
   'change-speed': { title: 'Change Speed', description: 'Speed up or slow down video and audio (0.25×–4×) while keeping the pitch natural.', keywords: ['speed', 'slow motion', 'fast'] },
+  transkrip: {
+    title: 'Speech to Text Transcription',
+    description: 'Turn recordings, voice notes, or videos into text with AI on your device — edit it, then download TXT, SRT, or VTT.',
+    formats: 'Audio / Video → TXT / SRT / VTT',
+    keywords: ['transcribe', 'transcription', 'speech to text', 'audio to text', 'video to text', 'voice note', 'dictation', 'meeting notes', 'auto subtitles', 'captions', 'whisper'],
+    faq: [
+      { q: 'How do I turn a WhatsApp voice note into text?', a: 'Save or share the voice note as a file (.opus/.ogg), open it here, pick the language and press Transcribe. The text is ready to copy.' },
+      { q: 'Can it make subtitles from a video automatically?', a: 'Yes. The transcript has a timestamp per sentence; download it as SRT or VTT, or open it in the Subtitle tool to shift the timing.' },
+      { q: 'Is my recording uploaded?', a: 'No. The AI model (Whisper) is downloaded once into your browser and the audio is processed on your own device, so it is safe for private meetings or interviews.' },
+      { q: 'Is there a length limit?', a: 'Not from us; even an hour-long recording works if the device has enough memory. How long it takes depends on the device.' },
+    ],
+  },
   denoise: { title: 'Noise Remover', description: 'Remove background noise, hiss, and hum from recorded voices in video or audio.', keywords: ['noise', 'denoise', 'clean', 'hiss', 'hum', 'voice'] },
   'add-music': { title: 'Add Music to Video', description: 'Put background music under a video: set the volume, loop, fade, and auto-lower it when someone talks.', formats: 'Video + Music → MP4', keywords: ['music', 'song', 'background', 'soundtrack', 'bgm', 'ducking'] },
   'merge-audio': { title: 'Merge Audio', description: 'Join several audio files into one — mixed formats welcome; set the order and gaps.', keywords: ['join', 'combine'] },

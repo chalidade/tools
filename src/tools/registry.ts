@@ -10,6 +10,7 @@ import {
   ScanText,
   AppWindow,
   AudioLines,
+  Speech,
   CalendarDays,
   CalendarRange,
   CalendarHeart,
@@ -1132,6 +1133,35 @@ const ALL_TOOLS: Tool[] = [
     badge: 'Baru',
     component: lazy(() => import('./change-speed/ChangeSpeed')),
     package: { name: '@chalidade/change-speed', element: 'change-speed', dir: 'change-speed', published: false },
+  },
+  {
+    slug: 'transkrip',
+    category: 'media',
+    keywords: ['transkrip', 'transcribe', 'transcript', 'suara ke teks', 'audio ke teks', 'video ke teks', 'vn ke teks', 'voice note', 'rekaman', 'speech to text', 'dikte', 'notulen', 'rapat', 'wawancara', 'kuliah', 'subtitle otomatis', 'caption', 'srt', 'whisper', 'ai'],
+    title: 'Transkrip Suara ke Teks',
+    description: 'Ubah rekaman, voice note, atau video jadi teks dengan AI di perangkatmu — bisa diedit, lalu unduh TXT, SRT, atau VTT.',
+    icon: Speech,
+    formats: 'Audio / Video → TXT / SRT / VTT',
+    badge: 'Baru',
+    component: lazy(() => import('./transkrip/Transkrip')),
+    faq: [
+      {
+        q: 'Bagaimana cara mengubah voice note (VN) WhatsApp jadi teks?',
+        a: 'Simpan atau teruskan VN-nya sebagai file (.opus/.ogg), buka di sini, pilih bahasa Indonesia, lalu Mulai transkrip. Teksnya bisa langsung disalin.',
+      },
+      {
+        q: 'Bisa bikin subtitle otomatis dari video?',
+        a: 'Bisa. Hasil transkrip punya cap waktu per kalimat; unduh sebagai SRT atau VTT, atau buka di tool Subtitle untuk menggeser waktunya.',
+      },
+      {
+        q: 'Apakah rekaman saya di-upload?',
+        a: 'Tidak. Model AI (Whisper) diunduh sekali ke browser-mu dan suara diproses di perangkatmu sendiri, jadi aman untuk rapat atau wawancara yang rahasia.',
+      },
+      {
+        q: 'Ada batas durasi?',
+        a: 'Tidak ada batas dari kami; rekaman satu jam pun bisa, asal memori perangkat cukup. Lamanya tergantung kecepatan perangkat.',
+      },
+    ],
   },
   {
     slug: 'denoise',
