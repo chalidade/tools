@@ -3,6 +3,10 @@
 Catatan harian apa yang berubah di [tools](https://toowl.my.id/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-28 — Actor Apify cek sertifikat halal
+
+- **Indonesia Halal Certificate Checker** (`apify/halal-certificates/`): cari di registri halal resmi BPJPH (`bpjph.halal.go.id/cari/sertifikat`) per nama produk, perusahaan, atau nomor sertifikat, banyak pencarian sekaligus. Per produk: nomor dan tanggal terbit sertifikat, nama produk, merek, pelaku usaha, skala usaha, serta pabrik/outlet dengan alamat dan provinsi. Hasil dibaca dari payload RSC halaman (10 per halaman). Ditagih per produk (`product-found`).
+
 ## 2026-11-28 — Actor Apify scraper tender LPSE
 
 - Actor Apify pertama yang bukan tool file: **LPSE Tender Scraper** (`apify/lpse-tenders/`) mengambil daftar tender pemerintah dari SPSE di `spse.inaproc.id/<instansi>/` (semua LPSE lama sudah pindah ke sini): kode, nama paket, instansi, tahapan, HPS dan nilai kontrak sebagai angka rupiah, jenis dan metode pengadaan, plus isi halaman pengumuman bila diminta. Satu instansi, beberapa, atau `*` untuk sekitar 600 instansi dari robots.txt; filter tahun, kata kunci, tahapan, dan batas HPS. Jeda 1 detik per permintaan sesuai `Crawl-delay` situs. Ditagih per tender (`tender-scraped`).
