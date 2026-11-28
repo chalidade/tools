@@ -34,6 +34,7 @@ Node supaya bisa dipanggil lewat API, Zapier, Make, n8n, atau jadwal.
 | [`text-to-speech/`](./text-to-speech) | Text to Speech MP3 | potong kalimat dari `src/tools/text-to-speech/tts.ts` (dibundel), Piper `en_US-joe-medium` di onnxruntime-node + eSpeak NG wasm (100+ bahasa), ffmpeg untuk MP3/M4A/OGG | `characters-1k` (per 1.000 karakter dimulai) |
 | [`remove-object/`](./remove-object) | AI Object Remover | MI-GAN (`migan.onnx` situs) di onnxruntime-node, metode `src/tools/remove-object/inpaint.ts` di-port ke sharp; mask gambar atau kotak | `object-removed` (per gambar) |
 | [`lpse-tenders/`](./lpse-tenders) | LPSE Tender Scraper (Indonesia, SPSE) | scraper `spse.inaproc.id/<slug>/dt/lelang` (DataTable JSON + authenticityToken sesi), cheerio untuk halaman pengumuman, jeda 1 detik sesuai robots.txt | `tender-scraped` (per tender) |
+| [`halal-certificates/`](./halal-certificates) | Indonesia Halal Certificate Checker (BPJPH) | pencarian publik `bpjph.halal.go.id/cari/sertifikat` (hasil dibaca dari payload RSC Next.js, 10 per halaman), cari per produk / perusahaan / nomor sertifikat | `product-found` (per produk) |
 
 Model empat Actor AI baru (Whisper, SCNet, Piper, MI-GAN) tidak disalin ke
 `apify/`: Dockerfile-nya mengambil file model yang sama dari `src/tools/…` di

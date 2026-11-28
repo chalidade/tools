@@ -1,0 +1,47 @@
+{
+  "title": "Halal Certificate Checker input",
+  "type": "object",
+  "schemaVersion": 1,
+  "required": ["searches"],
+  "properties": {
+    "searches": {
+      "title": "Searches",
+      "type": "array",
+      "description": "One search per line: product names, company names or certificate numbers (pick which below). Each line is searched on its own.",
+      "editor": "stringList",
+      "prefill": ["kopi susu", "bakmi apin"]
+    },
+    "searchBy": {
+      "title": "Search by",
+      "type": "string",
+      "editor": "select",
+      "enum": ["produk", "produsen", "sertifikat"],
+      "enumTitles": ["Product name", "Company (pelaku usaha)", "Certificate number"],
+      "default": "produk",
+      "description": "What the search lines are. Certificate numbers look like ID32110020463611024."
+    },
+    "maxItems": {
+      "title": "Max products",
+      "type": "integer",
+      "editor": "number",
+      "minimum": 1,
+      "default": 100,
+      "description": "Stop after this many products in total. Broad words like \"kopi\" match hundreds of thousands of products."
+    },
+    "maxItemsPerSearch": {
+      "title": "Max products per search",
+      "type": "integer",
+      "editor": "number",
+      "minimum": 1,
+      "description": "Optional cap per line, so one broad search doesn't use the whole run."
+    },
+    "proxyConfiguration": {
+      "title": "Proxy",
+      "type": "object",
+      "editor": "proxy",
+      "description": "Indonesian government sites often block non-Indonesian server IPs, so the default is Apify residential proxy in Indonesia (ID). Turn it off only if you run from an Indonesian IP.",
+      "prefill": { "useApifyProxy": true, "apifyProxyGroups": ["RESIDENTIAL"], "apifyProxyCountry": "ID" },
+      "default": { "useApifyProxy": true, "apifyProxyGroups": ["RESIDENTIAL"], "apifyProxyCountry": "ID" }
+    }
+  }
+}
