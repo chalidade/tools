@@ -76,6 +76,7 @@ import {
   LockOpen,
   Minimize2,
   Mic,
+  MicOff,
   MicVocal,
   MonitorPlay,
   MonitorUp,
@@ -1326,6 +1327,34 @@ const ALL_TOOLS: Tool[] = [
     badge: 'Baru',
     component: lazy(() => import('./bpm-key/BpmKey')),
     package: { name: '@chalidade/bpm-key', element: 'bpm-key', dir: 'bpm-key', published: false },
+  },
+  {
+    slug: 'vocal-remover',
+    category: 'music',
+    keywords: [
+      'hapus vokal', 'penghapus vokal', 'pisah vokal', 'pemisah vokal', 'karaoke', 'minus one', 'instrumental', 'acapella',
+      'vocal remover', 'stem', 'pisah suara', 'drum', 'bass', 'ai', 'lagu', 'mp3',
+    ],
+    title: 'Penghapus Vokal AI',
+    description: 'Pisahkan vokal dari musik dengan AI di perangkatmu: buat minus one karaoke, ambil acapella, atau pecah jadi drum, bass, dan lainnya.',
+    icon: MicOff,
+    formats: 'MP3 / WAV → Vokal + Instrumental',
+    badge: 'Baru',
+    component: lazy(() => import('./vocal-remover/VocalRemover')),
+    faq: [
+      {
+        q: 'Bagaimana cara membuat minus one (karaoke) dari lagu MP3?',
+        a: 'Buka lagunya di tool ini, pilih Vokal + Instrumental, lalu tekan Pisahkan. Hasil Instrumental adalah lagu tanpa vokal yang bisa diunduh sebagai MP3 atau WAV. Lagunya tidak diunggah ke mana pun.',
+      },
+      {
+        q: 'Apa bedanya dengan penghapus vokal biasa?',
+        a: 'Cara lama mengurangi kanal kiri dengan kanan, sehingga bass dan drum di tengah ikut hilang dan vokal yang diberi efek stereo masih terdengar. Tool ini memakai model AI (SCNet) yang mengenali vokal, drum, bass, dan instrumen lain, jadi musiknya tetap utuh.',
+      },
+      {
+        q: 'Berapa lama prosesnya?',
+        a: 'Di laptop dengan GPU kira-kira sepanjang lagunya; tanpa GPU atau di HP bisa beberapa kali lebih lama. Di HP satu kali proses dibatasi 2 menit lagu supaya memori cukup.',
+      },
+    ],
   },
   {
     slug: 'piano',

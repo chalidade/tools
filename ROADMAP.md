@@ -551,9 +551,6 @@ sesudahnya.
 
 ## Hari 46 — 2026-12-02 · Audio & suara
 
-- [ ] **Penghapus Vokal** (`#/vocal-remover`): hilangkan vokal yang ada di
-  tengah stereo (kiri − kanan, dengan bass dijaga lewat filter), pratinjau, lalu
-  simpan MP3/WAV. Jelaskan bahwa hasilnya bergantung pada cara lagu dimixing.
 - [ ] **Teks ke Suara** (`#/text-to-speech`): bacakan teks dengan suara
   bawaan perangkat (`speechSynthesis`), pilih suara, kecepatan, dan nada. Hanya
   tampilkan suara dengan `localService === true`: suara "Google …" di Chrome

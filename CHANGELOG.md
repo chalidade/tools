@@ -3,6 +3,12 @@
 Catatan harian apa yang berubah di [tools](https://toowl.my.id/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-28 — Penghapus vokal AI
+
+Satu tool baru; total sekarang **145 tools**.
+
+- **Penghapus Vokal AI** (`/vocal-remover/`): pisahkan vokal dari musik dengan model AI SCNet (Tong dkk., ICASSP 2024; kode dan bobot MIT) yang berjalan di browser lewat ONNX Runtime Web (WebGPU bila ada, WebAssembly bila tidak) di Web Worker. Pilih **Vokal + Instrumental** (minus one karaoke dan acapella; instrumental = lagu dikurangi vokal, jadi tidak ada bagian musik yang hilang) atau **4 stem** (vokal, drum, bass, lainnya), kualitas Cepat (tiap sampel didengar di 2 segmen) atau Teliti (4), pratinjau tiap stem, unduh MP3/WAV. Model 24 MB dibundel (bobot float16, dihitung float32), diunduh sekali lalu tersimpan; `build-model.py` mengekspornya dari checkpoint aslinya. STFT/iSTFT ditulis sendiri (`stft.ts`) dan seluruh pipeline dicek terhadap PyTorch (55–72 dB SNR per stem). HP dibatasi 2 menit sekali proses (1 menit untuk 4 stem), laptop 10/6 menit; lagu yang lebih panjang dipilih bagiannya dengan slider. Menggantikan rencana "Penghapus Vokal" kiri − kanan di ROADMAP, yang hasilnya bergantung pada mixing lagu.
+
 ## 2026-11-28 — Generator di API
 
 Delapan Actor Apify baru untuk developer (situs tetap gratis, tidak berubah); halaman `/api/` menampilkannya setelah terbit.
