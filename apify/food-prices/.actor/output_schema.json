@@ -1,0 +1,18 @@
+{
+  "actorOutputSchemaVersion": 1,
+  "title": "Output of Indonesia Food Prices",
+  "properties": {
+    "results": {
+      "type": "string",
+      "title": "Prices",
+      "description": "One row per commodity per day per area.",
+      "template": "{{links.apiDefaultDatasetUrl}}/items?view=overview"
+    },
+    "summary": {
+      "type": "string",
+      "title": "Summary",
+      "description": "Rows saved per area and market type, plus any failures.",
+      "template": "{{links.apiDefaultKeyValueStoreUrl}}/records/SUMMARY"
+    }
+  }
+}

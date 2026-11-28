@@ -1,0 +1,71 @@
+{
+  "title": "Indonesia Food Prices input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "locations": {
+      "title": "Areas",
+      "type": "array",
+      "description": "One per line. Empty line or no lines = national average. A province name (e.g. DKI Jakarta, Jawa Barat) or \"Province / City\" (e.g. Jawa Barat / Kota Bandung). Province ids from the site also work.",
+      "editor": "stringList",
+      "prefill": ["", "DKI Jakarta"]
+    },
+    "priceTypes": {
+      "title": "Market types",
+      "type": "array",
+      "description": "1 = traditional market, 2 = modern market, 3 = wholesale (pedagang besar), 4 = producer.",
+      "editor": "select",
+      "items": { "type": "string", "enum": ["1", "2", "3", "4"], "enumTitles": ["Pasar Tradisional", "Pasar Modern", "Pedagang Besar", "Produsen"] },
+      "default": ["1"]
+    },
+    "startDate": {
+      "title": "From",
+      "type": "string",
+      "editor": "datepicker",
+      "description": "YYYY-MM-DD. Empty = 7 days before the end date."
+    },
+    "endDate": {
+      "title": "To",
+      "type": "string",
+      "editor": "datepicker",
+      "description": "YYYY-MM-DD. Empty = today (the latest day is usually published a day late)."
+    },
+    "reportType": {
+      "title": "Period",
+      "type": "string",
+      "editor": "select",
+      "enum": ["harian", "mingguan", "bulanan"],
+      "enumTitles": ["Daily", "Weekly", "Monthly"],
+      "default": "harian",
+      "description": "Daily prices, or the site's weekly / monthly averages."
+    },
+    "commodities": {
+      "title": "Only these commodities",
+      "type": "array",
+      "editor": "stringList",
+      "description": "Optional. Keep rows whose commodity or group contains one of these words, e.g. beras, cabai, bawang. Empty = all."
+    },
+    "includeGroupAverages": {
+      "title": "Include group averages",
+      "type": "boolean",
+      "default": true,
+      "description": "Also keep the group rows (e.g. \"Beras\" = average of all rice qualities), marked rataRataKelompok: true."
+    },
+    "maxItems": {
+      "title": "Max price records",
+      "type": "integer",
+      "editor": "number",
+      "minimum": 1,
+      "default": 5000,
+      "description": "Stop after this many rows. One area for 7 days is roughly 30 commodities × 7 = 210 rows."
+    },
+    "proxyConfiguration": {
+      "title": "Proxy",
+      "type": "object",
+      "editor": "proxy",
+      "description": "Usually not needed. If runs get blocked, use Apify residential proxy in Indonesia (ID).",
+      "prefill": { "useApifyProxy": false },
+      "default": { "useApifyProxy": false }
+    }
+  }
+}

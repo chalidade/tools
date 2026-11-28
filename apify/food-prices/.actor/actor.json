@@ -1,0 +1,37 @@
+{
+  "actorSpecification": 1,
+  "name": "indonesia-food-prices",
+  "title": "Indonesia Food Prices Daily (Bank Indonesia PIHPS)",
+  "description": "Daily Indonesian food commodity prices from Bank Indonesia's PIHPS: rice, chicken, beef, eggs, shallots, garlic, chillies, sugar, cooking oil and more. National, per province or per city, traditional/modern market, wholesale or producer. One clean row per commodity per day. Pay per price record.",
+  "version": "1.0",
+  "buildTag": "latest",
+  "minMemoryMbytes": 256,
+  "maxMemoryMbytes": 1024,
+  "defaultMemoryMbytes": 256,
+  "input": "./input_schema.json",
+  "output": "./output_schema.json",
+  "dockerfile": "../Dockerfile",
+  "readme": "../README.md",
+  "storages": {
+    "dataset": {
+      "actorSpecification": 1,
+      "views": {
+        "overview": {
+          "title": "Prices",
+          "transformation": { "fields": ["tanggal", "komoditas", "harga", "wilayah", "jenisPasar", "kelompok"] },
+          "display": {
+            "component": "table",
+            "properties": {
+              "tanggal": { "label": "Date", "format": "date" },
+              "komoditas": { "label": "Commodity" },
+              "harga": { "label": "Price (Rp)", "format": "number" },
+              "wilayah": { "label": "Area" },
+              "jenisPasar": { "label": "Market" },
+              "kelompok": { "label": "Group" }
+            }
+          }
+        }
+      }
+    }
+  }
+}
