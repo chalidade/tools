@@ -662,6 +662,26 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
     formats: 'Key + Pattern → Chords',
     keywords: ['chord progression', 'progression', 'key', 'pop', 'blues', 'jazz', 'canon', 'transpose', 'guitar', 'piano', 'songwriting'],
   },
+  'text-to-speech': {
+    title: 'Text to Speech',
+    description: 'Turn text into Indonesian or English speech, then download MP3/WAV for TikTok, Reels or video voice-overs.',
+    formats: 'Text → MP3 / WAV',
+    keywords: ['text to speech', 'tts', 'voice over', 'voiceover', 'narration', 'read aloud', 'ai voice', 'speech', 'mp3'],
+    faq: [
+      {
+        q: 'Is my text sent to a server?',
+        a: 'No. The speech is made in your browser with the eSpeak NG engine and a Piper AI model downloaded from this site, so the text never leaves your device.',
+      },
+      {
+        q: 'Can I use it as a TikTok or Reels voice-over?',
+        a: 'Yes. Download it as MP3 (44.1 kHz) and add it to CapCut or any video editor as an audio track.',
+      },
+      {
+        q: 'Why does the Indonesian voice sound robotic?',
+        a: 'Indonesian uses eSpeak NG, a light engine that is clear but not as natural as an AI voice. The English voice "Joe" is a natural-sounding AI model.',
+      },
+    ],
+  },
   'practice-recorder': {
     title: 'Practice Recorder',
     description: 'Record your playing with a metronome ticking (the click is not recorded), play it back with the click on top, and save as MP3 or WAV.',

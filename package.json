@@ -34,6 +34,7 @@
     "docx": "^9.8.1",
     "docx-preview": "~0.4.1",
     "dompurify": "^3.4.16",
+    "espeak-ng": "^1.0.2",
     "exceljs": "^4.4.0",
     "gifenc": "^1.0.3",
     "gifuct-js": "^2.1.2",

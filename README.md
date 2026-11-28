@@ -3,7 +3,7 @@
 **English** · [Bahasa Indonesia](README.id.md)
 
 **My everyday file toolbox, built for the file work I do every day and published free for everyone.**
-145 tools for PDF, Office files, CAD drawings, images, video, audio, music and everyday calculations, and every one of them runs entirely in your browser.
+146 tools for PDF, Office files, CAD drawings, images, video, audio, music and everyday calculations, and every one of them runs entirely in your browser.
 Your files are never uploaded.
 
 [![Live demo](https://img.shields.io/badge/live-toowl.my.id-c8f031)](https://toowl.my.id/)
@@ -40,7 +40,7 @@ browser's own media encoders, and a library is downloaded only when you open the
 
 ## Tools
 
-All 145, grouped the way the site groups them. Each name links to the live tool.
+All 146, grouped the way the site groups them. Each name links to the live tool.
 
 **Open Documents**
 - [PDF Reader](https://toowl.my.id/en/pdf-reader/): pages drawn by pdf.js with its text layer on top (select, copy, Ctrl+F), working links, password-protected PDFs, zoom, page jump, full screen
@@ -113,6 +113,7 @@ Each reader opens the other three formats too.
 - [Merge Audio](https://toowl.my.id/en/merge-audio/), [Compress Audio](https://toowl.my.id/en/compress-audio/) (MP3, AAC or Opus)
 - [Screen Recorder](https://toowl.my.id/en/screen-recorder/): screen, window or tab, with mic and tab audio mixed, a floating camera, and WebM or MP4 export
 - [Voice Recorder](https://toowl.my.id/en/audio-recorder/): live waveform, recordings kept in IndexedDB, export to MP3/M4A/WAV
+- [Text to Speech](https://toowl.my.id/en/text-to-speech/): Indonesian and English speech made on the device (eSpeak NG, plus the Piper AI voice "Joe" for English), download MP3/M4A/WAV for voice-overs
 
 **Music**
 
@@ -252,6 +253,7 @@ More detail, including how the npm package isolates its styles in a Shadow DOM, 
 | Images / QR | Canvas 2D, VTracer (wasm), ONNX Runtime Web + Real-ESRGAN, libheif (wasm), Tesseract (wasm), zxing-wasm, node-qrcode |
 | CAD | LibreDWG (wasm, via `@mlightcad/libredwg-web`), own DXF writer |
 | Noise removal | DeepFilterNet 3 and RNNoise (wasm, self-hosted) |
+| Speech | eSpeak NG (wasm, `espeak-ng`), Piper voice `en_US-joe-medium` on ONNX Runtime Web |
 | Music | Web Audio API only — pitch, tempo and key detection and the chord shapes are written in-house |
 | Other | marked + DOMPurify (Notes), perfect-freehand (Whiteboard), JSZip |
 
@@ -382,4 +384,4 @@ the MIT licence and stays available under MIT; later changes are AGPL-3.0-only.
 
 Bundled third-party pieces keep their own licences: the DWG/DXF reader used by DWG to PDF is
 [LibreDWG](https://www.gnu.org/software/libredwg/) via `@mlightcad/libredwg-web` (GPL-3.0), and
-Upscale Image runs Real-ESRGAN's `realesr-general-x4v3` model (BSD-3-Clause). Remove Background's one-tap mode runs U²-Net-P (`u2netp.onnx`, Apache-2.0, from the rembg release).
+Upscale Image runs Real-ESRGAN's `realesr-general-x4v3` model (BSD-3-Clause). Remove Background's one-tap mode runs U²-Net-P (`u2netp.onnx`, Apache-2.0, from the rembg release). Text to Speech bundles [eSpeak NG](https://github.com/espeak-ng/espeak-ng) (GPL-3.0-or-later, via the `espeak-ng` npm package) and Piper's `en_US-joe-medium` voice (CC0, int8-quantized).
