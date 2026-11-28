@@ -104,6 +104,16 @@ picture; the rules that matter when editing:
   text is cleaned of AutoCAD 2018's "Embedded Object" MTEXT block before
   import. `pdf-to-dwg` walks pdf.js's operator list (`constructPath`) and
   writes an R12 DXF (`dxf.ts`); no browser library writes DWG reliably.
+- `transkrip` runs Whisper base (Xenova/whisper-base `*_quantized.onnx`,
+  committed in `src/tools/transkrip/model/`, sha256 checked against the HF
+  repo) on `onnxruntime-web/wasm`, one thread, in a worker. The decoding is
+  our own (`whisper.ts`, no transformers.js): `mel.ts` matches
+  WhisperFeatureExtractor to 4e-6, the merged decoder runs the prompt with
+  `use_cache_branch=false` then one token per step, OpenAI's timestamp rules
+  and sequential 30 s long-form seeking, plus a silence skip because the
+  first timestamp may be at most 1 s into a window. It runs in Node too:
+  bundle a script that imports `whisper.ts` with rolldown and feed it 16 kHz
+  f32 PCM. Audio comes from `audioMono(file, 16000)` in `src/lib/media.ts`.
 - `upscale-image` runs Real-ESRGAN `realesr-general-x4v3` (BSD-3) as ONNX
   (exported without PyTorch by `build-model.py`) on `onnxruntime-web/webgpu`,
   wasm path set to the bundled asyncify wasm; tiles with 12 px overlap.

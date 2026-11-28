@@ -2,7 +2,7 @@
 
 [English](README.md) · **Bahasa Indonesia**
 
-Kotak perkakas file sehari-hari: **146 tools gratis** untuk PDF, Office, gambar
+Kotak perkakas file sehari-hari: **149 tools gratis** untuk PDF, Office, gambar
 CAD, foto, video, audio, musik, dan hitungan sehari-hari yang jalan **sepenuhnya
 di browser**. File diproses di perangkat pengguna: tidak di-upload ke server dan
 tidak disimpan di mana pun.
@@ -135,6 +135,7 @@ dan mengirim event berisi file rekaman. Ada juga API tanpa UI untuk developer.
 | Foto ke Video | [`/foto-ke-video/`](https://toowl.my.id/foto-ke-video/) | Foto plus musik (opsional) jadi MP4 untuk status WA, Reels, atau TikTok; seret untuk urutan, durasi per foto, transisi pudar, zoom pelan, rasio 9:16/1:1/16:9. |
 | Potong Foto untuk Grid & Carousel | [`/grid-instagram/`](https://toowl.my.id/grid-instagram/) | Satu foto jadi 3, 6, atau 9 kotak feed Instagram, atau slide carousel yang nyambung; urutan unggah ditampilkan, unduh satuan atau ZIP. |
 | Ubah Kecepatan | [`/change-speed/`](https://toowl.my.id/change-speed/) | 0,25×–4× untuk video dan audio. Nada suara tetap normal (time-stretch WSOLA sendiri, streaming per potongan) atau ikut berubah. Video jadi MP4 dengan frame rate tetap saat dipercepat; audio jadi MP3/M4A/WAV. Pratinjau langsung memakai kecepatan yang dipilih. |
+| Transkrip Suara ke Teks | [`/transkrip/`](https://toowl.my.id/transkrip/) | Rekaman, voice note, atau video jadi teks dengan Whisper base yang di-host situs ini dan jalan di perangkat. Hasil bisa diedit, lalu diunduh sebagai TXT, SRT, atau VTT. |
 | Peredam Noise | [`/denoise/`](https://toowl.my.id/denoise/) | Hilangkan bising, desis, dan dengung dari suara di video atau audio dengan DeepFilterNet 3 (bawaan) atau RNNoise yang lebih ringan, keduanya wasm yang di-host situs ini. Jeda model dikompensasi, jadi suara tetap pas dengan gerak bibir. |
 | Tambah Musik ke Video | [`/add-music/`](https://toowl.my.id/add-music/) | Musik latar di bawah video: atur volume, ulangi, fade masuk/keluar, dan kecilkan otomatis saat ada yang bicara (ducking). Hasil MP4. |
 | Gabung Audio | [`/merge-audio/`](https://toowl.my.id/merge-audio/) | Banyak file audio (atau suara dari video), boleh beda format/sample rate/kanal, digabung berurutan dengan jeda 0–2 detik → MP3/M4A/WAV. Tiap file di-decode dan di-resample oleh Mediabunny lalu dialirkan ke satu encoder, jadi file panjang tidak dimuat utuh ke memori. |
