@@ -1,0 +1,18 @@
+{
+  "actorOutputSchemaVersion": 1,
+  "title": "Output of AI Vocal Remover & Stem Splitter",
+  "properties": {
+    "results": {
+      "type": "string",
+      "title": "Stems",
+      "description": "One row per input, with download links for the results.",
+      "template": "{{links.apiDefaultDatasetUrl}}/items?view=overview"
+    },
+    "files": {
+      "type": "string",
+      "title": "Files",
+      "description": "Result files in the default key-value store, plus a SUMMARY record.",
+      "template": "{{links.apiDefaultKeyValueStoreUrl}}/keys"
+    }
+  }
+}

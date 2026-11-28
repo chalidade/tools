@@ -3,6 +3,9 @@
 Catatan harian apa yang berubah di [tools](https://toowl.my.id/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-28 — Actor Apify untuk 4 tool AI baru
+
+- Empat tool AI terbaru sekarang juga ada sebagai **Actor Apify** berbayar di `apify/`, dengan engine dan model yang sama persis dengan versi browsernya: **Speech to Text & Subtitles** (Whisper, 99 bahasa, hasil TXT/SRT/VTT/JSON, $0.02 per menit audio), **AI Vocal Remover & Stem Splitter** (SCNet, vokal + instrumental atau 4 stem, $0.07 per menit), **Text to Speech MP3** (suara neural Joe + eSpeak 100+ bahasa, $0.02 per 1.000 karakter), dan **AI Object Remover** (MI-GAN, lewat mask atau kotak, $0.01 per gambar). Model tidak disalin: Dockerfile mengambilnya dari `src/tools/` saat build dengan cek SHA-256. Twibbon sengaja tidak dibuat Actor, karena pasang bingkai massal sudah tercakup Bulk Image Watermark.
 ## 2026-11-28 — Transkrip suara ke teks
 
 Satu tool baru; total sekarang **149 tools**.

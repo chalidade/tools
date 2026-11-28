@@ -1,0 +1,112 @@
+{
+  "title": "Text to Speech input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "texts": {
+      "title": "Texts",
+      "type": "array",
+      "description": "One audio file per entry. Through the API you can pass objects {\"text\": \"…\", \"name\": \"file-name\", \"voice\": \"id-f\"} to set a file name or voice per text.",
+      "editor": "stringList",
+      "prefill": [
+        "Hello! This is toowl. Paste any text and get a natural sounding MP3 back.",
+        "Selamat datang di toowl. Ubah teks menjadi suara dalam hitungan detik."
+      ]
+    },
+    "voice": {
+      "title": "Voice",
+      "type": "string",
+      "description": "Joe is a neural voice (natural). The others are eSpeak NG (clear but synthetic, very fast).",
+      "editor": "select",
+      "enum": [
+        "en-neural",
+        "en-m",
+        "en-f",
+        "id-m",
+        "id-f",
+        "id-m2",
+        "id-f2"
+      ],
+      "enumTitles": [
+        "English: Joe, natural (neural)",
+        "English: male (eSpeak)",
+        "English: female (eSpeak)",
+        "Indonesian: male",
+        "Indonesian: female",
+        "Indonesian: male, deep",
+        "Indonesian: female, soft"
+      ],
+      "default": "en-neural"
+    },
+    "espeakVoice": {
+      "title": "Other language (eSpeak voice)",
+      "type": "string",
+      "description": "Overrides Voice with any eSpeak NG voice: a language code plus an optional variant, e.g. \"de\", \"es+f3\", \"fr+m1\", \"ar\", \"hi\", \"ja\". 100+ languages.",
+      "editor": "textfield",
+      "sectionCaption": "More languages"
+    },
+    "speed": {
+      "title": "Speed",
+      "type": "string",
+      "description": "0.5 = half speed, 2 = twice as fast.",
+      "editor": "select",
+      "enum": [
+        "0.75",
+        "0.9",
+        "1",
+        "1.1",
+        "1.25",
+        "1.5"
+      ],
+      "default": "1"
+    },
+    "pitch": {
+      "title": "Pitch (eSpeak voices)",
+      "type": "integer",
+      "description": "0–99, 50 = normal.",
+      "default": 50,
+      "minimum": 0,
+      "maximum": 99
+    },
+    "format": {
+      "title": "Output format",
+      "type": "string",
+      "description": "File type of each speech file.",
+      "editor": "select",
+      "enum": [
+        "mp3",
+        "m4a",
+        "ogg",
+        "opus",
+        "wav",
+        "flac"
+      ],
+      "enumTitles": [
+        "MP3",
+        "M4A (AAC)",
+        "OGG Vorbis",
+        "Opus",
+        "WAV (16-bit)",
+        "FLAC"
+      ],
+      "default": "mp3"
+    },
+    "bitrate": {
+      "title": "Bitrate (kbps)",
+      "type": "integer",
+      "description": "For MP3, M4A, OGG and Opus.",
+      "default": 128,
+      "minimum": 32,
+      "maximum": 320
+    },
+    "zip": {
+      "title": "Also as one ZIP",
+      "type": "boolean",
+      "description": "Bundle every file into speech-<format>.zip when there are two or more texts.",
+      "default": true
+    }
+  },
+  "required": [
+    "texts"
+  ]
+}

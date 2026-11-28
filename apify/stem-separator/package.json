@@ -1,0 +1,19 @@
+{
+  "name": "toowl-stem-separator",
+  "version": "1.0.0",
+  "private": true,
+  "description": "AI vocal remover and stem splitter (SCNet): vocals, instrumental, drums, bass and other from song URLs. Apify Actor by toowl.",
+  "type": "module",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "node src/main.js"
+  },
+  "license": "AGPL-3.0-only",
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "apify": "^3.8.0",
+    "onnxruntime-node": "^1.23.0"
+  }
+}
