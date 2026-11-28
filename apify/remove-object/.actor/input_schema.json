@@ -1,0 +1,86 @@
+{
+  "title": "AI Object Remover input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "images": {
+      "title": "Images",
+      "type": "array",
+      "description": "One entry per photo: {\"imageUrl\": \"…\", \"maskUrl\": \"…\"} with a mask image (white or opaque = remove), or {\"imageUrl\": \"…\", \"boxes\": [{\"x\": 690, \"y\": 410, \"width\": 180, \"height\": 320}]}. Optional \"name\" and \"boxUnit\" (\"px\" or \"percent\").",
+      "editor": "json",
+      "prefill": [
+        {
+          "imageUrl": "https://raw.githubusercontent.com/chalidade/tools/main/apify/samples/scene.jpg",
+          "boxes": [
+            {
+              "x": 690,
+              "y": 410,
+              "width": 180,
+              "height": 320
+            },
+            {
+              "x": 70,
+              "y": 70,
+              "width": 620,
+              "height": 100
+            }
+          ]
+        }
+      ]
+    },
+    "maskUrl": {
+      "title": "Mask for every image",
+      "type": "string",
+      "description": "One mask image used for all photos that have none (e.g. the same logo corner on every frame). It is stretched to each photo.",
+      "editor": "textfield",
+      "sectionCaption": "Defaults for all images"
+    },
+    "boxes": {
+      "title": "Boxes for every image",
+      "type": "array",
+      "description": "Boxes used for all photos that have neither mask nor boxes, e.g. [{\"x\": 85, \"y\": 90, \"width\": 15, \"height\": 10}] with box unit percent for a corner logo.",
+      "editor": "json"
+    },
+    "boxUnit": {
+      "title": "Box unit",
+      "type": "string",
+      "description": "Pixels of the original photo, or percent of its width/height.",
+      "editor": "select",
+      "enum": [
+        "px",
+        "percent"
+      ],
+      "default": "px"
+    },
+    "format": {
+      "title": "Output format",
+      "type": "string",
+      "description": "Same as the input (PNG/WebP stay, everything else becomes JPG), or a fixed one.",
+      "editor": "select",
+      "enum": [
+        "auto",
+        "jpg",
+        "png",
+        "webp"
+      ],
+      "default": "auto"
+    },
+    "zip": {
+      "title": "Also as one ZIP",
+      "type": "boolean",
+      "description": "Bundle every result into images.zip when there are two or more.",
+      "default": true
+    },
+    "maxFileSizeMb": {
+      "title": "Max file size (MB)",
+      "type": "integer",
+      "description": "Larger files are skipped with an error (not charged).",
+      "default": 30,
+      "minimum": 1,
+      "maximum": 200
+    }
+  },
+  "required": [
+    "images"
+  ]
+}

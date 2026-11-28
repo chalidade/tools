@@ -17,6 +17,10 @@ for (const d of dirs) {
     'watermark-images': '{"files":[{"url":"https://example.com/photo.jpg"}],"text":"© My Shop","position":"tile"}',
     'pdf-password-protect': '{"operation":"protect","files":[{"url":"https://example.com/a.pdf","password":"s3cret"}]}',
     'favicon-generator': '{"files":[{"url":"https://example.com/logo.png"}],"appName":"My App"}',
+    'speech-to-text-whisper': '{"files":[{"url":"https://example.com/interview.mp3"}],"language":"auto","outputFormats":["txt","srt"]}',
+    'ai-vocal-remover-stem-splitter': '{"files":[{"url":"https://example.com/song.mp3"}],"mode":"vocals"}',
+    'text-to-speech-mp3': '{"texts":["Welcome to our store."],"voice":"en-neural","format":"mp3"}',
+    'ai-object-remover': '{"images":[{"imageUrl":"https://example.com/photo.jpg","boxes":[{"x":100,"y":80,"width":200,"height":150}]}]}',
   }
   const example = EXAMPLES[name] ?? '{"files":[{"url":"https://example.com/your-file"}]}'
   const api = hasApi ? '' : `
@@ -46,7 +50,7 @@ The agent can then pass file URLs and read the results itself.
 
 ## More toowl file APIs
 
-PDF to Markdown, PDF to Word & Excel, HTML/URL to PDF, OCR, Office to PDF, PDF compressor, PDF merge/split, PDF password protect, PDF to image, image to PDF, bulk watermark, image converter and compressor, background remover, AI upscaler, image to SVG, QR code and barcode generators, QR/barcode reader, favicon generator, video compressor, frame extractor and audio converter. All pay per file, all batch-friendly: [toowl.my.id/en/api](https://toowl.my.id/en/api/).
+Speech to text & subtitles, AI vocal remover, text to speech, AI object remover, PDF to Markdown, PDF to Word & Excel, HTML/URL to PDF, OCR, Office to PDF, PDF compressor, PDF merge/split, PDF password protect, PDF to image, image to PDF, bulk watermark, image converter and compressor, background remover, AI upscaler, image to SVG, QR code and barcode generators, QR/barcode reader, favicon generator, video compressor, frame extractor and audio converter. All pay per file, all batch-friendly: [toowl.my.id/en/api](https://toowl.my.id/en/api/).
 
 Questions or a format that fails? Open an issue on the Actor's **Issues** tab.
 `

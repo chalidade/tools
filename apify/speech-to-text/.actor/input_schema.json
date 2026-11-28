@@ -1,0 +1,150 @@
+{
+  "title": "Speech to Text input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "files": {
+      "title": "Audio or video URLs",
+      "type": "array",
+      "description": "Direct links to audio (MP3, WAV, M4A, OGG, FLAC, Opus) or video (MP4, MOV, WebM, MKV) files.",
+      "editor": "requestListSources",
+      "prefill": [
+        {
+          "url": "https://raw.githubusercontent.com/chalidade/tools/main/apify/samples/speech.mp3"
+        }
+      ]
+    },
+    "language": {
+      "title": "Language",
+      "type": "string",
+      "description": "Spoken language, or auto-detect from the first 30 seconds. Any Whisper language code works through the API (e.g. \"sw\", \"he\").",
+      "editor": "select",
+      "enum": [
+        "auto",
+        "en",
+        "id",
+        "ms",
+        "jw",
+        "su",
+        "es",
+        "fr",
+        "de",
+        "it",
+        "pt",
+        "nl",
+        "ru",
+        "uk",
+        "pl",
+        "tr",
+        "ar",
+        "fa",
+        "hi",
+        "bn",
+        "ur",
+        "ta",
+        "te",
+        "ml",
+        "th",
+        "vi",
+        "zh",
+        "ja",
+        "ko",
+        "tl"
+      ],
+      "enumTitles": [
+        "Auto-detect",
+        "English",
+        "Indonesian",
+        "Malay",
+        "Javanese",
+        "Sundanese",
+        "Spanish",
+        "French",
+        "German",
+        "Italian",
+        "Portuguese",
+        "Dutch",
+        "Russian",
+        "Ukrainian",
+        "Polish",
+        "Turkish",
+        "Arabic",
+        "Persian",
+        "Hindi",
+        "Bengali",
+        "Urdu",
+        "Tamil",
+        "Telugu",
+        "Malayalam",
+        "Thai",
+        "Vietnamese",
+        "Chinese",
+        "Japanese",
+        "Korean",
+        "Tagalog"
+      ],
+      "default": "auto"
+    },
+    "outputFormats": {
+      "title": "Files to create",
+      "type": "array",
+      "description": "Transcript files saved for each input. The dataset row always has the text.",
+      "editor": "select",
+      "items": {
+        "type": "string",
+        "enum": [
+          "txt",
+          "srt",
+          "vtt",
+          "json"
+        ],
+        "enumTitles": [
+          "Plain text (.txt)",
+          "SubRip subtitles (.srt)",
+          "WebVTT subtitles (.vtt)",
+          "Segments with timestamps (.json)"
+        ]
+      },
+      "default": [
+        "txt",
+        "srt"
+      ]
+    },
+    "includeSegments": {
+      "title": "Segments in dataset",
+      "type": "boolean",
+      "description": "Add every timed segment (start, end, text) to the dataset row.",
+      "default": true
+    },
+    "trimStart": {
+      "title": "Start at (s)",
+      "type": "integer",
+      "description": "Only process from this second on.",
+      "minimum": 0,
+      "sectionCaption": "Advanced"
+    },
+    "trimEnd": {
+      "title": "End at (s)",
+      "type": "integer",
+      "description": "Only process up to this second.",
+      "minimum": 1
+    },
+    "maxMinutes": {
+      "title": "Max minutes per file",
+      "type": "integer",
+      "description": "Skip longer files (not charged). Empty = no limit.",
+      "minimum": 1
+    },
+    "maxFileSizeMb": {
+      "title": "Max file size (MB)",
+      "type": "integer",
+      "description": "Larger files are skipped with an error (not charged).",
+      "default": 500,
+      "minimum": 1,
+      "maximum": 2000
+    }
+  },
+  "required": [
+    "files"
+  ]
+}

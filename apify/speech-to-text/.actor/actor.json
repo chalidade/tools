@@ -1,0 +1,67 @@
+{
+  "actorSpecification": 1,
+  "name": "speech-to-text-whisper",
+  "title": "Speech to Text & Subtitles (Whisper, 99 Languages)",
+  "description": "Transcribe audio and video from URLs with OpenAI Whisper: full text, timestamped segments and ready SRT/VTT subtitles. MP3, WAV, M4A, OGG, MP4, MOV, WebM. 99 languages with auto-detect. No third-party API. Pay per audio minute.",
+  "version": "1.0",
+  "buildTag": "latest",
+  "minMemoryMbytes": 1024,
+  "maxMemoryMbytes": 8192,
+  "input": "./input_schema.json",
+  "output": "./output_schema.json",
+  "dockerfile": "../Dockerfile",
+  "readme": "../README.md",
+  "storages": {
+    "dataset": {
+      "actorSpecification": 1,
+      "views": {
+        "overview": {
+          "title": "Transcripts",
+          "transformation": {
+            "fields": [
+              "name",
+              "language",
+              "duration",
+              "text",
+              "txtUrl",
+              "srtUrl",
+              "vttUrl",
+              "jsonUrl",
+              "error",
+              "url"
+            ]
+          },
+          "display": {
+            "component": "table",
+            "properties": {
+              "duration": {
+                "label": "Duration (s)",
+                "format": "number"
+              },
+              "txtUrl": {
+                "label": "TXT",
+                "format": "link"
+              },
+              "srtUrl": {
+                "label": "SRT",
+                "format": "link"
+              },
+              "vttUrl": {
+                "label": "VTT",
+                "format": "link"
+              },
+              "jsonUrl": {
+                "label": "JSON",
+                "format": "link"
+              },
+              "url": {
+                "label": "Source",
+                "format": "link"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
