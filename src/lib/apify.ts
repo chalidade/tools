@@ -55,7 +55,7 @@ export const APIFY_CATALOG: ApifyActor[] = [
   },
   {
     name: 'pdf-to-word-excel',
-    published: false,
+    published: true,
     title: ['PDF ke Word & Excel', 'PDF to Word & Excel'],
     blurb: [
       'DOCX yang bisa diedit (font, tebal/miring tetap) dan XLSX dengan tabel jadi sel, angka dan tanggal jadi nilai asli.',
@@ -67,7 +67,7 @@ export const APIFY_CATALOG: ApifyActor[] = [
   },
   {
     name: 'html-to-pdf',
-    published: false,
+    published: true,
     title: ['HTML, URL & Markdown ke PDF', 'HTML, URL & Markdown to PDF'],
     blurb: [
       'Chrome asli: halaman web, HTML atau Markdown jadi PDF, plus satu template HTML diisi data untuk ratusan invoice atau sertifikat.',
@@ -103,7 +103,7 @@ export const APIFY_CATALOG: ApifyActor[] = [
   },
   {
     name: 'pdf-compressor',
-    published: false,
+    published: true,
     title: ['Kompres PDF (teks tetap teks)', 'PDF Compressor (keeps text)'],
     blurb: [
       'Gambar di dalam PDF dikecilkan, teks dan link tidak disentuh. Tidak pernah lebih besar dari aslinya.',
@@ -163,7 +163,7 @@ export const APIFY_CATALOG: ApifyActor[] = [
   },
   {
     name: 'background-remover',
-    published: false,
+    published: true,
     title: ['Hapus latar belakang (AI)', 'AI Background Remover'],
     blurb: [
       'PNG transparan atau latar putih untuk marketplace, crop ke objek. Model IS-Net.',
@@ -229,7 +229,7 @@ export const APIFY_CATALOG: ApifyActor[] = [
   },
   {
     name: 'qr-code-generator',
-    published: false,
+    published: true,
     title: ['Buat QR code massal', 'QR Code Generator'],
     blurb: ['Ribuan QR sekaligus: PNG atau SVG, warna, gaya bulat/titik, logo di tengah, satu ZIP.', 'Thousands at once: PNG or SVG, colours, rounded or dot style, logo in the middle, one ZIP.'],
     price: 0.001,
