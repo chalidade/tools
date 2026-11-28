@@ -32,7 +32,7 @@ const vite = await createServer({
   optimizeDeps: { noDiscovery: true, include: [] },
 })
 const seo = await vite.ssrLoadModule('/src/lib/seo.ts')
-const { TOOLS, CATEGORIES, toolText, categoryText } = await vite.ssrLoadModule('/src/tools/registry.ts')
+const { TOOLS, TOOL_PAGES, CATEGORIES, toolText, categoryText } = await vite.ssrLoadModule('/src/tools/registry.ts')
 const license = await vite.ssrLoadModule('/src/lib/license.ts')
 const apify = await vite.ssrLoadModule('/src/lib/apify.ts')
 await vite.close()
@@ -177,11 +177,11 @@ for (const lang of ['id', 'en']) {
   write(`${lang === 'en' ? 'en/' : ''}all/index.html`, page(seo.homeMeta(lang), homeBody(lang)))
   write(`${lang === 'en' ? 'en/' : ''}${seo.EMBED_SLUG}/index.html`, page(seo.embedMeta(lang), embedBody(lang)))
   write(`${lang === 'en' ? 'en/' : ''}${seo.API_SLUG}/index.html`, page(seo.apiMeta(lang), apiBody(lang)))
-  for (const tool of TOOLS) write(`${lang === 'en' ? 'en/' : ''}${tool.slug}/index.html`, page(seo.toolMeta(tool, lang), toolBody(tool, lang)))
+  for (const tool of TOOL_PAGES) write(`${lang === 'en' ? 'en/' : ''}${tool.slug}/index.html`, page(seo.toolMeta(tool, lang), toolBody(tool, lang)))
 }
 write('404.html', page(seo.homeMeta('id'), homeBody('id'), { noindex: true }))
 
-for (const slug of ['', seo.EMBED_SLUG, seo.API_SLUG, ...TOOLS.map((t) => t.slug)]) {
+for (const slug of ['', seo.EMBED_SLUG, seo.API_SLUG, ...TOOL_PAGES.map((t) => t.slug)]) {
   const alt = ['id', 'en']
     .map((l) => `<xhtml:link rel="alternate" hreflang="${l}" href="${seo.absoluteUrl(slug, l)}"/>`)
     .concat(`<xhtml:link rel="alternate" hreflang="x-default" href="${seo.absoluteUrl(slug, 'id')}"/>`)
@@ -194,4 +194,4 @@ write(
   'sitemap.xml',
   `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${urls.join('\n')}\n</urlset>\n`,
 )
-console.log(`seo: ${urls.length} pages (${TOOLS.length} tools × 2 languages + homes + embed + api), sitemap.xml, 404.html — base ${base}`)
+console.log(`seo: ${urls.length} pages (${TOOLS.length} tools + ${TOOL_PAGES.length - TOOLS.length} landing pages × 2 languages + homes + embed + api), sitemap.xml, 404.html — base ${base}`)

@@ -551,6 +551,47 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
       { q: 'How do I print many address labels at once?', a: 'Fill in the sender, paste the recipient list from Excel (name, phone, address), pick a label size, then download the PDF and print at 100% scale.' },
     ],
   },
+  'twibbon': {
+    title: 'Twibbon Maker',
+    description: 'Put your photo in a twibbon frame: open the PNG from the organiser or use a 17 August, Ramadan, Teachers’ Day, graduation or school-orientation template, then drag, zoom, turn and download. Nothing is uploaded.',
+    formats: 'Frame PNG + photo → PNG / JPG',
+    keywords: ['photo frame', 'profile frame', 'campaign frame', 'overlay', 'profile picture'],
+    faq: [
+      { q: 'How do I make a twibbon?', a: 'Open the frame PNG from the organiser (or pick a template), pick your photo, drag and pinch until it sits in the frame’s window, then download a PNG or JPG at the frame’s full size.' },
+      { q: 'Is my photo uploaded, like on other twibbon sites?', a: 'No. The frame and your photo are combined in your own browser; nothing is sent to a server.' },
+      { q: 'Why is my photo hidden behind the frame?', a: 'A twibbon frame has to be a PNG with a transparent window. A JPG, or a PNG without transparency, covers the photo; ask the organiser for the PNG.' },
+    ],
+  },
+  'twibbon-17-agustus': {
+    title: 'Indonesian Independence Day Twibbon (17 August)',
+    description: 'A free red-and-white 17 August twibbon: put your photo in the frame, edit the texts and your name, and download it for your status or profile picture.',
+    formats: 'Photo → PNG / JPG',
+    faq: [{ q: 'How do I make a 17 August twibbon?', a: 'Pick your photo, drag and zoom until your face fits the circle, change the name, and download. The year is filled in for you and can be edited.' }],
+  },
+  'twibbon-ramadan': {
+    title: 'Ramadan Twibbon',
+    description: 'A free green-and-gold "Marhaban ya Ramadan" twibbon with a crescent, this year’s Hijri year and your name. Download it for your status or profile picture.',
+    formats: 'Photo → PNG / JPG',
+    faq: [{ q: 'Can I use it for Eid?', a: 'Yes. Change the top text and title, for example to "Eid Mubarak".' }],
+  },
+  'twibbon-hari-guru': {
+    title: 'Teachers’ Day Twibbon (25 November)',
+    description: 'A free twibbon for Indonesia’s National Teachers’ Day: a "Happy Teachers’ Day" frame with a thank-you line and your name.',
+    formats: 'Photo → PNG / JPG',
+    faq: [{ q: 'My school has its own frame — can I use it?', a: 'Yes. Pick "Your own frame" and open the school’s PNG.' }],
+  },
+  'twibbon-wisuda': {
+    title: 'Graduation Twibbon',
+    description: 'A free navy-and-gold graduation twibbon with a mortarboard, "Class of" this year and the graduate’s name. Download it for Instagram or your status.',
+    formats: 'Photo → PNG / JPG',
+    faq: [{ q: 'How do I make a graduation twibbon?', a: 'Pick your graduation photo, fit it in the circle, add your name and degree, and download a PNG or JPG.' }],
+  },
+  'twibbon-mpls': {
+    title: 'School Orientation (MPLS) Twibbon',
+    description: 'A free twibbon for new students’ orientation (MPLS): a "Ready to Learn!" frame with the school’s name, or open the organiser’s PNG frame.',
+    formats: 'Photo → PNG / JPG',
+    faq: [{ q: 'Does it work for university orientation?', a: 'Yes. Change the top text and title to your campus and event.' }],
+  },
   'watermark-foto': {
     title: 'Bulk Photo Watermark',
     description: 'Put a logo or shop name on many product photos at once: pick a position or a repeating pattern, size and opacity, preview it, then download everything as a metadata-free ZIP.',
