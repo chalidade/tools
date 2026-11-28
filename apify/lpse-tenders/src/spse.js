@@ -5,7 +5,7 @@
 // the session cookie, and gets rows as arrays.
 
 import { load } from 'cheerio'
-import { ProxyAgent } from 'undici'
+import { ProxyAgent, fetch } from 'undici'
 
 export const BASE = 'https://spse.inaproc.id'
 const UA = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0 Safari/537.36'
