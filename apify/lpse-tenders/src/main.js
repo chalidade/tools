@@ -68,6 +68,10 @@ for (const slug of slugs) {
 
   let start = 0
   let fromThis = 0
+  let seen = 0
+  // Rows with the same announcement date can move between pages, so the same
+  // tender may come back on the next page.
+  const pushed = new Set() // every kode seen in this agency
   let total = null
   while (!stop && (total == null || start < total) && fromThis < perLpse) {
     let page
@@ -90,6 +94,9 @@ for (const slug of slugs) {
 
     for (const row of page.rows) {
       const t = rowToTender(row, slug)
+      if (t.kode && pushed.has(t.kode)) continue
+      seen++
+      if (t.kode) pushed.add(t.kode)
       if (minHps != null && (t.hps == null || t.hps < minHps)) continue
       if (maxHps != null && (t.hps == null || t.hps > maxHps)) continue
       if (tahapanFilter && !(t.tahapan ?? '').toLowerCase().includes(tahapanFilter)) continue
@@ -116,7 +123,8 @@ for (const slug of slugs) {
     }
     if (lastPage) break
   }
-  log.info(`✓ ${slug}: ${fromThis} tenders${total ? ` (of ${total} listed for ${tahun})` : ''}`)
+  const dropped = seen - fromThis
+  log.info(`✓ ${slug}: ${fromThis} tenders${dropped > 0 && !stop ? ` (${seen} listed${keyword ? ` for "${keyword}"` : ''}, ${dropped} left out by the stage/HPS filters)` : ''}`)
 }
 
 const summary = { tenders: saved, tahun, keyword: keyword || null, lpseScanned: slugs.length, failed }
