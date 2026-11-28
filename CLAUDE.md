@@ -107,6 +107,14 @@ picture; the rules that matter when editing:
 - `upscale-image` runs Real-ESRGAN `realesr-general-x4v3` (BSD-3) as ONNX
   (exported without PyTorch by `build-model.py`) on `onnxruntime-web/webgpu`,
   wasm path set to the bundled asyncify wasm; tiles with 12 px overlap.
+- `vocal-remover` runs SCNet (MIT code and weights; `build-model.py` exports
+  it from ZFTurbo's MUSDB18 checkpoint between its STFT and iSTFT, float16
+  weights Cast to float32, shape-only subgraphs folded so WebGPU gets no
+  Range/Cos/Sin) on `onnxruntime-web/webgpu` in a worker (`worker.ts`). The
+  STFT is the model's own (`stft.ts`: n_fft 4096, hop 1024, rectangular
+  window, normalized, reflect-centered); `separate.ts` normalizes, cuts 11 s
+  segments with demix()-style fades and overlap-adds. Instrumental = mix −
+  vocals. Re-check against PyTorch (stems ≥ 50 dB SNR) if any of it changes.
 - Music tools (`guitar-tuner`, `metronome`, `chords`, `bpm-key`, `piano`, `guitar`, `drums`) use only the
   Web Audio API plus in-house DSP; shared note/frequency helpers and the
   Karplus–Strong `pluck()` live in `src/lib/music.ts`. Heavy analysis runs in a

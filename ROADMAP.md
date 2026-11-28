@@ -551,9 +551,6 @@ sesudahnya.
 
 ## Hari 46 — 2026-12-02 · Audio & suara
 
-- [ ] **Penghapus Vokal** (`#/vocal-remover`): hilangkan vokal yang ada di
-  tengah stereo (kiri − kanan, dengan bass dijaga lewat filter), pratinjau, lalu
-  simpan MP3/WAV. Jelaskan bahwa hasilnya bergantung pada cara lagu dimixing.
 - [x] **Teks ke Suara** (`#/text-to-speech`, dirilis lebih awal 2026-11-28):
   bukan `speechSynthesis` (tidak bisa direkam), tapi mesin suara yang jalan di
   perangkat supaya hasilnya bisa diunduh MP3/WAV untuk voice-over: eSpeak NG

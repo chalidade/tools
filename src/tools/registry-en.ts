@@ -694,6 +694,26 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
     formats: 'MP3 / WAV → BPM + Key',
     keywords: ['bpm', 'tempo', 'key', 'camelot', 'dj', 'song', 'analyze'],
   },
+  'vocal-remover': {
+    title: 'AI Vocal Remover',
+    description: 'Split vocals from music with AI on your device: make a karaoke backing track, pull out an acapella, or break a song into drums, bass and the rest.',
+    formats: 'MP3 / WAV → Vocals + Instrumental',
+    keywords: ['vocal remover', 'remove vocals', 'karaoke', 'instrumental', 'acapella', 'stem splitter', 'stems', 'separate', 'drums', 'bass', 'ai', 'song'],
+    faq: [
+      {
+        q: 'How do I make a karaoke track from an MP3?',
+        a: 'Open the song here, pick Vocals + Instrumental and press Separate. The Instrumental is the song without vocals, ready to download as MP3 or WAV. The song is never uploaded.',
+      },
+      {
+        q: 'How is this different from a classic vocal remover?',
+        a: 'The old trick subtracts the right channel from the left, so the bass and drums in the middle go too and stereo-processed vocals stay. This tool uses an AI model (SCNet) that recognises vocals, drums, bass and other instruments, so the music stays whole.',
+      },
+      {
+        q: 'How long does it take?',
+        a: 'On a laptop with a GPU, about as long as the song; without one, or on a phone, several times longer. Phones process up to 2 minutes of a song at a time so memory holds out.',
+      },
+    ],
+  },
   piano: {
     title: 'Online Piano',
     description: 'Play the piano in your browser — mouse, multi-touch, computer keyboard or a MIDI keyboard, with sustain and chord names.',
