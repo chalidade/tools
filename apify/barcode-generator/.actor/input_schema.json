@@ -1,0 +1,92 @@
+{
+  "title": "Barcode Generator input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "codes": {
+      "title": "Values",
+      "type": "array",
+      "description": "One barcode per line: product numbers, SKUs, serials, ISBNs… Via the API you can also pass objects {\"text\": \"…\", \"type\": \"code39\", \"name\": \"file-name\"}.",
+      "editor": "stringList",
+      "prefill": ["5901234123457", "036000291452", "SKU-2026-00042"]
+    },
+    "type": {
+      "title": "Barcode type",
+      "type": "string",
+      "editor": "select",
+      "enum": ["auto", "ean13", "ean8", "upca", "upce", "isbn", "code128", "code39", "code93", "itf14", "interleaved2of5", "gs1-128", "codabar", "datamatrix", "pdf417", "azteccode", "qrcode"],
+      "enumTitles": ["Auto (EAN/UPC/ITF-14 by length, else Code 128)", "EAN-13", "EAN-8", "UPC-A", "UPC-E", "ISBN", "Code 128", "Code 39", "Code 93", "ITF-14", "Interleaved 2 of 5", "GS1-128", "Codabar", "Data Matrix", "PDF417", "Aztec", "QR code (plain)"],
+      "default": "auto",
+      "description": "Symbology. Auto picks EAN-13 for 13 digits, UPC-A for 12, EAN-8 for 8, ITF-14 for 14 and Code 128 for anything else."
+    },
+    "format": {
+      "title": "File format",
+      "type": "string",
+      "editor": "select",
+      "enum": ["png", "svg", "both"],
+      "enumTitles": ["PNG", "SVG (vector, for print)", "PNG + SVG"],
+      "default": "png",
+      "description": "PNG for labels and documents, SVG for print and design tools."
+    },
+    "scale": {
+      "title": "Scale",
+      "type": "integer",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 10,
+      "default": 3,
+      "description": "Pixels per bar module in the PNG. 3 is good for screens, 5+ for printing."
+    },
+    "heightMm": {
+      "title": "Bar height (mm)",
+      "type": "integer",
+      "editor": "number",
+      "minimum": 5,
+      "maximum": 100,
+      "default": 15,
+      "description": "Height of linear barcodes. Ignored for 2D codes (Data Matrix, PDF417, Aztec, QR)."
+    },
+    "includeText": {
+      "title": "Show the value under the bars",
+      "type": "boolean",
+      "default": true,
+      "description": "Human-readable text below linear barcodes."
+    },
+    "foreground": {
+      "title": "Bar colour",
+      "type": "string",
+      "editor": "textfield",
+      "default": "#000000",
+      "description": "6-digit hex colour of the bars, e.g. #000000."
+    },
+    "background": {
+      "title": "Background colour",
+      "type": "string",
+      "editor": "textfield",
+      "default": "#ffffff",
+      "description": "6-digit hex colour behind the bars, e.g. #ffffff."
+    },
+    "transparent": {
+      "title": "Transparent background",
+      "type": "boolean",
+      "default": false,
+      "description": "No background (overrides the background colour)."
+    },
+    "padding": {
+      "title": "Padding (px)",
+      "type": "integer",
+      "editor": "number",
+      "minimum": 0,
+      "maximum": 50,
+      "default": 10,
+      "description": "Empty space around the barcode (quiet zone)."
+    },
+    "zip": {
+      "title": "Bundle into one ZIP",
+      "type": "boolean",
+      "default": true,
+      "description": "Also save every file in barcodes.zip (when there is more than one value)."
+    }
+  },
+  "required": ["codes"]
+}

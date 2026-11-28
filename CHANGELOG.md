@@ -3,6 +3,15 @@
 Catatan harian apa yang berubah di [tools](https://toowl.my.id/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-28 — Generator di API
+
+Tiga Actor Apify baru untuk developer (situs tetap gratis, tidak berubah); halaman `/api/` menampilkannya setelah terbit.
+
+- **QR Code Generator** (`apify/qr-generator/`): banyak QR sekaligus dari daftar teks/URL, PNG atau SVG, gaya kotak/bulat/titik, warna, latar transparan, dan logo di tengah (koreksi error otomatis naik ke H, versi minimal 5 supaya tetap terbaca). Semua gaya diuji dengan membaca ulang hasilnya memakai zxing. Hasil bisa dibungkus satu ZIP.
+- **Barcode Generator** (`apify/barcode-generator/`): EAN-13/8, UPC-A, ITF-14, Code 128, Code 39 dan lainnya lewat bwip-js (MIT), jenis ditebak dari panjang angka, pesan error yang jelas untuk digit cek salah, PNG/SVG dan ZIP.
+- **Favicon Generator** (`apify/favicon-generator/`): satu gambar jadi set lengkap (favicon.ico 16/32/48, PNG, apple-touch, android, maskable, `site.webmanifest`, contoh tag HTML) dalam satu ZIP per gambar, bentuk kotak/bulat/membulat.
+- Semua README Actor kini punya contoh cURL, bagian pemakaian dari agen AI lewat MCP, dan tautan ke Actor toowl lainnya (`apify/readme-footer.mjs`). Pemrosesan per item berbagi `apify/_shared/items.js`.
+
 ## 2026-11-27 — Kerja & anak
 
 Dua tool baru; total sekarang **144 tools**.

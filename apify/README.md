@@ -1,6 +1,6 @@
 # toowl di Apify Store
 
-Lima belas engine toowl dibungkus jadi **Actor Apify** berbayar (pay-per-event).
+Delapan belas engine toowl dibungkus jadi **Actor Apify** berbayar (pay-per-event).
 Kode tool di situs berjalan di browser; di sini engine yang sama di-port ke
 Node supaya bisa dipanggil lewat API, Zapier, Make, n8n, atau jadwal.
 
@@ -21,6 +21,9 @@ Node supaya bisa dipanggil lewat API, Zapier, Make, n8n, atau jadwal.
 | [`pdf-to-image/`](./pdf-to-image) | PDF to JPG, PNG & WebP | Poppler `pdftoppm` (Debian) + sharp untuk WebP, ZIP per PDF | `pdf-page-rendered` (per halaman) |
 | [`image-to-svg/`](./image-to-svg) | Image to SVG Vectorizer | VTracer (`vtracer-wasm`, sama dengan `src/tools/image-to-svg/`), satu worker thread per gambar | `image-vectorized` |
 | [`pdf-toolkit/`](./pdf-toolkit) | PDF Merge, Split, Extract & Rotate | qpdf (wasm) — merge, split (per N halaman / rentang), extract, delete, rotate, unlock | `pdf-processed` (per PDF input) |
+| [`qr-generator/`](./qr-generator) | QR Code Generator (Bulk, Logo, SVG & PNG) | qrcode (MIT) + gaya kotak/bulat/titik dan logo seperti `src/tools/qr/render.ts`, sharp untuk PNG, ZIP | `qr-generated` (per kode) |
+| [`barcode-generator/`](./barcode-generator) | Barcode Generator (EAN, UPC, Code 128, …) | bwip-js (MIT), deteksi jenis otomatis dari panjang angka, PNG/SVG, ZIP | `barcode-generated` (per kode) |
+| [`favicon-generator/`](./favicon-generator) | Favicon Generator (ICO, PNG, Manifest) | sharp — set sama dengan `src/tools/favicon-generator/`: ICO 16/32/48, apple-touch, android, maskable, `site.webmanifest`, satu ZIP per gambar | `favicon-set-generated` (per set) |
 
 `pdf-markdown/src/engine.js` adalah hasil build — setelah mengubah
 `src/tools/pdf-to-markdown`, `pdf-to-word/convert.ts`, `pdf-to-excel/convert.ts`
@@ -100,6 +103,9 @@ ditanggung Apify.
 | PDF to Image | `pdf-page-rendered` (primary) | **$0.001** | $1 | ~$0.00005 (150 DPI ±0,2 detik per halaman) |
 | Image to SVG | `image-vectorized` (primary) | **$0.005** | $5 | ~$0.0002 (logo ±0,5 detik; foto 2000 px bisa 10–30 detik) |
 | PDF Toolkit | `pdf-processed` (primary) | **$0.002** | $2 | ~$0.00005 |
+| QR Code Generator | `qr-generated` (primary) | **$0.001** | $1 | ~$0.00001 |
+| Barcode Generator | `barcode-generated` (primary) | **$0.001** | $1 | ~$0.00001 |
+| Favicon Generator | `favicon-set-generated` (primary) | **$0.01** | $10 | ~$0.0001 |
 
 Video Compressor menagih **per menit video hasil** (menit pertama ikut baris dataset). OCR, PDF to Markdown dan PDF to Image menagih **per halaman**: halaman pertama ikut baris
 dataset, sisanya lewat `Actor.charge` (tetap dalam batas "Max cost per run").
@@ -134,7 +140,9 @@ cipta, jadi boleh menjual layanannya). Dependensi yang ikut di image:
 | Poppler `pdftoppm`/`pdfinfo` (paket Debian, binari terpisah) | GPL-2.0-or-later | dipanggil sebagai proses, tidak di-link |
 | Font: Liberation, Carlito, Caladea, Noto, DejaVu | OFL-1.1 / Apache-2.0 / bebas | paket Debian |
 | vtracer-wasm (VTracer) | MIT | |
-| fflate | MIT | ZIP hasil split |
+| fflate | MIT | ZIP hasil split, QR, barcode, favicon |
+| qrcode | MIT | QR Code Generator |
+| bwip-js | MIT | Barcode Generator |
 | tesseract.js, tesseract.js-core | Apache-2.0 | |
 | @tesseract.js-data/* (tessdata best_int) | Apache-2.0 | |
 | pdfjs-dist (+ @napi-rs/canvas, opsional) | Apache-2.0 / MIT | |
