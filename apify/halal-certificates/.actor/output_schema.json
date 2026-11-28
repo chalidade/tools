@@ -1,0 +1,18 @@
+{
+  "actorOutputSchemaVersion": 1,
+  "title": "Output of Halal Certificate Checker",
+  "properties": {
+    "results": {
+      "type": "string",
+      "title": "Halal products",
+      "description": "One row per certified product.",
+      "template": "{{links.apiDefaultDatasetUrl}}/items?view=overview"
+    },
+    "summary": {
+      "type": "string",
+      "title": "Summary",
+      "description": "Products saved per search and how many the site lists.",
+      "template": "{{links.apiDefaultKeyValueStoreUrl}}/records/SUMMARY"
+    }
+  }
+}
