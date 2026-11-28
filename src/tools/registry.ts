@@ -1029,6 +1029,31 @@ const ALL_TOOLS: Tool[] = [
     package: { name: '@chalidade/remove-background', element: 'remove-background', dir: 'remove-background', published: false },
   },
   {
+    slug: 'remove-object',
+    category: 'media',
+    keywords: ['hapus objek', 'hapus orang', 'hapus benda', 'hapus tulisan', 'hapus coretan', 'remove object', 'object remover', 'magic eraser', 'inpainting', 'bersihkan foto', 'hilangkan orang', 'photobomb', 'kabel', 'noda', 'ai', 'foto'],
+    title: 'Hapus Objek dari Foto',
+    description: 'Warnai orang, benda, tulisan, atau coretan yang mengganggu, lalu AI di perangkatmu mengisinya dengan latar di sekitarnya.',
+    icon: Eraser,
+    formats: 'JPG / PNG / WebP → JPG / PNG',
+    badge: 'Baru',
+    faq: [
+      {
+        q: 'Bagaimana cara menghapus orang atau benda dari foto?',
+        a: 'Buka fotonya, warnai orang atau benda itu dengan kuas sampai sedikit melewati pinggirnya (bayangannya juga), lalu tekan “Hapus yang ditandai”. AI mengisi bagian itu dengan latar di sekitarnya. Ulangi di bagian yang belum rapi.',
+      },
+      {
+        q: 'Apakah fotonya diunggah ke server?',
+        a: 'Tidak. Model AI diunduh sekali dari situs ini lalu berjalan di browsermu; foto tidak pernah meninggalkan perangkat.',
+      },
+      {
+        q: 'Bisa untuk menghapus watermark?',
+        a: 'Tool ini dibuat untuk foto milikmu sendiri: orang lewat, kabel, sampah, tulisan, atau coretan. Jangan dipakai untuk menghapus watermark atau kredit dari karya orang lain tanpa izin.',
+      },
+    ],
+    component: lazy(() => import('./remove-object/RemoveObject')),
+  },
+  {
     slug: 'upscale-image',
     category: 'media',
     keywords: ['upscale', 'perbesar', 'perjelas', 'hd', 'resolusi', 'tajam', 'pecah', 'blur', 'foto lama', 'ai', 'super resolution', 'enhance'],
