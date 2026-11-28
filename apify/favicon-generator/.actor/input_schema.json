@@ -1,0 +1,70 @@
+{
+  "title": "Favicon Generator input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "files": {
+      "title": "Logo URLs",
+      "type": "array",
+      "description": "Direct links to square-ish logos (PNG, SVG, JPG, WebP). One complete favicon set per image. 512×512 or larger (or SVG) looks best.",
+      "editor": "requestListSources",
+      "prefill": [{ "url": "https://raw.githubusercontent.com/chalidade/tools/main/public/icon-512.png" }]
+    },
+    "appName": {
+      "title": "App name",
+      "type": "string",
+      "editor": "textfield",
+      "description": "Name written into site.webmanifest. Defaults to the file name."
+    },
+    "themeColor": {
+      "title": "Theme colour",
+      "type": "string",
+      "editor": "textfield",
+      "default": "#ffffff",
+      "description": "6-digit hex colour for the manifest and for the Apple/maskable icon background when the logo is transparent."
+    },
+    "background": {
+      "title": "Icon background",
+      "type": "string",
+      "editor": "textfield",
+      "description": "Optional 6-digit hex colour behind the logo on every icon. Leave empty to keep transparency."
+    },
+    "shape": {
+      "title": "Shape",
+      "type": "string",
+      "editor": "select",
+      "enum": ["square", "rounded", "circle"],
+      "enumTitles": ["Square", "Rounded square", "Circle"],
+      "default": "square",
+      "description": "Outline of the browser and Android icons. The Apple touch icon is always square (iOS rounds it)."
+    },
+    "fit": {
+      "title": "Fit",
+      "type": "string",
+      "editor": "select",
+      "enum": ["contain", "cover"],
+      "enumTitles": ["Contain (whole logo visible)", "Cover (fill, crop edges)"],
+      "default": "contain",
+      "description": "How a non-square logo fills the icon."
+    },
+    "paddingPercent": {
+      "title": "Padding (%)",
+      "type": "integer",
+      "editor": "number",
+      "minimum": 0,
+      "maximum": 40,
+      "default": 0,
+      "description": "Empty space around the logo on each side, as a percentage of the icon size."
+    },
+    "maxFileSizeMb": {
+      "title": "Max file size (MB)",
+      "type": "integer",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 100,
+      "default": 20,
+      "description": "Larger files are skipped with an error (not charged)."
+    }
+  },
+  "required": ["files"]
+}

@@ -1,0 +1,24 @@
+{
+  "actorOutputSchemaVersion": 1,
+  "title": "Output of Barcode Generator",
+  "properties": {
+    "results": {
+      "type": "string",
+      "title": "Barcodes",
+      "description": "One row per value with links to the PNG and/or SVG.",
+      "template": "{{links.apiDefaultDatasetUrl}}/items?view=overview"
+    },
+    "zip": {
+      "type": "string",
+      "title": "All barcodes (ZIP)",
+      "description": "Every generated file in one ZIP (when more than one value).",
+      "template": "{{links.apiDefaultKeyValueStoreUrl}}/records/barcodes.zip"
+    },
+    "summary": {
+      "type": "string",
+      "title": "Summary",
+      "description": "Counts of barcodes generated and failed, plus the ZIP link.",
+      "template": "{{links.apiDefaultKeyValueStoreUrl}}/records/SUMMARY"
+    }
+  }
+}

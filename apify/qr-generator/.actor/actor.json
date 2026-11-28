@@ -1,0 +1,35 @@
+{
+  "actorSpecification": 1,
+  "name": "qr-code-generator",
+  "title": "QR Code Generator (Bulk, Logo, SVG & PNG)",
+  "description": "Generate QR codes in bulk from a list of URLs or texts: PNG or SVG, any size, custom colours, transparent background, rounded or dot style, your logo in the middle, all in one ZIP. Wi-Fi, vCard and WhatsApp formats work too. Pay per QR code.",
+  "version": "1.0",
+  "buildTag": "latest",
+  "minMemoryMbytes": 256,
+  "maxMemoryMbytes": 4096,
+  "defaultMemoryMbytes": 512,
+  "input": "./input_schema.json",
+  "output": "./output_schema.json",
+  "dockerfile": "../Dockerfile",
+  "readme": "../README.md",
+  "storages": {
+    "dataset": {
+      "actorSpecification": 1,
+      "views": {
+        "overview": {
+          "title": "QR codes",
+          "transformation": { "fields": ["pngUrl", "text", "name", "svgUrl", "version", "error"] },
+          "display": {
+            "component": "table",
+            "properties": {
+              "pngUrl": { "label": "QR code", "format": "image" },
+              "text": { "label": "Content" },
+              "svgUrl": { "label": "SVG", "format": "link" },
+              "version": { "label": "QR version", "format": "number" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

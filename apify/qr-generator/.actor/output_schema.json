@@ -1,0 +1,24 @@
+{
+  "actorOutputSchemaVersion": 1,
+  "title": "Output of QR Code Generator",
+  "properties": {
+    "results": {
+      "type": "string",
+      "title": "QR codes",
+      "description": "One row per item with links to the PNG and/or SVG.",
+      "template": "{{links.apiDefaultDatasetUrl}}/items?view=overview"
+    },
+    "zip": {
+      "type": "string",
+      "title": "All QR codes (ZIP)",
+      "description": "Every generated file in one ZIP (when more than one item).",
+      "template": "{{links.apiDefaultKeyValueStoreUrl}}/records/qr-codes.zip"
+    },
+    "summary": {
+      "type": "string",
+      "title": "Summary",
+      "description": "Counts of codes generated and failed, plus the ZIP link.",
+      "template": "{{links.apiDefaultKeyValueStoreUrl}}/records/SUMMARY"
+    }
+  }
+}
