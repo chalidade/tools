@@ -1,0 +1,19 @@
+{
+  "name": "toowl-web-to-pdf",
+  "version": "1.0.0",
+  "private": true,
+  "description": "HTML, URL and Markdown to PDF in bulk with headless Chromium, plus HTML templates filled from data (invoices, certificates). Apify Actor by toowl.",
+  "type": "module",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "node src/main.js"
+  },
+  "license": "AGPL-3.0-only",
+  "engines": { "node": ">=20" },
+  "dependencies": {
+    "apify": "^3.8.0",
+    "fflate": "^0.8.2",
+    "marked": "^18.1.0",
+    "playwright": "*"
+  }
+}

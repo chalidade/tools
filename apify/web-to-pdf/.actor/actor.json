@@ -1,0 +1,34 @@
+{
+  "actorSpecification": 1,
+  "name": "html-to-pdf",
+  "title": "HTML to PDF, URL to PDF & Markdown to PDF (Bulk, Templates)",
+  "description": "Turn web pages, HTML or Markdown into PDFs in bulk with headless Chrome: A4/Letter, margins, landscape, backgrounds, page numbers. Fill one HTML template from your data to make hundreds of invoices, certificates or tickets. Pay per PDF.",
+  "version": "1.0",
+  "buildTag": "latest",
+  "minMemoryMbytes": 1024,
+  "maxMemoryMbytes": 8192,
+  "input": "./input_schema.json",
+  "output": "./output_schema.json",
+  "dockerfile": "../Dockerfile",
+  "readme": "../README.md",
+  "storages": {
+    "dataset": {
+      "actorSpecification": 1,
+      "views": {
+        "overview": {
+          "title": "PDFs",
+          "transformation": {
+            "fields": ["name", "title", "pages", "sizeKb", "pdfUrl", "source", "error"]
+          },
+          "display": {
+            "component": "table",
+            "properties": {
+              "pdfUrl": { "label": "Download PDF", "format": "link" },
+              "source": { "label": "Source" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

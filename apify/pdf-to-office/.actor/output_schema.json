@@ -1,0 +1,18 @@
+{
+  "actorOutputSchemaVersion": 1,
+  "title": "Output of PDF to Word & Excel Converter",
+  "properties": {
+    "results": {
+      "type": "string",
+      "title": "Converted files",
+      "description": "One row per input PDF, with download links for the Word and/or Excel file.",
+      "template": "{{links.apiDefaultDatasetUrl}}/items?view=overview"
+    },
+    "files": {
+      "type": "string",
+      "title": "DOCX / XLSX files",
+      "description": "Result files in the default key-value store, plus a SUMMARY record.",
+      "template": "{{links.apiDefaultKeyValueStoreUrl}}/keys"
+    }
+  }
+}

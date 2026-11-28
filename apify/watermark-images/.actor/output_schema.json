@@ -1,0 +1,18 @@
+{
+  "actorOutputSchemaVersion": 1,
+  "title": "Output of Bulk Image Watermark",
+  "properties": {
+    "results": {
+      "type": "string",
+      "title": "Watermarked images",
+      "description": "One row per input image, with a link to the watermarked file.",
+      "template": "{{links.apiDefaultDatasetUrl}}/items?view=overview"
+    },
+    "files": {
+      "type": "string",
+      "title": "Image files",
+      "description": "Watermarked images and watermarked.zip in the default key-value store, plus a SUMMARY record.",
+      "template": "{{links.apiDefaultKeyValueStoreUrl}}/keys"
+    }
+  }
+}

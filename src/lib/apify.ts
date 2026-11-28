@@ -54,6 +54,42 @@ export const APIFY_CATALOG: ApifyActor[] = [
     tools: ['ocr', 'scan'],
   },
   {
+    name: 'pdf-to-word-excel',
+    published: false,
+    title: ['PDF ke Word & Excel', 'PDF to Word & Excel'],
+    blurb: [
+      'DOCX yang bisa diedit (font, tebal/miring tetap) dan XLSX dengan tabel jadi sel, angka dan tanggal jadi nilai asli.',
+      'Editable DOCX (fonts, bold/italic kept) and XLSX with tables in cells, numbers and dates as real values.',
+    ],
+    price: 0.002,
+    unit: ['halaman', 'page'],
+    tools: ['pdf-to-word', 'pdf-to-excel'],
+  },
+  {
+    name: 'html-to-pdf',
+    published: false,
+    title: ['HTML, URL & Markdown ke PDF', 'HTML, URL & Markdown to PDF'],
+    blurb: [
+      'Chrome asli: halaman web, HTML atau Markdown jadi PDF, plus satu template HTML diisi data untuk ratusan invoice atau sertifikat.',
+      'Real Chrome: web pages, HTML or Markdown to PDF, plus one HTML template filled from data for hundreds of invoices or certificates.',
+    ],
+    price: 0.003,
+    unit: ['PDF', 'PDF'],
+    tools: ['markdown-to-pdf'],
+  },
+  {
+    name: 'pdf-password-protect',
+    published: false,
+    title: ['Kunci & buka password PDF', 'PDF Password Protect & Unlock'],
+    blurb: [
+      'AES-256, password berbeda per file (slip gaji, tagihan), larang cetak/salin/edit. Atau buka PDF yang password-nya kamu tahu.',
+      'AES-256, a different password per file (payslips, statements), block print/copy/edit. Or unlock PDFs you have the password for.',
+    ],
+    price: 0.002,
+    unit: ['PDF', 'PDF'],
+    tools: ['protect-pdf', 'unlock-pdf'],
+  },
+  {
     name: 'office-converter',
     published: false,
     title: ['Word, Excel & PowerPoint ke PDF', 'Word, Excel & PowerPoint to PDF'],
@@ -166,6 +202,30 @@ export const APIFY_CATALOG: ApifyActor[] = [
     price: 0.001,
     unit: ['gambar', 'image'],
     tools: ['qr-reader'],
+  },
+  {
+    name: 'image-to-pdf',
+    published: false,
+    title: ['Gambar ke PDF', 'Image to PDF'],
+    blurb: [
+      'Banyak foto atau scan jadi satu PDF (atau satu PDF per gambar): A4/Letter/ukuran gambar, orientasi otomatis, rotasi EXIF.',
+      'Many photos or scans into one PDF (or one per image): A4/Letter/fit, auto orientation, EXIF rotation.',
+    ],
+    price: 0.001,
+    unit: ['gambar', 'image'],
+    tools: ['image-to-pdf'],
+  },
+  {
+    name: 'watermark-images',
+    published: false,
+    title: ['Watermark foto massal', 'Bulk Image Watermark'],
+    blurb: [
+      'Logo atau teks di pojok, tengah atau pola miring berulang. Sekalian resize dan hapus data EXIF/GPS.',
+      'Logo or text in a corner, the centre or a tiled diagonal pattern. Resizes and strips EXIF/GPS in the same pass.',
+    ],
+    price: 0.001,
+    unit: ['gambar', 'image'],
+    tools: ['watermark-foto'],
   },
   {
     name: 'qr-code-generator',
