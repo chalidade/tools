@@ -1,7 +1,7 @@
 # Paket: tools yang bisa dipasang di situs lain
 
 Setiap folder di sini adalah satu tool yang dikemas sebagai paket npm, supaya
-orang lain bisa memasangnya di website mereka. Semua 72 tool sudah punya paket:
+orang lain bisa memasangnya di website mereka. Semua 80 tool di bawah sudah punya paket (8 terakhir, AI Kit, baru dijual di kit; belum terbit di npm):
 
 | Paket | Elemen | Status |
 | --- | --- | --- |
@@ -21,6 +21,7 @@ orang lain bisa memasangnya di website mereka. Semua 72 tool sudah punya paket:
 | [`@chalidade/convert-image`](./convert-image) | `<convert-image>` | siap terbit (0.1.0) |
 | [`@chalidade/crop-resize-image`](./crop-resize-image) | `<crop-resize-image>` | siap terbit (0.1.0) |
 | [`@chalidade/date-calculator`](./date-calculator) | `<date-calculator>` | siap terbit (0.1.0) |
+| [`@chalidade/denoise`](./denoise) | `<audio-denoise>` | kit saja |
 | [`@chalidade/doc-to-pdf`](./doc-to-pdf) | `<doc-to-pdf>` | siap terbit (0.1.0) |
 | [`@chalidade/drums`](./drums) | `<drum-machine>` | siap terbit (0.1.0) |
 | [`@chalidade/encode-decode`](./encode-decode) | `<encode-decode>` | siap terbit (0.1.0) |
@@ -29,11 +30,12 @@ orang lain bisa memasangnya di website mereka. Semua 72 tool sudah punya paket:
 | [`@chalidade/favicon-generator`](./favicon-generator) | `<favicon-generator>` | siap terbit (0.1.0) |
 | [`@chalidade/gaji-bersih`](./gaji-bersih) | `<take-home-pay>` | siap terbit (0.1.0) |
 | [`@chalidade/gif-mp4`](./gif-mp4) | `<gif-mp4>` | siap terbit (0.1.0) |
-| [`@chalidade/guitar-tuner`](./guitar-tuner) | `<guitar-tuner>` | terbit (0.1.0) |
 | [`@chalidade/guitar`](./guitar) | `<virtual-guitar>` | siap terbit (0.1.0) |
+| [`@chalidade/guitar-tuner`](./guitar-tuner) | `<guitar-tuner>` | terbit (0.1.0) |
 | [`@chalidade/hijriah`](./hijriah) | `<hijri-calendar>` | terbit (0.1.0) |
 | [`@chalidade/image-to-base64`](./image-to-base64) | `<image-to-base64>` | siap terbit (0.1.0) |
 | [`@chalidade/image-to-pdf`](./image-to-pdf) | `<image-to-pdf>` | terbit (0.1.0) |
+| [`@chalidade/image-to-svg`](./image-to-svg) | `<image-to-svg>` | kit saja |
 | [`@chalidade/jadwal-sholat`](./jadwal-sholat) | `<prayer-times>` | terbit (0.1.0) |
 | [`@chalidade/json-beautify`](./json-beautify) | `<json-beautify>` | siap terbit (0.1.0) |
 | [`@chalidade/json-minify`](./json-minify) | `<json-minify>` | siap terbit (0.1.0) |
@@ -44,6 +46,7 @@ orang lain bisa memasangnya di website mereka. Semua 72 tool sudah punya paket:
 | [`@chalidade/merge-pdf`](./merge-pdf) | `<merge-pdf>` | terbit (0.1.0) |
 | [`@chalidade/metronome`](./metronome) | `<web-metronome>` | terbit (0.1.0) |
 | [`@chalidade/notes`](./notes) | `<markdown-notes>` | siap terbit (0.1.0) |
+| [`@chalidade/ocr`](./ocr) | `<image-to-text>` | kit saja |
 | [`@chalidade/organize-pdf`](./organize-pdf) | `<organize-pdf>` | siap terbit (0.1.0) |
 | [`@chalidade/page-numbers`](./page-numbers) | `<page-numbers>` | siap terbit (0.1.0) |
 | [`@chalidade/pas-foto`](./pas-foto) | `<pas-foto>` | siap terbit (0.1.0) |
@@ -62,17 +65,22 @@ orang lain bisa memasangnya di website mereka. Semua 72 tool sudah punya paket:
 | [`@chalidade/qr-reader`](./qr-reader) | `<qr-reader>` | terbit (0.1.0) |
 | [`@chalidade/qris`](./qris) | `<qris-amount>` | terbit (0.1.0) |
 | [`@chalidade/remove-background`](./remove-background) | `<remove-background>` | siap terbit (0.1.0) |
+| [`@chalidade/remove-object`](./remove-object) | `<remove-object>` | kit saja |
 | [`@chalidade/screen-recorder`](./screen-recorder) | `<screen-recorder>` | terbit (0.1.1) |
 | [`@chalidade/sign-pdf`](./sign-pdf) | `<sign-pdf>` | terbit (0.1.0) |
 | [`@chalidade/split-pdf`](./split-pdf) | `<split-pdf>` | terbit (0.1.0) |
 | [`@chalidade/strip-exif`](./strip-exif) | `<strip-exif>` | terbit (0.1.0) |
+| [`@chalidade/subtitle`](./subtitle) | `<subtitle-editor>` | kit saja |
 | [`@chalidade/tasbih`](./tasbih) | `<tasbih-counter>` | siap terbit (0.1.0) |
 | [`@chalidade/terbilang`](./terbilang) | `<terbilang-converter>` | terbit (0.1.0) |
 | [`@chalidade/text-diff`](./text-diff) | `<text-diff>` | siap terbit (0.1.0) |
+| [`@chalidade/transkrip`](./transkrip) | `<speech-to-text>` | kit saja |
 | [`@chalidade/trim-media`](./trim-media) | `<trim-media>` | siap terbit (0.1.0) |
 | [`@chalidade/unit-converter`](./unit-converter) | `<unit-converter>` | siap terbit (0.1.0) |
 | [`@chalidade/unlock-pdf`](./unlock-pdf) | `<unlock-pdf>` | terbit (0.1.0) |
+| [`@chalidade/upscale-image`](./upscale-image) | `<upscale-image>` | kit saja |
 | [`@chalidade/uuid`](./uuid) | `<uuid-generator>` | siap terbit (0.1.0) |
+| [`@chalidade/vocal-remover`](./vocal-remover) | `<vocal-remover>` | kit saja |
 | [`@chalidade/watermark-pdf`](./watermark-pdf) | `<watermark-pdf>` | siap terbit (0.1.0) |
 | [`@chalidade/whiteboard`](./whiteboard) | `<web-whiteboard>` | siap terbit (0.1.0) |
 | [`@chalidade/word-counter`](./word-counter) | `<word-counter>` | siap terbit (0.1.0) |
