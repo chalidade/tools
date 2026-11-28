@@ -5,9 +5,15 @@ terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
 ## 2026-11-28 — Penghapus vokal AI
 
-Satu tool baru; total sekarang **146 tools**.
+Satu tool baru; total sekarang **147 tools**.
 
 - **Penghapus Vokal AI** (`/vocal-remover/`): pisahkan vokal dari musik dengan model AI SCNet (Tong dkk., ICASSP 2024; kode dan bobot MIT) yang berjalan di browser lewat ONNX Runtime Web (WebGPU bila ada, WebAssembly bila tidak) di Web Worker. Pilih **Vokal + Instrumental** (minus one karaoke dan acapella; instrumental = lagu dikurangi vokal, jadi tidak ada bagian musik yang hilang) atau **4 stem** (vokal, drum, bass, lainnya), kualitas Cepat (tiap sampel didengar di 2 segmen) atau Teliti (4), pratinjau tiap stem, unduh MP3/WAV. Model 24 MB dibundel (bobot float16, dihitung float32), diunduh sekali lalu tersimpan; `build-model.py` mengekspornya dari checkpoint aslinya. STFT/iSTFT ditulis sendiri (`stft.ts`) dan seluruh pipeline dicek terhadap PyTorch (55–72 dB SNR per stem). HP dibatasi 2 menit sekali proses (1 menit untuk 4 stem), laptop 10/6 menit; lagu yang lebih panjang dipilih bagiannya dengan slider. Menggantikan rencana "Penghapus Vokal" kiri − kanan di ROADMAP, yang hasilnya bergantung pada mixing lagu.
+
+## 2026-11-28 — Teks ke suara
+
+Satu tool baru; total sekarang **146 tools**.
+
+- **Teks ke Suara** (`/text-to-speech/`): tulis atau tempel teks, pilih bahasa Indonesia atau Inggris dan suaranya, atur kecepatan (dan nada), lalu putar dan unduh sebagai **MP3**, M4A (44,1 kHz stereo, siap dimasukkan ke CapCut/TikTok/Reels) atau WAV. Semua dibuat di perangkat, teks tidak dikirim ke mana pun. Bahasa Indonesia memakai eSpeak NG (GPL-3.0, wasm 18 MB berisi semua bahasa) dengan empat pilihan suara pria/wanita: jelas dan instan, tapi masih terdengar seperti robot. Bahasa Inggris punya suara AI **Joe** (Piper `en_US-joe-medium`, CC0, int8 16,6 MB) lewat ONNX Runtime Web yang sama dengan Perbesar Gambar; eSpeak membuat fonemnya dan tanda baca dikembalikan per klausa supaya jeda dan intonasinya pas. Teks panjang (sampai 20.000 karakter) dipotong per kalimat dengan progres dan tombol batal; satu baris = satu kalimat, baris kosong = jeda lebih panjang. Hasil kedua mesin sudah dicek dengan Whisper: kalimat Inggris terbaca persis, kalimat Indonesia sebagian besar benar.
 
 ## 2026-11-28 — Twibbon
 
