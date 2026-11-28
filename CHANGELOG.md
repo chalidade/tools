@@ -5,9 +5,16 @@ terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
 ## 2026-11-28 — Transkrip suara ke teks
 
-Satu tool baru; total sekarang **147 tools**.
+Satu tool baru; total sekarang **148 tools**.
 
 - **Transkrip Suara ke Teks** (`/transkrip/`): rekaman, voice note WhatsApp (.opus), atau video jadi teks dengan AI Whisper yang jalan di perangkat, tanpa upload dan tanpa batas menit. Pilih bahasa Indonesia, Inggris, atau deteksi otomatis; teks muncul sambil berjalan, tiap kalimat punya cap waktu yang bisa diklik untuk memutar bagian itu dan bisa diedit langsung. Unduh TXT (dengan atau tanpa cap waktu), SRT, atau VTT, atau buka hasilnya di tool Subtitle. Mesin Whisper ditulis sendiri di atas onnxruntime-web yang sudah dipakai situs (`whisper.ts`: log-mel, decoder dengan cache, aturan cap waktu, dekode panjang per 30 detik, lompat jeda hening), dengan model Whisper base 8-bit (78 MB, sha256 sama dengan Xenova/whisper-base) di-host sendiri dan diunduh sekali saat pertama dipakai. Suara diambil lewat `audioMono` baru di `src/lib/media.ts`.
+
+## 2026-11-28 — Hapus objek dari foto
+
+Satu tool baru; total sekarang **147 tools**.
+
+- **Hapus Objek dari Foto** (`/remove-object/`): warnai orang lewat, benda, kabel, tulisan, atau coretan dengan kuas, tekan *Hapus yang ditandai*, dan AI mengisinya dengan latar di sekitarnya. Modelnya MI-GAN (MIT, Picsart AI Research), diekspor ke ONNX (26 MB, `build-model.py`) dan dijalankan ONNX Runtime Web di WebGPU atau WebAssembly; diunduh hanya saat tool dipakai, foto tidak pernah diunggah. Tiap area yang diwarnai diisi di jendela konteks 512 px-nya sendiri (area ± 1,8× ukurannya, jendela yang bertumpuk digabung), lalu dibaurkan kembali dengan tepi lembut, sehingga bagian foto lainnya tetap resolusi penuh (sampai 4096 px). Kuas tandai/hapus tanda dengan ukuran yang bisa diatur, urungkan/ulangi (Ctrl/⌘+Z, Ctrl+Y) untuk coretan maupun hasil, tahan tombol untuk membandingkan dengan foto asli, unduh JPG/PNG. Ditulis jelas bahwa tool ini untuk foto sendiri, bukan untuk menghapus watermark karya orang lain.
+
 
 ## 2026-11-28 — Teks ke suara
 

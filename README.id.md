@@ -2,7 +2,7 @@
 
 [English](README.md) · **Bahasa Indonesia**
 
-Kotak perkakas file sehari-hari: **147 tools gratis** untuk PDF, Office, gambar
+Kotak perkakas file sehari-hari: **148 tools gratis** untuk PDF, Office, gambar
 CAD, foto, video, audio, musik, dan hitungan sehari-hari yang jalan **sepenuhnya
 di browser**. File diproses di perangkat pengguna: tidak di-upload ke server dan
 tidak disimpan di mana pun.
@@ -106,6 +106,7 @@ dan mengirim event berisi file rekaman. Ada juga API tanpa UI untuk developer.
 | Sensor Foto | [`/sensor-foto/`](https://toowl.my.id/sensor-foto/) | Tutup NIK, wajah, plat, atau alamat dengan kotak atau kuas: blok hitam (bawaan), piksel, atau blur (box blur sendiri). Ada peringatan bahwa blur tipis pada teks kecil bisa ditebak; foto disimpan ulang tanpa EXIF. |
 | Hapus Metadata Foto | [`/strip-exif/`](https://toowl.my.id/strip-exif/) | Tampilkan EXIF (kamera, lensa, tanggal, bukaan/ISO, lokasi GPS dengan peta teks), lalu simpan tanpa metadata. JPG/PNG dibersihkan tanpa mengubah gambar; WebP dan foto berorientasi miring disimpan ulang. |
 | Hapus Latar Gambar | [`/remove-background/`](https://toowl.my.id/remove-background/) | Sekali ketuk dengan AI di perangkat (U²-Net-P, Apache-2.0, 4,6 MB, lewat ONNX Runtime Web; diunduh hanya saat dipakai) atau pilih latarnya sendiri: tongkat ajaib (area bersambung dengan warna mirip, toleransi diatur), pilih warna (semua piksel serupa di seluruh gambar), lasso, kotak (dalam/luar seleksi), dan kuas hapus/pulihkan; urungkan (Ctrl/⌘+Z), balik seleksi, zoom sampai 400%, mode tinjau. Tepi bisa dikikis (hilangkan sisa warna latar) dan dihaluskan. Hasil PNG transparan, latar diblur, atau putih/merah/biru/warna lain (PNG/JPG). Cocok untuk latar polos; rambut dan latar ramai perlu dirapikan manual. Gambar di atas 3000 px diperkecil agar tiap langkah tetap cepat. |
+| Hapus Objek dari Foto | [`/remove-object/`](https://toowl.my.id/remove-object/) | Warnai orang, benda, tulisan, atau coretan; MI-GAN (MIT, 26 MB, diekspor ke ONNX oleh `build-model.py`, WebGPU atau WebAssembly, diunduh hanya saat dipakai) mengisinya dari latar sekitar. Tiap area yang diwarnai diisi dalam jendela konteks 512 px sendiri lalu dibaurkan kembali, jadi bagian lain tetap resolusi penuh. Kuas tandai/hapus tanda, urungkan/ulangi (Ctrl/⌘+Z, Ctrl+Y), tahan untuk lihat asli; foto di atas 4096 px diperkecil. Untuk foto sendiri, bukan untuk menghapus watermark karya orang lain. |
 | Tanda Tangan ke PNG | [`/signature-png/`](https://toowl.my.id/signature-png/) | Gambar tanda tangan atau foto dari kertas; latar dan bintik dibuang, warna tinta bisa diganti, hasilnya PNG transparan yang dipotong rapat. |
 | Scan Dokumen | [`/scan/`](https://toowl.my.id/scan/) | Foto kertas, tarik empat sudut (tebakan awal otomatis), luruskan perspektif di canvas tanpa OpenCV, pilih hitam-putih/abu-abu/warna, lalu gabung beberapa halaman jadi satu PDF (pdf-lib). |
 | OCR — Foto ke Teks | [`/ocr/`](https://toowl.my.id/ocr/) | Teks Indonesia dan Inggris dari foto atau tangkapan layar dengan Tesseract (wasm); worker, core, dan data bahasa ikut dibundel situs, tanpa CDN, dan baru dimuat saat Baca teks ditekan. |

@@ -3,7 +3,7 @@
 **English** · [Bahasa Indonesia](README.id.md)
 
 **My everyday file toolbox, built for the file work I do every day and published free for everyone.**
-147 tools for PDF, Office files, CAD drawings, images, video, audio, music and everyday calculations, and every one of them runs entirely in your browser.
+148 tools for PDF, Office files, CAD drawings, images, video, audio, music and everyday calculations, and every one of them runs entirely in your browser.
 Your files are never uploaded.
 
 [![Live demo](https://img.shields.io/badge/live-toowl.my.id-c8f031)](https://toowl.my.id/)
@@ -95,6 +95,7 @@ Each reader opens the other three formats too.
 - [Censor Photo](https://toowl.my.id/en/sensor-foto/): box or brush over ID numbers, faces or plates; black block (default), pixelate or blur, with a warning that light blur on small text can be guessed
 - [Remove Photo Metadata](https://toowl.my.id/en/strip-exif/): shows camera, date and GPS; JPG/PNG are cleaned losslessly
 - [Remove Background](https://toowl.my.id/en/remove-background/): one-tap AI cut-out (U²-Net-P on ONNX Runtime Web, downloaded only when used), plus magic wand, color select, lasso and brush to tidy up; transparent, blurred or colored background
+- [Remove Object from Photo](https://toowl.my.id/en/remove-object/): paint over people, things, text or scribbles and MI-GAN (MIT, 26 MB ONNX, WebGPU or WebAssembly, downloaded only when used) fills them from the background; each painted area is filled in its own 512 px context window and blended back, so the rest keeps full resolution; undo/redo, hold to compare
 - [Signature to PNG](https://toowl.my.id/en/signature-png/): draw or photograph a signature, remove the paper and specks, recolour the ink, download a transparent PNG
 - [Document Scanner](https://toowl.my.id/en/scan/): photograph paper, drag the four corners (found automatically as a first guess), straighten the perspective on a canvas without OpenCV, pick black-and-white, grayscale or color, and combine pages into one PDF (pdf-lib)
 - [OCR — Photo to Text](https://toowl.my.id/en/ocr/): Indonesian and English text from photos and screenshots with Tesseract (wasm); the worker, core and language data are bundled with the site, never fetched from a CDN, and loaded only when you press Read text
