@@ -56,6 +56,11 @@ picture; the rules that matter when editing:
   `<title>` in the words people search with and extra FAQ, merged by
   `toolMeta`/`toolFaq` in `seo.ts`; `POPULAR` in `seo.ts` is the "Tools
   populer" list linked from every tool page.
+  A registry entry in `VARIANTS` with `variantOf: '<slug>'` is an extra
+  landing page of that tool (e.g. `twibbon-ramadan`): its own address,
+  title, FAQ and sitemap entry (`TOOL_PAGES`, `findTool`), but not listed,
+  searched or counted (`TOOLS`). The tool reads `useRoute().slug` to pick
+  its preset; `relatedTools` links the family together first.
 - `doc-to-pdf` renders with docx-preview, extended in `docx-extend.ts` by
   wrapping its internal parser's methods once (the prototype comes from
   parsing an empty package): floating pictures (wrapNone/behind) and framePr

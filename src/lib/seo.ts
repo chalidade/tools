@@ -5,7 +5,7 @@
 // page a visitor sees say the same thing.
 
 import type { Lang } from '@/lib/i18n'
-import { TOOLS, categoryText, toolText, type Tool } from '@/tools/registry'
+import { TOOL_PAGES, TOOLS, categoryText, toolText, type Tool } from '@/tools/registry'
 import { TOOLS_EN } from '@/tools/registry-en'
 import { seoCopy } from '@/lib/seo-content'
 
@@ -198,7 +198,11 @@ export function popularHeading(lang: Lang) {
 
 /** Other tools in the same category, for the "related" links. */
 export function relatedTools(tool: Tool, max = 6): Tool[] {
-  return TOOLS.filter((t) => t.category === tool.category && t.slug !== tool.slug).slice(0, max)
+  // A tool and its landing pages (twibbon → twibbon-ramadan …) link to each other first.
+  const family = tool.variantOf ?? tool.slug
+  const kin = TOOL_PAGES.filter((t) => t.slug !== tool.slug && (t.slug === family || t.variantOf === family))
+  const rest = TOOLS.filter((t) => t.category === tool.category && t.slug !== tool.slug && t.slug !== family)
+  return [...kin, ...rest].slice(0, Math.max(max, kin.length))
 }
 
 export function relatedHeading(tool: Tool, lang: Lang) {
@@ -224,7 +228,7 @@ export function structuredData(meta: PageMeta) {
         mainEntity: (meta.slug === API_SLUG ? apiFaq : embedFaq)(meta.lang).map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
       },
     ]
-  const tool = TOOLS.find((t) => t.slug === meta.slug)!
+  const tool = TOOL_PAGES.find((t) => t.slug === meta.slug)!
   const app = {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
@@ -239,12 +243,14 @@ export function structuredData(meta: PageMeta) {
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'IDR' },
     isPartOf: { '@type': 'WebSite', name: 'toowl', url: SITE },
   }
+  const parent = tool.variantOf ? TOOL_PAGES.find((t) => t.slug === tool.variantOf) : undefined
   const crumbs = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'toowl', item: absoluteUrl('', meta.lang) },
-      { '@type': 'ListItem', position: 2, name: toolText(tool, meta.lang).title, item: url },
+      ...(parent ? [{ '@type': 'ListItem', position: 2, name: toolText(parent, meta.lang).title, item: absoluteUrl(parent.slug, meta.lang) }] : []),
+      { '@type': 'ListItem', position: parent ? 3 : 2, name: toolText(tool, meta.lang).title, item: url },
     ],
   }
   const faq = toolFaq(tool, meta.lang)
