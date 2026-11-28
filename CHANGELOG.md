@@ -3,6 +3,10 @@
 Catatan harian apa yang berubah di [tools](https://toowl.my.id/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-28 — Lima Actor Apify baru tayang di Store
+
+- Tayang di Apify Store malam ini: **QR Code Generator**, **PDF to Word & Excel**, **HTML/URL/Markdown to PDF**, **PDF Compressor**, dan **AI Background Remover**. Kartu dan tautannya di halaman `/api/` sekarang aktif. Sisanya menyusul lima per hari (batas publish Apify).
+
 ## 2026-11-28 — Actor Apify harga pangan harian
 
 - **Indonesia Food Prices Daily** (`apify/food-prices/`): harga pangan strategis dari PIHPS Bank Indonesia (beras, daging, telur, bawang, cabai, gula, minyak goreng, dll.) per hari, minggu, atau bulan; nasional, per provinsi, atau per kota; pasar tradisional, modern, pedagang besar, atau produsen. Grid situs (satu kolom per tanggal) diubah jadi satu baris per komoditas per hari dengan harga berupa angka. Ditagih per baris harga (`price-record`). Panel Harga Bapanas tidak dipakai karena API-nya butuh API key.
