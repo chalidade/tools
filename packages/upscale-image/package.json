@@ -1,0 +1,47 @@
+{
+  "name": "@chalidade/upscale-image",
+  "version": "0.1.0",
+  "description": "Upscale photos 2x or 4x with an on-device AI model (Real-ESRGAN general x4v3) on WebGPU or WebAssembly. Nothing is uploaded.",
+  "keywords": [
+    "web component",
+    "custom element"
+  ],
+  "license": "AGPL-3.0-only",
+  "author": "Chalid Ade Rahman",
+  "homepage": "https://toowl.my.id/#/upscale-image",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chalidade/tools.git",
+    "directory": "packages/upscale-image"
+  },
+  "bugs": "https://github.com/chalidade/tools/issues",
+  "type": "module",
+  "main": "./dist/element.js",
+  "module": "./dist/element.js",
+  "types": "./dist/element.d.ts",
+  "jsdelivr": "./dist/element.js",
+  "unpkg": "./dist/element.js",
+  "exports": {
+    ".": {
+      "types": "./dist/element.d.ts",
+      "import": "./dist/element.js"
+    },
+    "./element": {
+      "types": "./dist/element.d.ts",
+      "import": "./dist/element.js"
+    }
+  },
+  "sideEffects": [
+    "./dist/element.js"
+  ],
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "THIRD-PARTY-NOTICES.md"
+  ],
+  "scripts": {
+    "build": "tsc --noEmit -p . && vite build && cp types/*.d.ts dist/",
+    "prepublishOnly": "npm run build"
+  }
+}

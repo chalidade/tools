@@ -50,6 +50,11 @@ export const KITS = {
       'text-diff', 'encode-decode', 'color-picker', 'unit-converter', 'word-counter',
     ],
   },
+  'ai-kit': {
+    title: 'AI Kit',
+    tagline: 'On-device AI for photos, audio and documents: remove objects, upscale images, denoise voice, split vocals, OCR, speech to text with subtitles, and image to SVG. No server, no API keys.',
+    tools: ['remove-object', 'upscale-image', 'denoise', 'vocal-remover', 'ocr', 'transkrip', 'subtitle', 'image-to-svg'],
+  },
   'islamic-kit': {
     title: 'Islamic Kit',
     tagline: 'Prayer times computed on-device, qibla compass, Hijri calendar, zakat calculator and a tasbih counter.',
@@ -74,7 +79,8 @@ export async function allTools() {
 
 export async function kit(id) {
   if (id === 'complete') {
-    const tools = await allTools()
+    // The AI Kit is sold on its own for now: the Complete Kit's listings promise its 72 tools.
+    const tools = (await allTools()).filter((t) => !KITS['ai-kit'].tools.includes(t))
     return {
       title: 'Complete Kit',
       tagline: `All ${tools.length} toowl components: PDF, Office, image, video, audio, music, developer, finance and Islamic tools.`,
@@ -90,8 +96,8 @@ export async function kit(id) {
   return KITS[id]
 }
 
-/** Kits listed on marketplaces (CodeCanyon, Codester); no singles: one item per bundle keeps the portfolio tidy for review. */
-export const ENVATO_KITS = ['complete', ...Object.keys(KITS)]
+/** Kits listed on marketplaces (CodeCanyon, Codester); no singles: one item per bundle keeps the portfolio tidy for review. The AI Kit is Gumroad-only for now. */
+export const ENVATO_KITS = ['complete', ...Object.keys(KITS).filter((k) => k !== 'ai-kit')]
 
 /** The marketplaces' live preview (no store links), built by `--preview` and deployed with the site. */
 export const PREVIEW_URL = 'https://toowl.my.id/kit-preview/'

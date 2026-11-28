@@ -211,6 +211,11 @@ async function buildKit(id) {
     LICENSE_SUMMARY: ENVATO
       ? `Sold on ${STORE.name} under the ${STORE.license}: see \`LICENSE.md\`. In short,\n${STORE.small}. Don't redistribute or resell the kit itself. The bundled\nopen-source libraries keep their own licenses (\`THIRD-PARTY-NOTICES.md\`, \`licenses/\`).`
       : "Commercial license: see `LICENSE.md`. In short, use it in unlimited projects\nof your own or your clients', closed source, with no AGPL obligations; don't\nresell the kit itself. The bundled open-source libraries keep their own\nlicenses (`THIRD-PARTY-NOTICES.md`, `licenses/`).",
+    API_LINE: rows.every((r) => r.api)
+      ? '- **A headless API**: plain async functions, so you can build your own UI.'
+      : rows.some((r) => r.api)
+        ? '- **A headless API** where the table below lists one: plain functions, so you can\n  build your own UI. The others ship as elements only.'
+        : '- No headless API in this kit: every component ships as an element.',
     SUPPORT: ENVATO
       ? `Updates are free: download the latest version from your ${STORE.downloads} any time. Questions or bugs: use ${STORE.support}.`
       : 'Updates are free: download the latest ZIP from your Gumroad library any time.\nQuestions or bugs: reply to your Gumroad receipt email.',
@@ -335,7 +340,7 @@ async function buildPreview(target) {
   cpSync(join(stage, 'dist'), join(target, 'dist'), { recursive: true })
   const all = await getKit('complete')
   const kits = { complete: { title: 'Complete Kit', tagline: all.tagline, items: all.tools.map((t) => [tagOf(t), t, pkg(t).description]) } }
-  for (const [id, k] of Object.entries(KITS)) kits[id] = { title: k.title, tagline: k.tagline, buy: CODESTER[id], items: k.tools.map((t) => [tagOf(t), t, pkg(t).description]) }
+  for (const [id, k] of Object.entries(KITS)) if (ENVATO_KITS.includes(id)) kits[id] = { title: k.title, tagline: k.tagline, buy: CODESTER[id], items: k.tools.map((t) => [tagOf(t), t, pkg(t).description]) }
   const logo = read(join(ROOT, 'src', 'components', 'Logo.tsx')).match(/const MARK =\s*'([^']+)'/)[1]
   mkdirSync(join(target, 'fonts'))
   for (const font of ['geist-latin.woff2', 'geist-mono-latin.woff2']) cpSync(join(ROOT, 'src', 'assets', 'fonts', font), join(target, 'fonts', font))

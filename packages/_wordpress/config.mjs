@@ -22,9 +22,12 @@ export const TESTED_UP_TO = '7.1'
 /** The WordPress.org username(s) for readme.txt "Contributors". */
 export const CONTRIBUTORS = 'salingjaga'
 
+/** Packages left out of the plugin: the AI Kit's models (~130 MB) would swell the Pro ZIP. */
+const NOT_IN_PLUGIN = ['remove-object', 'upscale-image', 'denoise', 'vocal-remover', 'ocr', 'transkrip', 'subtitle', 'image-to-svg']
+
 /** Every tool that has a package (packages/<tool>/package.json). */
 export const TOOLS = readdirSync(new URL('..', import.meta.url))
-  .filter((d) => !d.startsWith('_') && existsSync(new URL(`../${d}/package.json`, import.meta.url)))
+  .filter((d) => !d.startsWith('_') && !NOT_IN_PLUGIN.includes(d) && existsSync(new URL(`../${d}/package.json`, import.meta.url)))
   .sort()
 
 /**

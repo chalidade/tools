@@ -10,7 +10,7 @@ is no server or API key for you to run. Each component ships two ways:
 - **A drop-in web component** (custom element) with its full UI, isolated in
   Shadow DOM so your CSS can't break it. Works in plain HTML, React, Vue,
   Svelte, Angular, WordPress, anything that renders HTML.
-- **A headless API**: plain async functions, so you can build your own UI.
+{{API_LINE}}
 
 Try each one live first:
 

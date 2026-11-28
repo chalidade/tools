@@ -1,0 +1,47 @@
+{
+  "name": "@chalidade/transkrip",
+  "version": "0.1.0",
+  "description": "Transcribe audio and video to text or SRT/VTT subtitles with Whisper running on-device (ONNX Runtime Web). Nothing is uploaded.",
+  "keywords": [
+    "web component",
+    "custom element"
+  ],
+  "license": "AGPL-3.0-only",
+  "author": "Chalid Ade Rahman",
+  "homepage": "https://toowl.my.id/#/transkrip",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chalidade/tools.git",
+    "directory": "packages/transkrip"
+  },
+  "bugs": "https://github.com/chalidade/tools/issues",
+  "type": "module",
+  "main": "./dist/element.js",
+  "module": "./dist/element.js",
+  "types": "./dist/element.d.ts",
+  "jsdelivr": "./dist/element.js",
+  "unpkg": "./dist/element.js",
+  "exports": {
+    ".": {
+      "types": "./dist/element.d.ts",
+      "import": "./dist/element.js"
+    },
+    "./element": {
+      "types": "./dist/element.d.ts",
+      "import": "./dist/element.js"
+    }
+  },
+  "sideEffects": [
+    "./dist/element.js"
+  ],
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "THIRD-PARTY-NOTICES.md"
+  ],
+  "scripts": {
+    "build": "tsc --noEmit -p . && vite build && cp types/*.d.ts dist/",
+    "prepublishOnly": "npm run build"
+  }
+}
