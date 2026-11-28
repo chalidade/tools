@@ -384,7 +384,7 @@ sesudahnya.
 
 ## Hari 33 — 2026-11-19 · Foto: bingkai & identitas
 
-- [ ] **Twibbon** (`#/twibbon`): buka bingkai PNG transparan dari pembuat
+- [x] **Twibbon** (`#/twibbon`): buka bingkai PNG transparan dari pembuat
   acara, masukkan foto, lalu geser, perbesar (cubit di HP), dan putar sampai
   pas di lubang bingkai. Unduh PNG/JPG pada ukuran asli bingkai, atau bagikan
   langsung lewat `navigator.share` bila didukung. Foto dibaca dengan

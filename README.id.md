@@ -2,7 +2,7 @@
 
 [English](README.md) · **Bahasa Indonesia**
 
-Kotak perkakas file sehari-hari: **146 tools gratis** untuk PDF, Office, gambar
+Kotak perkakas file sehari-hari: **147 tools gratis** untuk PDF, Office, gambar
 CAD, foto, video, audio, musik, dan hitungan sehari-hari yang jalan **sepenuhnya
 di browser**. File diproses di perangkat pengguna: tidak di-upload ke server dan
 tidak disimpan di mana pun.
@@ -176,6 +176,7 @@ dan mengirim event berisi file rekaman. Ada juga API tanpa UI untuk developer.
 | Ubah Huruf | [`/ubah-huruf/`](https://toowl.my.id/ubah-huruf/) | HURUF BESAR, huruf kecil, Judul Tiap Kata, kalimat biasa, hapus spasi ganda dan baris kosong, atau satukan baris; sekali ketuk lalu salin, bisa diurungkan. |
 | Kalkulator Harga Jual & HPP | [`/harga-jual/`](https://toowl.my.id/harga-jual/) | HPP per unit dari satu kali produksi, lalu harga jual dari margin atau markup yang diinginkan setelah potongan admin, biaya layanan, diskon, dan pajak yang diisi sendiri (tarif tidak ditanam). Laba per unit, titik impas, isian terakhir tersimpan di perangkat. |
 | Label Pengiriman | [`/label-pengiriman/`](https://toowl.my.id/label-pengiriman/) | Pengirim diisi sekali, penerima ditempel dari Excel/CSV; label banyak per lembar A4, satu per halaman A6, atau stiker resi 100 × 150 mm, unduh PDF (pdf-lib). |
+| Twibbon | [`/twibbon/`](https://toowl.my.id/twibbon/) | Foto di belakang bingkai twibbon: PNG transparan dari panitia (lubangnya dicari otomatis) atau template 17 Agustus, Ramadan, Hari Guru, wisuda, MPLS yang teksnya bisa diubah; geser, cubit untuk zoom, putar, unduh PNG/JPG ukuran asli bingkai atau bagikan. Tiap template punya halaman sendiri, mis. [`/twibbon-ramadan/`](https://toowl.my.id/twibbon-ramadan/). |
 | Watermark Foto Massal | [`/watermark-foto/`](https://toowl.my.id/watermark-foto/) | Logo atau teks toko di banyak foto produk sekaligus: posisi atau pola berulang, ukuran, opasitas; diproses di Web Worker, metadata dibuang, unduh ZIP. |
 | Generator Barcode | [`/barcode/`](https://toowl.my.id/barcode/) | EAN-13, EAN-8, UPC-A, Code 128, Code 39 dengan digit cek otomatis, unduh PNG/SVG, dan lembar label A4 siap cetak (pdf-lib). |
 | Kwitansi & Invoice | [`/kwitansi/`](https://toowl.my.id/kwitansi/) | Kwitansi atau invoice PDF dengan item, diskon, pajak, dan nominal terbilang otomatis; data terakhir tersimpan di perangkat (pdf-lib). |

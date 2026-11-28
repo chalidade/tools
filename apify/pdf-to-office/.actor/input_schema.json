@@ -1,0 +1,57 @@
+{
+  "title": "PDF to Word & Excel input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "files": {
+      "title": "PDF URLs",
+      "type": "array",
+      "description": "Direct links to digital PDFs (reports, invoices, bank statements, contracts). Scanned PDFs need the OCR Actor first.",
+      "editor": "requestListSources",
+      "prefill": [
+        { "url": "https://raw.githubusercontent.com/chalidade/tools/main/apify/samples/report.pdf" }
+      ]
+    },
+    "output": {
+      "title": "Convert to",
+      "type": "string",
+      "description": "Word keeps the text flow (paragraphs, fonts, bold/italic). Excel puts tables into cells, with numbers and dates as real values.",
+      "editor": "select",
+      "enum": ["docx", "xlsx", "both"],
+      "enumTitles": ["Word (.docx)", "Excel (.xlsx)", "Both"],
+      "default": "docx"
+    },
+    "sheets": {
+      "title": "Excel sheets",
+      "type": "string",
+      "description": "One sheet for the whole PDF (a table header repeated on every page is kept once), or one sheet per page.",
+      "editor": "select",
+      "enum": ["merge", "per-page"],
+      "enumTitles": ["One sheet", "One sheet per page"],
+      "default": "merge"
+    },
+    "convertNumbers": {
+      "title": "Numbers and dates as values",
+      "type": "boolean",
+      "description": "Turns 1.234,56 / 1,234.56, percentages and dates into real Excel numbers (decimal style detected per file), so formulas work.",
+      "default": true
+    },
+    "maxPages": {
+      "title": "Max pages per PDF",
+      "type": "integer",
+      "description": "Only the first pages are converted; each page is charged.",
+      "minimum": 1,
+      "maximum": 2000,
+      "default": 200
+    },
+    "maxFileSizeMb": {
+      "title": "Max file size (MB)",
+      "type": "integer",
+      "default": 50,
+      "minimum": 1,
+      "maximum": 200,
+      "description": "Larger files are skipped with an error (not charged)."
+    }
+  },
+  "required": ["files"]
+}

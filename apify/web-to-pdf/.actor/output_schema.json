@@ -1,0 +1,18 @@
+{
+  "actorOutputSchemaVersion": 1,
+  "title": "Output of HTML to PDF",
+  "properties": {
+    "results": {
+      "type": "string",
+      "title": "PDFs",
+      "description": "One row per document, with a download link for its PDF.",
+      "template": "{{links.apiDefaultDatasetUrl}}/items?view=overview"
+    },
+    "files": {
+      "type": "string",
+      "title": "PDF files",
+      "description": "PDFs (and pdfs.zip with all of them) in the default key-value store, plus a SUMMARY record.",
+      "template": "{{links.apiDefaultKeyValueStoreUrl}}/keys"
+    }
+  }
+}

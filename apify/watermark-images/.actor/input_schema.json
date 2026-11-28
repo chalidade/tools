@@ -1,0 +1,130 @@
+{
+  "title": "Bulk Image Watermark input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "files": {
+      "title": "Image URLs",
+      "type": "array",
+      "description": "JPG, PNG, WebP, AVIF, TIFF or HEIF links (product photos, listings, portfolio shots).",
+      "editor": "requestListSources",
+      "prefill": [{ "url": "https://raw.githubusercontent.com/chalidade/tools/main/apify/samples/invoice.jpg" }]
+    },
+    "text": {
+      "title": "Watermark text",
+      "type": "string",
+      "description": "e.g. © My Shop or @myshop. Ignored when a logo URL is given.",
+      "editor": "textfield",
+      "prefill": "© My Shop",
+      "sectionCaption": "Watermark"
+    },
+    "logoUrl": {
+      "title": "Logo URL",
+      "type": "string",
+      "description": "Use your logo instead of text. A PNG with a transparent background looks best.",
+      "editor": "textfield"
+    },
+    "color": {
+      "title": "Text colour",
+      "type": "string",
+      "description": "white, black or a hex colour like #ffcc00. Text gets a soft outline so it reads on any photo.",
+      "editor": "textfield",
+      "default": "white"
+    },
+    "position": {
+      "title": "Position",
+      "type": "string",
+      "description": "A corner, an edge, the centre, or a repeated diagonal pattern over the whole image (hardest to crop out).",
+      "editor": "select",
+      "enum": ["br", "bl", "tr", "tl", "bc", "tc", "mc", "ml", "mr", "tile"],
+      "enumTitles": ["Bottom right", "Bottom left", "Top right", "Top left", "Bottom centre", "Top centre", "Centre", "Middle left", "Middle right", "Tiled pattern"],
+      "default": "br"
+    },
+    "sizePercent": {
+      "title": "Size (% of image width)",
+      "type": "integer",
+      "description": "Width of one watermark. Default 25 (22 for the tiled pattern).",
+      "minimum": 1,
+      "maximum": 100
+    },
+    "opacity": {
+      "title": "Opacity (%)",
+      "type": "integer",
+      "description": "100 = solid, 30–60 = subtle.",
+      "minimum": 1,
+      "maximum": 100,
+      "default": 60
+    },
+    "marginPercent": {
+      "title": "Edge margin (%)",
+      "type": "integer",
+      "description": "Space between the watermark and the edge, as % of the shorter side.",
+      "minimum": 0,
+      "maximum": 30,
+      "default": 3
+    },
+    "angle": {
+      "title": "Pattern angle (°)",
+      "type": "integer",
+      "description": "Rotation of the tiled pattern.",
+      "minimum": -90,
+      "maximum": 90,
+      "default": -30
+    },
+    "spacingPercent": {
+      "title": "Pattern spacing (%)",
+      "type": "integer",
+      "description": "Gap between tiles, as % of the watermark's size.",
+      "minimum": 0,
+      "maximum": 400,
+      "default": 80
+    },
+    "maxSide": {
+      "title": "Resize to (px, longest side)",
+      "type": "integer",
+      "description": "0 keeps the original size. 2048 or 1200 suit marketplaces and social media.",
+      "minimum": 0,
+      "maximum": 10000,
+      "default": 0,
+      "sectionCaption": "Output"
+    },
+    "format": {
+      "title": "Format",
+      "type": "string",
+      "description": "Auto keeps PNG and WebP as they are and saves everything else as JPG.",
+      "editor": "select",
+      "enum": ["auto", "jpg", "png", "webp"],
+      "enumTitles": ["Same as input", "JPG", "PNG", "WebP"],
+      "default": "auto"
+    },
+    "quality": {
+      "title": "Quality",
+      "type": "integer",
+      "description": "JPG / WebP quality, 30–100.",
+      "minimum": 30,
+      "maximum": 100,
+      "default": 88
+    },
+    "keepMetadata": {
+      "title": "Keep EXIF metadata",
+      "type": "boolean",
+      "description": "Off (default) removes camera data and GPS location from the output.",
+      "default": false
+    },
+    "zip": {
+      "title": "Bundle into one ZIP",
+      "type": "boolean",
+      "description": "Also saves watermarked.zip with every image.",
+      "default": true
+    },
+    "maxFileSizeMb": {
+      "title": "Max file size (MB)",
+      "type": "integer",
+      "default": 50,
+      "minimum": 1,
+      "maximum": 200,
+      "description": "Larger files are skipped with an error (not charged)."
+    }
+  },
+  "required": ["files"]
+}

@@ -1,0 +1,19 @@
+{
+  "name": "toowl-image-to-pdf",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Bulk JPG/PNG/WebP to PDF: one combined PDF or one per image, A4/Letter/fit, margins, EXIF rotation. Apify Actor by toowl.",
+  "type": "module",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "node src/main.js"
+  },
+  "license": "AGPL-3.0-only",
+  "engines": { "node": ">=20" },
+  "dependencies": {
+    "apify": "^3.8.0",
+    "fflate": "^0.8.2",
+    "pdf-lib": "^1.17.1",
+    "sharp": "^0.34.5"
+  }
+}

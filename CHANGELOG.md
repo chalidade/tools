@@ -5,18 +5,27 @@ terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
 ## 2026-11-28 — Kesehatan
 
-Dua tool baru; total sekarang **146 tools**.
+Dua tool baru; total sekarang **147 tools**.
 
 - **Kalkulator Masa Subur & Haid** (`/masa-subur/`): isi hari pertama haid terakhir, atau beberapa tanggal haid untuk menghitung rata-rata dan rentang siklus (selisih di luar 15–60 hari dianggap tanggal yang terlewat), lalu lihat perkiraan ovulasi (14 hari sebelum haid berikutnya), jendela subur (5 hari sebelum sampai sehari sesudah ovulasi, Wilcox dkk. 2000), dan haid berikutnya dalam kalender tiga bulan. Hitungan tanggalnya berbagi `hpl.ts` dengan Hitung HPL. Tanggal tersimpan otomatis di perangkat saja dan bisa dihapus dengan satu tombol. Tertulis jelas bahwa ini perkiraan metode kalender, bukan kontrasepsi dan bukan nasihat medis. Ditandai tool khusus web.
 - **Tes Buta Warna** (`/tes-buta-warna/`): 10 pelat titik-titik yang digambar sendiri secara acak di canvas (bukan pelat Ishihara): satu pelat kontrol yang mudah, lima merah-hijau, dan empat biru-kuning; angka 2–9 terbentuk dari titik berwarna di sepanjang garis kebingungan warna dengan kecerahan diacak per titik. Hasil per sumbu (normal / kemungkinan gangguan / belum jelas) plus peringatan bila pelat kontrol salah. Disertai catatan bahwa layar yang belum dikalibrasi memengaruhi hasil dan ini bukan pengganti tes resmi untuk SIM atau kerja. Ditandai tool khusus web.
 
+## 2026-11-28 — Twibbon
+
+Satu tool baru; total sekarang **145 tools**.
+
+- **Twibbon** (`/twibbon/`): buka bingkai PNG transparan dari panitia (bagian transparannya dicari otomatis supaya foto langsung pas), pilih foto, lalu geser, cubit/scroll untuk zoom, dan putar dengan dua jari atau slider. Unduh PNG/JPG di ukuran asli bingkai, atau bagikan langsung lewat `navigator.share` di HP. Tidak ada galeri dan tidak ada upload: bingkai dan foto digabung di browser.
+- Lima **template bawaan** yang digambar dengan kode (tanpa file gambar), teksnya bisa diubah: 17 Agustus (HUT ke-berapa dihitung otomatis), Ramadan (tahun Hijriah dari kalender umm al-qura), Hari Guru, Wisuda, dan MPLS.
+- Tiap template punya halaman sendiri untuk mesin pencari: `/twibbon-17-agustus/`, `/twibbon-ramadan/`, `/twibbon-hari-guru/`, `/twibbon-wisuda/`, `/twibbon-mpls/` (plus versi `/en/`). Halaman ini memakai field baru `variantOf` di registry: punya judul, deskripsi, FAQ, breadcrumb, dan masuk sitemap, tapi tidak dihitung atau didaftar sebagai tool terpisah. Halaman twibbon dan template saling bertaut di bagian "Tools lain".
+
 ## 2026-11-28 — Generator di API
 
-Tiga Actor Apify baru untuk developer (situs tetap gratis, tidak berubah); halaman `/api/` menampilkannya setelah terbit.
+Delapan Actor Apify baru untuk developer (situs tetap gratis, tidak berubah); halaman `/api/` menampilkannya setelah terbit.
 
 - **QR Code Generator** (`apify/qr-generator/`): banyak QR sekaligus dari daftar teks/URL, PNG atau SVG, gaya kotak/bulat/titik, warna, latar transparan, dan logo di tengah (koreksi error otomatis naik ke H, versi minimal 5 supaya tetap terbaca). Semua gaya diuji dengan membaca ulang hasilnya memakai zxing. Hasil bisa dibungkus satu ZIP.
 - **Barcode Generator** (`apify/barcode-generator/`): EAN-13/8, UPC-A, ITF-14, Code 128, Code 39 dan lainnya lewat bwip-js (MIT), jenis ditebak dari panjang angka, pesan error yang jelas untuk digit cek salah, PNG/SVG dan ZIP.
 - **Favicon Generator** (`apify/favicon-generator/`): satu gambar jadi set lengkap (favicon.ico 16/32/48, PNG, apple-touch, android, maskable, `site.webmanifest`, contoh tag HTML) dalam satu ZIP per gambar, bentuk kotak/bulat/membulat.
+- Lima Actor converter bulk lagi: **PDF ke Word & Excel** (engine situs dibundel), **HTML/URL/Markdown ke PDF** (Chrome headless, plus template HTML yang diisi data untuk ratusan invoice/sertifikat sekaligus), **Gambar ke PDF** (gabung atau per gambar), **Watermark Foto Massal** (logo/teks, pola miring, hapus EXIF/GPS), dan **Kunci & Buka Password PDF** (AES-256, password berbeda per file).
 - Semua README Actor kini punya contoh cURL, bagian pemakaian dari agen AI lewat MCP, dan tautan ke Actor toowl lainnya (`apify/readme-footer.mjs`). Pemrosesan per item berbagi `apify/_shared/items.js`.
 
 ## 2026-11-27 — Kerja & anak

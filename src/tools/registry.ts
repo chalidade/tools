@@ -128,6 +128,7 @@ import {
   Timer,
   TextCursorInput,
   Grid2x2,
+  CircleUserRound,
   type LucideIcon,
 } from 'lucide-react'
 import { isPlayApp } from '@/lib/platform'
@@ -157,6 +158,12 @@ export interface Tool {
    * features there need an organization developer account, so they stay web-only.
    */
   webOnly?: boolean
+  /**
+   * An extra landing page of another tool (e.g. twibbon-ramadan of twibbon):
+   * it has its own address, title and FAQ for search engines, but is not
+   * listed or counted as a tool of its own. The component reads the slug.
+   */
+  variantOf?: string
 }
 
 export interface ToolPackage {
@@ -1004,6 +1011,23 @@ const ALL_TOOLS: Tool[] = [
     badge: 'Baru',
     component: lazy(() => import('./pas-foto/PasFoto')),
     package: { name: '@chalidade/pas-foto', element: 'pas-foto', dir: 'pas-foto', published: false },
+  },
+  {
+    slug: 'twibbon',
+    category: 'media',
+    keywords: ['twibbon', 'bingkai foto', 'frame foto', 'bingkai', 'frame', 'twibbonize', 'campaign', 'kampanye', 'profil', 'pp', 'foto profil', '17 agustus', 'ramadan', 'hari guru', 'wisuda', 'mpls', 'acara', 'event', 'photo frame'],
+    title: 'Twibbon',
+    description: 'Pasang fotomu di bingkai twibbon: buka PNG dari panitia atau pakai template 17 Agustus, Ramadan, Hari Guru, wisuda, dan MPLS, lalu geser, zoom, putar, dan unduh. Foto tidak di-upload.',
+    icon: CircleUserRound,
+    formats: 'Bingkai PNG + foto → PNG / JPG',
+    badge: 'Baru',
+    component: lazy(() => import('./twibbon/Twibbon')),
+    faq: [
+      { q: 'Bagaimana cara membuat twibbon?', a: 'Buka file PNG bingkai dari panitia (atau pilih template), pilih fotomu, geser dan cubit sampai pas di lubang bingkai, lalu unduh PNG atau JPG di ukuran asli bingkai.' },
+      { q: 'Apakah fotoku di-upload seperti di situs twibbon lain?', a: 'Tidak. Bingkai dan foto digabung di browser perangkatmu sendiri; tidak ada yang dikirim ke server.' },
+      { q: 'Kenapa fotoku tertutup bingkai?', a: 'Bingkai twibbon harus PNG dengan bagian tengah transparan. Kalau bingkainya JPG atau tanpa lubang transparan, foto di belakangnya tidak terlihat; minta file PNG-nya ke panitia.' },
+      { q: 'Dari mana dapat bingkai twibbon?', a: 'Biasanya panitia acara membagikan file PNG bingkainya. Kalau belum ada, pakai template bawaan dan ubah teksnya sendiri.' },
+    ],
   },
   {
     slug: 'strip-exif',
@@ -2128,6 +2152,74 @@ const ALL_TOOLS: Tool[] = [
   },
 ]
 
+// Landing pages for the events people make twibbons for. Same tool, opened
+// with that event's template (src/tools/twibbon/templates.ts).
+const twibbon = (slug: string, title: string, description: string, keywords: string[], faq: { q: string; a: string }[]): Tool => ({
+  slug,
+  variantOf: 'twibbon',
+  category: 'media',
+  keywords,
+  title,
+  description,
+  icon: CircleUserRound,
+  formats: 'Foto → PNG / JPG',
+  component: lazy(() => import('./twibbon/Twibbon')),
+  faq,
+})
+
+const VARIANTS: Tool[] = [
+  twibbon(
+    'twibbon-17-agustus',
+    'Twibbon 17 Agustus',
+    'Twibbon HUT RI 17 Agustus gratis: pasang fotomu di bingkai merah putih "Dirgahayu Republik Indonesia", ubah teks dan namamu, lalu unduh untuk status dan foto profil.',
+    ['twibbon 17 agustus', 'hut ri', 'dirgahayu', 'kemerdekaan', 'merah putih'],
+    [
+      { q: 'Bagaimana membuat twibbon 17 Agustus?', a: 'Pilih fotomu, geser dan zoom sampai wajah pas di lingkaran, ganti teks nama, lalu unduh. Tahun dan HUT ke-berapa sudah terisi otomatis dan bisa diubah.' },
+      { q: 'Punya bingkai 17 Agustus dari kantor atau sekolah?', a: 'Pilih "Bingkai sendiri", buka file PNG-nya, lalu pasang fotomu di situ.' },
+    ],
+  ),
+  twibbon(
+    'twibbon-ramadan',
+    'Twibbon Ramadan',
+    'Twibbon Ramadan gratis: bingkai "Marhaban ya Ramadan" hijau-emas dengan bulan sabit, tahun Hijriah otomatis, dan namamu. Unduh untuk status WA dan foto profil.',
+    ['twibbon ramadan', 'marhaban ya ramadan', 'puasa', 'ramadhan', 'idul fitri', 'lebaran'],
+    [
+      { q: 'Bagaimana membuat twibbon Ramadan?', a: 'Pilih fotomu, atur posisinya di lingkaran, ubah ucapan dan nama bila perlu, lalu unduh PNG atau JPG.' },
+      { q: 'Bisa untuk ucapan Idul Fitri?', a: 'Bisa. Ganti teks atas dan judulnya, misalnya "Selamat Idul Fitri" dan "Mohon maaf lahir dan batin".' },
+    ],
+  ),
+  twibbon(
+    'twibbon-hari-guru',
+    'Twibbon Hari Guru',
+    'Twibbon Hari Guru Nasional 25 November gratis: bingkai "Selamat Hari Guru" dengan ucapan terima kasih dan namamu, siap dibagikan.',
+    ['twibbon hari guru', 'hari guru nasional', '25 november', 'guru', 'terima kasih guru'],
+    [
+      { q: 'Bagaimana membuat twibbon Hari Guru?', a: 'Pilih foto bersama guru atau fotomu sendiri, atur di lingkaran, isi nama, lalu unduh.' },
+      { q: 'Sekolah punya bingkai sendiri?', a: 'Pilih "Bingkai sendiri" dan buka file PNG dari sekolah.' },
+    ],
+  ),
+  twibbon(
+    'twibbon-wisuda',
+    'Twibbon Wisuda',
+    'Twibbon wisuda gratis: bingkai biru-emas dengan topi toga, "Class of" tahun ini, dan nama wisudawan. Unduh untuk Instagram dan status.',
+    ['twibbon wisuda', 'wisuda', 'graduation', 'kelulusan', 'lulus', 'toga', 'class of'],
+    [
+      { q: 'Bagaimana membuat twibbon wisuda?', a: 'Pilih foto wisuda, atur di lingkaran, isi nama dan gelar, lalu unduh PNG atau JPG.' },
+      { q: 'Kampus membagikan bingkai sendiri?', a: 'Pilih "Bingkai sendiri" dan buka file PNG dari kampus.' },
+    ],
+  ),
+  twibbon(
+    'twibbon-mpls',
+    'Twibbon MPLS',
+    'Twibbon MPLS gratis untuk siswa baru: bingkai "Siap Belajar!" dengan nama sekolah, atau pakai bingkai PNG dari panitia MPLS.',
+    ['twibbon mpls', 'mpls', 'masa pengenalan lingkungan sekolah', 'siswa baru', 'mos', 'ospek', 'pkkmb'],
+    [
+      { q: 'Bagaimana membuat twibbon MPLS?', a: 'Kalau panitia membagikan bingkai, pilih "Bingkai sendiri" dan buka PNG-nya. Kalau belum ada, pakai template ini dan isi nama sekolah.' },
+      { q: 'Bisa untuk OSPEK atau PKKMB?', a: 'Bisa. Ubah teks atas dan judulnya, misalnya "PKKMB 2026" dan nama kampus.' },
+    ],
+  ),
+]
+
 // The iOS app's web view (WKWebView) has no screen capture, so the tools that
 // need it are left out there instead of failing (App Store guideline 2.1).
 // Read window.Capacitor directly: this module also runs in Node for seo.mjs.
@@ -2163,6 +2255,9 @@ export function categoryText(id: CategoryId, lang: Lang) {
   return lang === 'en' ? CATEGORIES_EN[id] : { title: c.title, description: c.description }
 }
 
+/** Every page with its own address: the tools plus their extra landing pages (`variantOf`). */
+export const TOOL_PAGES: Tool[] = [...TOOLS, ...VARIANTS]
+
 export function findTool(slug: string) {
-  return TOOLS.find((t) => t.slug === slug)
+  return TOOL_PAGES.find((t) => t.slug === slug)
 }
