@@ -5,9 +5,16 @@ terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
 ## 2026-11-28 — Teks ke suara
 
-Satu tool baru; total sekarang **145 tools**.
+Satu tool baru; total sekarang **146 tools**.
 
 - **Teks ke Suara** (`/text-to-speech/`): tulis atau tempel teks, pilih bahasa Indonesia atau Inggris dan suaranya, atur kecepatan (dan nada), lalu putar dan unduh sebagai **MP3**, M4A (44,1 kHz stereo, siap dimasukkan ke CapCut/TikTok/Reels) atau WAV. Semua dibuat di perangkat, teks tidak dikirim ke mana pun. Bahasa Indonesia memakai eSpeak NG (GPL-3.0, wasm 18 MB berisi semua bahasa) dengan empat pilihan suara pria/wanita: jelas dan instan, tapi masih terdengar seperti robot. Bahasa Inggris punya suara AI **Joe** (Piper `en_US-joe-medium`, CC0, int8 16,6 MB) lewat ONNX Runtime Web yang sama dengan Perbesar Gambar; eSpeak membuat fonemnya dan tanda baca dikembalikan per klausa supaya jeda dan intonasinya pas. Teks panjang (sampai 20.000 karakter) dipotong per kalimat dengan progres dan tombol batal; satu baris = satu kalimat, baris kosong = jeda lebih panjang. Hasil kedua mesin sudah dicek dengan Whisper: kalimat Inggris terbaca persis, kalimat Indonesia sebagian besar benar.
+## 2026-11-28 — Twibbon
+
+Satu tool baru; total sekarang **145 tools**.
+
+- **Twibbon** (`/twibbon/`): buka bingkai PNG transparan dari panitia (bagian transparannya dicari otomatis supaya foto langsung pas), pilih foto, lalu geser, cubit/scroll untuk zoom, dan putar dengan dua jari atau slider. Unduh PNG/JPG di ukuran asli bingkai, atau bagikan langsung lewat `navigator.share` di HP. Tidak ada galeri dan tidak ada upload: bingkai dan foto digabung di browser.
+- Lima **template bawaan** yang digambar dengan kode (tanpa file gambar), teksnya bisa diubah: 17 Agustus (HUT ke-berapa dihitung otomatis), Ramadan (tahun Hijriah dari kalender umm al-qura), Hari Guru, Wisuda, dan MPLS.
+- Tiap template punya halaman sendiri untuk mesin pencari: `/twibbon-17-agustus/`, `/twibbon-ramadan/`, `/twibbon-hari-guru/`, `/twibbon-wisuda/`, `/twibbon-mpls/` (plus versi `/en/`). Halaman ini memakai field baru `variantOf` di registry: punya judul, deskripsi, FAQ, breadcrumb, dan masuk sitemap, tapi tidak dihitung atau didaftar sebagai tool terpisah. Halaman twibbon dan template saling bertaut di bagian "Tools lain".
 
 ## 2026-11-28 — Generator di API
 
