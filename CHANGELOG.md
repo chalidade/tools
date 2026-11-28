@@ -5,9 +5,15 @@ terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
 ## 2026-11-28 — Transkrip suara ke teks
 
-Satu tool baru; total sekarang **146 tools**.
+Satu tool baru; total sekarang **147 tools**.
 
 - **Transkrip Suara ke Teks** (`/transkrip/`): rekaman, voice note WhatsApp (.opus), atau video jadi teks dengan AI Whisper yang jalan di perangkat, tanpa upload dan tanpa batas menit. Pilih bahasa Indonesia, Inggris, atau deteksi otomatis; teks muncul sambil berjalan, tiap kalimat punya cap waktu yang bisa diklik untuk memutar bagian itu dan bisa diedit langsung. Unduh TXT (dengan atau tanpa cap waktu), SRT, atau VTT, atau buka hasilnya di tool Subtitle. Mesin Whisper ditulis sendiri di atas onnxruntime-web yang sudah dipakai situs (`whisper.ts`: log-mel, decoder dengan cache, aturan cap waktu, dekode panjang per 30 detik, lompat jeda hening), dengan model Whisper base 8-bit (78 MB, sha256 sama dengan Xenova/whisper-base) di-host sendiri dan diunduh sekali saat pertama dipakai. Suara diambil lewat `audioMono` baru di `src/lib/media.ts`.
+
+## 2026-11-28 — Teks ke suara
+
+Satu tool baru; total sekarang **146 tools**.
+
+- **Teks ke Suara** (`/text-to-speech/`): tulis atau tempel teks, pilih bahasa Indonesia atau Inggris dan suaranya, atur kecepatan (dan nada), lalu putar dan unduh sebagai **MP3**, M4A (44,1 kHz stereo, siap dimasukkan ke CapCut/TikTok/Reels) atau WAV. Semua dibuat di perangkat, teks tidak dikirim ke mana pun. Bahasa Indonesia memakai eSpeak NG (GPL-3.0, wasm 18 MB berisi semua bahasa) dengan empat pilihan suara pria/wanita: jelas dan instan, tapi masih terdengar seperti robot. Bahasa Inggris punya suara AI **Joe** (Piper `en_US-joe-medium`, CC0, int8 16,6 MB) lewat ONNX Runtime Web yang sama dengan Perbesar Gambar; eSpeak membuat fonemnya dan tanda baca dikembalikan per klausa supaya jeda dan intonasinya pas. Teks panjang (sampai 20.000 karakter) dipotong per kalimat dengan progres dan tombol batal; satu baris = satu kalimat, baris kosong = jeda lebih panjang. Hasil kedua mesin sudah dicek dengan Whisper: kalimat Inggris terbaca persis, kalimat Indonesia sebagian besar benar.
 
 ## 2026-11-28 — Twibbon
 
