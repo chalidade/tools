@@ -4,6 +4,9 @@
 // join those chunks, find the "data":[…] array and the paging fields after it.
 // Page size is fixed at 10.
 
+// undici's own fetch: Node's built-in one rejects an undici 8 ProxyAgent.
+import { fetch } from 'undici'
+
 export const BASE = 'https://bpjph.halal.go.id'
 const UA = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0 Safari/537.36'
 const DELAY_MS = 500
