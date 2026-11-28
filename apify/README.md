@@ -33,6 +33,7 @@ Node supaya bisa dipanggil lewat API, Zapier, Make, n8n, atau jadwal.
 | [`stem-separator/`](./stem-separator) | AI Vocal Remover & Stem Splitter | **engine situs persis**: SCNet dari `src/tools/vocal-remover/separate.ts` dibundel jadi `src/engine.js`, onnxruntime-node, ffmpeg | `audio-minute` (per menit dimulai) |
 | [`text-to-speech/`](./text-to-speech) | Text to Speech MP3 | potong kalimat dari `src/tools/text-to-speech/tts.ts` (dibundel), Piper `en_US-joe-medium` di onnxruntime-node + eSpeak NG wasm (100+ bahasa), ffmpeg untuk MP3/M4A/OGG | `characters-1k` (per 1.000 karakter dimulai) |
 | [`remove-object/`](./remove-object) | AI Object Remover | MI-GAN (`migan.onnx` situs) di onnxruntime-node, metode `src/tools/remove-object/inpaint.ts` di-port ke sharp; mask gambar atau kotak | `object-removed` (per gambar) |
+| [`lpse-tenders/`](./lpse-tenders) | LPSE Tender Scraper (Indonesia, SPSE) | scraper `spse.inaproc.id/<slug>/dt/lelang` (DataTable JSON + authenticityToken sesi), cheerio untuk halaman pengumuman, jeda 1 detik sesuai robots.txt | `tender-scraped` (per tender) |
 
 Model empat Actor AI baru (Whisper, SCNet, Piper, MI-GAN) tidak disalin ke
 `apify/`: Dockerfile-nya mengambil file model yang sama dari `src/tools/…` di

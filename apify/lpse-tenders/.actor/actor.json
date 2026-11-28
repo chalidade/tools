@@ -1,0 +1,41 @@
+{
+  "actorSpecification": 1,
+  "name": "lpse-tender-scraper",
+  "title": "LPSE Tender Scraper (Indonesia Government Procurement, SPSE)",
+  "description": "Scrape Indonesian government tenders (lelang) from LPSE / SPSE on spse.inaproc.id: package name, agency, stage, HPS budget in rupiah, contract value, method and the full announcement. One agency, many, or all ~600. Filter by keyword, year, stage and budget. Pay per tender.",
+  "version": "1.0",
+  "buildTag": "latest",
+  "minMemoryMbytes": 256,
+  "maxMemoryMbytes": 1024,
+  "defaultMemoryMbytes": 256,
+  "input": "./input_schema.json",
+  "output": "./output_schema.json",
+  "dockerfile": "../Dockerfile",
+  "readme": "../README.md",
+  "storages": {
+    "dataset": {
+      "actorSpecification": 1,
+      "views": {
+        "overview": {
+          "title": "Tenders",
+          "transformation": { "fields": ["kode", "namaPaket", "instansi", "tahapan", "hps", "nilaiKontrak", "jenisPengadaan", "metode", "lpse", "url"] },
+          "display": {
+            "component": "table",
+            "properties": {
+              "kode": { "label": "Kode" },
+              "namaPaket": { "label": "Package" },
+              "instansi": { "label": "Agency" },
+              "tahapan": { "label": "Stage" },
+              "hps": { "label": "HPS (Rp)", "format": "number" },
+              "nilaiKontrak": { "label": "Contract (Rp)", "format": "number" },
+              "jenisPengadaan": { "label": "Type" },
+              "metode": { "label": "Method" },
+              "lpse": { "label": "LPSE" },
+              "url": { "label": "Announcement", "format": "link" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

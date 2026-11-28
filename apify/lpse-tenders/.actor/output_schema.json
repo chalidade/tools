@@ -1,0 +1,18 @@
+{
+  "actorOutputSchemaVersion": 1,
+  "title": "Output of LPSE Tender Scraper",
+  "properties": {
+    "results": {
+      "type": "string",
+      "title": "Tenders",
+      "description": "One row per tender.",
+      "template": "{{links.apiDefaultDatasetUrl}}/items?view=overview"
+    },
+    "summary": {
+      "type": "string",
+      "title": "Summary",
+      "description": "How many tenders were saved and which agencies failed.",
+      "template": "{{links.apiDefaultKeyValueStoreUrl}}/records/SUMMARY"
+    }
+  }
+}
