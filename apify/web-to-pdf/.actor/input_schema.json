@@ -1,0 +1,192 @@
+{
+  "title": "HTML to PDF input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "urls": {
+      "title": "Web page URLs",
+      "type": "array",
+      "description": "Pages to save as PDF, exactly as Chrome prints them (one PDF per URL).",
+      "editor": "requestListSources",
+      "prefill": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Portable_Document_Format"
+        }
+      ],
+      "sectionCaption": "What to convert"
+    },
+    "markdown": {
+      "title": "Markdown",
+      "type": "string",
+      "description": "One Markdown document (GitHub flavour: tables, task lists, code). Becomes a clean paper-style PDF.",
+      "editor": "textarea"
+    },
+    "html": {
+      "title": "HTML",
+      "type": "string",
+      "description": "One full HTML document, CSS included. Remote images and fonts are loaded.",
+      "editor": "textarea"
+    },
+    "documents": {
+      "title": "Documents (bulk)",
+      "type": "array",
+      "description": "Many documents at once: [{ \"html\": \"…\", \"name\": \"invoice-1042\" }, { \"markdown\": \"# Hi\" }, { \"url\": \"https://…\" }]. The name becomes the file name.",
+      "editor": "json"
+    },
+    "template": {
+      "title": "HTML template",
+      "type": "string",
+      "description": "Mail-merge: one PDF per object in Records. {{field}} is replaced by that record's value (HTML-escaped), {{{field}}} inserts raw HTML, {{customer.name}} reaches nested values.",
+      "editor": "textarea",
+      "sectionCaption": "Template + data (invoices, certificates, tickets)"
+    },
+    "records": {
+      "title": "Records",
+      "type": "array",
+      "description": "Data for the template, one object per PDF. A fileName (or name / id) field names the file.",
+      "editor": "json"
+    },
+    "format": {
+      "title": "Paper size",
+      "type": "string",
+      "editor": "select",
+      "enum": [
+        "A4",
+        "Letter",
+        "Legal",
+        "A3",
+        "A5",
+        "Tabloid"
+      ],
+      "default": "A4",
+      "sectionCaption": "Page",
+      "description": "Paper size of every page."
+    },
+    "landscape": {
+      "title": "Landscape",
+      "type": "boolean",
+      "default": false,
+      "description": "Turn pages sideways (good for wide tables and dashboards)."
+    },
+    "marginMm": {
+      "title": "Margin (mm)",
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 50,
+      "default": 12,
+      "description": "Blank border around every page."
+    },
+    "pageNumbers": {
+      "title": "Page numbers",
+      "type": "boolean",
+      "description": "Adds \"1 / 5\" at the bottom of every page.",
+      "default": false
+    },
+    "printBackground": {
+      "title": "Print backgrounds",
+      "type": "boolean",
+      "description": "Keep background colours and images (off = what a browser prints by default).",
+      "default": true
+    },
+    "scale": {
+      "title": "Scale",
+      "type": "string",
+      "description": "Zoom of the content, 0.1–2 (e.g. 0.8 fits wide pages).",
+      "editor": "textfield",
+      "default": "1"
+    },
+    "font": {
+      "title": "Markdown font",
+      "type": "string",
+      "editor": "select",
+      "enum": [
+        "sans",
+        "serif"
+      ],
+      "enumTitles": [
+        "Sans-serif",
+        "Serif"
+      ],
+      "default": "sans",
+      "description": "Typeface for Markdown documents."
+    },
+    "preferCssPageSize": {
+      "title": "Use the page's own @page size",
+      "type": "boolean",
+      "description": "If the HTML sets @page { size: … }, use that instead of Paper size.",
+      "default": false
+    },
+    "media": {
+      "title": "CSS media",
+      "type": "string",
+      "description": "print uses the site's print stylesheet; screen makes the PDF look like the page on screen.",
+      "editor": "select",
+      "enum": [
+        "print",
+        "screen"
+      ],
+      "default": "print",
+      "sectionCaption": "Loading"
+    },
+    "waitUntil": {
+      "title": "Wait until",
+      "type": "string",
+      "editor": "select",
+      "enum": [
+        "networkidle",
+        "load",
+        "domcontentloaded"
+      ],
+      "enumTitles": [
+        "Network idle (safest)",
+        "Load event",
+        "DOM ready (fastest)"
+      ],
+      "default": "networkidle",
+      "description": "When the page counts as loaded. Network idle waits for late images and scripts."
+    },
+    "waitMs": {
+      "title": "Extra wait (ms)",
+      "type": "integer",
+      "description": "Wait this long after loading, for animations or charts.",
+      "minimum": 0,
+      "maximum": 30000,
+      "default": 0
+    },
+    "hideSelectors": {
+      "title": "Hide elements (CSS selectors)",
+      "type": "array",
+      "description": "Cookie banners, chat bubbles, ads… e.g. #cookie-banner, .intercom-launcher",
+      "editor": "stringList"
+    },
+    "viewportWidth": {
+      "title": "Viewport width (px)",
+      "type": "integer",
+      "minimum": 320,
+      "maximum": 3840,
+      "default": 1280,
+      "description": "Window width the page is laid out in before printing (affects responsive sites)."
+    },
+    "locale": {
+      "title": "Browser language",
+      "type": "string",
+      "editor": "textfield",
+      "default": "en-US",
+      "description": "Accept-Language sent to web pages (e.g. id-ID), for sites that switch language."
+    },
+    "timeoutSecs": {
+      "title": "Timeout per document (s)",
+      "type": "integer",
+      "minimum": 10,
+      "maximum": 180,
+      "default": 60,
+      "description": "A document that takes longer fails (and is not charged)."
+    },
+    "zip": {
+      "title": "Bundle into one ZIP",
+      "type": "boolean",
+      "description": "With more than one PDF, also saves pdfs.zip.",
+      "default": true
+    }
+  }
+}

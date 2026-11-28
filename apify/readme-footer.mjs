@@ -11,6 +11,11 @@ for (const d of dirs) {
     'pdf-toolkit': '{"operation":"merge","files":[{"url":"https://example.com/a.pdf"},{"url":"https://example.com/b.pdf"}]}',
     'qr-code-generator': '{"items":["https://example.com/menu","https://example.com/table/12"],"format":"png"}',
     'barcode-generator': '{"codes":["5901234123457","ABC-12345"],"type":"auto","format":"png"}',
+    'pdf-to-word-excel': '{"files":[{"url":"https://example.com/invoice.pdf"}],"output":"both"}',
+    'html-to-pdf': '{"urls":[{"url":"https://example.com"}],"format":"A4","pageNumbers":true}',
+    'image-to-pdf': '{"files":[{"url":"https://example.com/a.jpg"},{"url":"https://example.com/b.jpg"}],"mode":"merge"}',
+    'watermark-images': '{"files":[{"url":"https://example.com/photo.jpg"}],"text":"© My Shop","position":"tile"}',
+    'pdf-password-protect': '{"operation":"protect","files":[{"url":"https://example.com/a.pdf","password":"s3cret"}]}',
     'favicon-generator': '{"files":[{"url":"https://example.com/logo.png"}],"appName":"My App"}',
   }
   const example = EXAMPLES[name] ?? '{"files":[{"url":"https://example.com/your-file"}]}'
@@ -41,7 +46,7 @@ The agent can then pass file URLs and read the results itself.
 
 ## More toowl file APIs
 
-PDF to Markdown, OCR, Office to PDF, PDF compressor, PDF merge/split, PDF to image, image converter and compressor, background remover, AI upscaler, image to SVG, QR code and barcode generators, QR/barcode reader, favicon generator, video compressor, frame extractor and audio converter. All pay per file, all batch-friendly: [toowl.my.id/en/api](https://toowl.my.id/en/api/).
+PDF to Markdown, PDF to Word & Excel, HTML/URL to PDF, OCR, Office to PDF, PDF compressor, PDF merge/split, PDF password protect, PDF to image, image to PDF, bulk watermark, image converter and compressor, background remover, AI upscaler, image to SVG, QR code and barcode generators, QR/barcode reader, favicon generator, video compressor, frame extractor and audio converter. All pay per file, all batch-friendly: [toowl.my.id/en/api](https://toowl.my.id/en/api/).
 
 Questions or a format that fails? Open an issue on the Actor's **Issues** tab.
 `

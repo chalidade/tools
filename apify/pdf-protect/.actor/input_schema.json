@@ -1,0 +1,71 @@
+{
+  "title": "PDF Password Protect & Unlock input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "operation": {
+      "title": "Operation",
+      "type": "string",
+      "description": "Protect adds a password and permissions; unlock removes them (you need the open password if the PDF asks for one).",
+      "editor": "select",
+      "enum": ["protect", "unlock"],
+      "enumTitles": ["Protect with a password", "Unlock (remove password)"],
+      "default": "protect"
+    },
+    "files": {
+      "title": "PDF URLs",
+      "type": "array",
+      "description": "Direct links to PDFs. Through the API each item can carry its own password: { \"url\": \"…\", \"password\": \"…\" }.",
+      "editor": "requestListSources",
+      "prefill": [{ "url": "https://raw.githubusercontent.com/chalidade/tools/main/apify/samples/report.pdf" }]
+    },
+    "password": {
+      "title": "Password",
+      "type": "string",
+      "description": "Protect: the password that will open the PDFs. Unlock: the password that opens them now. Used for every file without its own.",
+      "editor": "textfield",
+      "isSecret": true
+    },
+    "passwords": {
+      "title": "Per-file passwords",
+      "type": "object",
+      "description": "Optional map of PDF URL → password, e.g. one password per employee payslip.",
+      "editor": "json"
+    },
+    "restrictOnly": {
+      "title": "Restrictions only (no open password)",
+      "type": "boolean",
+      "description": "The PDF opens for anyone, but printing/copying/editing follow the permissions below.",
+      "default": false,
+      "sectionCaption": "Permissions (protect)"
+    },
+    "allowPrint": { "title": "Allow printing", "type": "boolean", "description": "Readers may print the PDF.", "default": true },
+    "allowCopy": { "title": "Allow copying text and images", "type": "boolean", "description": "Readers may select and copy content.", "default": false },
+    "allowModify": { "title": "Allow editing", "type": "boolean", "description": "Readers may change the document.", "default": false },
+    "allowAnnotate": { "title": "Allow comments", "type": "boolean", "description": "Readers may add comments and highlights.", "default": false },
+    "allowForms": { "title": "Allow filling forms", "type": "boolean", "description": "Readers may fill in form fields.", "default": true },
+    "allowAssemble": { "title": "Allow page changes", "type": "boolean", "description": "Readers may insert, rotate or delete pages.", "default": false },
+    "ownerPassword": {
+      "title": "Owner password",
+      "type": "string",
+      "description": "Guards the permissions. Leave empty for a random one nobody knows (the safest choice).",
+      "editor": "textfield",
+      "isSecret": true
+    },
+    "zip": {
+      "title": "Bundle into one ZIP",
+      "type": "boolean",
+      "description": "Also saves pdfs.zip with every result.",
+      "default": true
+    },
+    "maxFileSizeMb": {
+      "title": "Max file size (MB)",
+      "type": "integer",
+      "default": 100,
+      "minimum": 1,
+      "maximum": 500,
+      "description": "Larger files are skipped with an error (not charged)."
+    }
+  },
+  "required": ["files"]
+}

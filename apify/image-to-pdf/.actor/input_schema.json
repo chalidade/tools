@@ -1,0 +1,103 @@
+{
+  "title": "Image to PDF input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "files": {
+      "title": "Image URLs",
+      "type": "array",
+      "description": "JPG, PNG, WebP, AVIF, TIFF, GIF or SVG links. In one-PDF mode the pages follow this order.",
+      "editor": "requestListSources",
+      "prefill": [
+        { "url": "https://raw.githubusercontent.com/chalidade/tools/main/apify/samples/invoice.jpg" },
+        { "url": "https://raw.githubusercontent.com/chalidade/tools/main/apify/samples/small-photo.jpg" }
+      ]
+    },
+    "mode": {
+      "title": "Output",
+      "type": "string",
+      "description": "Combine every image into one PDF (scans, receipts, photo albums), or make one PDF per image.",
+      "editor": "select",
+      "enum": ["merge", "separate"],
+      "enumTitles": ["One PDF with all images", "One PDF per image"],
+      "default": "merge"
+    },
+    "outputName": {
+      "title": "PDF file name",
+      "type": "string",
+      "description": "Name of the combined PDF (one-PDF mode). Also used as the PDF title.",
+      "editor": "textfield",
+      "default": "images"
+    },
+    "pageSize": {
+      "title": "Page size",
+      "type": "string",
+      "description": "Paper size, or a page exactly the size of each image.",
+      "editor": "select",
+      "enum": ["a4", "letter", "legal", "a5", "fit"],
+      "enumTitles": ["A4", "Letter", "Legal", "A5", "Fit to image"],
+      "default": "a4"
+    },
+    "orientation": {
+      "title": "Orientation",
+      "type": "string",
+      "description": "Auto turns the page sideways for landscape images.",
+      "editor": "select",
+      "enum": ["auto", "portrait", "landscape"],
+      "default": "auto"
+    },
+    "fit": {
+      "title": "Image placement",
+      "type": "string",
+      "description": "Contain shows the whole image; cover fills the page and crops the edges.",
+      "editor": "select",
+      "enum": ["contain", "cover"],
+      "default": "contain"
+    },
+    "marginMm": {
+      "title": "Margin (mm)",
+      "type": "integer",
+      "description": "Blank border around each image.",
+      "minimum": 0,
+      "maximum": 50,
+      "default": 10
+    },
+    "maxImagePx": {
+      "title": "Max image size (px)",
+      "type": "integer",
+      "description": "Longest side of each image in the PDF. 2480 px = A4 at 300 dpi; lower makes smaller files.",
+      "minimum": 300,
+      "maximum": 10000,
+      "default": 2480
+    },
+    "quality": {
+      "title": "JPEG quality",
+      "type": "integer",
+      "description": "30–100. 85 looks like the original at a fraction of the size.",
+      "minimum": 30,
+      "maximum": 100,
+      "default": 85
+    },
+    "grayscale": {
+      "title": "Black and white",
+      "type": "boolean",
+      "description": "Good for document scans: smaller files, cleaner print.",
+      "default": false
+    },
+    "keepTransparency": {
+      "title": "Keep transparency",
+      "type": "boolean",
+      "description": "PNG with transparency stays PNG (bigger). Off = flattened onto white.",
+      "default": false
+    },
+    "maxFileSizeMb": {
+      "title": "Max file size (MB)",
+      "type": "integer",
+      "default": 50,
+      "minimum": 1,
+      "maximum": 200,
+      "description": "Larger files are skipped with an error (not charged)."
+    }
+  },
+  "required": ["files"]
+}

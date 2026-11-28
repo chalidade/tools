@@ -1,6 +1,6 @@
 # toowl di Apify Store
 
-Delapan belas engine toowl dibungkus jadi **Actor Apify** berbayar (pay-per-event).
+Dua puluh tiga engine toowl dibungkus jadi **Actor Apify** berbayar (pay-per-event).
 Kode tool di situs berjalan di browser; di sini engine yang sama di-port ke
 Node supaya bisa dipanggil lewat API, Zapier, Make, n8n, atau jadwal.
 
@@ -24,6 +24,11 @@ Node supaya bisa dipanggil lewat API, Zapier, Make, n8n, atau jadwal.
 | [`qr-generator/`](./qr-generator) | QR Code Generator (Bulk, Logo, SVG & PNG) | qrcode (MIT) + gaya kotak/bulat/titik dan logo seperti `src/tools/qr/render.ts`, sharp untuk PNG, ZIP | `qr-generated` (per kode) |
 | [`barcode-generator/`](./barcode-generator) | Barcode Generator (EAN, UPC, Code 128, …) | bwip-js (MIT), deteksi jenis otomatis dari panjang angka, PNG/SVG, ZIP | `barcode-generated` (per kode) |
 | [`favicon-generator/`](./favicon-generator) | Favicon Generator (ICO, PNG, Manifest) | sharp — set sama dengan `src/tools/favicon-generator/`: ICO 16/32/48, apple-touch, android, maskable, `site.webmanifest`, satu ZIP per gambar | `favicon-set-generated` (per set) |
+| [`pdf-to-office/`](./pdf-to-office) | PDF to Word & Excel Converter | **engine situs persis**: `src/tools/pdf-to-word/convert.ts` + `pdf-to-excel/convert.ts` dibundel jadi `src/engine.js` (`node apify/pdf-to-office/build-engine.mjs`), docx + exceljs | `pdf-page-converted` (per halaman) |
+| [`web-to-pdf/`](./web-to-pdf) | HTML, URL & Markdown to PDF | Playwright Chromium (image `actor-node-playwright-chrome`), marked, template `{{field}}` untuk invoice/sertifikat massal | `pdf-generated` (per PDF) |
+| [`image-to-pdf/`](./image-to-pdf) | Image to PDF Converter | sharp (rotasi EXIF, resize, JPEG) + pdf-lib, satu PDF gabungan atau per gambar | `image-converted` (per gambar) |
+| [`watermark-images/`](./watermark-images) | Bulk Image Watermark | sharp + overlay SVG, geometri sama dengan `src/tools/watermark-foto/layout.ts`; font DejaVu/Liberation/Noto di Dockerfile | `image-watermarked` (per gambar) |
+| [`pdf-protect/`](./pdf-protect) | PDF Password Protect & Unlock | qpdf (wasm), AES-256 seperti `src/tools/protect-pdf/protect.ts`, password per file | `pdf-secured` (per PDF) |
 
 `pdf-markdown/src/engine.js` adalah hasil build — setelah mengubah
 `src/tools/pdf-to-markdown`, `pdf-to-word/convert.ts`, `pdf-to-excel/convert.ts`
@@ -106,6 +111,11 @@ ditanggung Apify.
 | QR Code Generator | `qr-generated` (primary) | **$0.001** | $1 | ~$0.00001 |
 | Barcode Generator | `barcode-generated` (primary) | **$0.001** | $1 | ~$0.00001 |
 | Favicon Generator | `favicon-set-generated` (primary) | **$0.01** | $10 | ~$0.0001 |
+| PDF to Word & Excel | `pdf-page-converted` (primary) | **$0.002** | $2 | ~$0.00005 |
+| HTML to PDF | `pdf-generated` (primary) | **$0.003** | $3 | ~$0.0003–0.001 (Chromium, 1–3 detik) |
+| Image to PDF | `image-converted` (primary) | **$0.001** | $1 | ~$0.00003 |
+| Bulk Image Watermark | `image-watermarked` (primary) | **$0.001** | $1 | ~$0.00003 |
+| PDF Password Protect | `pdf-secured` (primary) | **$0.002** | $2 | ~$0.00002 |
 
 Video Compressor menagih **per menit video hasil** (menit pertama ikut baris dataset). OCR, PDF to Markdown dan PDF to Image menagih **per halaman**: halaman pertama ikut baris
 dataset, sisanya lewat `Actor.charge` (tetap dalam batas "Max cost per run").
@@ -143,6 +153,10 @@ cipta, jadi boleh menjual layanannya). Dependensi yang ikut di image:
 | fflate | MIT | ZIP hasil split, QR, barcode, favicon |
 | qrcode | MIT | QR Code Generator |
 | bwip-js | MIT | Barcode Generator |
+| pdf-lib | MIT | Image to PDF |
+| docx, exceljs | MIT | PDF to Word & Excel |
+| marked | MIT | HTML to PDF (Markdown) |
+| Playwright + Chromium | Apache-2.0 / BSD | HTML to PDF, dari image dasar Apify |
 | tesseract.js, tesseract.js-core | Apache-2.0 | |
 | @tesseract.js-data/* (tessdata best_int) | Apache-2.0 | |
 | pdfjs-dist (+ @napi-rs/canvas, opsional) | Apache-2.0 / MIT | |

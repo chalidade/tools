@@ -1,0 +1,34 @@
+{
+  "actorSpecification": 1,
+  "name": "watermark-images",
+  "title": "Bulk Image Watermark (Text or Logo, Tiled, JPG/PNG/WebP)",
+  "description": "Watermark hundreds of product photos at once: your logo or text (© Your Shop) in a corner, centre or a tiled diagonal pattern, with opacity and size. Resizes, fixes phone rotation, strips EXIF/GPS. One ZIP. Pay per image.",
+  "version": "1.0",
+  "buildTag": "latest",
+  "minMemoryMbytes": 512,
+  "maxMemoryMbytes": 4096,
+  "input": "./input_schema.json",
+  "output": "./output_schema.json",
+  "dockerfile": "../Dockerfile",
+  "readme": "../README.md",
+  "storages": {
+    "dataset": {
+      "actorSpecification": 1,
+      "views": {
+        "overview": {
+          "title": "Watermarked images",
+          "transformation": {
+            "fields": ["name", "width", "height", "format", "sizeKb", "imageUrl", "error", "url"]
+          },
+          "display": {
+            "component": "table",
+            "properties": {
+              "imageUrl": { "label": "Watermarked image", "format": "image" },
+              "url": { "label": "Source", "format": "link" }
+            }
+          }
+        }
+      }
+    }
+  }
+}
