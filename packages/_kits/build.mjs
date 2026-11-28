@@ -211,6 +211,11 @@ async function buildKit(id) {
     LICENSE_SUMMARY: ENVATO
       ? `Sold on ${STORE.name} under the ${STORE.license}: see \`LICENSE.md\`. In short,\n${STORE.small}. Don't redistribute or resell the kit itself. The bundled\nopen-source libraries keep their own licenses (\`THIRD-PARTY-NOTICES.md\`, \`licenses/\`).`
       : "Commercial license: see `LICENSE.md`. In short, use it in unlimited projects\nof your own or your clients', closed source, with no AGPL obligations; don't\nresell the kit itself. The bundled open-source libraries keep their own\nlicenses (`THIRD-PARTY-NOTICES.md`, `licenses/`).",
+    API_LINE: rows.every((r) => r.api)
+      ? '- **A headless API**: plain async functions, so you can build your own UI.'
+      : rows.some((r) => r.api)
+        ? '- **A headless API** where the table below lists one: plain functions, so you can\n  build your own UI. The others ship as elements only.'
+        : '- No headless API in this kit: every component ships as an element.',
     SUPPORT: ENVATO
       ? `Updates are free: download the latest version from your ${STORE.downloads} any time. Questions or bugs: use ${STORE.support}.`
       : 'Updates are free: download the latest ZIP from your Gumroad library any time.\nQuestions or bugs: reply to your Gumroad receipt email.',
