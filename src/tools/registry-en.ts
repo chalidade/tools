@@ -467,6 +467,25 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
     formats: 'PDF → DXF (DWG)',
     keywords: ['autocad', 'drawing', 'floor plan', 'blueprint', 'vector', 'convert'],
   },
+  'remove-object': {
+    title: 'Remove Object from Photo',
+    description: 'Paint over distracting people, things, text or scribbles, and on-device AI fills them in with the surrounding background.',
+    keywords: ['remove object', 'object remover', 'magic eraser', 'remove person', 'inpainting', 'clean up', 'photobomb', 'erase'],
+    faq: [
+      {
+        q: 'How do I remove a person or object from a photo?',
+        a: 'Open the photo, paint over the person or object a little past its edges (its shadow too) and press “Remove marked area”. The AI fills it in from the background around it. Repeat on any spot that needs touching up.',
+      },
+      {
+        q: 'Is my photo uploaded to a server?',
+        a: 'No. The AI model is downloaded once from this site and runs in your browser; the photo never leaves your device.',
+      },
+      {
+        q: 'Can it remove watermarks?',
+        a: 'It is made for your own photos: passers-by, cables, litter, text or scribbles. Don’t use it to strip watermarks or credits from other people’s work without permission.',
+      },
+    ],
+  },
   'upscale-image': {
     title: 'Upscale Image',
     description: 'Enlarge photos 2× or 4× with on-device AI so they stay sharp instead of pixelated.',
