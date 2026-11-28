@@ -554,11 +554,16 @@ sesudahnya.
 - [ ] **Penghapus Vokal** (`#/vocal-remover`): hilangkan vokal yang ada di
   tengah stereo (kiri − kanan, dengan bass dijaga lewat filter), pratinjau, lalu
   simpan MP3/WAV. Jelaskan bahwa hasilnya bergantung pada cara lagu dimixing.
-- [ ] **Teks ke Suara** (`#/text-to-speech`): bacakan teks dengan suara
-  bawaan perangkat (`speechSynthesis`), pilih suara, kecepatan, dan nada. Hanya
-  tampilkan suara dengan `localService === true`: suara "Google …" di Chrome
-  dikirim ke server dan melanggar janji tools. API ini tidak bisa merekam, jadi
-  hanya diputar, tanpa unduh audio.
+- [x] **Teks ke Suara** (`#/text-to-speech`, dirilis lebih awal 2026-11-28):
+  bukan `speechSynthesis` (tidak bisa direkam), tapi mesin suara yang jalan di
+  perangkat supaya hasilnya bisa diunduh MP3/WAV untuk voice-over: eSpeak NG
+  (wasm) untuk Indonesia dan Inggris, plus suara AI Piper "Joe" (CC0) untuk
+  Inggris.
+- [ ] **Suara AI bahasa Indonesia** untuk Teks ke Suara: cari model VITS/Piper
+  bahasa Indonesia yang lisensinya boleh dipakai komersial (MMS-TTS dari Meta
+  CC-BY-NC, jadi tidak bisa), uji di lingkungan yang bisa mengunduh dari
+  huggingface.co, lalu tambahkan sebagai suara di `tts.ts` (pemetaan fonem
+  Piper sudah ada di `piper.ts`).
 
 ## Hari 47 — 2026-12-03 · Kelas & latihan
 
