@@ -1,0 +1,92 @@
+{
+  "title": "LPSE Tender Scraper input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "lpse": {
+      "title": "LPSE agencies",
+      "type": "array",
+      "description": "Agency slugs as in https://spse.inaproc.id/<slug>/ (e.g. lkpp, jakarta, jatimprov, pu), or full links. Use * for every agency listed on spse.inaproc.id (about 600).",
+      "editor": "stringList",
+      "prefill": [
+        "lkpp",
+        "jakarta"
+      ]
+    },
+    "tahun": {
+      "title": "Fiscal year",
+      "type": "integer",
+      "editor": "number",
+      "minimum": 2010,
+      "maximum": 2100,
+      "description": "Tahun anggaran. Empty = the current year."
+    },
+    "keyword": {
+      "title": "Keyword",
+      "type": "string",
+      "editor": "textfield",
+      "description": "Search the tender list like the site's search box, e.g. jalan, konsultan, laptop, CCTV. Empty = everything."
+    },
+    "tahapan": {
+      "title": "Stage contains",
+      "type": "string",
+      "editor": "textfield",
+      "description": "Keep only tenders whose current stage contains this text, e.g. Pengumuman (still open), Selesai, Evaluasi."
+    },
+    "minHps": {
+      "title": "Minimum HPS (Rp)",
+      "type": "integer",
+      "editor": "number",
+      "minimum": 0,
+      "description": "Skip tenders whose owner estimate (HPS) is below this many rupiah, e.g. 1000000000 for Rp 1 M."
+    },
+    "maxHps": {
+      "title": "Maximum HPS (Rp)",
+      "type": "integer",
+      "editor": "number",
+      "minimum": 0,
+      "description": "Skip tenders above this many rupiah, e.g. to find work sized for small businesses."
+    },
+    "includeDetails": {
+      "title": "Include announcement details",
+      "type": "boolean",
+      "default": false,
+      "description": "Also open each tender's announcement page (location, work unit, funding source, qualification, requirements…). One extra request per tender, so slower."
+    },
+    "maxItems": {
+      "title": "Max tenders",
+      "type": "integer",
+      "editor": "number",
+      "minimum": 1,
+      "default": 100,
+      "description": "Stop after this many tenders in total (newest first)."
+    },
+    "maxItemsPerLpse": {
+      "title": "Max tenders per agency",
+      "type": "integer",
+      "editor": "number",
+      "minimum": 1,
+      "description": "Optional cap per agency, handy with * so one big agency doesn't use the whole run."
+    },
+    "proxyConfiguration": {
+      "title": "Proxy",
+      "type": "object",
+      "editor": "proxy",
+      "description": "spse.inaproc.id blocks most non-Indonesian server IPs, so the default is Apify residential proxy in Indonesia (ID). Turn it off only if you run from an Indonesian IP.",
+      "prefill": {
+        "useApifyProxy": true,
+        "apifyProxyGroups": [
+          "RESIDENTIAL"
+        ],
+        "apifyProxyCountry": "ID"
+      },
+      "default": {
+        "useApifyProxy": true,
+        "apifyProxyGroups": [
+          "RESIDENTIAL"
+        ],
+        "apifyProxyCountry": "ID"
+      }
+    }
+  }
+}

@@ -433,18 +433,13 @@ sesudahnya.
 
 ## Hari 37 — 2026-11-23 · AI di perangkat: suara & subtitle
 
-- [ ] **Transkrip Suara ke Teks** _(ditunda 2026-11-23: model Whisper tidak bisa diunduh dan diuji di lingkungan otomatis ini — huggingface.co diblokir, jadi ukuran dan akurasi bahasa Indonesia tiny vs base belum bisa dibandingkan; dikerjakan lagi saat model bisa diuji)_ (`#/transkrip`): audio atau video jadi
-  teks dengan model pengenal suara yang jalan di perangkat (Whisper lewat
-  wasm/WebGPU, di-host sendiri), bahasa Indonesia dan Inggris. Hasil bisa
-  diedit, disalin, atau diunduh sebagai TXT, SRT, dan VTT dengan cap waktu,
-  jadi tersambung ke tool Subtitle. Audio diambil lewat `src/lib/media.ts`
-  dan di-resample ke 16 kHz; pengenalan jalan di Web Worker dengan progres
-  dan tombol batal. **Uji dulu sebelum dikerjakan**: bandingkan ukuran model
-  dan akurasi bahasa Indonesia (tiny vs base). Perhatikan batas GitHub
-  (file di repo maksimal 100 MB, situs Pages maksimal 1 GB). Model hanya
-  diunduh saat tool dibuka dengan ukuran ditampilkan di awal, dan tidak
-  ikut di-precache. Bila akurasinya tidak layak pada ukuran yang masuk
-  akal, batalkan dan catat alasannya di sini.
+- [x] **Transkrip Suara ke Teks** (`/transkrip/`): audio, voice note, atau
+  video jadi teks dengan Whisper base (8-bit, 78 MB, di-host sendiri) yang
+  jalan di Web Worker lewat onnxruntime-web; hasil bisa diedit, disalin, atau
+  diunduh sebagai TXT, SRT, dan VTT, dan bisa langsung dibuka di tool
+  Subtitle. Diuji 2026-11-28 dengan rekaman TTS bahasa Indonesia: WER base
+  ±19% vs tiny ±37%, jadi hanya base yang dipakai. Model diunduh saat tool
+  dijalankan, tidak di-precache.
 - [x] **Subtitle** (`#/subtitle`): buka SRT/VTT, geser semua waktu
   (maju/mundur), regangkan untuk beda frame rate, gabung dua file, dan ubah
   SRT ⇄ VTT, dengan pratinjau di atas video milik pengguna.
@@ -551,14 +546,16 @@ sesudahnya.
 
 ## Hari 46 — 2026-12-02 · Audio & suara
 
-- [ ] **Penghapus Vokal** (`#/vocal-remover`): hilangkan vokal yang ada di
-  tengah stereo (kiri − kanan, dengan bass dijaga lewat filter), pratinjau, lalu
-  simpan MP3/WAV. Jelaskan bahwa hasilnya bergantung pada cara lagu dimixing.
-- [ ] **Teks ke Suara** (`#/text-to-speech`): bacakan teks dengan suara
-  bawaan perangkat (`speechSynthesis`), pilih suara, kecepatan, dan nada. Hanya
-  tampilkan suara dengan `localService === true`: suara "Google …" di Chrome
-  dikirim ke server dan melanggar janji tools. API ini tidak bisa merekam, jadi
-  hanya diputar, tanpa unduh audio.
+- [x] **Teks ke Suara** (`#/text-to-speech`, dirilis lebih awal 2026-11-28):
+  bukan `speechSynthesis` (tidak bisa direkam), tapi mesin suara yang jalan di
+  perangkat supaya hasilnya bisa diunduh MP3/WAV untuk voice-over: eSpeak NG
+  (wasm) untuk Indonesia dan Inggris, plus suara AI Piper "Joe" (CC0) untuk
+  Inggris.
+- [ ] **Suara AI bahasa Indonesia** untuk Teks ke Suara: cari model VITS/Piper
+  bahasa Indonesia yang lisensinya boleh dipakai komersial (MMS-TTS dari Meta
+  CC-BY-NC, jadi tidak bisa), uji di lingkungan yang bisa mengunduh dari
+  huggingface.co, lalu tambahkan sebagai suara di `tts.ts` (pemetaan fonem
+  Piper sudah ada di `piper.ts`).
 
 ## Hari 47 — 2026-12-03 · Kelas & latihan
 

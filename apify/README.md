@@ -1,6 +1,6 @@
 # toowl di Apify Store
 
-Dua puluh tiga engine toowl dibungkus jadi **Actor Apify** berbayar (pay-per-event).
+Dua puluh tujuh engine toowl dibungkus jadi **Actor Apify** berbayar (pay-per-event).
 Kode tool di situs berjalan di browser; di sini engine yang sama di-port ke
 Node supaya bisa dipanggil lewat API, Zapier, Make, n8n, atau jadwal.
 
@@ -29,6 +29,20 @@ Node supaya bisa dipanggil lewat API, Zapier, Make, n8n, atau jadwal.
 | [`image-to-pdf/`](./image-to-pdf) | Image to PDF Converter | sharp (rotasi EXIF, resize, JPEG) + pdf-lib, satu PDF gabungan atau per gambar | `image-converted` (per gambar) |
 | [`watermark-images/`](./watermark-images) | Bulk Image Watermark | sharp + overlay SVG, geometri sama dengan `src/tools/watermark-foto/layout.ts`; font DejaVu/Liberation/Noto di Dockerfile | `image-watermarked` (per gambar) |
 | [`pdf-protect/`](./pdf-protect) | PDF Password Protect & Unlock | qpdf (wasm), AES-256 seperti `src/tools/protect-pdf/protect.ts`, password per file | `pdf-secured` (per PDF) |
+| [`speech-to-text/`](./speech-to-text) | Speech to Text & Subtitles (Whisper) | **engine situs persis**: `src/tools/transkrip/whisper.ts` (Whisper base int8) dibundel jadi `src/engine.js` (`node apify/speech-to-text/build-engine.mjs`), onnxruntime-node, ffmpeg untuk decode; 99 bahasa | `audio-minute` (per menit dimulai) |
+| [`stem-separator/`](./stem-separator) | AI Vocal Remover & Stem Splitter | **engine situs persis**: SCNet dari `src/tools/vocal-remover/separate.ts` dibundel jadi `src/engine.js`, onnxruntime-node, ffmpeg | `audio-minute` (per menit dimulai) |
+| [`text-to-speech/`](./text-to-speech) | Text to Speech MP3 | potong kalimat dari `src/tools/text-to-speech/tts.ts` (dibundel), Piper `en_US-joe-medium` di onnxruntime-node + eSpeak NG wasm (100+ bahasa), ffmpeg untuk MP3/M4A/OGG | `characters-1k` (per 1.000 karakter dimulai) |
+| [`remove-object/`](./remove-object) | AI Object Remover | MI-GAN (`migan.onnx` situs) di onnxruntime-node, metode `src/tools/remove-object/inpaint.ts` di-port ke sharp; mask gambar atau kotak | `object-removed` (per gambar) |
+| [`lpse-tenders/`](./lpse-tenders) | LPSE Tender Scraper (Indonesia, SPSE) | scraper `spse.inaproc.id/<slug>/dt/lelang` (DataTable JSON + authenticityToken sesi), cheerio untuk halaman pengumuman, jeda 1 detik sesuai robots.txt | `tender-scraped` (per tender) |
+| [`halal-certificates/`](./halal-certificates) | Indonesia Halal Certificate Checker (BPJPH) | pencarian publik `bpjph.halal.go.id/cari/sertifikat` (hasil dibaca dari payload RSC Next.js, 10 per halaman), cari per produk / perusahaan / nomor sertifikat | `product-found` (per produk) |
+
+Model empat Actor AI baru (Whisper, SCNet, Piper, MI-GAN) tidak disalin ke
+`apify/`: Dockerfile-nya mengambil file model yang sama dari `src/tools/…` di
+GitHub (`raw.githubusercontent.com/chalidade/tools/main/…`) saat build, dicek
+SHA-256. Kalau model di situs diganti, perbarui checksum di Dockerfile-nya.
+`engine.js` mereka dibuat oleh `apify/bundle-engine.mjs` (esbuild; `onnxruntime-web`
+diganti `onnxruntime-node`) — jalankan lagi `build-engine.mjs` Actor-nya setelah
+kode tool di `src/tools/` berubah.
 
 `pdf-markdown/src/engine.js` adalah hasil build — setelah mengubah
 `src/tools/pdf-to-markdown`, `pdf-to-word/convert.ts`, `pdf-to-excel/convert.ts`
@@ -116,6 +130,10 @@ ditanggung Apify.
 | Image to PDF | `image-converted` (primary) | **$0.001** | $1 | ~$0.00003 |
 | Bulk Image Watermark | `image-watermarked` (primary) | **$0.001** | $1 | ~$0.00003 |
 | PDF Password Protect | `pdf-secured` (primary) | **$0.002** | $2 | ~$0.00002 |
+| Speech to Text (Whisper) | `audio-minute` (primary) | **$0.02** | $20 | ~$0.01 (±32 detik CPU per menit audio) |
+| AI Vocal Remover | `audio-minute` (primary) | **$0.07** | $70 | ~$0.03 (±80 detik CPU per menit lagu; 4 GB) |
+| Text to Speech | `characters-1k` (primary) | **$0.02** | $20 (per 1 juta karakter) | ~$0.005 (Piper ±13 detik CPU per 1.000 karakter; eSpeak jauh lebih murah) |
+| AI Object Remover | `object-removed` (primary) | **$0.01** | $10 | ~$0.001 (±1 detik CPU per area) |
 
 Video Compressor menagih **per menit video hasil** (menit pertama ikut baris dataset). OCR, PDF to Markdown dan PDF to Image menagih **per halaman**: halaman pertama ikut baris
 dataset, sisanya lewat `Actor.charge` (tetap dalam batas "Max cost per run").
@@ -123,6 +141,11 @@ PDF Toolkit mode merge menagih satu event per PDF input (dicek dulu terhadap
 batas biaya sebelum mulai).
 
 \* 1 GB RAM, ~0,3–2 detik per file. Margin bersih ±75%.
+
+Actor AI (Whisper, SCNet, Piper, MI-GAN) jalan di CPU. Di Apify CPU ikut
+memori (±1 vCPU per 4 GB), jadi biayanya ≈ detik-CPU × 4 GB. Estimasi di
+tabel memakai ±$0,3 per compute unit; marginnya ±50–65%, lebih tipis dari
+Actor lain, jadi jangan turunkan harganya tanpa mengukur ulang.
 
 Set *minimum max total charge* = $0.01 supaya run tidak mulai dengan budget
 kurang dari 1–2 file. Cek harga Actor sejenis di Store sebelum publish dan
@@ -160,6 +183,11 @@ cipta, jadi boleh menjual layanannya). Dependensi yang ikut di image:
 | tesseract.js, tesseract.js-core | Apache-2.0 | |
 | @tesseract.js-data/* (tessdata best_int) | Apache-2.0 | |
 | pdfjs-dist (+ @napi-rs/canvas, opsional) | Apache-2.0 / MIT | |
+| Whisper base (model, `Xenova/whisper-base` int8) | MIT (bobot OpenAI) / Apache-2.0 (konversi) | diambil dari `src/tools/transkrip/model/` saat build |
+| SCNet (model, `scnet.fp16.onnx`) | MIT | starrytong/SCNet; diambil dari `src/tools/vocal-remover/` |
+| Piper `en_US-joe-medium` (model) | CC0 | diambil dari `src/tools/text-to-speech/` |
+| espeak-ng (npm, eSpeak NG wasm) | GPL-3.0-or-later | kompatibel dengan AGPL-3.0 |
+| MI-GAN (model, `migan.onnx`) | MIT | Picsart AI Research; diambil dari `src/tools/remove-object/` |
 | lain-lain | MIT/BSD/ISC/0BSD/BlueOak; caniuse-lite CC-BY-4.0 (data) | dicek dengan `license-checker` |
 
 Tidak ada Ghostscript (AGPL, lisensi komersial mahal) atau potrace (GPL).

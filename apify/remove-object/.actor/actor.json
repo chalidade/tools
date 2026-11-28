@@ -1,0 +1,53 @@
+{
+  "actorSpecification": 1,
+  "name": "ai-object-remover",
+  "title": "AI Object Remover (Erase People, Text, Logos)",
+  "description": "Erase unwanted objects from photos in bulk with the MI-GAN inpainting model: people, text, watermarks you own, logos, wires, blemishes. Mark them with a mask image or boxes; the rest of the photo keeps full resolution. Pay per image.",
+  "version": "1.0",
+  "buildTag": "latest",
+  "minMemoryMbytes": 1024,
+  "maxMemoryMbytes": 8192,
+  "input": "./input_schema.json",
+  "output": "./output_schema.json",
+  "dockerfile": "../Dockerfile",
+  "readme": "../README.md",
+  "storages": {
+    "dataset": {
+      "actorSpecification": 1,
+      "views": {
+        "overview": {
+          "title": "Cleaned images",
+          "transformation": {
+            "fields": [
+              "name",
+              "downloadUrl",
+              "width",
+              "height",
+              "areas",
+              "maskedPercent",
+              "error",
+              "imageUrl"
+            ]
+          },
+          "display": {
+            "component": "table",
+            "properties": {
+              "downloadUrl": {
+                "label": "Download",
+                "format": "link"
+              },
+              "maskedPercent": {
+                "label": "Masked %",
+                "format": "number"
+              },
+              "imageUrl": {
+                "label": "Source",
+                "format": "link"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

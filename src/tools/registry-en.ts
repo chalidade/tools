@@ -486,6 +486,25 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
     formats: 'PDF → DXF (DWG)',
     keywords: ['autocad', 'drawing', 'floor plan', 'blueprint', 'vector', 'convert'],
   },
+  'remove-object': {
+    title: 'Remove Object from Photo',
+    description: 'Paint over distracting people, things, text or scribbles, and on-device AI fills them in with the surrounding background.',
+    keywords: ['remove object', 'object remover', 'magic eraser', 'remove person', 'inpainting', 'clean up', 'photobomb', 'erase'],
+    faq: [
+      {
+        q: 'How do I remove a person or object from a photo?',
+        a: 'Open the photo, paint over the person or object a little past its edges (its shadow too) and press “Remove marked area”. The AI fills it in from the background around it. Repeat on any spot that needs touching up.',
+      },
+      {
+        q: 'Is my photo uploaded to a server?',
+        a: 'No. The AI model is downloaded once from this site and runs in your browser; the photo never leaves your device.',
+      },
+      {
+        q: 'Can it remove watermarks?',
+        a: 'It is made for your own photos: passers-by, cables, litter, text or scribbles. Don’t use it to strip watermarks or credits from other people’s work without permission.',
+      },
+    ],
+  },
   'upscale-image': {
     title: 'Upscale Image',
     description: 'Enlarge photos 2× or 4× with on-device AI so they stay sharp instead of pixelated.',
@@ -623,6 +642,18 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
   'sensor-foto': { title: 'Censor Photo', description: 'Cover ID numbers, faces, licence plates or addresses with a box or brush — black block, pixelate or blur.', keywords: ['censor', 'blur', 'redact', 'hide', 'pixelate', 'face', 'privacy'] },
   'extract-frames': { title: 'Extract Video Frames', description: 'Grab video frames as full-resolution images — one by one or every N seconds.', keywords: ['screenshot', 'frame', 'still'] },
   'change-speed': { title: 'Change Speed', description: 'Speed up or slow down video and audio (0.25×–4×) while keeping the pitch natural.', keywords: ['speed', 'slow motion', 'fast'] },
+  transkrip: {
+    title: 'Speech to Text Transcription',
+    description: 'Turn recordings, voice notes, or videos into text with AI on your device — edit it, then download TXT, SRT, or VTT.',
+    formats: 'Audio / Video → TXT / SRT / VTT',
+    keywords: ['transcribe', 'transcription', 'speech to text', 'audio to text', 'video to text', 'voice note', 'dictation', 'meeting notes', 'auto subtitles', 'captions', 'whisper'],
+    faq: [
+      { q: 'How do I turn a WhatsApp voice note into text?', a: 'Save or share the voice note as a file (.opus/.ogg), open it here, pick the language and press Transcribe. The text is ready to copy.' },
+      { q: 'Can it make subtitles from a video automatically?', a: 'Yes. The transcript has a timestamp per sentence; download it as SRT or VTT, or open it in the Subtitle tool to shift the timing.' },
+      { q: 'Is my recording uploaded?', a: 'No. The AI model (Whisper) is downloaded once into your browser and the audio is processed on your own device, so it is safe for private meetings or interviews.' },
+      { q: 'Is there a length limit?', a: 'Not from us; even an hour-long recording works if the device has enough memory. How long it takes depends on the device.' },
+    ],
+  },
   denoise: { title: 'Noise Remover', description: 'Remove background noise, hiss, and hum from recorded voices in video or audio.', keywords: ['noise', 'denoise', 'clean', 'hiss', 'hum', 'voice'] },
   'add-music': { title: 'Add Music to Video', description: 'Put background music under a video: set the volume, loop, fade, and auto-lower it when someone talks.', formats: 'Video + Music → MP4', keywords: ['music', 'song', 'background', 'soundtrack', 'bgm', 'ducking'] },
   'merge-audio': { title: 'Merge Audio', description: 'Join several audio files into one — mixed formats welcome; set the order and gaps.', keywords: ['join', 'combine'] },
@@ -662,6 +693,26 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
     formats: 'Key + Pattern → Chords',
     keywords: ['chord progression', 'progression', 'key', 'pop', 'blues', 'jazz', 'canon', 'transpose', 'guitar', 'piano', 'songwriting'],
   },
+  'text-to-speech': {
+    title: 'Text to Speech',
+    description: 'Turn text into Indonesian or English speech, then download MP3/WAV for TikTok, Reels or video voice-overs.',
+    formats: 'Text → MP3 / WAV',
+    keywords: ['text to speech', 'tts', 'voice over', 'voiceover', 'narration', 'read aloud', 'ai voice', 'speech', 'mp3'],
+    faq: [
+      {
+        q: 'Is my text sent to a server?',
+        a: 'No. The speech is made in your browser with the eSpeak NG engine and a Piper AI model downloaded from this site, so the text never leaves your device.',
+      },
+      {
+        q: 'Can I use it as a TikTok or Reels voice-over?',
+        a: 'Yes. Download it as MP3 (44.1 kHz) and add it to CapCut or any video editor as an audio track.',
+      },
+      {
+        q: 'Why does the Indonesian voice sound robotic?',
+        a: 'Indonesian uses eSpeak NG, a light engine that is clear but not as natural as an AI voice. The English voice "Joe" is a natural-sounding AI model.',
+      },
+    ],
+  },
   'practice-recorder': {
     title: 'Practice Recorder',
     description: 'Record your playing with a metronome ticking (the click is not recorded), play it back with the click on top, and save as MP3 or WAV.',
@@ -673,6 +724,26 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
     description: 'Find a song’s tempo (BPM) and key from an audio file — with its Camelot code and the chords that fit.',
     formats: 'MP3 / WAV → BPM + Key',
     keywords: ['bpm', 'tempo', 'key', 'camelot', 'dj', 'song', 'analyze'],
+  },
+  'vocal-remover': {
+    title: 'AI Vocal Remover',
+    description: 'Split vocals from music with AI on your device: make a karaoke backing track, pull out an acapella, or break a song into drums, bass and the rest.',
+    formats: 'MP3 / WAV → Vocals + Instrumental',
+    keywords: ['vocal remover', 'remove vocals', 'karaoke', 'instrumental', 'acapella', 'stem splitter', 'stems', 'separate', 'drums', 'bass', 'ai', 'song'],
+    faq: [
+      {
+        q: 'How do I make a karaoke track from an MP3?',
+        a: 'Open the song here, pick Vocals + Instrumental and press Separate. The Instrumental is the song without vocals, ready to download as MP3 or WAV. The song is never uploaded.',
+      },
+      {
+        q: 'How is this different from a classic vocal remover?',
+        a: 'The old trick subtracts the right channel from the left, so the bass and drums in the middle go too and stereo-processed vocals stay. This tool uses an AI model (SCNet) that recognises vocals, drums, bass and other instruments, so the music stays whole.',
+      },
+      {
+        q: 'How long does it take?',
+        a: 'On a laptop with a GPU, about as long as the song; without one, or on a phone, several times longer. Phones process up to 2 minutes of a song at a time so memory holds out.',
+      },
+    ],
   },
   piano: {
     title: 'Online Piano',

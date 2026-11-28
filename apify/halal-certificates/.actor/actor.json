@@ -1,0 +1,39 @@
+{
+  "actorSpecification": 1,
+  "name": "halal-certificate-checker",
+  "title": "Indonesia Halal Certificate Checker (BPJPH)",
+  "description": "Search Indonesia's official halal registry (BPJPH, bpjph.halal.go.id) by product, company or certificate number. Get certificate number, issue date, product, brand, company, business scale and factory/outlet addresses as clean JSON, CSV or Excel. Pay per product.",
+  "version": "1.0",
+  "buildTag": "latest",
+  "minMemoryMbytes": 256,
+  "maxMemoryMbytes": 1024,
+  "defaultMemoryMbytes": 256,
+  "input": "./input_schema.json",
+  "output": "./output_schema.json",
+  "dockerfile": "../Dockerfile",
+  "readme": "../README.md",
+  "storages": {
+    "dataset": {
+      "actorSpecification": 1,
+      "views": {
+        "overview": {
+          "title": "Halal products",
+          "transformation": { "fields": ["namaProduk", "merek", "pelakuUsaha", "noSertifikat", "tanggalTerbitIso", "provinsi", "skalaUsaha", "search"] },
+          "display": {
+            "component": "table",
+            "properties": {
+              "namaProduk": { "label": "Product" },
+              "merek": { "label": "Brand" },
+              "pelakuUsaha": { "label": "Company" },
+              "noSertifikat": { "label": "Certificate" },
+              "tanggalTerbitIso": { "label": "Issued", "format": "date" },
+              "provinsi": { "label": "Province" },
+              "skalaUsaha": { "label": "Scale" },
+              "search": { "label": "Search" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

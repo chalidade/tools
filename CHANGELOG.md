@@ -5,10 +5,47 @@ terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
 ## 2026-11-28 — Kesehatan
 
-Dua tool baru; total sekarang **147 tools**.
+Dua tool baru; total sekarang **151 tools**.
 
 - **Kalkulator Masa Subur & Haid** (`/masa-subur/`): isi hari pertama haid terakhir, atau beberapa tanggal haid untuk menghitung rata-rata dan rentang siklus (selisih di luar 15–60 hari dianggap tanggal yang terlewat), lalu lihat perkiraan ovulasi (14 hari sebelum haid berikutnya), jendela subur (5 hari sebelum sampai sehari sesudah ovulasi, Wilcox dkk. 2000), dan haid berikutnya dalam kalender tiga bulan. Hitungan tanggalnya berbagi `hpl.ts` dengan Hitung HPL. Tanggal tersimpan otomatis di perangkat saja dan bisa dihapus dengan satu tombol. Tertulis jelas bahwa ini perkiraan metode kalender, bukan kontrasepsi dan bukan nasihat medis. Ditandai tool khusus web.
 - **Tes Buta Warna** (`/tes-buta-warna/`): 10 pelat titik-titik yang digambar sendiri secara acak di canvas (bukan pelat Ishihara): satu pelat kontrol yang mudah, lima merah-hijau, dan empat biru-kuning; angka 2–9 terbentuk dari titik berwarna di sepanjang garis kebingungan warna dengan kecerahan diacak per titik. Hasil per sumbu (normal / kemungkinan gangguan / belum jelas) plus peringatan bila pelat kontrol salah. Disertai catatan bahwa layar yang belum dikalibrasi memengaruhi hasil dan ini bukan pengganti tes resmi untuk SIM atau kerja. Ditandai tool khusus web.
+
+## 2026-11-28 — Actor Apify cek sertifikat halal
+
+- **Indonesia Halal Certificate Checker** (`apify/halal-certificates/`): cari di registri halal resmi BPJPH (`bpjph.halal.go.id/cari/sertifikat`) per nama produk, perusahaan, atau nomor sertifikat, banyak pencarian sekaligus. Per produk: nomor dan tanggal terbit sertifikat, nama produk, merek, pelaku usaha, skala usaha, serta pabrik/outlet dengan alamat dan provinsi. Hasil dibaca dari payload RSC halaman (10 per halaman). Ditagih per produk (`product-found`).
+
+## 2026-11-28 — Actor Apify scraper tender LPSE
+
+- Actor Apify pertama yang bukan tool file: **LPSE Tender Scraper** (`apify/lpse-tenders/`) mengambil daftar tender pemerintah dari SPSE di `spse.inaproc.id/<instansi>/` (semua LPSE lama sudah pindah ke sini): kode, nama paket, instansi, tahapan, HPS dan nilai kontrak sebagai angka rupiah, jenis dan metode pengadaan, plus isi halaman pengumuman bila diminta. Satu instansi, beberapa, atau `*` untuk sekitar 600 instansi dari robots.txt; filter tahun, kata kunci, tahapan, dan batas HPS. Jeda 1 detik per permintaan sesuai `Crawl-delay` situs. Ditagih per tender (`tender-scraped`).
+
+## 2026-11-28 — Actor Apify untuk 4 tool AI baru
+
+- Empat tool AI terbaru sekarang juga ada sebagai **Actor Apify** berbayar di `apify/`, dengan engine dan model yang sama persis dengan versi browsernya: **Speech to Text & Subtitles** (Whisper, 99 bahasa, hasil TXT/SRT/VTT/JSON, $0.02 per menit audio), **AI Vocal Remover & Stem Splitter** (SCNet, vokal + instrumental atau 4 stem, $0.07 per menit), **Text to Speech MP3** (suara neural Joe + eSpeak 100+ bahasa, $0.02 per 1.000 karakter), dan **AI Object Remover** (MI-GAN, lewat mask atau kotak, $0.01 per gambar). Model tidak disalin: Dockerfile mengambilnya dari `src/tools/` saat build dengan cek SHA-256. Twibbon sengaja tidak dibuat Actor, karena pasang bingkai massal sudah tercakup Bulk Image Watermark.
+## 2026-11-28 — Transkrip suara ke teks
+
+Satu tool baru; total sekarang **149 tools**.
+
+- **Transkrip Suara ke Teks** (`/transkrip/`): rekaman, voice note WhatsApp (.opus), atau video jadi teks dengan AI Whisper yang jalan di perangkat, tanpa upload dan tanpa batas menit. Pilih bahasa Indonesia, Inggris, atau deteksi otomatis; teks muncul sambil berjalan, tiap kalimat punya cap waktu yang bisa diklik untuk memutar bagian itu dan bisa diedit langsung. Unduh TXT (dengan atau tanpa cap waktu), SRT, atau VTT, atau buka hasilnya di tool Subtitle. Mesin Whisper ditulis sendiri di atas onnxruntime-web yang sudah dipakai situs (`whisper.ts`: log-mel, decoder dengan cache, aturan cap waktu, dekode panjang per 30 detik, lompat jeda hening), dengan model Whisper base 8-bit (78 MB, sha256 sama dengan Xenova/whisper-base) di-host sendiri dan diunduh sekali saat pertama dipakai. Suara diambil lewat `audioMono` baru di `src/lib/media.ts`.
+
+## 2026-11-28 — Penghapus vokal AI
+
+Satu tool baru; total sekarang **148 tools**.
+
+- **Penghapus Vokal AI** (`/vocal-remover/`): pisahkan vokal dari musik dengan model AI SCNet (Tong dkk., ICASSP 2024; kode dan bobot MIT) yang berjalan di browser lewat ONNX Runtime Web (WebGPU bila ada, WebAssembly bila tidak) di Web Worker. Pilih **Vokal + Instrumental** (minus one karaoke dan acapella; instrumental = lagu dikurangi vokal, jadi tidak ada bagian musik yang hilang) atau **4 stem** (vokal, drum, bass, lainnya), kualitas Cepat (tiap sampel didengar di 2 segmen) atau Teliti (4), pratinjau tiap stem, unduh MP3/WAV. Model 24 MB dibundel (bobot float16, dihitung float32), diunduh sekali lalu tersimpan; `build-model.py` mengekspornya dari checkpoint aslinya. STFT/iSTFT ditulis sendiri (`stft.ts`) dan seluruh pipeline dicek terhadap PyTorch (55–72 dB SNR per stem). HP dibatasi 2 menit sekali proses (1 menit untuk 4 stem), laptop 10/6 menit; lagu yang lebih panjang dipilih bagiannya dengan slider. Menggantikan rencana "Penghapus Vokal" kiri − kanan di ROADMAP, yang hasilnya bergantung pada mixing lagu.
+
+
+## 2026-11-28 — Hapus objek dari foto
+
+Satu tool baru; total sekarang **147 tools**.
+
+- **Hapus Objek dari Foto** (`/remove-object/`): warnai orang lewat, benda, kabel, tulisan, atau coretan dengan kuas, tekan *Hapus yang ditandai*, dan AI mengisinya dengan latar di sekitarnya. Modelnya MI-GAN (MIT, Picsart AI Research), diekspor ke ONNX (26 MB, `build-model.py`) dan dijalankan ONNX Runtime Web di WebGPU atau WebAssembly; diunduh hanya saat tool dipakai, foto tidak pernah diunggah. Tiap area yang diwarnai diisi di jendela konteks 512 px-nya sendiri (area ± 1,8× ukurannya, jendela yang bertumpuk digabung), lalu dibaurkan kembali dengan tepi lembut, sehingga bagian foto lainnya tetap resolusi penuh (sampai 4096 px). Kuas tandai/hapus tanda dengan ukuran yang bisa diatur, urungkan/ulangi (Ctrl/⌘+Z, Ctrl+Y) untuk coretan maupun hasil, tahan tombol untuk membandingkan dengan foto asli, unduh JPG/PNG. Ditulis jelas bahwa tool ini untuk foto sendiri, bukan untuk menghapus watermark karya orang lain.
+
+
+## 2026-11-28 — Teks ke suara
+
+Satu tool baru; total sekarang **146 tools**.
+
+- **Teks ke Suara** (`/text-to-speech/`): tulis atau tempel teks, pilih bahasa Indonesia atau Inggris dan suaranya, atur kecepatan (dan nada), lalu putar dan unduh sebagai **MP3**, M4A (44,1 kHz stereo, siap dimasukkan ke CapCut/TikTok/Reels) atau WAV. Semua dibuat di perangkat, teks tidak dikirim ke mana pun. Bahasa Indonesia memakai eSpeak NG (GPL-3.0, wasm 18 MB berisi semua bahasa) dengan empat pilihan suara pria/wanita: jelas dan instan, tapi masih terdengar seperti robot. Bahasa Inggris punya suara AI **Joe** (Piper `en_US-joe-medium`, CC0, int8 16,6 MB) lewat ONNX Runtime Web yang sama dengan Perbesar Gambar; eSpeak membuat fonemnya dan tanda baca dikembalikan per klausa supaya jeda dan intonasinya pas. Teks panjang (sampai 20.000 karakter) dipotong per kalimat dengan progres dan tombol batal; satu baris = satu kalimat, baris kosong = jeda lebih panjang. Hasil kedua mesin sudah dicek dengan Whisper: kalimat Inggris terbaca persis, kalimat Indonesia sebagian besar benar.
 
 ## 2026-11-28 — Twibbon
 

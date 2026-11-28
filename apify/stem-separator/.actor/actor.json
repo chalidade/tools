@@ -1,0 +1,71 @@
+{
+  "actorSpecification": 1,
+  "name": "ai-vocal-remover-stem-splitter",
+  "title": "AI Vocal Remover & Stem Splitter (Vocals, Drums, Bass)",
+  "description": "Split songs from URLs into stems with the SCNet AI model: vocals + instrumental (karaoke, acapella) or 4 stems (vocals, drums, bass, other). MP3, WAV, FLAC or M4A out. Runs inside the Actor, no third-party API. Pay per audio minute.",
+  "version": "1.0",
+  "buildTag": "latest",
+  "minMemoryMbytes": 2048,
+  "maxMemoryMbytes": 16384,
+  "input": "./input_schema.json",
+  "output": "./output_schema.json",
+  "dockerfile": "../Dockerfile",
+  "readme": "../README.md",
+  "storages": {
+    "dataset": {
+      "actorSpecification": 1,
+      "views": {
+        "overview": {
+          "title": "Stems",
+          "transformation": {
+            "fields": [
+              "name",
+              "mode",
+              "duration",
+              "vocalsUrl",
+              "instrumentalUrl",
+              "drumsUrl",
+              "bassUrl",
+              "otherUrl",
+              "error",
+              "url"
+            ]
+          },
+          "display": {
+            "component": "table",
+            "properties": {
+              "duration": {
+                "label": "Duration (s)",
+                "format": "number"
+              },
+              "vocalsUrl": {
+                "label": "Vocals",
+                "format": "link"
+              },
+              "instrumentalUrl": {
+                "label": "Instrumental",
+                "format": "link"
+              },
+              "drumsUrl": {
+                "label": "Drums",
+                "format": "link"
+              },
+              "bassUrl": {
+                "label": "Bass",
+                "format": "link"
+              },
+              "otherUrl": {
+                "label": "Other",
+                "format": "link"
+              },
+              "url": {
+                "label": "Source",
+                "format": "link"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

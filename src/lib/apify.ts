@@ -281,6 +281,54 @@ export const APIFY_CATALOG: ApifyActor[] = [
     unit: ['file', 'file'],
     tools: ['compress-audio'],
   },
+  {
+    name: 'speech-to-text-whisper',
+    published: false,
+    title: ['Transkrip suara & subtitle (Whisper)', 'Speech to Text & Subtitles (Whisper)'],
+    blurb: [
+      'Audio atau video jadi teks, SRT dan VTT. 99 bahasa termasuk Indonesia, deteksi otomatis.',
+      'Audio or video to text, SRT and VTT. 99 languages with auto-detect.',
+    ],
+    price: 0.02,
+    unit: ['menit audio', 'audio minute'],
+    tools: ['transkrip'],
+  },
+  {
+    name: 'ai-vocal-remover-stem-splitter',
+    published: false,
+    title: ['Pisah vokal & stem lagu (AI)', 'AI Vocal Remover & Stem Splitter'],
+    blurb: [
+      'Vokal + instrumental (karaoke), atau 4 stem: vokal, drum, bass, lainnya. Model SCNet.',
+      'Vocals + instrumental (karaoke), or 4 stems: vocals, drums, bass, other. SCNet model.',
+    ],
+    price: 0.07,
+    unit: ['menit audio', 'audio minute'],
+    tools: ['vocal-remover'],
+  },
+  {
+    name: 'text-to-speech-mp3',
+    published: false,
+    title: ['Teks ke suara MP3', 'Text to Speech MP3'],
+    blurb: [
+      'Suara neural bahasa Inggris yang natural, plus eSpeak untuk 100+ bahasa termasuk Indonesia.',
+      'A natural English neural voice, plus eSpeak voices for 100+ languages.',
+    ],
+    price: 0.00002,
+    unit: ['karakter', 'character'],
+    tools: ['text-to-speech'],
+  },
+  {
+    name: 'ai-object-remover',
+    published: false,
+    title: ['Hapus objek dari foto (AI)', 'AI Object Remover'],
+    blurb: [
+      'Hapus orang, teks, logo atau kabel lewat mask atau kotak. Sisa foto tetap resolusi penuh.',
+      'Erase people, text, logos or wires by mask or boxes. The rest keeps full resolution.',
+    ],
+    price: 0.01,
+    unit: ['gambar', 'image'],
+    tools: ['remove-object'],
+  },
 ]
 
 const BY_NAME = new Map(APIFY_CATALOG.map((a) => [a.name, a]))

@@ -56,6 +56,10 @@ export const SEO_COPY: Record<string, Partial<Record<Lang, Copy>>> = {
       ],
     },
   },
+  'remove-object': {
+    id: { title: 'Hapus Objek & Orang di Foto Online Gratis — AI, Tanpa Upload' },
+    en: { title: 'Remove Objects & People from Photos Free — AI, No Upload' },
+  },
   'compress-pdf': {
     id: {
       title: 'Kompres PDF Online Gratis — Perkecil Ukuran PDF Tanpa Upload',
@@ -194,6 +198,16 @@ export const SEO_COPY: Record<string, Partial<Record<Lang, Copy>>> = {
   kpr: {
     id: { title: 'Simulasi KPR Online — Hitung Cicilan Rumah, DP & Bunga Floating' },
     en: { title: 'Mortgage Calculator — Monthly Payment, Fixed to Variable Rate' },
+  },
+  transkrip: {
+    id: {
+      title: 'Transkrip Audio ke Teks Online Gratis — VN, Rekaman, Video',
+      faq: [
+        { q: 'Bagaimana cara transkrip audio ke teks gratis?', a: 'Buka file rekaman atau videonya di sini, pilih bahasa, lalu Mulai transkrip. AI Whisper berjalan di browser-mu, tanpa daftar, tanpa batas menit, dan tanpa upload.' },
+        { q: 'Apakah hasilnya langsung rapi?', a: 'Hasilnya mendekati, tapi bukan sempurna: nama orang, istilah asing, dan suara yang bertumpuk sering keliru. Rapikan langsung di kotak teks sebelum disalin atau diunduh.' },
+      ],
+    },
+    en: { title: 'Transcribe Audio to Text Online Free — No Upload, No Limits' },
   },
   'gaji-bersih': {
     id: { title: 'Kalkulator Gaji Bersih — Hitung PPh 21, BPJS, Take Home Pay' },

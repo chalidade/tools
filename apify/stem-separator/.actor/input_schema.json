@@ -1,0 +1,107 @@
+{
+  "title": "AI Vocal Remover input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "files": {
+      "title": "Song URLs",
+      "type": "array",
+      "description": "Direct links to songs: MP3, WAV, FLAC, M4A, OGG, or a video (its sound is used).",
+      "editor": "requestListSources",
+      "prefill": [
+        {
+          "url": "https://raw.githubusercontent.com/chalidade/tools/main/apify/samples/song.mp3"
+        }
+      ]
+    },
+    "mode": {
+      "title": "Stems",
+      "type": "string",
+      "description": "Vocals + instrumental, or 4 stems (vocals, drums, bass, other; the instrumental comes too).",
+      "editor": "select",
+      "enum": [
+        "vocals",
+        "4stems"
+      ],
+      "enumTitles": [
+        "Vocals + instrumental (karaoke / acapella)",
+        "4 stems: vocals, drums, bass, other"
+      ],
+      "default": "vocals"
+    },
+    "format": {
+      "title": "Output format",
+      "type": "string",
+      "description": "File type of each stem.",
+      "editor": "select",
+      "enum": [
+        "mp3",
+        "wav",
+        "flac",
+        "m4a"
+      ],
+      "enumTitles": [
+        "MP3",
+        "WAV (16-bit)",
+        "FLAC (lossless)",
+        "M4A (AAC)"
+      ],
+      "default": "mp3"
+    },
+    "bitrate": {
+      "title": "Bitrate (kbps)",
+      "type": "integer",
+      "description": "For MP3 and M4A.",
+      "default": 256,
+      "minimum": 64,
+      "maximum": 320
+    },
+    "quality": {
+      "title": "Quality",
+      "type": "string",
+      "description": "High overlaps the model's 11 s windows 4× instead of 2×: a little cleaner, twice the time (same price).",
+      "editor": "select",
+      "enum": [
+        "normal",
+        "high"
+      ],
+      "enumTitles": [
+        "Normal",
+        "High (slower)"
+      ],
+      "default": "normal"
+    },
+    "trimStart": {
+      "title": "Start at (s)",
+      "type": "integer",
+      "description": "Only process from this second on.",
+      "minimum": 0,
+      "sectionCaption": "Advanced"
+    },
+    "trimEnd": {
+      "title": "End at (s)",
+      "type": "integer",
+      "description": "Only process up to this second.",
+      "minimum": 1
+    },
+    "maxMinutes": {
+      "title": "Max minutes per song",
+      "type": "integer",
+      "description": "Longer songs are skipped (not charged).",
+      "default": 20,
+      "minimum": 1,
+      "maximum": 120
+    },
+    "maxFileSizeMb": {
+      "title": "Max file size (MB)",
+      "type": "integer",
+      "description": "Larger files are skipped with an error (not charged).",
+      "default": 300,
+      "minimum": 1,
+      "maximum": 2000
+    }
+  },
+  "required": [
+    "files"
+  ]
+}

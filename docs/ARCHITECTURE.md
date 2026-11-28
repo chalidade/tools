@@ -10,7 +10,7 @@ A deeper look at how the site is put together. For the overview, see the [README
 2. **Static hosting.** The site is plain files on GitHub Pages under the custom domain
    `toowl.my.id`, served from the root. Public assets are referenced through
    `import.meta.env.BASE_URL`, and CI builds with `--base=/`.
-3. **Pay only for what you open.** 147 tools share one page, so nothing heavy may load until a tool
+3. **Pay only for what you open.** 151 tools share one page, so nothing heavy may load until a tool
    needs it.
 
 ## App shell

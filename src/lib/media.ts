@@ -338,3 +338,94 @@ export async function audioPeaks(file: File, buckets: number): Promise<number[]>
     input.dispose()
   }
 }
+
+/**
+ * The audio track as mono PCM at `rate` Hz (for speech recognition), read
+ * chunk by chunk with Mediabunny and resampled by an OfflineAudioContext per
+ * stretch of about 20 s, so a long video never sits decoded in memory at its
+ * own rate. Falls back to `decodeAudioData` for files Mediabunny cannot read
+ * (some voice-note formats); that path loads the whole file.
+ */
+export async function audioMono(file: File, rate: number, onProgress?: (p: number) => void): Promise<Float32Array> {
+  const parts: Float32Array[] = []
+  let total = 0
+  const push = (p: Float32Array) => {
+    parts.push(p)
+    total += p.length
+  }
+  const resample = async (mono: Float32Array, from: number) => {
+    if (from === rate) return mono
+    const length = Math.max(1, Math.round((mono.length * rate) / from))
+    const ctx = new OfflineAudioContext(1, length, rate)
+    const buf = ctx.createBuffer(1, mono.length, from)
+    buf.copyToChannel(mono as Float32Array<ArrayBuffer>, 0)
+    const src = ctx.createBufferSource()
+    src.buffer = buf
+    src.connect(ctx.destination)
+    src.start()
+    return (await ctx.startRendering()).getChannelData(0)
+  }
+  try {
+    const { mb, input } = await openMedia(file)
+    try {
+      const track = await input.getPrimaryAudioTrack()
+      if (!track) throw new UnsupportedMediaError()
+      if (!(await track.canDecode())) throw new UnsupportedMediaError()
+      const duration = await input.computeDuration()
+      const from = track.sampleRate
+      const stretch = from * 20
+      let pending = new Float32Array(stretch)
+      let fill = 0
+      let plane = new Float32Array(0)
+      const sink = new mb.AudioSampleSink(track)
+      for await (const sample of sink.samples()) {
+        const n = sample.numberOfFrames
+        const ch = sample.numberOfChannels
+        if (plane.length < n) plane = new Float32Array(n)
+        const mono = new Float32Array(n)
+        for (let c = 0; c < ch; c++) {
+          sample.copyTo(plane, { planeIndex: c, format: 'f32-planar' })
+          for (let i = 0; i < n; i++) mono[i] += plane[i] / ch
+        }
+        const end = sample.timestamp + sample.duration
+        sample.close()
+        let at = 0
+        while (at < n) {
+          const take = Math.min(n - at, stretch - fill)
+          pending.set(mono.subarray(at, at + take), fill)
+          fill += take
+          at += take
+          if (fill === stretch) {
+            push(await resample(pending, from))
+            pending = new Float32Array(stretch)
+            fill = 0
+          }
+        }
+        onProgress?.(Math.min(1, end / duration))
+      }
+      if (fill) push(await resample(pending.subarray(0, fill), from))
+    } finally {
+      input.dispose()
+    }
+  } catch (e) {
+    if (total) throw e
+    // Mediabunny could not open or decode it: let the browser try the whole file.
+    const ctx = new OfflineAudioContext(1, 1, rate)
+    const decoded = await ctx.decodeAudioData(await file.arrayBuffer()).catch(() => {
+      throw new UnsupportedMediaError()
+    })
+    const mono = new Float32Array(decoded.length)
+    for (let c = 0; c < decoded.numberOfChannels; c++) {
+      const d = decoded.getChannelData(c)
+      for (let i = 0; i < d.length; i++) mono[i] += d[i] / decoded.numberOfChannels
+    }
+    push(await resample(mono, decoded.sampleRate))
+  }
+  const out = new Float32Array(total)
+  let o = 0
+  for (const p of parts) {
+    out.set(p, o)
+    o += p.length
+  }
+  return out
+}
