@@ -3,6 +3,14 @@
 Catatan harian apa yang berubah di [tools](https://toowl.my.id/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-28 — Twibbon
+
+Satu tool baru; total sekarang **145 tools**.
+
+- **Twibbon** (`/twibbon/`): buka bingkai PNG transparan dari panitia (bagian transparannya dicari otomatis supaya foto langsung pas), pilih foto, lalu geser, cubit/scroll untuk zoom, dan putar dengan dua jari atau slider. Unduh PNG/JPG di ukuran asli bingkai, atau bagikan langsung lewat `navigator.share` di HP. Tidak ada galeri dan tidak ada upload: bingkai dan foto digabung di browser.
+- Lima **template bawaan** yang digambar dengan kode (tanpa file gambar), teksnya bisa diubah: 17 Agustus (HUT ke-berapa dihitung otomatis), Ramadan (tahun Hijriah dari kalender umm al-qura), Hari Guru, Wisuda, dan MPLS.
+- Tiap template punya halaman sendiri untuk mesin pencari: `/twibbon-17-agustus/`, `/twibbon-ramadan/`, `/twibbon-hari-guru/`, `/twibbon-wisuda/`, `/twibbon-mpls/` (plus versi `/en/`). Halaman ini memakai field baru `variantOf` di registry: punya judul, deskripsi, FAQ, breadcrumb, dan masuk sitemap, tapi tidak dihitung atau didaftar sebagai tool terpisah. Halaman twibbon dan template saling bertaut di bagian "Tools lain".
+
 ## 2026-11-28 — Generator di API
 
 Delapan Actor Apify baru untuk developer (situs tetap gratis, tidak berubah); halaman `/api/` menampilkannya setelah terbit.
