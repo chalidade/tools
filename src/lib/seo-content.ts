@@ -33,6 +33,10 @@ export const SEO_COPY: Record<string, Partial<Record<Lang, Copy>>> = {
       ],
     },
   },
+  twibbon: {
+    id: { title: 'Buat Twibbon Online Gratis — Tanpa Upload, Tanpa Daftar' },
+    en: { title: 'Twibbon Maker Online — Free Photo Frame, No Upload' },
+  },
   'remove-background': {
     id: {
       title: 'Hapus Background Foto Online Gratis — Jadi PNG Transparan',

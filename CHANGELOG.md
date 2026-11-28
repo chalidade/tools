@@ -5,9 +5,17 @@ terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
 ## 2026-11-28 — Transkrip suara ke teks
 
-Satu tool baru; total sekarang **145 tools**.
+Satu tool baru; total sekarang **146 tools**.
 
 - **Transkrip Suara ke Teks** (`/transkrip/`): rekaman, voice note WhatsApp (.opus), atau video jadi teks dengan AI Whisper yang jalan di perangkat, tanpa upload dan tanpa batas menit. Pilih bahasa Indonesia, Inggris, atau deteksi otomatis; teks muncul sambil berjalan, tiap kalimat punya cap waktu yang bisa diklik untuk memutar bagian itu dan bisa diedit langsung. Unduh TXT (dengan atau tanpa cap waktu), SRT, atau VTT, atau buka hasilnya di tool Subtitle. Mesin Whisper ditulis sendiri di atas onnxruntime-web yang sudah dipakai situs (`whisper.ts`: log-mel, decoder dengan cache, aturan cap waktu, dekode panjang per 30 detik, lompat jeda hening), dengan model Whisper base 8-bit (78 MB, sha256 sama dengan Xenova/whisper-base) di-host sendiri dan diunduh sekali saat pertama dipakai. Suara diambil lewat `audioMono` baru di `src/lib/media.ts`.
+
+## 2026-11-28 — Twibbon
+
+Satu tool baru; total sekarang **145 tools**.
+
+- **Twibbon** (`/twibbon/`): buka bingkai PNG transparan dari panitia (bagian transparannya dicari otomatis supaya foto langsung pas), pilih foto, lalu geser, cubit/scroll untuk zoom, dan putar dengan dua jari atau slider. Unduh PNG/JPG di ukuran asli bingkai, atau bagikan langsung lewat `navigator.share` di HP. Tidak ada galeri dan tidak ada upload: bingkai dan foto digabung di browser.
+- Lima **template bawaan** yang digambar dengan kode (tanpa file gambar), teksnya bisa diubah: 17 Agustus (HUT ke-berapa dihitung otomatis), Ramadan (tahun Hijriah dari kalender umm al-qura), Hari Guru, Wisuda, dan MPLS.
+- Tiap template punya halaman sendiri untuk mesin pencari: `/twibbon-17-agustus/`, `/twibbon-ramadan/`, `/twibbon-hari-guru/`, `/twibbon-wisuda/`, `/twibbon-mpls/` (plus versi `/en/`). Halaman ini memakai field baru `variantOf` di registry: punya judul, deskripsi, FAQ, breadcrumb, dan masuk sitemap, tapi tidak dihitung atau didaftar sebagai tool terpisah. Halaman twibbon dan template saling bertaut di bagian "Tools lain".
 
 ## 2026-11-28 — Generator di API
 
