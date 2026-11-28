@@ -3,6 +3,12 @@
 Catatan harian apa yang berubah di [tools](https://toowl.my.id/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-28 — Hapus objek dari foto
+
+Satu tool baru; total sekarang **147 tools**.
+
+- **Hapus Objek dari Foto** (`/remove-object/`): warnai orang lewat, benda, kabel, tulisan, atau coretan dengan kuas, tekan *Hapus yang ditandai*, dan AI mengisinya dengan latar di sekitarnya. Modelnya MI-GAN (MIT, Picsart AI Research), diekspor ke ONNX (26 MB, `build-model.py`) dan dijalankan ONNX Runtime Web di WebGPU atau WebAssembly; diunduh hanya saat tool dipakai, foto tidak pernah diunggah. Tiap area yang diwarnai diisi di jendela konteks 512 px-nya sendiri (area ± 1,8× ukurannya, jendela yang bertumpuk digabung), lalu dibaurkan kembali dengan tepi lembut, sehingga bagian foto lainnya tetap resolusi penuh (sampai 4096 px). Kuas tandai/hapus tanda dengan ukuran yang bisa diatur, urungkan/ulangi (Ctrl/⌘+Z, Ctrl+Y) untuk coretan maupun hasil, tahan tombol untuk membandingkan dengan foto asli, unduh JPG/PNG. Ditulis jelas bahwa tool ini untuk foto sendiri, bukan untuk menghapus watermark karya orang lain.
+
 ## 2026-11-28 — Teks ke suara
 
 Satu tool baru; total sekarang **146 tools**.

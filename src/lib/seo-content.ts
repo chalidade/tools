@@ -56,6 +56,10 @@ export const SEO_COPY: Record<string, Partial<Record<Lang, Copy>>> = {
       ],
     },
   },
+  'remove-object': {
+    id: { title: 'Hapus Objek & Orang di Foto Online Gratis — AI, Tanpa Upload' },
+    en: { title: 'Remove Objects & People from Photos Free — AI, No Upload' },
+  },
   'compress-pdf': {
     id: {
       title: 'Kompres PDF Online Gratis — Perkecil Ukuran PDF Tanpa Upload',
