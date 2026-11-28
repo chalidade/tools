@@ -209,6 +209,25 @@ export const TOOLS_EN: Record<string, { title: string; description: string; form
       { q: 'How do I check if a child is stunted?', a: 'Enter the date of birth, sex and length/height. Length/height-for-age below −2 SD is stunted and below −3 SD severely stunted on the WHO standards used by Permenkes 2/2020. It is a screening, not a diagnosis; see a clinic.' },
     ],
   },
+  'masa-subur': {
+    title: 'Fertile Window & Period Calculator',
+    description: 'From your last period date (or several months) estimate ovulation, the fertile window and the next period on a three-month calendar. Data stays on your device.',
+    formats: 'Period dates → Ovulation & calendar',
+    keywords: ['fertile window', 'ovulation', 'period', 'period tracker', 'menstrual cycle', 'cycle calculator', 'next period', 'trying to conceive', 'ttc', 'calendar method'],
+    faq: [
+      { q: 'How do I work out my fertile window?', a: 'Enter the first day of your last period and your cycle length. Ovulation is estimated 14 days before the next period and the fertile window runs from 5 days before to 1 day after it. It is a calendar-method estimate, not contraception.' },
+      { q: 'When do I ovulate with a 30-day cycle?', a: 'Around cycle day 16 (30 − 14), with a fertile window from day 11 to day 17. The real date can shift by several days.' },
+    ],
+  },
+  'tes-buta-warna': {
+    title: 'Colour Blindness Test',
+    description: 'A quick test with dot plates generated randomly on your device: red-green and blue-yellow, with an estimated result. Not a substitute for an official test.',
+    formats: 'Colour plates → Screening result',
+    keywords: ['color blind', 'colour blind', 'color blindness test', 'ishihara', 'red green', 'protanopia', 'deuteranopia', 'tritanopia', 'eye test', 'colour vision'],
+    faq: [
+      { q: 'Is an online colour blindness test accurate?', a: 'Only as a rough screening: an uncalibrated screen changes the result. For a driving licence, a service academy or a job you still need an official test by an eye doctor or optometrist.' },
+    ],
+  },
   'bmi': {
     title: 'BMI & Ideal Weight',
     description: 'Work out your BMI with Asia-Pacific, Indonesian MoH or WHO categories, a healthy weight range, and daily calorie needs.',

@@ -2,7 +2,7 @@
 
 [English](README.md) · **Bahasa Indonesia**
 
-Kotak perkakas file sehari-hari: **149 tools gratis** untuk PDF, Office, gambar
+Kotak perkakas file sehari-hari: **151 tools gratis** untuk PDF, Office, gambar
 CAD, foto, video, audio, musik, dan hitungan sehari-hari yang jalan **sepenuhnya
 di browser**. File diproses di perangkat pengguna: tidak di-upload ke server dan
 tidak disimpan di mana pun.
@@ -195,6 +195,8 @@ dan mengirim event berisi file rekaman. Ada juga API tanpa UI untuk developer.
 | Kalkulator Pesangon | [`/pesangon/`](https://toowl.my.id/pesangon/) | Uang pesangon, penghargaan masa kerja, dan penggantian hak menurut PP 35/2021 untuk tiap alasan PHK, dengan rumus dan pasalnya; aturan di satu berkas. |
 | Cek Stunting & Kurva Tumbuh Anak | [`/kurva-tumbuh/`](https://toowl.my.id/kurva-tumbuh/) | Z-score berat, tinggi, IMT, dan lingkar kepala anak 0–5 tahun menurut standar WHO (kategori Permenkes 2/2020), kurva pertumbuhan, dan riwayat di perangkat; tabel LMS WHO di satu berkas. |
 | Hitung HPL Kehamilan | [`/hpl/`](https://toowl.my.id/hpl/) | HPL dari HPHT (rumus Naegele, panjang siklus bisa diatur) atau dari USG, plus usia kehamilan, trimester, dan tonggak penting. Hanya perkiraan; bidan/dokter yang menentukan. |
+| Kalkulator Masa Subur & Haid | [`/masa-subur/`](https://toowl.my.id/masa-subur/) | Perkiraan ovulasi, jendela subur, dan haid berikutnya dari satu atau beberapa tanggal haid, dalam kalender tiga bulan. Metode kalender saja, bukan kontrasepsi; data hanya di perangkat. |
+| Tes Buta Warna | [`/tes-buta-warna/`](https://toowl.my.id/tes-buta-warna/) | Pelat titik-titik merah-hijau dan biru-kuning yang dibuat acak di perangkat, dengan hasil perkiraan. Skrining kasar, bukan tes resmi. |
 | BMI & Berat Ideal | [`/bmi/`](https://toowl.my.id/bmi/) | BMI dengan kategori Asia-Pasifik, Kemenkes, atau WHO, rentang berat ideal, dan kebutuhan kalori harian (Mifflin-St Jeor); ambang di satu berkas data. Skrining, bukan diagnosis. |
 | SOS & Senter | [`/sos/`](https://toowl.my.id/sos/) | Satu tombol: senter HP (Chrome Android) berkedip pola morse SOS, layar putih berkedip, sirene Web Audio, mode senter biasa, dan Wake Lock; di iPhone hanya layar. Kategori Darurat, jalan offline. |
 | Info Darurat | [`/darurat/`](https://toowl.my.id/darurat/) | Nomor darurat Indonesia sebagai tombol `tel:` (daftar dan tanggal pengecekan di satu berkas), plus lokasi GPS jadi teks dengan link peta yang dibagikan lewat Bagikan atau WhatsApp, lengkap dengan akurasi. |

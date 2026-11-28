@@ -498,14 +498,14 @@ sesudahnya.
 
 ## Hari 42 — 2026-11-28 · Kesehatan
 
-- [ ] **Kalkulator Masa Subur & Haid** (`#/masa-subur`): dari hari pertama
+- [x] **Kalkulator Masa Subur & Haid** (`#/masa-subur`): dari hari pertama
   haid terakhir dan panjang siklus (atau beberapa tanggal haid untuk
   menghitung rata-rata dan rentangnya) → perkiraan ovulasi, jendela subur,
   dan haid berikutnya dalam kalender tiga bulan. Berbagi hitungan tanggal
   dengan Hitung HPL. Riwayat hanya tersimpan di perangkat dan bisa dihapus
   dengan satu tombol. Tulis jelas bahwa ini perkiraan metode kalender, bukan
   alat kontrasepsi dan bukan nasihat medis, dan sebut sumber rumusnya.
-- [ ] **Tes Buta Warna** (`#/tes-buta-warna`): pelat titik-titik berwarna
+- [x] **Tes Buta Warna** (`#/tes-buta-warna`): pelat titik-titik berwarna
   yang dibuat sendiri secara prosedural (bukan salinan pelat Ishihara yang
   berhak cipta), untuk merah-hijau dan biru-kuning, dengan hasil perkiraan
   di akhir. Tulis jelas bahwa layar yang belum dikalibrasi memengaruhi hasil

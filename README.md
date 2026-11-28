@@ -3,7 +3,7 @@
 **English** · [Bahasa Indonesia](README.id.md)
 
 **My everyday file toolbox, built for the file work I do every day and published free for everyone.**
-149 tools for PDF, Office files, CAD drawings, images, video, audio, music and everyday calculations, and every one of them runs entirely in your browser.
+151 tools for PDF, Office files, CAD drawings, images, video, audio, music and everyday calculations, and every one of them runs entirely in your browser.
 Your files are never uploaded.
 
 [![Live demo](https://img.shields.io/badge/live-toowl.my.id-c8f031)](https://toowl.my.id/)
@@ -40,7 +40,7 @@ browser's own media encoders, and a library is downloaded only when you open the
 
 ## Tools
 
-All 146, grouped the way the site groups them. Each name links to the live tool.
+All 151, grouped the way the site groups them. Each name links to the live tool.
 
 **Open Documents**
 - [PDF Reader](https://toowl.my.id/en/pdf-reader/): pages drawn by pdf.js with its text layer on top (select, copy, Ctrl+F), working links, password-protected PDFs, zoom, page jump, full screen
@@ -189,6 +189,8 @@ Each reader opens the other three formats too.
 - [Text Compare](https://toowl.my.id/en/text-diff/): line and word diff with colours, unified or side by side
 - [Whiteboard](https://toowl.my.id/en/whiteboard/): pressure-sensitive pen, shapes, text, multiple pages, export to PNG/PDF
 - [Pregnancy Due Date Calculator](https://toowl.my.id/en/hpl/): due date from the last period (Naegele's rule, adjustable cycle) or an ultrasound, with gestational age, trimester and milestones; an estimate only
+- [Fertile Window & Period Calculator](https://toowl.my.id/en/masa-subur/): ovulation, fertile window and next period from one or several period dates, on a three-month calendar; calendar-method estimate only, dates kept on the device
+- [Colour Blindness Test](https://toowl.my.id/en/tes-buta-warna/): red-green and blue-yellow dot plates generated on the device, with an estimated result; a rough screening, not an official test
 - [BMI & Ideal Weight](https://toowl.my.id/en/bmi/): BMI with Asia-Pacific, Kemenkes or WHO categories, healthy weight range and daily calories (Mifflin-St Jeor); cut-offs in one data file
 
 **Emergency**

@@ -3,6 +3,13 @@
 Catatan harian apa yang berubah di [tools](https://toowl.my.id/),
 terbaru di atas. Rencana hari berikutnya ada di [ROADMAP.md](ROADMAP.md).
 
+## 2026-11-28 — Kesehatan
+
+Dua tool baru; total sekarang **151 tools**.
+
+- **Kalkulator Masa Subur & Haid** (`/masa-subur/`): isi hari pertama haid terakhir, atau beberapa tanggal haid untuk menghitung rata-rata dan rentang siklus (selisih di luar 15–60 hari dianggap tanggal yang terlewat), lalu lihat perkiraan ovulasi (14 hari sebelum haid berikutnya), jendela subur (5 hari sebelum sampai sehari sesudah ovulasi, Wilcox dkk. 2000), dan haid berikutnya dalam kalender tiga bulan. Hitungan tanggalnya berbagi `hpl.ts` dengan Hitung HPL. Tanggal tersimpan otomatis di perangkat saja dan bisa dihapus dengan satu tombol. Tertulis jelas bahwa ini perkiraan metode kalender, bukan kontrasepsi dan bukan nasihat medis. Ditandai tool khusus web.
+- **Tes Buta Warna** (`/tes-buta-warna/`): 10 pelat titik-titik yang digambar sendiri secara acak di canvas (bukan pelat Ishihara): satu pelat kontrol yang mudah, lima merah-hijau, dan empat biru-kuning; angka 2–9 terbentuk dari titik berwarna di sepanjang garis kebingungan warna dengan kecerahan diacak per titik. Hasil per sumbu (normal / kemungkinan gangguan / belum jelas) plus peringatan bila pelat kontrol salah. Disertai catatan bahwa layar yang belum dikalibrasi memengaruhi hasil dan ini bukan pengganti tes resmi untuk SIM atau kerja. Ditandai tool khusus web.
+
 ## 2026-11-28 — Lima Actor Apify baru tayang di Store
 
 - Tayang di Apify Store malam ini: **QR Code Generator**, **PDF to Word & Excel**, **HTML/URL/Markdown to PDF**, **PDF Compressor**, dan **AI Background Remover**. Kartu dan tautannya di halaman `/api/` sekarang aktif. Sisanya menyusul lima per hari (batas publish Apify).
