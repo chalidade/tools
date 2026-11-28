@@ -37,23 +37,32 @@ One dataset row per tender:
 
 ```json
 {
-  "kode": "10012345000",
-  "namaPaket": "Pembangunan Jalan Lingkungan Kelurahan X",
-  "instansi": "Pemerintah Daerah Provinsi DKI Jakarta",
+  "kode": "10180603000",
+  "namaPaket": "Jejaki Jakarta Festival",
+  "instansi": "Provinsi DKI Jakarta",
   "tahapan": "Pengumuman Pascakualifikasi",
-  "hps": 1500000000,
-  "hpsText": "1.500.000.000,00",
+  "hps": 869419445,
+  "hpsText": "869,4 Jt",
+  "pagu": 999988036,
   "nilaiKontrak": null,
-  "jenisPengadaan": "Pekerjaan Konstruksi",
-  "metode": "Tender",
-  "tahunAnggaran": "2026",
+  "jenisPengadaan": "Jasa Lainnya",
+  "tahunAnggaran": 2026,
+  "metodePemilihan": "Tender",
+  "metodeEvaluasi": "Harga Terendah Sistem Gugur",
+  "satuanKerja": "UNIT PENGELOLA KAWASAN KOTA TUA",
+  "lokasi": "Kawasan Kota Tua - Jakarta Barat (Kota)",
+  "kualifikasiUsaha": "Kecil",
+  "jenisKontrak": "Lumsum",
+  "jumlahPeserta": 2,
   "lpse": "jakarta",
-  "url": "https://spse.inaproc.id/jakarta/lelang/10012345000/pengumumanlelang",
-  "jadwalUrl": "https://spse.inaproc.id/jakarta/lelang/10012345000/jadwal",
-  "pengumuman": { "Satuan Kerja": "…", "Lokasi Pekerjaan": "…", "Kualifikasi Usaha": "…" },
+  "url": "https://spse.inaproc.id/jakarta/lelang/10180603000/pengumumanlelang",
+  "jadwalUrl": "https://spse.inaproc.id/jakarta/lelang/10180603000/jadwal",
+  "pengumuman": { "Kode Tender": "10180603000", "Satuan Kerja": "…", "Syarat Kualifikasi": "…" },
   "scrapedAt": "2026-11-28T10:30:00.000Z"
 }
 ```
+
+`pagu`, `satuanKerja`, `lokasi`, `kualifikasiUsaha`, `jenisKontrak`, `jumlahPeserta` and the exact `hps` (to the rupiah) come from the announcement page, so they are filled when **Include announcement details** is on; without it `hps` is the rounded list value (e.g. "869,4 Jt").
 
 A `SUMMARY` record in the key-value store lists how many tenders were saved and any agency that failed.
 

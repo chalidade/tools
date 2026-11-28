@@ -88,10 +88,13 @@ export class Spse {
   async page(slug, { token, tahun, start, length, search }) {
     const p = new URLSearchParams()
     p.set('draw', String(Math.floor(start / length) + 1))
+    // Must match the page's column setup: column 3 (Tahapan) is neither
+    // searchable nor orderable, and a keyword search that claims it is gets HTTP 500.
     for (let i = 0; i < 6; i++) {
       p.set(`columns[${i}][data]`, String(i))
-      p.set(`columns[${i}][searchable]`, 'true')
-      p.set(`columns[${i}][orderable]`, i === 0 || i === 5 ? 'true' : 'false')
+      p.set(`columns[${i}][name]`, '')
+      p.set(`columns[${i}][searchable]`, i === 3 ? 'false' : 'true')
+      p.set(`columns[${i}][orderable]`, i === 3 ? 'false' : 'true')
       p.set(`columns[${i}][search][value]`, '')
       p.set(`columns[${i}][search][regex]`, 'false')
     }
@@ -116,7 +119,10 @@ export class Spse {
     } catch {
       throw new Error(`/${slug}/dt/lelang did not return JSON (session expired or blocked).`)
     }
-    return { total: Number(json.recordsFiltered ?? json.recordsTotal ?? 0), rows: Array.isArray(json.data) ? json.data : [] }
+    // recordsTotal/recordsFiltered are often INT_MAX placeholders, not counts.
+    const n = Number(json.recordsFiltered ?? json.recordsTotal)
+    const total = Number.isFinite(n) && n > 0 && n < 2147483647 ? n : null
+    return { total, rows: Array.isArray(json.data) ? json.data : [] }
   }
 
   /** Label → value pairs of the announcement page. */
@@ -128,26 +134,31 @@ export class Spse {
 
 const clean = (s) => s.replace(/\s+/g, ' ').trim()
 
+// "APBDP 2026 APBDP 2026 APBDP 2026" (one per budget row) → "APBDP 2026".
+const dedupe = (v) => v.replace(/^(.+?)(?:\s+\1)+$/, '$1')
+
 export function parseAnnouncement(html) {
   const $ = load(html)
   const out = {}
-  $('table tr').each((_, tr) => {
-    const cells = $(tr).children('th, td')
-    // Rows are "label | value" or "label | value | label | value".
-    for (let i = 0; i + 1 < cells.length; i += 2) {
-      const a = cells.eq(i)
-      const b = cells.eq(i + 1)
-      if (!a.is('th') && !b.is('td')) continue
-      const label = clean(a.text())
-      if (!label || label.length > 80 || out[label] !== undefined) continue
-      // Nested tables (e.g. lokasi pekerjaan lists) become one line per row.
-      const nested = b.find('tr')
-      const value = nested.length
-        ? nested.map((__, r) => clean($(r).text())).get().filter(Boolean).join('\n')
-        : clean(b.text())
-      out[label] = value
-    }
-  })
+  // Only rows of outermost tables: nested tables (RUP list, permits, KBLI)
+  // are values, not label/value pairs.
+  $('table tr')
+    .filter((_, tr) => $(tr).parents('table').length === 1)
+    .each((_, tr) => {
+      const cells = $(tr).children('th, td')
+      // Rows are "label | value" or "label | value | label | value".
+      for (let i = 0; i + 1 < cells.length; i += 2) {
+        const a = cells.eq(i)
+        const b = cells.eq(i + 1)
+        const label = clean(a.text())
+        if (!label || label.length > 80 || /^\d+$/.test(label) || out[label] !== undefined) continue
+        const nested = b.find('tr')
+        const value = nested.length
+          ? nested.map((__, r) => clean($(r).children('th, td').map((___, c) => clean($(c).text())).get().join(' | '))).get().filter(Boolean).join('\n')
+          : dedupe(clean(b.text()))
+        out[label] = value
+      }
+    })
   return out
 }
 
@@ -185,7 +196,11 @@ export function rowToTender(row, slug) {
   const r = Array.isArray(row) ? row : Object.values(row ?? {})
   const kode = txt(r[0])
   const hpsText = txt(r[4])
-  const nilaiKontrakText = txt(r[10])
+  const kontrak = txt(r[10])
+  const nilaiKontrakText = kontrak && /\d/.test(kontrak) ? kontrak : null
+  // r[8] is "<jenis pengadaan> - TA <tahun>", e.g. "Jasa Lainnya - TA 2026".
+  const jenisTa = txt(r[8]) ?? ''
+  const ta = jenisTa.match(/^(.*?)\s*-\s*TA\s*(\d{4})\s*$/i)
   return {
     kode,
     namaPaket: txt(r[1]),
@@ -195,9 +210,10 @@ export function rowToTender(row, slug) {
     hpsText,
     nilaiKontrak: rupiah(nilaiKontrakText),
     nilaiKontrakText,
-    jenisPengadaan: txt(r[6]),
-    metode: txt(r[7]),
-    tahunAnggaran: txt(r[8]),
+    jenisPengadaan: ta ? ta[1] || null : jenisTa || null,
+    tahunAnggaran: ta ? Number(ta[2]) : null,
+    metodePemilihan: txt(r[6]),
+    metodeEvaluasi: txt(r[7]),
     versiSpse: txt(r[9]),
     evaluasiUlang: yes(r[11]),
     penawaranUlang: yes(r[12]),
@@ -207,4 +223,20 @@ export function rowToTender(row, slug) {
     url: kode ? `${BASE}/${slug}/lelang/${kode}/pengumumanlelang` : null,
     jadwalUrl: kode ? `${BASE}/${slug}/lelang/${kode}/jadwal` : null,
   }
+}
+
+/** Fills in exact figures and the main fields from the announcement page. */
+export function applyAnnouncement(t, a) {
+  t.pengumuman = a
+  const hps = rupiah(a['Nilai HPS Paket'])
+  if (hps != null) t.hps = hps
+  t.pagu = rupiah(a['Nilai Pagu Paket'])
+  t.satuanKerja = a['Satuan Kerja'] ?? null
+  t.lokasi = a['Lokasi Pekerjaan'] ?? null
+  t.kualifikasiUsaha = a['Kualifikasi Usaha'] ?? null
+  t.jenisKontrak = a['Jenis Kontrak'] ?? null
+  t.tanggalPembuatan = a['Tanggal Pembuatan'] ?? null
+  const peserta = String(a['Peserta Tender'] ?? '').match(/\d+/)
+  t.jumlahPeserta = peserta ? Number(peserta[0]) : null
+  return t
 }

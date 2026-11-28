@@ -18,7 +18,7 @@
       "views": {
         "overview": {
           "title": "Tenders",
-          "transformation": { "fields": ["kode", "namaPaket", "instansi", "tahapan", "hps", "nilaiKontrak", "jenisPengadaan", "metode", "lpse", "url"] },
+          "transformation": { "fields": ["kode", "namaPaket", "instansi", "tahapan", "hps", "nilaiKontrak", "jenisPengadaan", "metodePemilihan", "lpse", "url"] },
           "display": {
             "component": "table",
             "properties": {
@@ -29,7 +29,7 @@
               "hps": { "label": "HPS (Rp)", "format": "number" },
               "nilaiKontrak": { "label": "Contract (Rp)", "format": "number" },
               "jenisPengadaan": { "label": "Type" },
-              "metode": { "label": "Method" },
+              "metodePemilihan": { "label": "Method" },
               "lpse": { "label": "LPSE" },
               "url": { "label": "Announcement", "format": "link" }
             }

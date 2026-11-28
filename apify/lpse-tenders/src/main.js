@@ -1,5 +1,5 @@
 import { Actor, log } from 'apify'
-import { Spse, rowToTender } from './spse.js'
+import { Spse, applyAnnouncement, rowToTender } from './spse.js'
 
 await Actor.init()
 
@@ -68,8 +68,8 @@ for (const slug of slugs) {
 
   let start = 0
   let fromThis = 0
-  let total = Infinity
-  while (!stop && start < total && fromThis < perLpse) {
+  let total = null
+  while (!stop && (total == null || start < total) && fromThis < perLpse) {
     let page
     try {
       page = await spse.page(slug, { token, tahun, start, length: PAGE, search: keyword })
@@ -86,6 +86,7 @@ for (const slug of slugs) {
     total = page.total
     if (!page.rows.length) break
     start += page.rows.length
+    const lastPage = page.rows.length < PAGE
 
     for (const row of page.rows) {
       const t = rowToTender(row, slug)
@@ -99,7 +100,7 @@ for (const slug of slugs) {
       }
       if (details && t.kode) {
         try {
-          t.pengumuman = await spse.announcement(slug, t.kode)
+          applyAnnouncement(t, await spse.announcement(slug, t.kode))
         } catch (e) {
           t.pengumuman = null
           t.detailError = e.message
@@ -113,8 +114,9 @@ for (const slug of slugs) {
       if (saved >= maxItems) stop = true
       if (stop || fromThis >= perLpse) break
     }
+    if (lastPage) break
   }
-  log.info(`✓ ${slug}: ${fromThis} tenders${Number.isFinite(total) ? ` (of ${total} listed for ${tahun})` : ''}`)
+  log.info(`✓ ${slug}: ${fromThis} tenders${total ? ` (of ${total} listed for ${tahun})` : ''}`)
 }
 
 const summary = { tenders: saved, tahun, keyword: keyword || null, lpseScanned: slugs.length, failed }
