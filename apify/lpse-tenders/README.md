@@ -74,7 +74,7 @@ Pay per tender saved. Agencies that fail and tenders filtered out are free. The 
 
 - Tender announcements are public information that agencies must publish (Perpres 16/2018). This Actor reads only the public listing and announcement pages, no login, and respects the site's `Crawl-delay: 1` (one request per second).
 - Run it on a **schedule** (e.g. every morning) with `tahapan: "Pengumuman"` to get only tenders still open for bids.
-- No proxy is needed normally. If runs start getting blocked, switch on Apify Proxy with country **Indonesia (ID)**.
+- The default proxy is Apify residential in **Indonesia (ID)**: the site blocks most server IPs outside Indonesia. Turn it off only when you run from an Indonesian IP.
 
 ## Call it from your code
 

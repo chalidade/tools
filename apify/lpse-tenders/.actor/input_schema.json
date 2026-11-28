@@ -8,7 +8,10 @@
       "type": "array",
       "description": "Agency slugs as in https://spse.inaproc.id/<slug>/ (e.g. lkpp, jakarta, jatimprov, pu), or full links. Use * for every agency listed on spse.inaproc.id (about 600).",
       "editor": "stringList",
-      "prefill": ["lkpp", "jakarta"]
+      "prefill": [
+        "lkpp",
+        "jakarta"
+      ]
     },
     "tahun": {
       "title": "Fiscal year",
@@ -69,9 +72,21 @@
       "title": "Proxy",
       "type": "object",
       "editor": "proxy",
-      "description": "Usually not needed. If the site starts blocking runs, use Apify Proxy with country Indonesia (ID).",
-      "prefill": { "useApifyProxy": false },
-      "default": { "useApifyProxy": false }
+      "description": "spse.inaproc.id blocks most non-Indonesian server IPs, so the default is Apify residential proxy in Indonesia (ID). Turn it off only if you run from an Indonesian IP.",
+      "prefill": {
+        "useApifyProxy": true,
+        "apifyProxyGroups": [
+          "RESIDENTIAL"
+        ],
+        "apifyProxyCountry": "ID"
+      },
+      "default": {
+        "useApifyProxy": true,
+        "apifyProxyGroups": [
+          "RESIDENTIAL"
+        ],
+        "apifyProxyCountry": "ID"
+      }
     }
   }
 }
